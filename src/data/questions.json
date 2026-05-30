@@ -1,782 +1,892 @@
 [
   {
-    "id": "rfi_01", "level": 1, "category": "Open Raise", "difficulty": "easy",
-    "hand": ["A♠","A♣"], "position": "UTG", "situation": "First to act.",
-    "question": "You have A♠A♣ in UTG. You are first to act. What do you do?",
-    "options": ["Raise 3 BB","Limp","Fold","Raise 5 BB"],
-    "correct": 0,
-    "explanation": "AA raises from every position — no exceptions. 3 BB is the standard sizing for every hand. Uniform sizing means opponents cannot read your hand strength from your bet size.",
-    "why_wrong": {
-      "1": "Limping AA is a fundamental mistake. You surrender fold equity, give everyone a cheap flop, and build no pot with the best starting hand.",
-      "2": "Never fold AA preflop.",
-      "3": "Raising larger with strong hands and smaller with weak hands is a tell. Always 3 BB regardless of hand strength."
-    }
+    "id":"rfi_utg_01","level":1,"category":"Open Raise","difficulty":"easy",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["A♠","A♣"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have A♠A♣ in UTG. You are first to act. What do you do?",
+    "options":["Raise 3 BB","Limp","Fold","Raise 5 BB"],"correct":0,
+    "explanation":"AA raises from every position. 3 BB is the standard sizing for every hand. Hardin's five reasons to raise: show strength, gain initiative, thin the field, build the pot, steal the blinds. Uniform sizing means opponents cannot read your hand strength.",
+    "why_wrong":{"1":"Limping AA signals weakness with a capped range. You surrender fold equity and give everyone a cheap flop.","2":"Never fold AA preflop.","3":"Raising larger with strong hands telegraphs strength. Always 3 BB regardless of hand strength."}
   },
   {
-    "id": "rfi_02", "level": 1, "category": "Open Raise", "difficulty": "easy",
-    "hand": ["7♣","2♦"], "position": "UTG", "situation": "First to act.",
-    "question": "You have 7♣2♦ in UTG. You are first to act. What do you do?",
-    "options": ["Fold","Limp","Raise 3 BB","Raise 2 BB"],
-    "correct": 0,
-    "explanation": "72o is not in any opening range. The TAG rule is raise or fold — never limp. 72o has no equity, no draws, and no future. Fold immediately.",
-    "why_wrong": {
-      "1": "Limping 72o builds a multiway pot with a hand that almost never wins at showdown.",
-      "2": "Aggression requires a hand worth being aggressive with.",
-      "3": "Smaller sizing does not fix a hand with no equity."
-    }
+    "id":"rfi_utg_02","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["6♣","6♦"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have 6♣6♦ in UTG. You are first to act. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"66 is the bottom of the conservative UTG range (66+). It qualifies. Raise 3 BB. Hardin notes: smaller pairs 22-55 often end up check/folding OOP on bad flops, which is why the UTG threshold starts at 66.",
+    "why_wrong":{"1":"66 is in the conservative UTG range. Fold is too tight.","2":"Never limp as first to act — raise or fold only.","3":"Always 3 BB — uniform sizing for all hands."}
   },
   {
-    "id": "rfi_03", "level": 1, "category": "Open Raise", "difficulty": "easy",
-    "hand": ["K♠","Q♥"], "position": "BTN", "situation": "Action folds to you.",
-    "question": "You have K♠Q♥ on the BTN. Action folds to you. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise 5 BB"],
-    "correct": 0,
-    "explanation": "KQo is in the TAG conservative BTN range (35.4%). BTN is the most profitable seat — you act last on every postflop street. Always raise or fold as first action. 3 BB.",
-    "why_wrong": {
-      "1": "Folding KQo from BTN surrenders significant EV. It is comfortably in the range.",
-      "2": "Never limp as first to act. You lose initiative and give the blinds a free look.",
-      "3": "Uniform 3 BB sizing for all hands. Never go larger with stronger hands."
-    }
+    "id":"rfi_utg_03","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["5♠","5♦"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have 5♠5♦ in UTG. You are first to act. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"The conservative UTG range starts at 66+. 55 does not qualify. Five players still to act means high risk of running into a better hand, and 55 often ends up check/folding OOP. Fold. (55 is fine from MP onwards.)",
+    "why_wrong":{"1":"55 is below the 66+ conservative UTG threshold.","2":"Never limp as first to act.","3":"Smaller sizing does not change that 55 is below threshold."}
   },
   {
-    "id": "rfi_04", "level": 1, "category": "Open Raise", "difficulty": "easy",
-    "hand": ["9♠","9♦"], "position": "MP", "situation": "UTG folds. Action on you.",
-    "question": "You have 9♠9♦ in MP. UTG folds, action on you. What do you do?",
-    "options": ["Raise 3 BB","Limp","Fold","Raise 4 BB"],
-    "correct": 0,
-    "explanation": "99 is in the TAG conservative MP range (55+). Raise or fold — never limp as first action. 99 has overpair value on low boards and fold equity as a raise.",
-    "why_wrong": {
-      "1": "Limping 99 is weak and passive. You surrender initiative and let everyone in cheaply.",
-      "2": "Folding 99 from MP is far too tight.",
-      "3": "4 BB is non-standard and telegraphs strength. Always 3 BB."
-    }
+    "id":"rfi_utg_04","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["J♠","T♠"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have J♠T♠ in UTG. You are first to act. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from late position"],"correct":0,
+    "explanation":"JTs is explicitly listed in Hardin's conservative UTG range (66+, ATs+, KJs+, JTs, AJo+, KQo). It is one of the very few suited connectors allowed from UTG. Raise 3 BB.",
+    "why_wrong":{"1":"JTs is in the UTG range. Fold is too tight.","2":"Never limp as first to act.","3":"JTs is a legitimate UTG open — late position is not required."}
   },
   {
-    "id": "rfi_05", "level": 1, "category": "Open Raise", "difficulty": "easy",
-    "hand": ["6♦","6♣"], "position": "BTN", "situation": "Action folds to you.",
-    "question": "You have 6♦6♣ on the BTN. Action folds to you. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise 4 BB"],
-    "correct": 0,
-    "explanation": "22+ is in the TAG conservative BTN range. All pocket pairs qualify from BTN. Raise 3 BB.",
-    "why_wrong": {
-      "1": "Folding 66 from BTN is far too tight — all pairs are in the BTN range.",
-      "2": "Never limp as first to act from any position.",
-      "3": "Standard 3 BB — not 4 BB."
-    }
+    "id":"rfi_utg_05","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["T♣","9♣"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have T♣9♣ in UTG. You are first to act. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"T9s is NOT in the conservative UTG range. Only JTs is listed as a suited connector in conservative UTG. T9s appears in the moderate UTG range. Fold from UTG conservative.",
+    "why_wrong":{"1":"T9s is below the conservative UTG threshold. Only JTs qualifies as a suited connector from UTG conservative.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "rfi_06", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["J♠","T♠"], "position": "UTG", "situation": "First to act.",
-    "question": "You have J♠T♠ in UTG. You are first to act. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise only from CO or later"],
-    "correct": 0,
-    "explanation": "JTs is explicitly listed in the TAG conservative UTG range (66+, ATs+, KJs+, JTs, AJo+, KQo). It is one of the very few suited connectors included from UTG. Raise 3 BB.",
-    "why_wrong": {
-      "1": "JTs is in the UTG range. Folding is too tight.",
-      "2": "Never limp as first to act.",
-      "3": "JTs is a legitimate UTG open — CO or later is not required."
-    }
+    "id":"rfi_utg_06","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["K♦","J♠"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have K♦J♠ in UTG. You are first to act. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"KJo is NOT in the conservative UTG range. The minimum off-suit king is KQo. KJo faces domination from KQ, AK, and AJ — exactly the kinds of hands in UTG's calling range. Fold.",
+    "why_wrong":{"1":"KJo UTG faces reverse implied odds. You flop a king and lose big to KQ or AK.","2":"Never limp as first to act.","3":"Smaller sizing does not fix a dominated hand."}
   },
   {
-    "id": "rfi_07", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["5♠","5♦"], "position": "UTG", "situation": "First to act.",
-    "question": "You have 5♠5♦ in UTG. You are first to act. What do you do?",
-    "options": ["Fold","Raise 3 BB","Limp","Raise 2 BB"],
-    "correct": 0,
-    "explanation": "The TAG conservative UTG range starts at 66+. 55 does not qualify — five players still to act creates too much risk of running into a better hand. 55 opens from MP onwards. Fold from UTG.",
-    "why_wrong": {
-      "1": "55 is below the conservative UTG threshold of 66+. Raising risks a dominated pot.",
-      "2": "Never limp as first to act.",
-      "3": "Smaller sizing does not change that 55 is below the UTG threshold."
-    }
+    "id":"rfi_utg_07","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["A♠","J♦"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have A♠J♦ in UTG. You are first to act. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"AJo+ is in the conservative UTG range. AJo qualifies as the minimum off-suit ace from UTG. Raise 3 BB.",
+    "why_wrong":{"1":"AJo is in the UTG range. Fold is too tight.","2":"Never limp as first to act.","3":"Uniform 3 BB for every hand."}
   },
   {
-    "id": "rfi_08", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["K♦","J♠"], "position": "UTG", "situation": "First to act.",
-    "question": "You have K♦J♠ in UTG. You are first to act. What do you do?",
-    "options": ["Fold","Raise 3 BB","Limp","Raise 2 BB"],
-    "correct": 0,
-    "explanation": "KJo is NOT in the TAG conservative UTG range. The minimum off-suit king from UTG is KQo. KJo faces domination from KQ, AK, and AJ regularly. Fold.",
-    "why_wrong": {
-      "1": "KJo UTG faces severe domination when you flop a king vs KQ or AK. Raising is a mistake.",
-      "2": "Never limp as first to act.",
-      "3": "Smaller sizing does not fix a hand below the UTG threshold."
-    }
+    "id":"rfi_utg_08","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["K♦","Q♣"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have K♦Q♣ in UTG. You are first to act. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"KQo IS in the conservative UTG range — it is the last hand listed: 66+, ATs+, KJs+, JTs, AJo+, KQo. It is the minimum off-suit king from UTG. Raise 3 BB.",
+    "why_wrong":{"1":"KQo is in the UTG range. Fold is too tight.","2":"Never limp as first to act.","3":"Always 3 BB — uniform sizing."}
   },
   {
-    "id": "rfi_09", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["Q♠","J♦"], "position": "UTG", "situation": "First to act.",
-    "question": "You have Q♠J♦ in UTG. You are first to act. What do you do?",
-    "options": ["Fold","Raise 3 BB","Limp","Raise 4 BB"],
-    "correct": 0,
-    "explanation": "QJo is not in the TAG conservative UTG range. Playable from late position but too vulnerable from UTG — dominated by AJ, KJ, KQ regularly. Fold.",
-    "why_wrong": {
-      "1": "QJo UTG faces domination from KQ, AJ, KJ. Raising puts you in dominated pots.",
-      "2": "Never limp as first to act.",
-      "3": "Non-standard sizing does not fix a hand below the UTG threshold."
-    }
+    "id":"rfi_utg_09","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["K♠","J♠"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have K♠J♠ in UTG. You are first to act. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from CO or later"],"correct":0,
+    "explanation":"KJs+ is in the conservative UTG range. KJs qualifies as the minimum suited king. Note: KJo does NOT qualify — the suited version has flush equity that makes it playable from UTG. Raise 3 BB.",
+    "why_wrong":{"1":"KJs is in the UTG range. Fold is too tight.","2":"Never limp as first to act.","3":"KJs is a legitimate UTG open."}
   },
   {
-    "id": "rfi_10", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["A♥","2♥"], "position": "CO", "situation": "Action folds to you.",
-    "question": "You have A♥2♥ in CO. Action folds to you. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise only ATs or better"],
-    "correct": 0,
-    "explanation": "A2s+ is in the TAG conservative CO range. All suited aces from A2s upward qualify from CO. Raise 3 BB.",
-    "why_wrong": {
-      "1": "A2s is in the CO range. Folding leaves value on the table.",
-      "2": "Never limp as first to act.",
-      "3": "The CO range includes A2s — not just ATs+. That distinction matters in other contexts."
-    }
+    "id":"rfi_utg_10","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative UTG (9.80%): 66+, ATs+, KJs+, JTs, AJo+, KQo",
+    "hand":["A♦","9♦"],"position":"UTG","situation":"Conservative ranges. First to act.",
+    "question":"You have A♦9♦ in UTG. You are first to act. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"The conservative UTG suited ace range starts at ATs+. A9s does not qualify — it is below threshold. Fold. A9s opens from MP onwards in conservative ranges.",
+    "why_wrong":{"1":"A9s is below the ATs+ UTG threshold. Raising puts you in dominated pots OOP.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "rfi_11", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["K♣","3♣"], "position": "BTN", "situation": "Action folds to you.",
-    "question": "You have K♣3♣ on the BTN. Action folds to you. What do you do?",
-    "options": ["Fold","Raise 3 BB","Limp","Raise 2 BB"],
-    "correct": 0,
-    "explanation": "The TAG conservative BTN range starts at K7s+ for suited kings. K3s is below this threshold. Fold.",
-    "why_wrong": {
-      "1": "K3s is below the K7s+ BTN threshold. Raising it is outside the conservative range.",
-      "2": "Never limp as first to act.",
-      "3": "Smaller sizing does not change that K3s is below threshold."
-    }
+    "id":"rfi_utg_mod_01","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate UTG (12.07%): 55+, ATs+, KTs+, QTs+, JTs, T9s, 98s, 87s, AJo+, KQo",
+    "hand":["5♥","5♣"],"position":"UTG","situation":"Moderate ranges. First to act.",
+    "question":"You have 5♥5♣ in UTG. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"In the moderate UTG range (12.07%), the pocket pair threshold drops to 55+. 55 qualifies. Raise 3 BB. In conservative UTG, 55 does not qualify — this is the key difference.",
+    "why_wrong":{"1":"55 is in the moderate UTG range. Fold is too tight.","2":"Never limp as first to act.","3":"Always 3 BB."}
   },
   {
-    "id": "rfi_12", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["T♥","9♥"], "position": "MP", "situation": "UTG folds. Action on you.",
-    "question": "You have T♥9♥ in MP. UTG folds, action on you. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise only from CO or later"],
-    "correct": 0,
-    "explanation": "T9s is explicitly in the TAG conservative MP range (55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo). Raise 3 BB.",
-    "why_wrong": {
-      "1": "T9s is in the conservative MP range. Folding is too tight.",
-      "2": "Never limp as first to act.",
-      "3": "T9s is a legitimate MP open — CO or later is not required."
-    }
+    "id":"rfi_utg_mod_02","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"UTG","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate UTG (12.07%): 55+, ATs+, KTs+, QTs+, JTs, T9s, 98s, 87s, AJo+, KQo",
+    "hand":["T♥","9♥"],"position":"UTG","situation":"Moderate ranges. First to act.",
+    "question":"You have T♥9♥ in UTG. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from MP or later"],"correct":0,
+    "explanation":"T9s is explicitly in the moderate UTG range. It does NOT qualify in conservative UTG — only JTs does. This is a key distinction between conservative and moderate UTG ranges. Raise 3 BB.",
+    "why_wrong":{"1":"T9s is in the moderate UTG range. Fold is too tight.","2":"Never limp as first to act.","3":"T9s is a legitimate moderate UTG open."}
   },
   {
-    "id": "rfi_13", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["8♠","7♠"], "position": "MP", "situation": "UTG folds. Action on you.",
-    "question": "You have 8♠7♠ in MP. UTG folds, action on you. What do you do?",
-    "options": ["Fold","Raise 3 BB","Limp","Raise 4 BB"],
-    "correct": 0,
-    "explanation": "87s is NOT in the TAG conservative MP range. It appears in the moderate MP range. Stick to conservative ranges while building fundamentals. Fold from MP.",
-    "why_wrong": {
-      "1": "87s is a legitimate moderate range hand but not in the conservative MP range.",
-      "2": "Never limp as first to act.",
-      "3": "Non-standard sizing does not fix a hand below the conservative MP threshold."
-    }
+    "id":"rfi_mp_01","level":1,"category":"Open Raise","difficulty":"easy",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["9♠","9♦"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have 9♠9♦ in MP. UTG folds, action on you. What do you do?",
+    "options":["Raise 3 BB","Limp","Fold","Raise 4 BB"],"correct":0,
+    "explanation":"99 is in the conservative MP range (55+). Raise or fold — never limp. 99 has overpair value on low boards and fold equity as a raise. 3 BB.",
+    "why_wrong":{"1":"Limping 99 surrenders initiative and lets everyone in cheaply.","2":"Folding 99 from MP is too tight.","3":"4 BB is non-standard and telegraphs strength."}
   },
   {
-    "id": "rfi_14", "level": 1, "category": "Open Raise", "difficulty": "medium",
-    "hand": ["A♣","9♣"], "position": "SB", "situation": "Action folds to you.",
-    "question": "You have A♣9♣ in SB. Action folds to you. What do you do?",
-    "options": ["Raise 3 BB","Raise 4 BB","Limp","Fold"],
-    "correct": 0,
-    "explanation": "A9s is in the TAG SB range (same as CO: 22.2%). Open sizing is always 3 BB regardless of position. The +1 BB OOP rule applies only to ISO raises, not first-in opens.",
-    "why_wrong": {
-      "1": "4 BB open from SB is non-standard. The OOP +1 BB rule applies to ISO raises only.",
-      "2": "Never limp from SB as first action.",
-      "3": "A9s is in the SB range. Fold is too tight."
-    }
+    "id":"rfi_mp_02","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["5♦","5♣"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have 5♦5♣ in MP. UTG folds, action on you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"The conservative MP range starts at 55+. 55 qualifies from MP — key difference from UTG where 55 does not qualify. Raise 3 BB.",
+    "why_wrong":{"1":"55 is in the conservative MP range. Fold is too tight.","2":"Never limp as first to act.","3":"Always 3 BB."}
   },
   {
-    "id": "rfi_15", "level": 1, "category": "Open Raise", "difficulty": "hard",
-    "hand": ["A♠","J♦"], "position": "UTG", "situation": "First to act.",
-    "question": "You have A♠J♦ in UTG. You are first to act. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise 4 BB"],
-    "correct": 0,
-    "explanation": "AJo+ is in the TAG conservative UTG range (66+, ATs+, KJs+, JTs, AJo+, KQo). AJo has top pair value, strong kicker, and fold equity as a raise. Raise 3 BB.",
-    "why_wrong": {
-      "1": "AJo is in the UTG range. Folding is too tight.",
-      "2": "Never limp as first to act.",
-      "3": "Uniform 3 BB for every hand. Non-standard sizing is always wrong."
-    }
+    "id":"rfi_mp_03","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["T♥","9♥"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have T♥9♥ in MP. UTG folds, action on you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from CO or later"],"correct":0,
+    "explanation":"T9s is explicitly in the conservative MP range. Unlike conservative UTG where only JTs is allowed, MP opens up to include T9s. Raise 3 BB.",
+    "why_wrong":{"1":"T9s is in the conservative MP range. Fold is too tight.","2":"Never limp as first to act.","3":"T9s is a legitimate conservative MP open."}
   },
   {
-    "id": "rfi_16", "level": 1, "category": "Open Raise", "difficulty": "hard",
-    "hand": ["K♦","Q♣"], "position": "UTG", "situation": "First to act.",
-    "question": "You have K♦Q♣ in UTG. You are first to act. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise 2 BB"],
-    "correct": 0,
-    "explanation": "KQo IS in the TAG conservative UTG range — it is the last hand listed (66+, ATs+, KJs+, JTs, AJo+, KQo). It is the minimum off-suit king from UTG. Raise 3 BB.",
-    "why_wrong": {
-      "1": "KQo is in the UTG range. Folding is too tight.",
-      "2": "Never limp as first to act.",
-      "3": "Always 3 BB — uniform sizing."
-    }
+    "id":"rfi_mp_04","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["8♠","7♠"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have 8♠7♠ in MP. UTG folds, action on you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"87s is NOT in the conservative MP range. The lowest suited connector in conservative MP is T9s. 87s appears only in the moderate MP range. Fold from MP conservative.",
+    "why_wrong":{"1":"87s is below the T9s conservative MP threshold.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "rfi_17", "level": 1, "category": "Open Raise", "difficulty": "hard",
-    "hand": ["9♦","8♦"], "position": "SB", "situation": "Action folds to you.",
-    "question": "You have 9♦8♦ in SB. Action folds to you. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise 2 BB"],
-    "correct": 0,
-    "explanation": "The TAG SB range mirrors the CO range (22.2%) which includes 97s+. 98s is above the 97s+ threshold and qualifies. Raise 3 BB.",
-    "why_wrong": {
-      "1": "98s satisfies the 97s+ SB threshold. Folding is too conservative.",
-      "2": "Never limp from SB as first action.",
-      "3": "2 BB undersizes and gives BB an excellent price to defend."
-    }
+    "id":"rfi_mp_05","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["A♥","9♥"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have A♥9♥ in MP. UTG folds, action on you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from CO or later"],"correct":0,
+    "explanation":"A9s+ is in the conservative MP range. A9s qualifies as the minimum suited ace from MP. Raise 3 BB.",
+    "why_wrong":{"1":"A9s is in the conservative MP range. Fold is too tight.","2":"Never limp as first to act.","3":"A9s is a legitimate conservative MP open."}
   },
   {
-    "id": "rfi_18", "level": 1, "category": "Open Raise", "difficulty": "hard",
-    "hand": ["Q♣","T♦"], "position": "BTN", "situation": "Action folds to you. You are using moderate ranges.",
-    "question": "You have Q♣T♦ on the BTN. Action folds to you. You are using moderate ranges. What do you do?",
-    "options": ["Raise 3 BB","Fold","Limp","Raise only suited QT"],
-    "correct": 0,
-    "explanation": "QTo is in the moderate BTN range (which expands conservative 35.4% to 43.3% and adds QTo+, JTo, T8o+ and others). Off-suit broadways qualify from BTN at moderate ranges. Raise 3 BB.",
-    "why_wrong": {
-      "1": "QTo is in the moderate BTN range. Folding is too tight at this range level.",
-      "2": "Never limp as first to act.",
-      "3": "Off-suit broadways qualify from BTN in the moderate range — not just suited."
-    }
+    "id":"rfi_mp_06","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["A♦","8♦"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have A♦8♦ in MP. UTG folds, action on you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"The conservative MP suited ace range starts at A9s+. A8s does not qualify — it is below threshold. Fold. A8s is in the moderate MP range.",
+    "why_wrong":{"1":"A8s is below the A9s+ conservative MP threshold.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "rfi_19", "level": 1, "category": "Open Raise", "difficulty": "hard",
-    "hand": ["6♦","6♣"], "position": "CO", "situation": "UTG limps. Action on you in CO.",
-    "question": "You have 6♦6♣ in CO. UTG limps, action on you. What do you do and what is the correct sizing?",
-    "options": ["Raise to 4 BB","Raise to 3 BB","Limp","Fold"],
-    "correct": 0,
-    "explanation": "66 is in the CO range. When a player has limped, the sizing formula is: 3 BB base + 1 BB per limper. 1 limper IP = 4 BB. This is an ISO raise, not a standard open.",
-    "why_wrong": {
-      "1": "3 BB against a limper undersizes — the limper gets a great price to call.",
-      "2": "Limping 66 behind surrenders initiative and your positional advantage.",
-      "3": "66 is in the CO range. Fold is too tight."
-    }
+    "id":"rfi_mp_07","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative MP (12.67%): 55+, A9s+, KTs+, QTs+, JTs, T9s, ATo+, KQo",
+    "hand":["K♠","9♠"],"position":"MP","situation":"Conservative ranges. UTG folds. Action on you.",
+    "question":"You have K♠9♠ in MP. UTG folds, action on you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"The conservative MP suited king range starts at KTs+. K9s does not qualify. K9s opens from CO onwards in conservative ranges. Fold from MP.",
+    "why_wrong":{"1":"K9s is below the KTs+ conservative MP threshold.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "3bv_01", "level": 1, "category": "3-Bet Value", "difficulty": "easy",
-    "hand": ["K♥","K♦"], "position": "BB", "situation": "BTN raises 3 BB. SB folds.",
-    "question": "You have K♥K♦ in BB. BTN raises 3 BB, SB folds. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","Shove"],
-    "correct": 0,
-    "explanation": "KK is in the default value 3-bet range vs every position. OOP sizing = 3.5 x raise = 10.5 BB. Never slow-play KK preflop — you want to build the pot and charge hands that can crack you.",
-    "why_wrong": {
-      "1": "Calling KK OOP gives opponents cheap implied odds to flop sets and straights against you.",
-      "2": "Never fold KK preflop.",
-      "3": "Shoving 100 BB folds out QQ, JJ, AK — exactly the hands you want calls from."
-    }
+    "id":"rfi_mp_mod_01","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate MP (15.54%): 44+, A9s+, A5s-A4s, KTs+, QTs+, J9s+, T8s+, 97s+, 87s, 76s, ATo+, KQo",
+    "hand":["8♦","7♦"],"position":"MP","situation":"Moderate ranges. UTG folds. Action on you.",
+    "question":"You have 8♦7♦ in MP. UTG folds. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from CO"],"correct":0,
+    "explanation":"87s is in the moderate MP range. Conservative MP stops at T9s for suited connectors — moderate adds 87s and 76s. Key distinction to remember. Raise 3 BB.",
+    "why_wrong":{"1":"87s is in the moderate MP range. Fold is too tight.","2":"Never limp as first to act.","3":"87s is a legitimate moderate MP open."}
   },
   {
-    "id": "3bv_02", "level": 1, "category": "3-Bet Value", "difficulty": "easy",
-    "hand": ["A♠","A♦"], "position": "CO", "situation": "MP raises 3 BB.",
-    "question": "You have A♠A♦ in CO. MP raises 3 BB. What do you do?",
-    "options": ["3-Bet to 9 BB","Call","Fold","Limp behind"],
-    "correct": 0,
-    "explanation": "AA is always a value 3-bet from any position and vs any raiser. In position sizing = 3 x raise = 9 BB. Never slow-play AA facing a raise.",
-    "why_wrong": {
-      "1": "Calling AA IP vs MP misses significant value. Always 3-bet.",
-      "2": "Never fold AA.",
-      "3": "Limping behind with AA facing a raise is never correct."
-    }
+    "id":"rfi_mp_mod_02","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"MP","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate MP (15.54%): 44+, A9s+, A5s-A4s, KTs+, QTs+, J9s+, T8s+, 97s+, 87s, 76s, ATo+, KQo",
+    "hand":["4♣","4♦"],"position":"MP","situation":"Moderate ranges. UTG folds. Action on you.",
+    "question":"You have 4♣4♦ in MP. UTG folds. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from CO"],"correct":0,
+    "explanation":"The moderate MP range starts at 44+. 44 qualifies. Conservative MP starts at 55+, so 44 is the key threshold hand separating the two range levels.",
+    "why_wrong":{"1":"44 is in the moderate MP range. Fold is too tight.","2":"Never limp as first to act.","3":"44 is a legitimate moderate MP open."}
   },
   {
-    "id": "3bv_03", "level": 1, "category": "3-Bet Value", "difficulty": "medium",
-    "hand": ["A♦","Q♦"], "position": "BB", "situation": "CO raises 3 BB.",
-    "question": "You have A♦Q♦ in BB. CO raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","Check"],
-    "correct": 0,
-    "explanation": "AQ+ is in the default 3-bet value range vs CO (default = AA-JJ, AQ+, AJs). AQs is a mandatory default 3-bet. OOP sizing 3.5x = 10.5 BB. AQs dominates a large portion of CO's 22% range.",
-    "why_wrong": {
-      "1": "Calling AQs OOP vs CO is second-best — it is in the default 3-bet range.",
-      "2": "AQs dominates much of CO's range. Fold is wrong.",
-      "3": "Checking is not a preflop action facing a raise."
-    }
+    "id":"rfi_co_01","level":1,"category":"Open Raise","difficulty":"easy",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["A♥","2♥"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have A♥2♥ in CO. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only A9s or better"],"correct":0,
+    "explanation":"A2s+ is in the conservative CO range. All suited aces from A2s upward qualify from CO. The range nearly doubles from MP because only BTN and the blinds remain. Raise 3 BB.",
+    "why_wrong":{"1":"A2s is in the CO range. Folding leaves value on the table.","2":"Never limp as first to act.","3":"The CO range includes A2s — A9s+ is the MP threshold."}
   },
   {
-    "id": "3bv_04", "level": 1, "category": "3-Bet Value", "difficulty": "medium",
-    "hand": ["T♠","T♦"], "position": "SB", "situation": "BTN raises 3 BB.",
-    "question": "You have T♠T♦ in SB. BTN raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","Complete"],
-    "correct": 0,
-    "explanation": "The TAG default 3-bet range from SB vs BTN/CO = AA-TT, AJ+. TT is the bottom of this range. 3-bet to 10.5 BB (3.5x OOP). Calling TT OOP from SB creates difficult spots on every overcard board — nearly every flop has an overcard.",
-    "why_wrong": {
-      "1": "Calling TT from SB OOP vs BTN is a leak — every A/K/Q/J board puts you in a tough spot with no initiative.",
-      "2": "Folding TT vs BTN steal from SB is far too tight.",
-      "3": "Completing SB with TT surrenders all initiative."
-    }
+    "id":"rfi_co_02","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["K♦","9♦"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have K♦9♦ in CO. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from BTN"],"correct":0,
+    "explanation":"K9s+ is in the conservative CO range. K9s qualifies as the minimum suited king from CO. Raise 3 BB.",
+    "why_wrong":{"1":"K9s is in the CO range. Fold is too tight.","2":"Never limp as first to act.","3":"K9s is a legitimate conservative CO open."}
   },
   {
-    "id": "3bv_05", "level": 1, "category": "3-Bet Value", "difficulty": "medium",
-    "hand": ["J♠","J♦"], "position": "BTN", "situation": "UTG raises 3 BB.",
-    "question": "You have J♠J♦ on the BTN. UTG raises 3 BB. What do you do?",
-    "options": ["Call","3-Bet","Fold","Shove"],
-    "correct": 0,
-    "explanation": "JJ vs UTG is NOT in the TAG default or optional 3-bet value range vs UTG (default = AA-KK, AKs; optional = AKo, QQ). UTG's range is 9.8% and includes QQ+ which dominates JJ. Call in position — excellent set-mining implied odds, and you can fold on A/K/Q boards vs UTG aggression.",
-    "why_wrong": {
-      "1": "3-betting JJ into UTG's tight range builds a large pot where QQ+ dominates you.",
-      "2": "Folding JJ BTN vs UTG is too tight — excellent implied odds in position.",
-      "3": "Shoving JJ is a catastrophic overplay."
-    }
+    "id":"rfi_co_03","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["K♠","8♠"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have K♠8♠ in CO. Action folds to you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"The conservative CO suited king range starts at K9s+. K8s does not qualify. K8s opens in the moderate CO range. Fold from CO conservative.",
+    "why_wrong":{"1":"K8s is below the K9s+ conservative CO threshold.","2":"Never limp as first to act.","3":"Non-standard sizing does not change that K8s is below threshold."}
   },
   {
-    "id": "3bv_06", "level": 1, "category": "3-Bet Value", "difficulty": "medium",
-    "hand": ["T♦","T♣"], "position": "BTN", "situation": "CO raises 3 BB.",
-    "question": "You have T♦T♣ on the BTN. CO raises 3 BB. What do you do?",
-    "options": ["Call","3-Bet","Fold","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "TT vs CO is NOT in the TAG default or optional 3-bet value range vs CO (default = AA-JJ, AQ+, AJs). CO's range includes JJ+, AQ+ which TT is behind. Call in position — excellent set-mining implied odds.",
-    "why_wrong": {
-      "1": "TT has equity but building a large pot against CO's strong range is marginal. Call is higher EV.",
-      "2": "Folding TT BTN vs CO is too tight.",
-      "3": "Mini-raise is never a valid option."
-    }
+    "id":"rfi_co_04","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["J♠","9♠"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have J♠9♠ in CO. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only JTs or better"],"correct":0,
+    "explanation":"J9s+ is in the conservative CO range. J9s qualifies as the minimum suited jack (one-gapper). The CO range opens up to include one-gappers excluded from earlier positions. Raise 3 BB.",
+    "why_wrong":{"1":"J9s is in the CO range. Fold is too tight.","2":"Never limp as first to act.","3":"J9s qualifies — not just JTs."}
   },
   {
-    "id": "3bv_07", "level": 1, "category": "3-Bet Value", "difficulty": "hard",
-    "hand": ["A♠","K♣"], "position": "BB", "situation": "UTG raises 3 BB.",
-    "question": "You have A♠K♣ in BB. UTG raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","4-Bet jam"],
-    "correct": 0,
-    "explanation": "AKs is in the default 3-bet range vs UTG. AKo is listed as optional. Hardin's data shows 3-betting AK yields 797 BB/100 vs only 330 BB/100 when calling — 2.4x more profitable. Both versions should 3-bet. OOP 3.5x = 10.5 BB.",
-    "why_wrong": {
-      "1": "Calling AK OOP vs UTG is 2.4x less profitable than 3-betting per Hardin's data.",
-      "2": "AK is ahead of UTG's entire range except AA/KK. Fold is wrong.",
-      "3": "Shoving folds out JJ, QQ which you want calls from."
-    }
+    "id":"rfi_co_05","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["8♦","6♦"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have 8♦6♦ in CO. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from BTN"],"correct":0,
+    "explanation":"86s+ is in the conservative CO range. 86s is a two-gapper suited hand and qualifies. The CO range widens significantly to include these weaker suited gapper hands. Raise 3 BB.",
+    "why_wrong":{"1":"86s is in the conservative CO range. Fold is too tight.","2":"Never limp as first to act.","3":"86s is a legitimate conservative CO open."}
   },
   {
-    "id": "3bv_08", "level": 1, "category": "3-Bet Value", "difficulty": "hard",
-    "hand": ["Q♦","Q♣"], "position": "BB", "situation": "UTG raises 3 BB.",
-    "question": "You have Q♦Q♣ in BB. UTG raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","4-Bet jam"],
-    "correct": 0,
-    "explanation": "QQ vs UTG is listed as optional (default = AA-KK, AKs). Even as optional, QQ has clear equity advantage vs UTG's 9.8% range. 3-bet for value. OOP 3.5x = 10.5 BB.",
-    "why_wrong": {
-      "1": "Calling QQ OOP vs UTG is second-best — you have equity dominance, build the pot.",
-      "2": "Folding QQ vs UTG raise is never correct.",
-      "3": "4-bet jamming folds out JJ, TT, AK which you want calls from."
-    }
+    "id":"rfi_co_06","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["Q♦","9♦"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have Q♦9♦ in CO. Action folds to you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"The conservative CO suited queen range starts at QTs+. Q9s does NOT qualify — QTs is the minimum suited queen. Q9s is a one-gapper and falls below QTs. Fold.",
+    "why_wrong":{"1":"Q9s is below the QTs+ conservative CO threshold. QTs is the minimum suited queen.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "3bv_09", "level": 1, "category": "3-Bet Value", "difficulty": "hard",
-    "hand": ["A♠","Q♥"], "position": "BTN", "situation": "CO raises 3 BB.",
-    "question": "You have A♠Q♥ on the BTN. CO raises 3 BB. What do you do?",
-    "options": ["3-Bet to 9 BB","Call","Fold","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "AQ+ is in the default TAG 3-bet value range vs CO. You are in position making IP sizing 3x = 9 BB. AQo dominates a large portion of CO's 22% range (AJ, KQ, broadways). 3-bet is the default.",
-    "why_wrong": {
-      "1": "Calling AQo IP vs CO is second-best when it is in the default 3-bet range with position.",
-      "2": "AQo dominates much of CO's range. Fold is wrong.",
-      "3": "Mini-raise is never correct."
-    }
+    "id":"rfi_co_07","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative CO (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["A♠","8♦"],"position":"CO","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have A♠8♦ off-suit in CO. Action folds to you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"The conservative CO off-suit ace range starts at A9o+. A8o does not qualify. Note: A2s+ (suited aces) all qualify from CO, but off-suit aces have a higher threshold of A9o+. Fold.",
+    "why_wrong":{"1":"A8o is below the A9o+ conservative CO threshold for off-suit aces.","2":"Never limp as first to act.","3":"Non-standard sizing does not fix a hand below threshold."}
   },
   {
-    "id": "cc_01", "level": 1, "category": "Cold-Call", "difficulty": "easy",
-    "hand": ["J♦","T♦"], "position": "BTN", "situation": "CO raises 3 BB.",
-    "question": "You have J♦T♦ on the BTN. CO raises 3 BB. What do you do?",
-    "options": ["Call","3-Bet bluff","Fold","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "JTs is in the TAG CO cold-call range (J9s+). In position with flush and straight equity. Suited connectors in position should call — you realize equity better postflop than by 3-bet bluffing.",
-    "why_wrong": {
-      "1": "JTs IP has too much showdown value to waste as a bluff.",
-      "2": "JTs vs CO is a clear call. Fold is too tight.",
-      "3": "Mini-raise is never a valid option."
-    }
+    "id":"rfi_co_mod_01","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"CO","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate CO (24.89%): 22+, A2s+, K8s+, QTs+, J9s+, T8s+, 97s+, 86s+, 75s+, 65s, A9o+, KTo+, QTo+, JTo",
+    "hand":["K♠","8♠"],"position":"CO","situation":"Moderate ranges. Action folds to you.",
+    "question":"You have K♠8♠ in CO. Action folds to you. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only K9s or better"],"correct":0,
+    "explanation":"The moderate CO range includes K8s+ (conservative is K9s+). K8s qualifies in moderate ranges. Raise 3 BB.",
+    "why_wrong":{"1":"K8s is in the moderate CO range. Fold is too tight.","2":"Never limp as first to act.","3":"K8s meets the moderate CO threshold."}
   },
   {
-    "id": "cc_02", "level": 1, "category": "Cold-Call", "difficulty": "easy",
-    "hand": ["K♠","J♣"], "position": "MP", "situation": "UTG raises 3 BB.",
-    "question": "You have K♠J♣ in MP. UTG raises 3 BB. What do you do?",
-    "options": ["Fold","Call","3-Bet","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "KJo is NOT in the TAG UTG cold-call range. UTG's 9.8% range includes KQ+ — KJo is dominated. The gap concept: you need a stronger hand to call a raise than to make one yourself. Fold.",
-    "why_wrong": {
-      "1": "Calling KJo vs UTG loses big pots when you flop a king vs KQ or AK.",
-      "2": "3-betting KJo into UTG's tight range is suicidal.",
-      "3": "Non-standard sizing does not fix a dominated hand."
-    }
+    "id":"rfi_btn_01","level":1,"category":"Open Raise","difficulty":"easy",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["6♦","6♣"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have 6♦6♣ on the BTN. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 4 BB"],"correct":0,
+    "explanation":"22+ is in the conservative BTN range. All pocket pairs qualify from BTN. BTN is the most profitable position — you act last every postflop street. Raise 3 BB.",
+    "why_wrong":{"1":"All pairs are in the BTN range. Folding 66 is far too tight.","2":"Never limp as first to act.","3":"Standard 3 BB."}
   },
   {
-    "id": "cc_03", "level": 1, "category": "Cold-Call", "difficulty": "medium",
-    "hand": ["5♥","5♠"], "position": "CO", "situation": "MP raises 3 BB. Effective stacks 40 BB.",
-    "question": "You have 5♥5♠ in CO. MP raises 3 BB. Effective stacks are 40 BB. What do you do?",
-    "options": ["Fold","Call","3-Bet bluff","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "The TAG set-mining rule is 15-to-1: calling 3 BB needs 3 x 15 = 45 BB in effective stacks to be profitable. You have 40 BB — the rule is not satisfied. Fold.",
-    "why_wrong": {
-      "1": "40 BB is close but the 15:1 rule is a hard threshold. 40 BB < 45 BB required.",
-      "2": "3-bet bluffing small pairs: the TAG system recommends set-mining calls, not bluffs.",
-      "3": "Non-standard sizing does not change that the set-mine rule is not satisfied."
-    }
+    "id":"rfi_btn_02","level":1,"category":"Open Raise","difficulty":"easy",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["K♠","Q♥"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have K♠Q♥ on the BTN. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 5 BB"],"correct":0,
+    "explanation":"KQo is in the conservative BTN range (K9o+ threshold for off-suit kings). KQo is comfortably above. Raise 3 BB.",
+    "why_wrong":{"1":"KQo BTN is a clear open. Fold surrenders significant EV.","2":"Never limp as first to act.","3":"Uniform 3 BB for all hands."}
   },
   {
-    "id": "cc_04", "level": 1, "category": "Cold-Call", "difficulty": "medium",
-    "hand": ["5♥","5♠"], "position": "BTN", "situation": "UTG raises 3 BB. Effective stacks 120 BB.",
-    "question": "You have 5♥5♠ on the BTN. UTG raises 3 BB. Effective stacks are 120 BB. What do you do?",
-    "options": ["Call","Fold","3-Bet bluff","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "15:1 rule: calling 3 BB needs 45 BB in effective stacks. 120 BB exceeds this comfortably. Call in position. Plan: fold most boards, stack UTG when you flop a set (~11.8% chance per hand dealt).",
-    "why_wrong": {
-      "1": "55 vs UTG with 120 BB is a clear set-mine — fold is too tight.",
-      "2": "TAG recommends calls over IP bluffs for small pairs.",
-      "3": "Non-standard sizing. Call is correct."
-    }
+    "id":"rfi_btn_03","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["K♣","7♣"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have K♣7♣ on the BTN. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only K9s or better"],"correct":0,
+    "explanation":"K7s+ is in the conservative BTN range. K7s qualifies as the minimum suited king from BTN. Raise 3 BB.",
+    "why_wrong":{"1":"K7s is in the BTN range. Fold is too tight.","2":"Never limp as first to act.","3":"K7s is a legitimate conservative BTN open."}
   },
   {
-    "id": "cc_05", "level": 1, "category": "Cold-Call", "difficulty": "medium",
-    "hand": ["Q♥","J♥"], "position": "BTN", "situation": "CO raises 3 BB.",
-    "question": "You have Q♥J♥ on the BTN. CO raises 3 BB. What do you do?",
-    "options": ["Call","3-Bet for value","Fold","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "QJs is in the TAG CO cold-call range (QTs+). In position with flush and straight equity. Not strong enough to 3-bet for value vs CO's range which includes AQ+, JJ+.",
-    "why_wrong": {
-      "1": "QJs has equity but faces domination from CO's strong portion. Calling IP is cleaner.",
-      "2": "Folding QJs BTN vs CO is too tight.",
-      "3": "Mini-raise is never valid."
-    }
+    "id":"rfi_btn_04","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["K♣","6♣"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have K♣6♣ on the BTN. Action folds to you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"The conservative BTN suited king range starts at K7s+. K6s does not qualify. K6s opens in the moderate BTN range. Fold from BTN conservative.",
+    "why_wrong":{"1":"K6s is below the K7s+ conservative BTN threshold.","2":"Never limp as first to act.","3":"Smaller sizing does not change that K6s is below threshold."}
   },
   {
-    "id": "cc_06", "level": 1, "category": "Cold-Call", "difficulty": "hard",
-    "hand": ["A♦","Q♠"], "position": "BTN", "situation": "UTG raises 3 BB.",
-    "question": "You have A♦Q♠ on the BTN. UTG raises 3 BB. What do you do?",
-    "options": ["Call","3-Bet to 9 BB","Fold","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "Call is the conservative default for AQo BTN vs UTG. UTG's range includes AK which dominates AQo. 3-betting is the optional aggressive line — both are defensible, but calling is the safer conservative default at microstakes.",
-    "why_wrong": {
-      "1": "3-betting AQo is the optional line — not wrong, but call is the conservative default. If you 3-bet and face a 4-bet from UTG, you are in a difficult spot.",
-      "2": "AQo dominates significant portions of UTG's range. Fold is too tight.",
-      "3": "Mini-raise is not a valid option."
-    }
+    "id":"rfi_btn_05","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["5♠","4♠"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have 5♠4♠ on the BTN. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only 65s or better"],"correct":0,
+    "explanation":"54s is explicitly listed in the conservative BTN range. The BTN range is wide enough (35.44%) to include 54s. Raise 3 BB.",
+    "why_wrong":{"1":"54s is in the BTN range. Fold is too tight.","2":"Never limp as first to act.","3":"54s is explicitly listed in conservative BTN range."}
   },
   {
-    "id": "cc_07", "level": 1, "category": "Cold-Call", "difficulty": "hard",
-    "hand": ["9♠","8♠"], "position": "MP", "situation": "UTG raises 3 BB.",
-    "question": "You have 9♠8♠ in MP. UTG raises 3 BB. What do you do?",
-    "options": ["Call","Fold","3-Bet bluff","Limp behind"],
-    "correct": 0,
-    "explanation": "98s is in the TAG UTG cold-call range under weaker starting hands (88-44, JTs, T9s, 98s). UTG's strong range creates excellent implied odds for suited connectors — stack them when you flop a straight or flush.",
-    "why_wrong": {
-      "1": "98s is in the UTG cold-call range. Fold is wrong.",
-      "2": "3-betting 98s into UTG's tight range: very low fold equity.",
-      "3": "Never limp as a response to a raise."
-    }
+    "id":"rfi_btn_06","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["9♠","8♦"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have 9♠8♦ off-suit on the BTN. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only 98s suited"],"correct":0,
+    "explanation":"98o is explicitly listed in the conservative BTN range. Off-suit hands like T9o and 98o qualify from BTN because the positional advantage compensates for the weaker starting hand. Raise 3 BB.",
+    "why_wrong":{"1":"98o is explicitly listed in the BTN range. Fold is too tight.","2":"Never limp as first to act.","3":"98o off-suit qualifies — suited is not required from BTN."}
   },
   {
-    "id": "cc_08", "level": 1, "category": "Cold-Call", "difficulty": "hard",
-    "hand": ["3♣","3♦"], "position": "BTN", "situation": "UTG raises 3 BB. Effective stacks 80 BB.",
-    "question": "You have 3♣3♦ on the BTN. UTG raises 3 BB. Effective stacks are 80 BB. What do you do?",
-    "options": ["Call","Fold","3-Bet bluff","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "15:1 rule: calling 3 BB needs 45 BB effective stacks. 80 BB exceeds this. Call in position. Plan: fold most boards, stack UTG when you flop a set.",
-    "why_wrong": {
-      "1": "33 vs UTG with 80 BB is a clear set-mine — fold is too tight.",
-      "2": "TAG recommends calls over IP bluffs for small pairs.",
-      "3": "Non-standard sizing. Call is correct."
-    }
+    "id":"rfi_btn_07","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative BTN (35.44%): 22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 65s, 54s, A2o+, K9o+, QTo+, JTo, T9o, 98o",
+    "hand":["K♥","8♦"],"position":"BTN","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have K♥8♦ off-suit on the BTN. Action folds to you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"The conservative BTN off-suit king range starts at K9o+. K8o does not qualify. Fold.",
+    "why_wrong":{"1":"K8o is below the K9o+ conservative BTN threshold.","2":"Never limp as first to act.","3":"Smaller sizing does not fix a hand below threshold."}
   },
   {
-    "id": "iso_01", "level": 1, "category": "ISO Raise", "difficulty": "easy",
-    "hand": ["A♣","K♠"], "position": "BTN", "situation": "CO open-limps. Action on you.",
-    "question": "You have A♣K♠ on the BTN. CO open-limps. What do you do?",
-    "options": ["Raise to 4 BB","Call behind","Fold","Raise to 3 BB"],
-    "correct": 0,
-    "explanation": "AKo is well above the default TAG ISO range threshold (88+, AJs+, KJs+, QJs, AJo+, KJo+). ISO raise to 4 BB — 3 BB base + 1 BB for the limper IP.",
-    "why_wrong": {
-      "1": "Limping AKo behind is a fundamental mistake — you surrender fold equity and initiative.",
-      "2": "AKo is in the ISO range. Fold is too tight.",
-      "3": "Always add 1 BB per limper to the base. 1 limper IP = 4 BB, not 3 BB."
-    }
+    "id":"rfi_btn_mod_01","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate BTN (43.29%): adds K5s+, Q6s+, J7s+, T7s+, 64s+, 43s, K7o+, Q9o+, J9o+, T8o+, 87o",
+    "hand":["Q♣","7♣"],"position":"BTN","situation":"Moderate ranges. Action folds to you.",
+    "question":"You have Q♣7♣ on the BTN. Action folds to you. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only Q8s or better"],"correct":0,
+    "explanation":"The moderate BTN range includes Q6s+. Q7s qualifies in moderate ranges. Conservative BTN starts at Q8s+. Q7s is a moderate-only hand. Raise 3 BB.",
+    "why_wrong":{"1":"Q7s is in the moderate BTN range. Fold is too tight.","2":"Never limp as first to act.","3":"Q7s meets the moderate BTN threshold."}
   },
   {
-    "id": "iso_02", "level": 1, "category": "ISO Raise", "difficulty": "easy",
-    "hand": ["Q♠","J♠"], "position": "BTN", "situation": "CO open-limps. Action on you.",
-    "question": "You have Q♠J♠ on the BTN. CO open-limps. What do you do?",
-    "options": ["Raise to 4 BB","Raise to 3 BB","Limp behind","Fold"],
-    "correct": 0,
-    "explanation": "QJs is in the default TAG ISO range. ISO raise to 4 BB (3 BB + 1 BB for limper IP). Never limp behind with a hand in the ISO range.",
-    "why_wrong": {
-      "1": "3 BB against a limper undersizes — the limper gets a great price to call.",
-      "2": "Limping QJs behind IP surrenders initiative and position advantage.",
-      "3": "QJs is in the default ISO range. Fold is too tight."
-    }
+    "id":"rfi_btn_mod_02","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"BTN","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Moderate BTN (43.29%): adds K5s+, Q6s+, J7s+, T7s+, 64s+, 43s, K7o+, Q9o+, J9o+, T8o+, 87o",
+    "hand":["Q♣","T♦"],"position":"BTN","situation":"Moderate ranges. Action folds to you.",
+    "question":"You have Q♣T♦ off-suit on the BTN. Action folds to you. You are using moderate ranges. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only suited QT"],"correct":0,
+    "explanation":"The moderate BTN range includes QTo+. QTo qualifies in moderate ranges. Off-suit broadway hands open from BTN at the moderate level. Raise 3 BB.",
+    "why_wrong":{"1":"QTo is in the moderate BTN range. Fold is too tight.","2":"Never limp as first to act.","3":"Off-suit broadways qualify from BTN in the moderate range."}
   },
   {
-    "id": "iso_03", "level": 1, "category": "ISO Raise", "difficulty": "medium",
-    "hand": ["A♥","4♥"], "position": "CO", "situation": "UTG limps. Action on you.",
-    "question": "You have A♥4♥ in CO. UTG limps. What do you do?",
-    "options": ["Over-limp or Fold","Raise to 4 BB","Raise to 3 BB","Raise to 5 BB"],
-    "correct": 0,
-    "explanation": "The default TAG ISO range for suited aces starts at AJs+. A4s is below this — it belongs in the optional over-limp range (A9s-A2s). Over-limp or fold — not an ISO raise by default.",
-    "why_wrong": {
-      "1": "A4s is below the AJs+ ISO threshold. ISO raising it is outside the conservative default.",
-      "2": "3 BB is the wrong formula anyway (need 4 BB vs limper), but A4s should not ISO raise.",
-      "3": "5 BB oversizes a hand that should not be ISO raising."
-    }
+    "id":"rfi_sb_01","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"SB","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative SB (22.17%): same as CO — 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["A♣","9♣"],"position":"SB","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have A♣9♣ in SB. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Raise 4 BB","Limp","Fold"],"correct":0,
+    "explanation":"A9s is in the SB range (same as CO: 22.17%). Open sizing is always 3 BB regardless of position. The +1 BB OOP rule applies only to ISO raises, not first-in opens. Hardin uses the full CO range from SB because it is heads-up — initiative compensates for positional disadvantage.",
+    "why_wrong":{"1":"4 BB open from SB is non-standard. OOP +1 BB rule is for ISO raises only.","2":"Never limp from SB as first action.","3":"A9s is in the SB range. Fold is too tight."}
   },
   {
-    "id": "iso_04", "level": 1, "category": "ISO Raise", "difficulty": "medium",
-    "hand": ["J♦","J♣"], "position": "SB", "situation": "CO limps. BTN folds. Action on you.",
-    "question": "You have J♦J♣ in SB. CO limps, BTN folds. What do you do and what is the correct sizing?",
-    "options": ["Raise to 5 BB","Raise to 4 BB","Raise to 3 BB","Limp behind"],
-    "correct": 0,
-    "explanation": "JJ is in the default ISO range. OOP sizing formula: 3 BB base + 1 BB per limper + 1 BB for OOP = 3 + 1 + 1 = 5 BB. The extra 1 BB compensates for the OOP disadvantage.",
-    "why_wrong": {
-      "1": "4 BB undersizes from SB — the OOP formula adds 1 extra BB.",
-      "2": "3 BB ignores both the limper and OOP adjustments.",
-      "3": "Never limp JJ — raise with full initiative."
-    }
+    "id":"rfi_sb_02","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"SB","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative SB (22.17%): same as CO — 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["9♦","8♦"],"position":"SB","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have 9♦8♦ in SB. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"The SB range mirrors CO (22.17%) which includes 97s+. 98s is above the 97s+ threshold and qualifies. Raise 3 BB.",
+    "why_wrong":{"1":"98s satisfies the 97s+ SB threshold. Fold is too conservative.","2":"Never limp from SB as first action.","3":"2 BB undersizes and gives BB an excellent price."}
   },
   {
-    "id": "iso_05", "level": 1, "category": "ISO Raise", "difficulty": "medium",
-    "hand": ["8♥","7♥"], "position": "BTN", "situation": "UTG limps. MP limps. No aggressive player left to act.",
-    "question": "You have 8♥7♥ on the BTN. UTG and MP both limp. No aggressive player behind. What do you do?",
-    "options": ["Over-limp","Raise to 5 BB","Fold","Raise to 3 BB"],
-    "correct": 0,
-    "explanation": "87s is in the optional over-limp range, not the default ISO range (88+). With 2 limpers and a passive table, over-limp for cheap implied odds rather than ISO raising a speculative hand.",
-    "why_wrong": {
-      "1": "ISO-raising 87s into 2 limpers creates a large pot with a speculative hand.",
-      "2": "Folding 87s BTN with 2 limpers is too tight — cheap multiway pot is ideal.",
-      "3": "3 BB undersizes vs 2 limpers anyway. But over-limp is the correct action."
-    }
+    "id":"rfi_sb_03","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"SB","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative SB (22.17%): same as CO — 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["Q♠","J♦"],"position":"SB","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have Q♠J♦ in SB. Action folds to you. What do you do?",
+    "options":["Raise 3 BB","Fold","Limp","Raise only from BTN"],"correct":0,
+    "explanation":"QJo is in the conservative SB range (same as CO: A9o+, KTo+, QJo). QJo is explicitly listed. Raise 3 BB.",
+    "why_wrong":{"1":"QJo is in the SB range. Fold is too tight.","2":"Never limp from SB as first action.","3":"SB and CO share the same 22.17% range — QJo qualifies."}
   },
   {
-    "id": "iso_06", "level": 1, "category": "ISO Raise", "difficulty": "medium",
-    "hand": ["K♦","Q♣"], "position": "BTN", "situation": "UTG open-limps. Action on you.",
-    "question": "You have K♦Q♣ on the BTN. UTG open-limps. What do you do and what is the correct sizing?",
-    "options": ["Raise to 4 BB","Raise to 3 BB","Limp behind","Fold"],
-    "correct": 0,
-    "explanation": "KQo is above the KJo+ threshold in the default TAG ISO range. ISO raise to 4 BB (3 BB + 1 BB for limper IP). Uniform sizing — same 4 BB whether you have KQo or AA.",
-    "why_wrong": {
-      "1": "3 BB against a limper undersizes — the formula is 3 BB + 1 BB per limper.",
-      "2": "Limping KQo behind surrenders initiative and position advantage.",
-      "3": "KQo is in the default ISO range. Fold is too tight."
-    }
+    "id":"rfi_sb_04","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"SB","scenario":"RFI","action_type":"Open Raise",
+    "range_context":"Conservative SB (22.17%): same as CO — 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo",
+    "hand":["Q♠","T♦"],"position":"SB","situation":"Conservative ranges. Action folds to you.",
+    "question":"You have Q♠T♦ off-suit in SB. Action folds to you. What do you do?",
+    "options":["Fold","Raise 3 BB","Limp","Raise 2 BB"],"correct":0,
+    "explanation":"The conservative SB off-suit range is A9o+, KTo+, QJo. QTo does not qualify — the minimum off-suit queen is QJo. QTo opens in the moderate SB range. Fold.",
+    "why_wrong":{"1":"QTo is below the QJo conservative SB threshold for off-suit queens.","2":"Never limp from SB.","3":"Smaller sizing does not fix a hand below threshold."}
   },
   {
-    "id": "iso_07", "level": 1, "category": "ISO Raise", "difficulty": "hard",
-    "hand": ["2♦","2♣"], "position": "BTN", "situation": "CO open-limps. Action on you.",
-    "question": "You have 2♦2♣ on the BTN. CO open-limps. What do you do?",
-    "options": ["Over-limp","Raise to 4 BB","Fold","Raise to 3 BB"],
-    "correct": 0,
-    "explanation": "The default TAG ISO range starts at 88+. 22 is in the optional over-limp range (22-77), not the default ISO range. With 1 limper, over-limp for set-mining implied odds.",
-    "why_wrong": {
-      "1": "ISO raising 22 is outside the default ISO range.",
-      "2": "Folding 22 vs 1 limper on BTN is too tight — over-limp.",
-      "3": "3 BB ignores the limper formula anyway, and 22 should not ISO raise."
-    }
+    "id":"rfi_sizing_01","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"CO","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"ISO Sizing: 3BB + 1BB per limper + 1BB if OOP. Conservative Default ISO: 88+, AJs+, KJs+, QJs, AJo+, KJo+",
+    "hand":["6♦","6♣"],"position":"CO","situation":"Conservative ranges. UTG limps. Action on you in CO.",
+    "question":"You have 6♦6♣ in CO. UTG limps, action on you. What is the correct action and sizing?",
+    "options":["Raise to 4 BB","Raise to 3 BB","Limp","Fold"],"correct":0,
+    "explanation":"66 is in the CO open range. With 1 limper IP: 3 BB base + 1 BB per limper = 4 BB. This is an ISO raise, not a standard open. The extra 1 BB forces the limper to pay more and reduces multiway callers.",
+    "why_wrong":{"1":"3 BB against a limper undersizes — the limper gets a great price to call.","2":"Limping 66 behind surrenders initiative and position advantage.","3":"66 is in the CO range. Fold is too tight."}
   },
   {
-    "id": "iso_08", "level": 1, "category": "ISO Raise", "difficulty": "hard",
-    "hand": ["K♠","J♠"], "position": "CO", "situation": "UTG limps. Action on you.",
-    "question": "You have K♠J♠ in CO. UTG limps. What do you do?",
-    "options": ["Raise to 4 BB","Over-limp","Fold","Raise to 3 BB"],
-    "correct": 0,
-    "explanation": "KJs+ is in the default TAG ISO range (88+, AJs+, KJs+, QJs, AJo+, KJo+). IP vs 1 limper = ISO raise to 4 BB (3 BB + 1 BB limper). KJs has top pair value, flush draws, and fold equity.",
-    "why_wrong": {
-      "1": "KJs is in the default ISO range — over-limping surrenders initiative.",
-      "2": "KJs is in the default range. Fold is too tight.",
-      "3": "Always add 1 BB per limper — 1 limper IP = 4 BB, not 3 BB."
-    }
+    "id":"rfi_sizing_02","level":1,"category":"Open Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"ISO Sizing: 3BB + 1BB per limper + 1BB if OOP",
+    "hand":["A♦","K♠"],"position":"BTN","situation":"Conservative ranges. UTG limps. MP limps. Action on you.",
+    "question":"You have A♦K♠ on the BTN. UTG and MP both limp. What is the correct action and sizing?",
+    "options":["Raise to 5 BB","Raise to 3 BB","Raise to 4 BB","Limp"],"correct":0,
+    "explanation":"AKo is clearly in range. With 2 limpers IP: 3 BB base + 2 BB (one per limper) = 5 BB.",
+    "why_wrong":{"1":"3 BB undersizes vs 2 limpers — both get an excellent price to call.","2":"4 BB is correct for 1 limper IP — not for 2 limpers.","3":"Limping AKo is a fundamental mistake."}
   },
   {
-    "id": "iso_09", "level": 1, "category": "ISO Raise", "difficulty": "hard",
-    "hand": ["Q♣","Q♦"], "position": "MP", "situation": "UTG limps. Action on you.",
-    "question": "You have Q♣Q♦ in MP. UTG limps. What do you do and what is the sizing?",
-    "options": ["Raise to 4 BB","Limp behind","Raise to 6 BB","Raise to 3 BB"],
-    "correct": 0,
-    "explanation": "QQ is in the default ISO range. ISO raise to 4 BB (3 BB + 1 limper IP). Critical: uniform sizing — same 4 BB for QQ as for 88. Raising larger with premium hands reveals their strength to observant opponents.",
-    "why_wrong": {
-      "1": "Never limp QQ behind — raise with full initiative.",
-      "2": "6 BB telegraphs a premium hand. Uniform sizing applies.",
-      "3": "3 BB ignores the limper formula."
-    }
+    "id":"rfi_sizing_03","level":1,"category":"Open Raise","difficulty":"hard",
+    "my_position":"SB","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"ISO Sizing: OOP formula = 3BB + 1BB per limper + 1BB OOP. Conservative Default ISO: 88+, AJs+, KJs+, QJs, AJo+, KJo+",
+    "hand":["Q♣","J♣"],"position":"SB","situation":"Conservative ranges. UTG limps. BTN folds. Action on you in SB.",
+    "question":"You have Q♣J♣ in SB. UTG limps, BTN folds. What is the correct action and sizing?",
+    "options":["Raise to 5 BB","Raise to 4 BB","Raise to 3 BB","Limp"],"correct":0,
+    "explanation":"QJs is in the default ISO range. From SB (OOP): 3 BB base + 1 BB for limper + 1 BB for OOP = 5 BB. The extra 1 BB compensates for playing every postflop street out of position.",
+    "why_wrong":{"1":"4 BB undersizes from SB — the OOP formula adds 1 extra BB.","2":"3 BB ignores both the limper and OOP adjustments.","3":"Never limp QJs — raise with full initiative."}
   },
   {
-    "id": "sq_01", "level": 1, "category": "Squeeze", "difficulty": "medium",
-    "hand": ["A♠","A♦"], "position": "BB", "situation": "UTG raises 3 BB. CO calls.",
-    "question": "You have A♠A♦ in BB. UTG raises 3 BB, CO calls. What do you do?",
-    "options": ["3-Bet to ~14 BB","Call","Fold","3-Bet to 10.5 BB"],
-    "correct": 0,
-    "explanation": "AA always 3-bets. Squeeze sizing: 3.5x raise + approximately 3 BB per caller = 10.5 + 3 = approximately 14 BB. Both players have capped ranges — the caller's range is especially weak since they did not 3-bet themselves.",
-    "why_wrong": {
-      "1": "Calling AA in a squeeze spot misses massive value.",
-      "2": "Never fold AA.",
-      "3": "10.5 BB is the heads-up OOP sizing. With a caller you add approximately 3 BB extra to maintain pressure on both players."
-    }
+    "id":"3bv_01","level":1,"category":"3-Bet Value","difficulty":"easy",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs BTN/CO: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand":["K♥","K♦"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB. SB folds.",
+    "question":"You have K♥K♦ in BB. BTN raises 3 BB, SB folds. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","Shove"],"correct":0,
+    "explanation":"KK is in the default value 3-bet range vs every position. OOP sizing = 3.5x raise = 10.5 BB. Never slow-play KK preflop. By 3-betting you gain initiative and build the pot with the best starting hand minus AA.",
+    "why_wrong":{"1":"Calling KK OOP gives opponents cheap implied odds with hands that can crack you.","2":"Never fold KK.","3":"Shoving 100 BB folds out QQ, JJ, AK — the hands you want calls from."}
   },
   {
-    "id": "sq_02", "level": 1, "category": "Squeeze", "difficulty": "medium",
-    "hand": ["Q♠","Q♦"], "position": "BB", "situation": "BTN raises 3 BB. SB calls.",
-    "question": "You have Q♠Q♦ in BB. BTN raises 3 BB, SB calls. What do you do?",
-    "options": ["3-Bet to ~14 BB","Call","Fold","3-Bet to 10.5 BB"],
-    "correct": 0,
-    "explanation": "QQ squeezes for value. Sizing: 3.5x BTN raise (10.5 BB) + approximately 3 BB for SB caller = approximately 14 BB. Both BTN and SB have capped ranges — SB's flat call almost never includes QQ+.",
-    "why_wrong": {
-      "1": "Calling QQ 3-way OOP is weak — no initiative in a multiway pot.",
-      "2": "Folding QQ here is never correct.",
-      "3": "10.5 BB is correct heads-up. Add approximately 3 BB for the caller."
-    }
+    "id":"3bv_02","level":1,"category":"3-Bet Value","difficulty":"easy",
+    "my_position":"CO","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs MP: AA-QQ, AKs | Optional: JJ, AKo, AQs",
+    "hand":["A♠","A♦"],"position":"CO","situation":"Conservative ranges. MP raises 3 BB.",
+    "question":"You have A♠A♦ in CO. MP raises 3 BB. What do you do?",
+    "options":["3-Bet to 9 BB","Call","Fold","Limp behind"],"correct":0,
+    "explanation":"AA is always a value 3-bet. IP sizing = 3x raise = 9 BB. Never slow-play AA facing a raise.",
+    "why_wrong":{"1":"Calling AA IP vs MP misses significant value. Always 3-bet.","2":"Never fold AA.","3":"Limping behind with AA facing a raise is never correct."}
   },
   {
-    "id": "sq_03", "level": 1, "category": "Squeeze", "difficulty": "hard",
-    "hand": ["K♠","K♦"], "position": "SB", "situation": "CO raises 3 BB. BTN calls.",
-    "question": "You have K♠K♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
-    "options": ["3-Bet to ~14 BB","Call","Fold","3-Bet to 10.5 BB"],
-    "correct": 0,
-    "explanation": "KK squeezes for value from SB. Sizing: 3.5x CO raise (10.5 BB) + approximately 3 BB for BTN caller = approximately 14 BB. Both players have capped ranges. Never slow-play KK in a squeeze spot.",
-    "why_wrong": {
-      "1": "Calling KK 3-way OOP misses significant value — always 3-bet KK.",
-      "2": "Never fold KK.",
-      "3": "10.5 BB is correct heads-up OOP. Add approximately 3 BB for the caller."
-    }
+    "id":"3bv_03","level":1,"category":"3-Bet Value","difficulty":"medium",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs CO: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand":["A♦","Q♦"],"position":"BB","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have A♦Q♦ in BB. CO raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","Check"],"correct":0,
+    "explanation":"AQ+ is in the default 3-bet value range vs CO. AQs is a default 3-bet. OOP sizing 3.5x = 10.5 BB.",
+    "why_wrong":{"1":"Calling AQs OOP vs CO is second-best — it is in the default 3-bet range.","2":"AQs dominates much of CO's range. Fold is wrong.","3":"Checking is not a preflop action facing a raise."}
   },
   {
-    "id": "bd_01", "level": 1, "category": "Blind Defense", "difficulty": "easy",
-    "hand": ["T♥","8♥"], "position": "BB", "situation": "BTN raises 3 BB. SB folds.",
-    "question": "You have T♥8♥ in BB. BTN raises 3 BB, SB folds. What do you do?",
-    "options": ["Call","Fold","3-Bet for value","3-Bet bluff"],
-    "correct": 0,
-    "explanation": "T8s (one-gapper) is within the TAG BB defend range vs BTN. You are closing action with good pot odds (31% equity needed) and T8s has straight and flush equity vs BTN's wide 35.4% range.",
-    "why_wrong": {
-      "1": "T8s has plenty of equity vs BTN's wide range. Fold is too tight.",
-      "2": "T8s is not a value 3-bet hand.",
-      "3": "T8s has too much implied value to use as a 3-bet bluff."
-    }
+    "id":"3bv_04","level":1,"category":"3-Bet Value","difficulty":"medium",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet from SB vs BTN/CO: AA-TT, AJ+ | Optional: KQs, ATs",
+    "hand":["T♠","T♦"],"position":"SB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have T♠T♦ in SB. BTN raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","Complete"],"correct":0,
+    "explanation":"The default 3-bet range from SB vs BTN = AA-TT, AJ+. TT is the bottom of this range. 3-bet to 10.5 BB (3.5x OOP). Calling TT OOP from SB means facing overcards with no initiative on nearly every board.",
+    "why_wrong":{"1":"Calling TT from SB OOP creates difficult spots on every overcard board.","2":"Folding TT vs BTN steal from SB is far too tight.","3":"Completing SB with TT surrenders all initiative."}
   },
   {
-    "id": "bd_02", "level": 1, "category": "Blind Defense", "difficulty": "easy",
-    "hand": ["Q♦","7♠"], "position": "SB", "situation": "BTN raises 3 BB.",
-    "question": "You have Q♦7♠ in SB. BTN raises 3 BB. What do you do?",
-    "options": ["Fold","Call","3-Bet bluff","Complete"],
-    "correct": 0,
-    "explanation": "The TAG SB calling range is conservative: medium pocket pairs (TT-77) and broadway hands (ATs+, AJo+, KQs, QJs, JTs). Q7o does not qualify — too weak and disconnected. Fold.",
-    "why_wrong": {
-      "1": "Q7o OOP for every postflop street is a losing proposition.",
-      "2": "3-betting Q7o has no blocker value and weak equity if called.",
-      "3": "Completing SB with Q7o is a leak — OOP with a weak hand."
-    }
+    "id":"3bv_05","level":1,"category":"3-Bet Value","difficulty":"medium",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"Default 3-Bet vs UTG: AA-KK, AKs | Optional: AKo, QQ. JJ vs UTG = Call.",
+    "hand":["J♠","J♦"],"position":"BTN","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have J♠J♦ on the BTN. UTG raises 3 BB. What do you do?",
+    "options":["Call","3-Bet","Fold","Shove"],"correct":0,
+    "explanation":"JJ vs UTG is NOT in the default or optional 3-bet value range vs UTG (default = AA-KK, AKs; optional = AKo, QQ). UTG's 9.8% range includes QQ+ which dominates JJ. Call in position — excellent set-mining implied odds, fold on A/K/Q boards vs UTG aggression.",
+    "why_wrong":{"1":"3-betting JJ into UTG's tight range builds a large pot where QQ+ dominates you.","2":"Folding JJ BTN vs UTG is too tight — excellent implied odds in position.","3":"Shoving JJ is a catastrophic overplay."}
   },
   {
-    "id": "bd_03", "level": 1, "category": "Blind Defense", "difficulty": "medium",
-    "hand": ["J♠","J♦"], "position": "BB", "situation": "CO raises 3 BB.",
-    "question": "You have J♠J♦ in BB. CO raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","4-Bet jam"],
-    "correct": 0,
-    "explanation": "JJ is in the TAG default 3-bet value range vs CO (AA-JJ, AQ+, AJs). CO opens 22.2% — JJ dominates most of that range. OOP sizing 3.5x = 10.5 BB.",
-    "why_wrong": {
-      "1": "Calling JJ OOP vs CO is second-best — you have equity dominance, build the pot.",
-      "2": "Folding JJ vs CO raise is too tight.",
-      "3": "4-bet jamming JJ folds out hands you want calls from."
-    }
+    "id":"3bv_06","level":1,"category":"3-Bet Value","difficulty":"medium",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"Default 3-Bet vs CO: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs. TT vs CO = Call.",
+    "hand":["T♦","T♣"],"position":"BTN","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have T♦T♣ on the BTN. CO raises 3 BB. What do you do?",
+    "options":["Call","3-Bet","Fold","Raise to 4 BB"],"correct":0,
+    "explanation":"TT vs CO is NOT in the default or optional 3-bet value range vs CO. CO's range includes JJ+, AQ+ which TT is behind. Call in position — excellent set-mining implied odds.",
+    "why_wrong":{"1":"TT has equity but building a large pot against CO's strong range is marginal. Call is higher EV.","2":"Folding TT BTN vs CO is too tight.","3":"Mini-raise is never a valid option."}
   },
   {
-    "id": "bd_04", "level": 1, "category": "Blind Defense", "difficulty": "medium",
-    "hand": ["6♠","5♠"], "position": "BB", "situation": "BTN raises 3 BB. SB folds.",
-    "question": "You have 6♠5♠ in BB. BTN raises 3 BB, SB folds. What do you do?",
-    "options": ["Call","Fold","3-Bet bluff","3-Bet for value"],
-    "correct": 0,
-    "explanation": "Hands that would be 3-bet bluffs or folds from SB become calling hands from BB. Small suited connectors and one-gappers are included. 65s has straight and flush equity, and BB gets better pot odds than SB (31% equity needed). Call.",
-    "why_wrong": {
-      "1": "65s BB vs BTN has enough equity and implied odds to call. Fold is too tight.",
-      "2": "65s is better as a call from BB — you close the action.",
-      "3": "65s is never a value 3-bet."
-    }
+    "id":"3bv_07","level":1,"category":"3-Bet Value","difficulty":"hard",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs UTG: AA-KK, AKs | Optional: AKo, QQ",
+    "hand":["A♠","K♣"],"position":"BB","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have A♠K♣ in BB. UTG raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","4-Bet jam"],"correct":0,
+    "explanation":"AKs is in the default 3-bet range vs UTG. AKo is listed as optional. Hardin's data shows 3-betting AK yields 797 BB/100 vs only 330 BB/100 when calling — 2.4x more profitable. Both versions should 3-bet. OOP 3.5x = 10.5 BB.",
+    "why_wrong":{"1":"Calling AK OOP vs UTG is 2.4x less profitable than 3-betting.","2":"AK is ahead of UTG's range except AA/KK. Fold is wrong.","3":"Shoving folds out JJ, QQ which you want calls from."}
   },
   {
-    "id": "bd_05", "level": 1, "category": "Blind Defense", "difficulty": "medium",
-    "hand": ["A♦","5♦"], "position": "SB", "situation": "BTN raises 3 BB.",
-    "question": "You have A♦5♦ in SB. BTN raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB or Fold","Call","Complete","Raise to 7 BB"],
-    "correct": 0,
-    "explanation": "A5s SB vs BTN = 3-bet bluff OR fold — both are correct. Never call OOP from SB with A5s. A5s has Ax blocker (reduces AA/AK combos in opponent's range), suited, and wheel straight potential. These are ideal bluff properties. 3.5x = 10.5 BB OOP.",
-    "why_wrong": {
-      "1": "Calling A5s OOP from SB is the worst line — you are out of position every street with a weak hand.",
-      "2": "Completing SB is the same as limping. Always raise or fold.",
-      "3": "Non-standard sizing. 3.5x = 10.5 BB is correct OOP."
-    }
+    "id":"3bv_08","level":1,"category":"3-Bet Value","difficulty":"hard",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs UTG: AA-KK, AKs | Optional: AKo, QQ",
+    "hand":["Q♦","Q♣"],"position":"BB","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have Q♦Q♣ in BB. UTG raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","4-Bet jam"],"correct":0,
+    "explanation":"QQ vs UTG is listed as optional (default = AA-KK, AKs). Even as optional, QQ has clear equity advantage vs UTG's 9.8% range. 3-bet for value. OOP 3.5x = 10.5 BB.",
+    "why_wrong":{"1":"Calling QQ OOP vs UTG is second-best — you have equity dominance.","2":"Folding QQ vs UTG raise is never correct.","3":"4-bet jamming folds out JJ, TT, AK which you want calls from."}
   },
   {
-    "id": "bd_06", "level": 1, "category": "Blind Defense", "difficulty": "medium",
-    "hand": ["9♦","9♠"], "position": "BB", "situation": "BTN raises 3 BB. SB calls.",
-    "question": "You have 9♦9♠ in BB. BTN raises 3 BB, SB calls. What do you do?",
-    "options": ["3-Bet to ~14 BB","Call","Fold","Check"],
-    "correct": 0,
-    "explanation": "99 BB with BTN raise + SB call = value squeeze. Sizing: 3.5x BTN raise (10.5 BB) + approximately 3 BB for SB caller = approximately 14 BB. Both players have capped ranges — SB's flat call almost never includes TT+.",
-    "why_wrong": {
-      "1": "Calling 99 3-way OOP is weak — no initiative in a multiway pot with overcards coming.",
-      "2": "Folding 99 here is far too tight.",
-      "3": "Checking is not a preflop option."
-    }
+    "id":"3bv_09","level":1,"category":"3-Bet Value","difficulty":"hard",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs CO: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand":["A♠","Q♥"],"position":"BTN","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have A♠Q♥ on the BTN. CO raises 3 BB. What do you do?",
+    "options":["3-Bet to 9 BB","Call","Fold","Raise to 4 BB"],"correct":0,
+    "explanation":"AQ+ is in the default 3-bet value range vs CO. IP sizing 3x = 9 BB. AQo dominates a large portion of CO's 22% range (AJ, KQ, broadways). 3-bet is the default.",
+    "why_wrong":{"1":"Calling AQo IP vs CO is second-best when it is in the default 3-bet range.","2":"AQo dominates much of CO's range. Fold is wrong.","3":"Mini-raise is never correct."}
   },
   {
-    "id": "bd_07", "level": 1, "category": "Blind Defense", "difficulty": "hard",
-    "hand": ["T♠","T♦"], "position": "SB", "situation": "BTN raises 3 BB.",
-    "question": "You have T♠T♦ in SB. BTN raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","Complete"],
-    "correct": 0,
-    "explanation": "The TAG default 3-bet range from SB vs BTN = AA-TT, AJ+. TT is the bottom of this range. 3-bet to 10.5 BB (3.5x OOP). Calling TT OOP from SB creates difficult spots on every overcard board.",
-    "why_wrong": {
-      "1": "Calling TT from SB OOP vs BTN is a leak — every A/K/Q/J board puts you in a tough spot with no initiative.",
-      "2": "Folding TT vs BTN steal from SB is far too tight.",
-      "3": "Completing SB with TT surrenders all initiative."
-    }
+    "id":"3bv_10","level":1,"category":"3-Bet Value","difficulty":"hard",
+    "my_position":"CO","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"Default 3-Bet vs MP: AA-QQ, AKs | Optional: JJ, AKo, AQs. JJ vs MP borderline.",
+    "hand":["J♦","J♣"],"position":"CO","situation":"Conservative ranges. MP raises 3 BB.",
+    "question":"You have J♦J♣ in CO. MP raises 3 BB. What do you do?",
+    "options":["Call","3-Bet to 9 BB","Fold","Shove"],"correct":0,
+    "explanation":"JJ vs MP is listed as optional (default = AA-QQ, AKs; optional = JJ, AKo, AQs). At passive microstakes, calling in position is the standard line — you avoid building a large pot where QQ+ dominates you. 3-betting is also valid. Call is the conservative default.",
+    "why_wrong":{"1":"3-betting JJ into MP is not wrong, but in passive games calling IP avoids a dominated pot.","2":"Folding JJ CO vs MP raise is never correct.","3":"Shoving JJ is a massive overplay."}
   },
   {
-    "id": "bd_08", "level": 1, "category": "Blind Defense", "difficulty": "hard",
-    "hand": ["K♥","J♦"], "position": "BB", "situation": "BTN raises 3 BB.",
-    "question": "You have K♥J♦ in BB. BTN raises 3 BB. What do you do?",
-    "options": ["Call","Fold","3-Bet for value","3-Bet bluff"],
-    "correct": 0,
-    "explanation": "KJo IS in the TAG BB calling range vs BTN steal. BTN opens 35.4% — KJo has clear equity advantage. You need only 31% equity and KJo comfortably exceeds that. Key contrast: KJo vs UTG = fold. Same hand, different raiser position = completely different action.",
-    "why_wrong": {
-      "1": "KJo vs BTN has clear equity advantage. Folding here is too tight.",
-      "2": "KJo is not strong enough to 3-bet for value vs BTN's wide range.",
-      "3": "KJo has too much showdown value to 3-bet bluff."
-    }
+    "id":"3bv_11","level":1,"category":"3-Bet Value","difficulty":"hard",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet from SB: AA-TT, AJ+ | Optional: KQs, ATs",
+    "hand":["A♦","J♦"],"position":"SB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have A♦J♦ in SB. BTN raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","Complete"],"correct":0,
+    "explanation":"The default 3-bet range from SB = AA-TT, AJ+. AJ+ includes both AJs and AJo — both are default 3-bets from SB. 3-bet to 10.5 BB (3.5x OOP). Optional additions: KQs, ATs.",
+    "why_wrong":{"1":"AJs OOP from SB is a default 3-bet — calling is second-best.","2":"Folding AJs vs BTN steal from SB is too tight.","3":"Completing SB with AJs leaves value on the table."}
   },
   {
-    "id": "bd_09", "level": 1, "category": "Blind Defense", "difficulty": "hard",
-    "hand": ["A♣","T♦"], "position": "BB", "situation": "UTG raises 3 BB.",
-    "question": "You have A♣T♦ in BB. UTG raises 3 BB. What do you do?",
-    "options": ["Fold","Call","3-Bet for value","Call any ace vs UTG"],
-    "correct": 0,
-    "explanation": "ATo is NOT in the TAG calling range vs UTG. The minimum off-suit ace vs UTG is AQo. UTG's range includes AJ+ which dominates ATo. Fold. Kicker matters — the gap concept applies to kickers too.",
-    "why_wrong": {
-      "1": "Calling ATo OOP vs UTG creates reverse implied odds — you flop top pair and face AQ+.",
-      "2": "3-betting ATo vs UTG is terrible — heavily dominated.",
-      "3": "Kicker matters critically. AQo+ is the threshold for off-suit aces vs UTG."
-    }
+    "id":"cc_01","level":1,"category":"Cold-Call","difficulty":"easy",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"CO Cold-Call: TT-22, ATs, KTs+, QTs+, J9s+-54s, AJo, KJo+",
+    "hand":["J♦","T♦"],"position":"BTN","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have J♦T♦ on the BTN. CO raises 3 BB. What do you do?",
+    "options":["Call","3-Bet bluff","Fold","Raise to 4 BB"],"correct":0,
+    "explanation":"JTs is in the CO cold-call range. In position with flush and straight equity. Hardin explicitly says: suited connectors in position should call — you realize equity better postflop than by 3-bet bluffing.",
+    "why_wrong":{"1":"JTs IP has too much showdown value to waste as a bluff.","2":"JTs vs CO is a clear call. Fold is too tight.","3":"Mini-raise is never a valid option."}
   },
   {
-    "id": "bd_10", "level": 1, "category": "Blind Defense", "difficulty": "hard",
-    "hand": ["8♦","8♣"], "position": "SB", "situation": "CO raises 3 BB.",
-    "question": "You have 8♦8♣ in SB. CO raises 3 BB. What do you do?",
-    "options": ["Call","3-Bet to 10.5 BB","Fold","Complete"],
-    "correct": 0,
-    "explanation": "The TAG SB default 3-bet range vs CO starts at TT. 88 is below this threshold and falls in the SB calling range (TT-77 medium pairs). Call from SB.",
-    "why_wrong": {
-      "1": "TT is the bottom of the default SB 3-bet range — 88 is below this threshold. Call, not 3-bet.",
-      "2": "Folding 88 SB vs CO is too tight — it is in the calling range.",
-      "3": "Completing SB with 88 surrenders initiative."
-    }
+    "id":"cc_02","level":1,"category":"Cold-Call","difficulty":"easy",
+    "my_position":"MP","scenario":"Facing a raise","action_type":"Fold",
+    "range_context":"UTG Cold-Call: QQ-44, AQs-AJs, KQs, JTs, T9s, 98s, AQo+. KJo NOT in range.",
+    "hand":["K♠","J♣"],"position":"MP","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have K♠J♣ in MP. UTG raises 3 BB. What do you do?",
+    "options":["Fold","Call","3-Bet","Raise to 4 BB"],"correct":0,
+    "explanation":"KJo is NOT in the cold-call range vs UTG. Hardin's practice hand #1 confirms: KJo CO vs UTG = fold. UTG's range includes KQ+ — KJo has reverse implied odds. You flop a king but lose big to KQ or AK.",
+    "why_wrong":{"1":"Calling KJo vs UTG loses big pots when you flop a king vs KQ or AK.","2":"3-betting KJo into UTG's tight range is suicidal.","3":"Non-standard sizing does not fix a dominated hand."}
   },
   {
-    "id": "bd_11", "level": 1, "category": "Blind Defense", "difficulty": "hard",
-    "hand": ["A♦","J♦"], "position": "SB", "situation": "BTN raises 3 BB.",
-    "question": "You have A♦J♦ in SB. BTN raises 3 BB. What do you do?",
-    "options": ["3-Bet to 10.5 BB","Call","Fold","Complete"],
-    "correct": 0,
-    "explanation": "The TAG default 3-bet range from SB = AA-TT, AJ+. AJ+ includes both AJs and AJo — both are default 3-bets from SB. 3-bet to 10.5 BB (3.5x OOP). Optional additions from SB are KQs and ATs.",
-    "why_wrong": {
-      "1": "AJs OOP from SB is a default 3-bet — calling is second-best.",
-      "2": "Folding AJs vs BTN steal from SB is too tight.",
-      "3": "Completing SB with AJs leaves value on the table."
-    }
+    "id":"cc_03","level":1,"category":"Cold-Call","difficulty":"medium",
+    "my_position":"CO","scenario":"Facing a raise","action_type":"Fold",
+    "range_context":"Set-Mining 15:1 rule: need 45 BB effective stacks to call 3 BB profitably.",
+    "hand":["5♥","5♠"],"position":"CO","situation":"Conservative ranges. MP raises 3 BB. Effective stacks 40 BB.",
+    "question":"You have 5♥5♠ in CO. MP raises 3 BB. Effective stacks are 40 BB. What do you do?",
+    "options":["Fold","Call","3-Bet bluff","Raise to 4 BB"],"correct":0,
+    "explanation":"The 15:1 rule: calling 3 BB needs 3 x 15 = 45 BB in effective stacks. You have 40 BB — rule not satisfied. Fold. You need to win 45 BB on average when you hit your set to make it profitable.",
+    "why_wrong":{"1":"40 BB is close but 15:1 is a hard threshold. 40 BB < 45 BB required.","2":"3-bet bluffing small pairs: TAG recommends set-mining calls, not bluffs.","3":"Non-standard sizing does not change that the set-mine rule is not satisfied."}
   },
   {
-    "id": "bd_12", "level": 1, "category": "Blind Defense", "difficulty": "hard",
-    "hand": ["2♣","2♦"], "position": "BB", "situation": "BTN raises 3 BB. Effective stacks 80 BB.",
-    "question": "You have 2♣2♦ in BB. BTN raises 3 BB. Effective stacks are 80 BB. What do you do?",
-    "options": ["Call","Fold","3-Bet bluff","Raise to 4 BB"],
-    "correct": 0,
-    "explanation": "15:1 rule: calling 3 BB needs 45 BB in effective stacks. 80 BB exceeds this. Call and set-mine. BB is closing action. Plan: fold most boards, stack BTN on low-board sets. BTN's wide range creates excellent implied odds.",
-    "why_wrong": {
-      "1": "15:1 rule is satisfied. Fold is too tight.",
-      "2": "3-bet bluffing 22 from BB: calling for set-mine is the correct default.",
-      "3": "Non-standard sizing. Call is correct."
-    }
+    "id":"cc_04","level":1,"category":"Cold-Call","difficulty":"medium",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"Set-Mining 15:1 rule: need 45 BB effective stacks to call 3 BB profitably.",
+    "hand":["5♥","5♠"],"position":"BTN","situation":"Conservative ranges. UTG raises 3 BB. Effective stacks 120 BB.",
+    "question":"You have 5♥5♠ on the BTN. UTG raises 3 BB. Effective stacks are 120 BB. What do you do?",
+    "options":["Call","Fold","3-Bet bluff","Raise to 4 BB"],"correct":0,
+    "explanation":"15:1 rule: calling 3 BB needs 45 BB in effective stacks. 120 BB exceeds this comfortably. Call in position. Plan: fold most boards, stack UTG when you flop a set (~11.8% chance).",
+    "why_wrong":{"1":"55 vs UTG with 120 BB is a clear set-mine — fold is too tight.","2":"TAG recommends calls over IP bluffs for small pairs.","3":"Non-standard sizing. Call is correct."}
+  },
+  {
+    "id":"cc_05","level":1,"category":"Cold-Call","difficulty":"medium",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"CO Cold-Call gap concept: TT-66, ATs, KJs+, QJs, AJo, KJo+",
+    "hand":["Q♥","J♥"],"position":"BTN","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have Q♥J♥ on the BTN. CO raises 3 BB. What do you do?",
+    "options":["Call","3-Bet for value","Fold","Raise to 4 BB"],"correct":0,
+    "explanation":"QJs is in the CO cold-call range (gap concept hands). In position with flush and straight equity. Not strong enough to 3-bet for value vs CO's range which includes AQ+, JJ+.",
+    "why_wrong":{"1":"QJs has equity but faces domination from CO's strong portion. Calling IP is cleaner.","2":"Folding QJs BTN vs CO is too tight.","3":"Mini-raise is never valid."}
+  },
+  {
+    "id":"cc_06","level":1,"category":"Cold-Call","difficulty":"medium",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"UTG Cold-Call gap concept: QQ-99, AQs-AJs, KQs, AQo+. AQo = call (conservative default) vs UTG.",
+    "hand":["A♦","Q♠"],"position":"BTN","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have A♦Q♠ on the BTN. UTG raises 3 BB. What do you do?",
+    "options":["Call","3-Bet to 9 BB","Fold","Raise to 4 BB"],"correct":0,
+    "explanation":"Call is the conservative default for AQo BTN vs UTG. AQo is in the gap concept cold-call range — equity edge vs UTG, but not strong enough to 3-bet against a 9.8% range conservatively. 3-betting is the optional aggressive line — both are defensible, but calling is safer at microstakes.",
+    "why_wrong":{"1":"3-betting AQo is the optional line — not wrong, but call is the conservative default.","2":"AQo has equity edge vs UTG's range. Fold is too tight.","3":"Mini-raise is not a valid option."}
+  },
+  {
+    "id":"cc_07","level":1,"category":"Cold-Call","difficulty":"hard",
+    "my_position":"MP","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"UTG Cold-Call weaker hands: 88-44, JTs, T9s, 98s",
+    "hand":["9♠","8♠"],"position":"MP","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have 9♠8♠ in MP. UTG raises 3 BB. What do you do?",
+    "options":["Call","Fold","3-Bet bluff","Limp behind"],"correct":0,
+    "explanation":"98s is in the UTG cold-call range under weaker starting hands (88-44, JTs, T9s, 98s). UTG's strong range has excellent implied odds for suited connectors — stack them when you flop a straight or flush.",
+    "why_wrong":{"1":"98s is in the UTG cold-call range. Fold is wrong.","2":"3-betting 98s into UTG's tight range has very low fold equity.","3":"Never limp as a response to a raise."}
+  },
+  {
+    "id":"cc_08","level":1,"category":"Cold-Call","difficulty":"hard",
+    "my_position":"BTN","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"Set-Mining 15:1 rule: need 45 BB effective stacks to call 3 BB profitably.",
+    "hand":["3♣","3♦"],"position":"BTN","situation":"Conservative ranges. UTG raises 3 BB. Effective stacks 80 BB.",
+    "question":"You have 3♣3♦ on the BTN. UTG raises 3 BB. Effective stacks are 80 BB. What do you do?",
+    "options":["Call","Fold","3-Bet bluff","Raise to 4 BB"],"correct":0,
+    "explanation":"15:1 rule: calling 3 BB needs 45 BB effective stacks. 80 BB exceeds this. Call in position. Plan: fold most boards, stack UTG when you flop a set.",
+    "why_wrong":{"1":"33 vs UTG with 80 BB is a clear set-mine — fold is too tight.","2":"TAG recommends calls over IP bluffs for small pairs.","3":"Non-standard sizing. Call is correct."}
+  },
+  {
+    "id":"cc_09","level":1,"category":"Cold-Call","difficulty":"hard",
+    "my_position":"CO","scenario":"Facing a raise","action_type":"Fold",
+    "range_context":"MP Cold-Call weaker hands: 77-22, ATs, JTs-76s. ATs with aggressive 3-bettor behind = fold or 3-bet bluff.",
+    "hand":["A♠","T♠"],"position":"CO","situation":"Conservative ranges. MP raises 3 BB. Aggressive player on BTN.",
+    "question":"You have A♠T♠ in CO. MP raises 3 BB. There is an aggressive player on the BTN still to act. What do you do?",
+    "options":["Fold or 3-Bet bluff","Call","Raise to 4 BB","Always call ATs in position"],"correct":0,
+    "explanation":"Hardin's practice hand #2 covers this exactly: ATs CO vs MP with aggressive BTN 3-bettor = fold or turn into 3-bet bluff. The aggressive BTN eliminates implied odds. ATs is in the lower echelon of the calling range and drops out when a squeeze threat exists.",
+    "why_wrong":{"1":"ATs normally has great implied odds but the aggressive player behind changes the calculation.","2":"Mini-raise is not valid.","3":"Always calling ATs ignores the critical adjustment for aggressive players behind."}
+  },
+  {
+    "id":"iso_01","level":1,"category":"ISO Raise","difficulty":"easy",
+    "my_position":"BTN","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing IP 1 limper: 4 BB",
+    "hand":["A♣","K♠"],"position":"BTN","situation":"Conservative ranges. CO open-limps. Action on you.",
+    "question":"You have A♣K♠ on the BTN. CO open-limps. What do you do?",
+    "options":["Raise to 4 BB","Call behind","Fold","Raise to 3 BB"],"correct":0,
+    "explanation":"AKo is well above the default ISO range threshold. ISO raise to 4 BB — 3 BB base + 1 BB for the limper IP. The ISO raise capitalizes on the limper's mistake by isolating them heads-up.",
+    "why_wrong":{"1":"Limping AKo behind surrenders fold equity and initiative.","2":"AKo is in the ISO range. Fold is too tight.","3":"Always add 1 BB per limper. 1 limper IP = 4 BB, not 3 BB."}
+  },
+  {
+    "id":"iso_02","level":1,"category":"ISO Raise","difficulty":"easy",
+    "my_position":"BTN","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing IP 1 limper: 4 BB",
+    "hand":["Q♠","J♠"],"position":"BTN","situation":"Conservative ranges. CO open-limps. Action on you.",
+    "question":"You have Q♠J♠ on the BTN. CO open-limps. What do you do?",
+    "options":["Raise to 4 BB","Raise to 3 BB","Limp behind","Fold"],"correct":0,
+    "explanation":"QJs is in the default ISO range. ISO raise to 4 BB (3 BB + 1 BB for limper IP).",
+    "why_wrong":{"1":"3 BB against a limper undersizes — the formula is 3 BB + 1 BB per limper.","2":"Limping QJs behind IP surrenders initiative and position advantage.","3":"QJs is in the default ISO range. Fold is too tight."}
+  },
+  {
+    "id":"iso_03","level":1,"category":"ISO Raise","difficulty":"medium",
+    "my_position":"CO","scenario":"Limper(s)","action_type":"Over-Limp",
+    "range_context":"Conservative Default ISO Range starts at AJs+ for suited aces. A4s is in Optional/Over-Limp range.",
+    "hand":["A♥","4♥"],"position":"CO","situation":"Conservative ranges. UTG limps. Action on you.",
+    "question":"You have A♥4♥ in CO. UTG limps. What do you do?",
+    "options":["Over-limp or Fold","Raise to 4 BB","Raise to 3 BB","Raise to 5 BB"],"correct":0,
+    "explanation":"The default ISO range for suited aces starts at AJs+. A4s is in the optional/over-limp range (A9s-A2s). Over-limp for implied odds — not an ISO raise by default.",
+    "why_wrong":{"1":"A4s is below the AJs+ ISO threshold. ISO raising exceeds the conservative default.","2":"3 BB is wrong sizing anyway, and A4s should not ISO raise.","3":"5 BB oversizes a hand that should not be ISO raising."}
+  },
+  {
+    "id":"iso_04","level":1,"category":"ISO Raise","difficulty":"medium",
+    "my_position":"SB","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing OOP 1 limper: 5 BB",
+    "hand":["J♦","J♣"],"position":"SB","situation":"Conservative ranges. CO limps. BTN folds. Action on you.",
+    "question":"You have J♦J♣ in SB. CO limps, BTN folds. What do you do and what is the correct sizing?",
+    "options":["Raise to 5 BB","Raise to 4 BB","Raise to 3 BB","Limp behind"],"correct":0,
+    "explanation":"JJ is in the default ISO range. OOP sizing: 3 BB base + 1 BB per limper + 1 BB OOP = 5 BB. The extra 1 BB compensates for playing every postflop street out of position.",
+    "why_wrong":{"1":"4 BB undersizes from SB — the OOP formula adds 1 extra BB.","2":"3 BB ignores both the limper and OOP adjustments.","3":"Never limp JJ — raise with full initiative."}
+  },
+  {
+    "id":"iso_05","level":1,"category":"ISO Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"Limper(s)","action_type":"Over-Limp",
+    "range_context":"Default ISO starts at 88+. 87s is in Optional/Over-Limp range. Multiple limpers = low fold equity.",
+    "hand":["8♥","7♥"],"position":"BTN","situation":"Conservative ranges. UTG limps. MP limps. No aggressive player behind.",
+    "question":"You have 8♥7♥ on the BTN. UTG and MP both limp. No aggressive player behind. What do you do?",
+    "options":["Over-limp","Raise to 5 BB","Fold","Raise to 3 BB"],"correct":0,
+    "explanation":"87s is in the optional/over-limp range, not the default ISO range (88+). With 2 limpers, combined fold probability is very low (0.65 x 0.65 = 42%). Over-limp for cheap implied odds rather than ISO raising a speculative hand with minimal fold equity.",
+    "why_wrong":{"1":"ISO-raising 87s into 2 limpers: combined fold probability is ~42% — insufficient fold equity.","2":"Folding 87s BTN with 2 limpers is too tight — cheap multiway pot is ideal.","3":"3 BB undersizes vs 2 limpers. Over-limp is correct."}
+  },
+  {
+    "id":"iso_06","level":1,"category":"ISO Raise","difficulty":"medium",
+    "my_position":"BTN","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing IP 1 limper: 4 BB",
+    "hand":["K♦","Q♣"],"position":"BTN","situation":"Conservative ranges. UTG open-limps. Action on you.",
+    "question":"You have K♦Q♣ on the BTN. UTG open-limps. What is the correct action and sizing?",
+    "options":["Raise to 4 BB","Raise to 3 BB","Limp behind","Fold"],"correct":0,
+    "explanation":"KQo is in the default ISO range (KJo+ threshold). ISO raise to 4 BB (3 BB + 1 BB for limper IP). Uniform sizing — same 4 BB for KQo as for AA.",
+    "why_wrong":{"1":"3 BB against a limper undersizes — the formula is 3 BB + 1 BB per limper.","2":"Limping KQo behind surrenders initiative and position advantage.","3":"KQo is in the default ISO range. Fold is too tight."}
+  },
+  {
+    "id":"iso_07","level":1,"category":"ISO Raise","difficulty":"hard",
+    "my_position":"BTN","scenario":"Limper(s)","action_type":"Over-Limp",
+    "range_context":"Default ISO starts at 88+. 22 is in Optional/Over-Limp range (22-77).",
+    "hand":["2♦","2♣"],"position":"BTN","situation":"Conservative ranges. CO open-limps. Action on you.",
+    "question":"You have 2♦2♣ on the BTN. CO open-limps. What do you do?",
+    "options":["Over-limp","Raise to 4 BB","Fold","Raise to 3 BB"],"correct":0,
+    "explanation":"The default ISO range starts at 88+. 22 is in the optional over-limp range (22-77). With 1 limper, over-limp for set-mining implied odds.",
+    "why_wrong":{"1":"ISO raising 22 is outside the default ISO range.","2":"Folding 22 vs 1 limper on BTN is too tight — over-limp.","3":"3 BB ignores the limper formula anyway, and 22 should not ISO raise."}
+  },
+  {
+    "id":"iso_08","level":1,"category":"ISO Raise","difficulty":"hard",
+    "my_position":"CO","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing IP 1 limper: 4 BB",
+    "hand":["K♠","J♠"],"position":"CO","situation":"Conservative ranges. UTG limps. Action on you.",
+    "question":"You have K♠J♠ in CO. UTG limps. What do you do?",
+    "options":["Raise to 4 BB","Over-limp","Fold","Raise to 3 BB"],"correct":0,
+    "explanation":"KJs+ is in the default ISO range. IP vs 1 limper = 4 BB (3 BB + 1 BB limper). KJs has top pair value, flush draws, and fold equity.",
+    "why_wrong":{"1":"KJs is in the default ISO range — over-limping surrenders initiative.","2":"KJs is in the default range. Fold is too tight.","3":"Always add 1 BB per limper — 1 limper IP = 4 BB, not 3 BB."}
+  },
+  {
+    "id":"iso_09","level":1,"category":"ISO Raise","difficulty":"hard",
+    "my_position":"MP","scenario":"Limper(s)","action_type":"ISO Raise",
+    "range_context":"Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing IP 1 limper: 4 BB. Uniform sizing.",
+    "hand":["Q♣","Q♦"],"position":"MP","situation":"Conservative ranges. UTG limps. Action on you.",
+    "question":"You have Q♣Q♦ in MP. UTG limps. What do you do and what is the sizing?",
+    "options":["Raise to 4 BB","Limp behind","Raise to 6 BB","Raise to 3 BB"],"correct":0,
+    "explanation":"QQ is in the default ISO range. ISO raise to 4 BB (3 BB + 1 limper IP). Critical: uniform sizing — same 4 BB for QQ as for 88. Raising larger with premium hands reveals their strength.",
+    "why_wrong":{"1":"Never limp QQ behind — raise with full initiative.","2":"6 BB telegraphs a premium hand. Uniform sizing applies.","3":"3 BB ignores the limper formula."}
+  },
+  {
+    "id":"sq_01","level":1,"category":"Squeeze","difficulty":"medium",
+    "my_position":"BB","scenario":"Facing raise + caller","action_type":"Squeeze",
+    "range_context":"Squeeze sizing OOP: 3.5x raise + ~3 BB per caller",
+    "hand":["A♠","A♦"],"position":"BB","situation":"Conservative ranges. UTG raises 3 BB. CO calls.",
+    "question":"You have A♠A♦ in BB. UTG raises 3 BB, CO calls. What do you do?",
+    "options":["3-Bet to ~14 BB","Call","Fold","3-Bet to 10.5 BB"],"correct":0,
+    "explanation":"AA always 3-bets. Squeeze sizing OOP: 3.5x raise (10.5 BB) + ~3 BB per caller = ~14 BB. Both players have capped ranges — CO's flat call almost never includes a premium hand.",
+    "why_wrong":{"1":"Calling AA in a squeeze spot misses massive value.","2":"Never fold AA.","3":"10.5 BB is correct heads-up OOP. With a caller add ~3 BB extra."}
+  },
+  {
+    "id":"sq_02","level":1,"category":"Squeeze","difficulty":"medium",
+    "my_position":"BB","scenario":"Facing raise + caller","action_type":"Squeeze",
+    "range_context":"Squeeze sizing OOP: 3.5x raise + ~3 BB per caller. Default 3-bet value range applies.",
+    "hand":["Q♠","Q♦"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB. SB calls.",
+    "question":"You have Q♠Q♦ in BB. BTN raises 3 BB, SB calls. What do you do?",
+    "options":["3-Bet to ~14 BB","Call","Fold","3-Bet to 10.5 BB"],"correct":0,
+    "explanation":"QQ squeezes for value. Sizing: 3.5x BTN raise (10.5 BB) + ~3 BB for SB caller = ~14 BB. Both BTN and SB have capped ranges — SB's flat call almost never includes QQ+.",
+    "why_wrong":{"1":"Calling QQ 3-way OOP is weak — no initiative in a multiway pot.","2":"Folding QQ here is never correct.","3":"10.5 BB is correct heads-up. Add ~3 BB for the caller."}
+  },
+  {
+    "id":"sq_03","level":1,"category":"Squeeze","difficulty":"hard",
+    "my_position":"SB","scenario":"Facing raise + caller","action_type":"Squeeze",
+    "range_context":"Squeeze sizing OOP: 3.5x raise + ~3 BB per caller. Default 3-bet value range applies.",
+    "hand":["K♠","K♦"],"position":"SB","situation":"Conservative ranges. CO raises 3 BB. BTN calls.",
+    "question":"You have K♠K♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
+    "options":["3-Bet to ~14 BB","Call","Fold","3-Bet to 10.5 BB"],"correct":0,
+    "explanation":"KK squeezes for value from SB. Sizing: 3.5x CO raise (10.5 BB) + ~3 BB for BTN caller = ~14 BB. Both players have capped ranges. Never slow-play KK in a squeeze spot.",
+    "why_wrong":{"1":"Calling KK 3-way OOP misses significant value — always 3-bet KK.","2":"Never fold KK.","3":"10.5 BB is correct heads-up OOP. Add ~3 BB for the caller."}
+  },
+  {
+    "id":"bd_01","level":1,"category":"Blind Defense","difficulty":"easy",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"BB Defense vs BTN: call includes small pairs, suited aces, suited connectors, one-gappers",
+    "hand":["T♥","8♥"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB. SB folds.",
+    "question":"You have T♥8♥ in BB. BTN raises 3 BB, SB folds. What do you do?",
+    "options":["Call","Fold","3-Bet for value","3-Bet bluff"],"correct":0,
+    "explanation":"T8s (one-gapper) is within the TAG BB defend range vs BTN. You are closing action with good pot odds (31% equity needed) and T8s has straight and flush equity. Hands that would be bluffs/folds from SB become calling hands from BB.",
+    "why_wrong":{"1":"T8s has plenty of equity vs BTN's wide range. Fold is too tight.","2":"T8s is not a value 3-bet hand.","3":"T8s has too much implied value to waste as a bluff."}
+  },
+  {
+    "id":"bd_02","level":1,"category":"Blind Defense","difficulty":"easy",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"Fold",
+    "range_context":"SB Defense: conservative — TT-77, ATs+, AJo+, KQs, QJs, JTs only. Q7o NOT in range.",
+    "hand":["Q♦","7♠"],"position":"SB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have Q♦7♠ in SB. BTN raises 3 BB. What do you do?",
+    "options":["Fold","Call","3-Bet bluff","Complete"],"correct":0,
+    "explanation":"The TAG SB calling range is conservative: medium pocket pairs (TT-77) and broadway hands (ATs+, AJo+, KQs, QJs, JTs). Q7o does not qualify — too weak and disconnected. Fold.",
+    "why_wrong":{"1":"Q7o OOP for every street is a losing proposition.","2":"3-betting Q7o — no blocker value, weak equity if called.","3":"Completing SB with Q7o is a leak."}
+  },
+  {
+    "id":"bd_03","level":1,"category":"Blind Defense","difficulty":"medium",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet vs CO: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand":["J♠","J♦"],"position":"BB","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have J♠J♦ in BB. CO raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","4-Bet jam"],"correct":0,
+    "explanation":"JJ is in the default 3-bet value range vs CO (AA-JJ, AQ+, AJs). CO opens 22.2% — JJ dominates most of that range. OOP sizing 3.5x = 10.5 BB.",
+    "why_wrong":{"1":"Calling JJ OOP vs CO is second-best — you have equity dominance.","2":"Folding JJ vs CO raise is too tight.","3":"4-bet jamming JJ folds out hands you want calls from."}
+  },
+  {
+    "id":"bd_04","level":1,"category":"Blind Defense","difficulty":"medium",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"BB Defense vs BTN: small suited connectors and one-gappers that would be SB bluffs become BB calls.",
+    "hand":["6♠","5♠"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB. SB folds.",
+    "question":"You have 6♠5♠ in BB. BTN raises 3 BB, SB folds. What do you do?",
+    "options":["Call","Fold","3-Bet bluff","3-Bet for value"],"correct":0,
+    "explanation":"Hardin: hands that would be 3-bet bluffs or folds from SB — including small suited connectors and one-gappers — become calling hands from BB. 65s has straight/flush equity and BB gets better pot odds than SB (31% needed).",
+    "why_wrong":{"1":"65s BB vs BTN has enough equity and implied odds to call. Fold is too tight.","2":"65s is better as a call from BB — you close the action.","3":"65s is never a value 3-bet."}
+  },
+  {
+    "id":"bd_05","level":1,"category":"Blind Defense","difficulty":"medium",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Conservative 3-Bet Bluff Range: 55-22, A5s-A2s, T9s, 98s, 87s, 76s, 65s (OOP from blinds only)",
+    "hand":["A♦","5♦"],"position":"SB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have A♦5♦ in SB. BTN raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB or Fold","Call","Complete","Raise to 7 BB"],"correct":0,
+    "explanation":"A5s SB vs BTN = 3-bet bluff OR fold. Hardin's practice hand #1 confirms: A3s SB = 3-bet bluff or fold, never call. A5s has: Ax blocker (reduces AA/AK combos), suited, wheel straight potential. OOP 3.5x = 10.5 BB. Fold when BTN is tight.",
+    "why_wrong":{"1":"Calling A5s OOP from SB is the worst line — out of position every street.","2":"Completing SB is the same as limping. Always raise or fold.","3":"Non-standard sizing. 3.5x = 10.5 BB is correct OOP."}
+  },
+  {
+    "id":"bd_06","level":1,"category":"Blind Defense","difficulty":"medium",
+    "my_position":"BB","scenario":"Facing raise + caller","action_type":"Squeeze",
+    "range_context":"Squeeze sizing OOP: 3.5x raise + ~3 BB per caller. 99 BB vs BTN raise + SB call = squeeze.",
+    "hand":["9♦","9♠"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB. SB calls.",
+    "question":"You have 9♦9♠ in BB. BTN raises 3 BB, SB calls. What do you do?",
+    "options":["3-Bet to ~14 BB","Call","Fold","Check"],"correct":0,
+    "explanation":"99 BB with BTN raise + SB call = value squeeze. Sizing: 3.5x BTN raise (10.5 BB) + ~3 BB for SB caller = ~14 BB. Both players have capped ranges — SB's flat call almost never includes TT+.",
+    "why_wrong":{"1":"Calling 99 3-way OOP is weak — no initiative in a multiway pot.","2":"Folding 99 here is far too tight.","3":"Checking is not a preflop option."}
+  },
+  {
+    "id":"bd_07","level":1,"category":"Blind Defense","difficulty":"hard",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet from SB: AA-TT, AJ+ | Optional: KQs, ATs",
+    "hand":["T♠","T♦"],"position":"SB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have T♠T♦ in SB. BTN raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","Complete"],"correct":0,
+    "explanation":"The default 3-bet range from SB vs BTN = AA-TT, AJ+. TT is the bottom of this range. 3-bet to 10.5 BB (3.5x OOP). Calling TT OOP from SB creates difficult spots on every overcard board.",
+    "why_wrong":{"1":"Calling TT from SB OOP vs BTN is a leak — every A/K/Q/J board puts you in a tough spot.","2":"Folding TT vs BTN steal from SB is far too tight.","3":"Completing SB with TT surrenders all initiative."}
+  },
+  {
+    "id":"bd_08","level":1,"category":"Blind Defense","difficulty":"hard",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"BB Defense: KJo vs BTN steal is in range. KJo vs UTG = fold. Position of raiser matters.",
+    "hand":["K♥","J♦"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have K♥J♦ in BB. BTN raises 3 BB. What do you do?",
+    "options":["Call","Fold","3-Bet for value","3-Bet bluff"],"correct":0,
+    "explanation":"KJo IS in the TAG BB calling range vs BTN steal. BTN opens 35.4% — KJo has clear equity advantage. You need only 31% equity and KJo comfortably exceeds that. Key contrast: KJo vs UTG = fold. Same hand, different raiser position = completely different action.",
+    "why_wrong":{"1":"KJo vs BTN has clear equity advantage. Folding here is too tight.","2":"KJo is not strong enough to 3-bet for value vs BTN's wide range.","3":"KJo has too much showdown value to 3-bet bluff."}
+  },
+  {
+    "id":"bd_09","level":1,"category":"Blind Defense","difficulty":"hard",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"Fold",
+    "range_context":"UTG Cold-Call: AQo+ threshold for off-suit aces. ATo vs UTG = fold.",
+    "hand":["A♣","T♦"],"position":"BB","situation":"Conservative ranges. UTG raises 3 BB.",
+    "question":"You have A♣T♦ in BB. UTG raises 3 BB. What do you do?",
+    "options":["Fold","Call","3-Bet for value","Call any ace vs UTG"],"correct":0,
+    "explanation":"ATo is NOT in the cold-call range vs UTG. The minimum off-suit ace vs UTG is AQo. UTG's range includes AJ+ which dominates ATo. Fold. Kicker matters critically — the gap concept applies to kickers too.",
+    "why_wrong":{"1":"Calling ATo OOP vs UTG creates reverse implied odds — you flop top pair and face AQ+.","2":"3-betting ATo vs UTG is terrible — heavily dominated.","3":"Kicker matters critically. AQo+ is the threshold for off-suit aces vs UTG."}
+  },
+  {
+    "id":"bd_10","level":1,"category":"Blind Defense","difficulty":"hard",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"SB Defense calling range: TT-77 medium pairs + broadway hands. 88 is below TT threshold.",
+    "hand":["8♦","8♣"],"position":"SB","situation":"Conservative ranges. CO raises 3 BB.",
+    "question":"You have 8♦8♣ in SB. CO raises 3 BB. What do you do?",
+    "options":["Call","3-Bet to 10.5 BB","Fold","Complete"],"correct":0,
+    "explanation":"The default SB 3-bet range vs CO starts at TT. 88 is below this and falls in the SB calling range (TT-77 medium pairs). Call from SB.",
+    "why_wrong":{"1":"TT is the bottom of the default SB 3-bet range — 88 is below threshold. Call, not 3-bet.","2":"Folding 88 SB vs CO is too tight — it is in the calling range.","3":"Completing SB with 88 surrenders initiative."}
+  },
+  {
+    "id":"bd_11","level":1,"category":"Blind Defense","difficulty":"hard",
+    "my_position":"BB","scenario":"Facing a raise","action_type":"Call",
+    "range_context":"Set-Mining 15:1 rule: need 45 BB effective stacks. BB defense includes set-mining small pairs.",
+    "hand":["2♣","2♦"],"position":"BB","situation":"Conservative ranges. BTN raises 3 BB. Effective stacks 80 BB.",
+    "question":"You have 2♣2♦ in BB. BTN raises 3 BB. Effective stacks are 80 BB. What do you do?",
+    "options":["Call","Fold","3-Bet bluff","Raise to 4 BB"],"correct":0,
+    "explanation":"15:1 rule: calling 3 BB needs 45 BB in effective stacks. 80 BB exceeds this. Call and set-mine. BB is closing action. Plan: fold most boards, stack BTN on low-board sets.",
+    "why_wrong":{"1":"15:1 rule is satisfied. Fold is too tight.","2":"3-bet bluffing 22 from BB: calling for set-mine is the correct default.","3":"Non-standard sizing. Call is correct."}
+  },
+  {
+    "id":"bd_12","level":1,"category":"Blind Defense","difficulty":"hard",
+    "my_position":"SB","scenario":"Facing a raise","action_type":"3-Bet",
+    "range_context":"Default 3-Bet from SB: AA-TT, AJ+ | Optional: KQs, ATs",
+    "hand":["A♦","J♦"],"position":"SB","situation":"Conservative ranges. BTN raises 3 BB.",
+    "question":"You have A♦J♦ in SB. BTN raises 3 BB. What do you do?",
+    "options":["3-Bet to 10.5 BB","Call","Fold","Complete"],"correct":0,
+    "explanation":"The default 3-bet range from SB = AA-TT, AJ+. AJ+ includes both AJs and AJo — both are default 3-bets from SB. 3-bet to 10.5 BB (3.5x OOP). Optional additions from SB: KQs, ATs.",
+    "why_wrong":{"1":"AJs OOP from SB is a default 3-bet — calling is second-best.","2":"Folding AJs vs BTN steal from SB is too tight.","3":"Completing SB with AJs leaves value on the table."}
   }
 ]
