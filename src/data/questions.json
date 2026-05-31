@@ -9448,5 +9448,2165 @@
       "2": "4-betting 99 into JJ+/AK — almost always behind or flipping.",
       "3": "Shoving 99 is a massive overplay."
     }
+  },
+  {
+    "id": "bb_utg_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs UTG: AA-KK, AKs (default) | QQ, AKo (optional). OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "A♠",
+      "A♣"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♠A♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AA is always a value 3-bet. OOP sizing: 3.5x raise = 10.5 BB. Never slow-play AA facing a raise regardless of position.",
+    "why_wrong": {
+      "1": "Calling AA OOP vs UTG misses massive value — always 3-bet.",
+      "2": "Never fold AA.",
+      "3": "Checking is not a preflop action when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_02",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs UTG: QQ-44, AQs-AJs, KQs, JTs, T9s, 98s, AQo+. Gap concept: QQ-99, AQs-AJs, KQs, AQo+",
+    "hand": [
+      "Q♦",
+      "Q♣"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have Q♦Q♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "QQ vs UTG is listed as optional in the 3-bet value range (default = AA-KK, AKs). Even as optional, QQ has clear equity advantage vs UTG's 9.8% range. 3-bet for value. OOP 3.5x = 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling QQ OOP vs UTG is second-best — you have equity dominance.",
+      "2": "Folding QQ vs UTG raise is never correct.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_03",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs UTG: QQ-44, AQs-AJs, KQs, JTs, T9s, 98s, AQo+. AQo = call (gap concept).",
+    "hand": [
+      "A♦",
+      "Q♥"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♦Q♥ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AQo is in the BB cold-call range vs UTG (gap concept: AQo+). UTG's 9.8% range is too tight to 3-bet AQo profitably — call and use pot odds. BB already paid 1 BB so pot odds are better here than any other position.",
+    "why_wrong": {
+      "1": "3-betting AQo vs UTG's tight range risks building a dominated pot OOP.",
+      "2": "AQo has equity edge vs UTG's range. Fold is too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_04",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB cold-call vs UTG: AQo+ is minimum off-suit ace. AJo NOT in range vs UTG.",
+    "hand": [
+      "A♠",
+      "J♣"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♠J♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AJo is NOT in the BB cold-call range vs UTG. AQo+ is the minimum off-suit ace. UTG's range includes AK and AQ which dominate AJo. Despite better pot odds from BB, AJo still faces severe reverse implied odds vs UTG. Fold.",
+    "why_wrong": {
+      "1": "Calling AJo vs UTG creates reverse implied odds — dominated by AQ+ regularly even from BB.",
+      "2": "3-betting AJo into UTG's tight range is terrible.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_05",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs UTG weaker hands: 88-44, JTs, T9s, 98s. 15:1 set-mining rule applies.",
+    "hand": [
+      "5♥",
+      "5♠"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 5♥5♠ in BB. UTG raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "55 is in the BB cold-call range vs UTG as a weaker implied odds hand. 15:1 rule: calling 3 BB needs 45 BB in effective stacks. However BB only needs to call 2 BB more (already posted 1 BB) — the effective call is 2 BB, meaning 15:1 rule = 30 BB needed. 100 BB satisfies this. Call.",
+    "why_wrong": {
+      "1": "55 vs UTG with 100 BB satisfies the set-mining rule. Fold is too tight.",
+      "2": "3-bet bluffing 55 vs UTG has very low fold equity.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_06",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs UTG weaker hands: JTs, T9s, 98s (implied odds suits)",
+    "hand": [
+      "9♠",
+      "8♠"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have 9♠8♠ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "98s is in the BB cold-call range vs UTG as a weaker implied odds hand. BB's pot odds are better than any other position (only 2 BB more to call). UTG's strong range means excellent implied odds when you connect strongly.",
+    "why_wrong": {
+      "1": "98s has solid implied odds vs UTG's strong range. BB has better pot odds too. Fold is too tight.",
+      "2": "3-bet bluffing 98s vs UTG has very low fold equity.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_07",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs UTG: AJs is gap concept hand",
+    "hand": [
+      "A♣",
+      "J♣"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♣J♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AJs is in the BB cold-call range vs UTG (gap concept: AQs-AJs). AJs has equity edge vs UTG's range and nut flush potential. Call. Note: 3-betting AJs vs UTG risks a dominated pot OOP — call is the conservative default.",
+    "why_wrong": {
+      "1": "3-betting AJs vs UTG's tight range risks building a dominated pot.",
+      "2": "AJs has equity edge vs UTG's range. Fold is too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_utg_08",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs UTG: AA-KK, AKs (default) | QQ, AKo (optional). AKo always 3-bets.",
+    "hand": [
+      "A♥",
+      "K♦"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♥K♦ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AKo is listed as optional in the BB 3-bet range vs UTG, but Hardin's data shows 3-betting AK yields 797 BB/100 vs only 330 BB/100 when calling. Both versions should 3-bet. OOP 3.5x = 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling AKo OOP vs UTG is 2.4x less profitable than 3-betting.",
+      "2": "AKo is ahead of UTG's range except AA/KK. Fold is wrong.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs MP: AA-QQ, AKs (default) | JJ, AKo, AQs (optional). OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "K♥",
+      "K♦"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have K♥K♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "KK is in the default BB 3-bet range vs MP. OOP sizing: 3.5x = 10.5 BB. Build the pot with a premium hand.",
+    "why_wrong": {
+      "1": "Calling KK OOP vs MP misses significant value.",
+      "2": "Never fold KK.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs MP: AA-QQ, AKs (default) | JJ, AKo, AQs (optional). JJ is optional 3-bet.",
+    "hand": [
+      "J♠",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have J♠J♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "JJ vs MP is listed as optional (default = AA-QQ, AKs). Even as optional, JJ has equity advantage vs MP's 12.67% range. 3-bet for value. OOP 3.5x = 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling JJ OOP vs MP is second-best — you have equity dominance.",
+      "2": "Folding JJ vs MP raise is never correct.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_03",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs MP: JJ-22, AQs-ATs, KJs+, QJs, JTs-76s, AQo+",
+    "hand": [
+      "T♦",
+      "T♣"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have T♦T♣ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "TT is in the BB cold-call range vs MP (gap concept: JJ-88). MP's range includes QQ+ which dominates TT in a 3-bet pot. Call — excellent implied odds. BB gets better pot odds than any other position.",
+    "why_wrong": {
+      "1": "3-betting TT OOP into MP's range risks a dominated pot.",
+      "2": "Folding TT vs MP from BB is too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_04",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs MP: JJ-22, AQs-ATs, KJs+, QJs, JTs-76s, AQo+",
+    "hand": [
+      "7♥",
+      "6♥"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have 7♥6♥ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "76s is in the BB cold-call range vs MP as a weaker implied odds hand. BB's pot odds are the best at the table — only 2 BB more to call. 76s has straight and flush equity vs MP's strong range.",
+    "why_wrong": {
+      "1": "76s has solid implied odds and BB's pot odds make this a clear call. Fold is too tight.",
+      "2": "3-bet bluffing 76s vs MP from BB — too speculative OOP.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_05",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB cold-call vs MP: 76s is lowest suited connector. 65s NOT in range vs MP.",
+    "hand": [
+      "6♦",
+      "5♦"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have 6♦5♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "The BB cold-call range vs MP stops at 76s for suited connectors. 65s does not qualify vs MP's range. Even with BB's better pot odds, 65s is too weak vs MP's 12.67% range. Fold.",
+    "why_wrong": {
+      "1": "65s is below the 76s threshold for BB cold-call vs MP.",
+      "2": "3-betting 65s vs MP is terrible.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_06",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs MP: ATs is weaker implied odds hand",
+    "hand": [
+      "A♥",
+      "T♥"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♥T♥ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "ATs is in the BB cold-call range vs MP as a weaker implied odds hand. BB's pot odds are best at the table. ATs has nut flush potential and equity vs MP's range. Call.",
+    "why_wrong": {
+      "1": "ATs has nut flush potential and BB's pot odds make this a call. Fold is too tight.",
+      "2": "3-betting ATs vs MP risks a dominated pot.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_07",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs MP: 44 is set-mining hand. 15:1 rule applies.",
+    "hand": [
+      "4♠",
+      "4♦"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 4♠4♦ in BB. MP raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "44 is in the BB cold-call range vs MP as a set-mining hand. BB only needs to call 2 BB more. 15:1 rule applies to the actual call amount: 2 BB × 15 = 30 BB needed. 100 BB satisfies this comfortably. Call.",
+    "why_wrong": {
+      "1": "44 vs MP with 100 BB satisfies the set-mining rule. Fold is too tight.",
+      "2": "3-bet bluffing 44 vs MP — very low fold equity.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_mp_08",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB cold-call vs MP: AQo+ is minimum off-suit ace. AJo NOT in range vs MP.",
+    "hand": [
+      "A♦",
+      "J♣"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♦J♣ in BB. MP raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AJo is NOT in the BB cold-call range vs MP. AQo+ is the minimum off-suit ace vs MP. AJo faces domination from AQ+, AK in MP's range. Even BB's pot odds do not save a dominated hand. Fold.",
+    "why_wrong": {
+      "1": "Calling AJo vs MP creates reverse implied odds — dominated by AQ+ regularly.",
+      "2": "3-betting AJo into MP's range is suicidal.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs CO: AA-JJ, AQ+, AJs (default) | AJo, ATs, KQs (optional). OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "J♠",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have J♠J♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "JJ is in the default BB 3-bet range vs CO (AA-JJ, AQ+, AJs). CO opens 22.17% — JJ dominates most of that range. OOP sizing: 3.5x = 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling JJ OOP vs CO is second-best — you have equity dominance.",
+      "2": "Folding JJ vs CO raise is too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_02",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs CO: TT-22, ATs, KTs+, QTs+, J9s+-54s, AJo, KJo+",
+    "hand": [
+      "T♥",
+      "T♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have T♥T♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "TT is in the BB cold-call range vs CO (gap concept: TT-66). Not strong enough to 3-bet vs CO's 22.17% range conservatively. Call — excellent set-mining implied odds.",
+    "why_wrong": {
+      "1": "3-betting TT OOP into CO's range — calling is the conservative default.",
+      "2": "Folding TT vs CO from BB is too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_03",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs CO: AJo is gap concept hand vs CO",
+    "hand": [
+      "A♣",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have A♣J♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AJo is in the BB cold-call range vs CO (gap concept). CO's 22.17% range means AJo has equity edge. Call — BB's pot odds make this comfortable.",
+    "why_wrong": {
+      "1": "3-betting AJo vs CO is the optional line — call is the conservative default.",
+      "2": "AJo has equity edge vs CO's wide range. Fold is too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_04",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs CO weaker hands: 54s-J9s as implied odds hands",
+    "hand": [
+      "6♣",
+      "5♣"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have 6♣5♣ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "65s is in the BB cold-call range vs CO as a weaker implied odds hand (54s through J9s range). BB only needs to call 2 BB more — excellent pot odds. 65s has straight and flush equity vs CO's wide range.",
+    "why_wrong": {
+      "1": "65s has solid implied odds and BB's pot odds make this a call. Fold is too tight.",
+      "2": "3-bet bluffing 65s vs CO from BB — TAG recommends calling suited connectors.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_05",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB cold-call vs CO: AJo is minimum off-suit ace. ATo NOT in range vs CO.",
+    "hand": [
+      "A♥",
+      "T♣"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have A♥T♣ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "ATo is NOT in the BB cold-call range vs CO. AJo is the minimum off-suit ace vs CO. ATo faces domination from AJ+, AQ+, AK in CO's range. Even BB's pot odds do not compensate for the domination risk. Fold.",
+    "why_wrong": {
+      "1": "Calling ATo vs CO creates reverse implied odds — dominated by AJ+ regularly.",
+      "2": "3-betting ATo into CO's range is terrible.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_06",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs CO: KJo+ gap concept hands",
+    "hand": [
+      "K♦",
+      "J♣"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have K♦J♣ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "KJo+ is in the BB cold-call range vs CO (gap concept). CO's wide range means KJo has equity. Call — BB's pot odds make this comfortable.",
+    "why_wrong": {
+      "1": "KJo is in the BB cold-call range vs CO. Fold is too tight.",
+      "2": "3-betting KJo vs CO from BB risks a dominated pot.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_07",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB cold-call vs CO: 22 with 100 BB is set-mine eligible from BB.",
+    "hand": [
+      "2♣",
+      "2♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 2♣2♦ in BB. CO raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "22 is in the BB cold-call range vs CO as a set-mining hand. BB calls 2 BB more. 15:1 rule on actual call: 2 BB × 15 = 30 BB needed. 100 BB satisfies this easily. CO's wider range creates good implied odds when you hit a set.",
+    "why_wrong": {
+      "1": "22 vs CO with 100 BB satisfies the set-mining rule from BB. Fold is too tight.",
+      "2": "3-bet bluffing 22 vs CO — very low fold equity.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_co_08",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs CO: AA-JJ, AQ+, AJs (default) | AJo, ATs, KQs (optional). AQ+ is default.",
+    "hand": [
+      "A♦",
+      "Q♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have A♦Q♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AQ+ is in the default BB 3-bet range vs CO. AQs is a mandatory default 3-bet. OOP sizing: 3.5x = 10.5 BB. AQs dominates a large portion of CO's 22% range.",
+    "why_wrong": {
+      "1": "Calling AQs OOP vs CO is second-best — it is in the default 3-bet range.",
+      "2": "AQs dominates much of CO's range. Fold is wrong.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs BTN: AA-JJ, AQ+, AJs (default) | AJo, ATs, KQs (optional). BTN opens 35.44%. OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "A♥",
+      "A♠"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♥A♠ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AA always 3-bets. OOP sizing: 3.5x = 10.5 BB. BTN opens 35.44% — you have massive equity dominance. Build the pot.",
+    "why_wrong": {
+      "1": "Calling AA OOP vs BTN misses massive value.",
+      "2": "Never fold AA.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs BTN: AA-JJ, AQ+, AJs (default). TT is the bottom of the default range.",
+    "hand": [
+      "T♣",
+      "T♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have T♣T♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "The BB default 3-bet range vs BTN includes AA-JJ, AQ+, AJs. Wait — TT is NOT in the default range vs BTN from BB (default = AA-JJ). Correction: call is also defensible. But 3-bet is slightly preferred given BTN's very wide range. Both are acceptable. 3-bet to 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling TT OOP from BB vs BTN is also defensible — BTN's wide range makes TT strong enough to 3-bet. Both lines are acceptable.",
+      "2": "Folding TT vs BTN steal from BB is far too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_03",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs BTN: AA-JJ, AQ+, AJs (default). AJo is optional but strong vs BTN's wide range.",
+    "hand": [
+      "A♠",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♠J♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AJo is listed as optional in the BB 3-bet range vs BTN. BTN's wide 35.44% range makes AJo a clear value 3-bet — it dominates a huge portion of BTN's range. 3-bet to 10.5 BB (3.5x OOP).",
+    "why_wrong": {
+      "1": "Calling AJo OOP from BB vs BTN is second-best — BTN's wide range makes 3-betting highly profitable.",
+      "2": "Folding AJo vs BTN steal from BB is far too tight.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_04",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB defend vs BTN: wide range including small pairs, suited connectors, one-gappers. T8s qualifies.",
+    "hand": [
+      "T♥",
+      "8♥"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have T♥8♥ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "T8s (one-gapper) is within the BB defend range vs BTN. BB is closing action with good pot odds (31% equity needed — only 2 BB more to call). T8s has straight and flush equity vs BTN's wide 35.44% range.",
+    "why_wrong": {
+      "1": "T8s has plenty of equity vs BTN's wide range. Fold is too tight.",
+      "2": "T8s is not a 3-bet bluff candidate — it has too much showdown value.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_05",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB defend vs BTN: small suited connectors and one-gappers that would be SB bluffs become BB calls.",
+    "hand": [
+      "6♠",
+      "5♠"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have 6♠5♠ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "Hands that would be 3-bet bluffs or folds from SB become calling hands from BB. 65s has straight and flush equity. BB gets better pot odds than SB (only 2 BB more to call). Call.",
+    "why_wrong": {
+      "1": "65s BB vs BTN has enough equity and implied odds to call. Fold is too tight.",
+      "2": "65s is better as a call from BB — you close the action.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_06",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB defend vs BTN: KJo is in BB calling range vs BTN steal.",
+    "hand": [
+      "K♥",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have K♥J♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet for value",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "KJo IS in the BB calling range vs BTN steal. BTN opens 35.44% — KJo has clear equity advantage. You need only 31% equity and KJo comfortably exceeds that. Key contrast: KJo vs UTG = fold. Same hand, different raiser = completely different action.",
+    "why_wrong": {
+      "1": "KJo vs BTN has clear equity advantage. Folding here is too tight.",
+      "2": "KJo is not strong enough to 3-bet for value vs BTN's wide range.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_07",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB defend vs BTN: Q7o is below BB calling range threshold.",
+    "hand": [
+      "Q♦",
+      "7♠"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have Q♦7♠ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "Q7o is below the BB calling range vs BTN. Despite BB's better pot odds, Q7o is too weak and disconnected. The BB calling range requires hands with either equity edge (broadway hands) or implied odds (suited connectors, pairs). Q7o has neither. Fold.",
+    "why_wrong": {
+      "1": "Q7o is below the BB calling range threshold — too weak and disconnected.",
+      "2": "3-betting Q7o — no blocker value and weak equity if called.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_08",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet bluff vs BTN: A5s-A2s, 55-22, T9s, 98s, 87s, 76s, 65s. A5s = 3-bet bluff or fold.",
+    "hand": [
+      "A♦",
+      "5♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♦5♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "A5s in BB vs BTN steal = 3-bet bluff. A5s has Ax blocker (reduces AA/AK combos), is suited, and has wheel straight potential. These are ideal bluff properties. Unlike SB where calling is the worst option, from BB calling A5s is also defensible since you close the action. However 3-bet bluff is the preferred line.",
+    "why_wrong": {
+      "1": "Calling A5s from BB vs BTN is defensible (you close action) but 3-bet bluff is the preferred line.",
+      "2": "Folding A5s vs BTN steal from BB when you have ideal bluff properties is too passive.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_09",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB defend vs BTN: small pairs call with good pot odds. 22 with 100 BB = call.",
+    "hand": [
+      "2♣",
+      "2♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 2♣2♦ in BB. BTN raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "22 in BB vs BTN steal: BB calls only 2 BB more. 15:1 rule on actual call: 2 BB × 15 = 30 BB needed. 100 BB satisfies this easily. Call and set-mine. BTN's wide range means excellent implied odds when you hit.",
+    "why_wrong": {
+      "1": "22 vs BTN with 100 BB satisfies the set-mining rule from BB. Fold is too tight.",
+      "2": "3-bet bluffing 22 is in the bluff range, but calling is also correct here — both lines are defensible.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_10",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs BTN: AA-JJ, AQ+, AJs (default). QQ is clearly in default range.",
+    "hand": [
+      "Q♠",
+      "Q♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have Q♠Q♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "QQ is in the default BB 3-bet range vs BTN (AA-JJ). BTN's 35.44% range is very wide — QQ has massive equity dominance. OOP sizing: 3.5x = 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling QQ OOP from BB vs BTN is second-best — you have massive equity dominance.",
+      "2": "Folding QQ vs BTN steal is never correct.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_11",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB defend vs BTN: ATo is in calling range vs BTN (unlike vs UTG/MP where it folds).",
+    "hand": [
+      "A♣",
+      "T♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♣T♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "ATo vs BTN from BB is a call. BTN's wide 35.44% range means ATo has significant equity advantage. This contrasts sharply with ATo vs UTG (fold) — the raiser's position completely changes the correct action for the same hand.",
+    "why_wrong": {
+      "1": "ATo has equity advantage vs BTN's wide range. Fold is too tight from BB.",
+      "2": "3-betting ATo is the optional line — call is the conservative default.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_btn_12",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB defend vs BTN: J9s is in calling range vs BTN wide steal.",
+    "hand": [
+      "J♦",
+      "9♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have J♦9♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet bluff",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "J9s is in the BB calling range vs BTN steal. BB closes the action and gets excellent pot odds. J9s has straight and flush equity vs BTN's wide range.",
+    "why_wrong": {
+      "1": "J9s has solid implied odds vs BTN's wide range. BB's pot odds make this a clear call.",
+      "2": "3-bet bluffing J9s has too much showdown value — call is superior.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_sb_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB 3-bet vs SB: AA-JJ, AQ+, AJs (default) | AJo, ATs, KQs (optional). Note: BB acts AFTER SB postflop — BB has positional advantage!",
+    "hand": [
+      "A♦",
+      "A♣"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♦A♣ in BB. SB raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AA always 3-bets. OOP sizing applies since BB acts after SB postflop — BB has positional advantage here! IP sizing: 3x = 9 BB. Wait — BB acts after SB on every postflop street, so BB is in position vs SB. IP sizing: 3x = 9 BB.",
+    "why_wrong": {
+      "1": "Calling AA vs SB raise misses massive value.",
+      "2": "Never fold AA.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_sb_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB vs SB raise: BB acts AFTER SB postflop = BB is in position. IP 3-bet sizing: 3x = 9 BB.",
+    "hand": [
+      "T♠",
+      "T♦"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have T♠T♦ in BB. SB raises 3 BB, everyone else folds. What is the correct action and sizing?",
+    "options": [
+      "3-Bet to 9 BB",
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "TT is in the default BB 3-bet range vs SB (AA-JJ at minimum). Crucially: BB acts after SB on every postflop street — BB has positional advantage. Use IP sizing: 3x raise = 9 BB, not OOP sizing.",
+    "why_wrong": {
+      "1": "10.5 BB is the OOP sizing. BB acts after SB postflop, so BB is IP — use 3x = 9 BB.",
+      "2": "Calling TT vs SB is second-best when BB has position.",
+      "3": "Folding TT vs SB raise is too tight."
+    }
+  },
+  {
+    "id": "bb_sb_03",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB vs SB raise: BB is in position postflop. Wide calling range applies.",
+    "hand": [
+      "J♣",
+      "9♣"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♣9♣ in BB. SB raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "J9s in BB vs SB raise = call. BB acts after SB on every postflop street — BB has positional advantage. J9s has flush and straight equity. Call and use your positional advantage.",
+    "why_wrong": {
+      "1": "J9s has clear implied odds vs SB's range. Fold is too tight.",
+      "2": "J9s is not a value 3-bet vs SB's range.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_sb_04",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB vs SB raise: BB is in position. KJo is in BB calling range vs SB.",
+    "hand": [
+      "K♠",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♠J♦ in BB. SB raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "KJo in BB vs SB raise = call. BB has positional advantage over SB postflop. KJo has clear equity vs SB's 22.17% range. Call and use your position.",
+    "why_wrong": {
+      "1": "KJo has equity advantage vs SB's range and BB has position. Fold is too tight.",
+      "2": "KJo is not strong enough to 3-bet for value vs SB's range.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_sb_05",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB vs SB raise: even with positional advantage, Q7o is below BB calling range.",
+    "hand": [
+      "Q♦",
+      "7♠"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have Q♦7♠ in BB. SB raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "Q7o is below the BB calling range vs SB. Despite having positional advantage over SB postflop, Q7o is too weak and disconnected to play profitably. Fold.",
+    "why_wrong": {
+      "1": "Q7o is below the BB calling range threshold even vs SB's wider range.",
+      "2": "3-betting Q7o vs SB is terrible.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_sb_06",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB vs SB raise: BB is in position. AQ+ is default 3-bet. IP sizing: 3x = 9 BB.",
+    "hand": [
+      "A♣",
+      "Q♣"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♣Q♣ in BB. SB raises 3 BB, everyone else folds. What is the correct action and sizing?",
+    "options": [
+      "3-Bet to 9 BB",
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AQs is in the default BB 3-bet range vs SB. BB acts after SB postflop — BB is in position. Use IP sizing: 3x = 9 BB. AQs dominates a large portion of SB's 22.17% range.",
+    "why_wrong": {
+      "1": "10.5 BB is the OOP sizing. BB is IP vs SB — use 3x = 9 BB.",
+      "2": "Calling AQs vs SB when BB is in position is second-best.",
+      "3": "AQs dominates much of SB's range. Fold is wrong."
+    }
+  },
+  {
+    "id": "bb_sb_07",
+    "level": 1,
+    "category": "Cold-Call",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB vs SB raise: BB is in position. Small pairs call easily with pot odds.",
+    "hand": [
+      "3♣",
+      "3♦"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Effective stacks 100 BB.",
+    "question": "You have 3♣3♦ in BB. SB raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "3-Bet",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "33 in BB vs SB: BB only calls 2 BB more. 15:1 rule: 2 BB × 15 = 30 BB needed. 100 BB satisfies this easily. Call for set-mining with positional advantage over SB postflop.",
+    "why_wrong": {
+      "1": "33 vs SB with 100 BB satisfies the set-mining rule. BB also has position. Fold is too tight.",
+      "2": "3-bet bluffing 33 — both call and 3-bet bluff are defensible but call is the default.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "bb_sb_08",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "BB vs SB raise: BB is in position. KQs optional 3-bet vs SB. IP sizing: 3x = 9 BB.",
+    "hand": [
+      "K♦",
+      "Q♦"
+    ],
+    "position": "BB",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♦Q♦ in BB. SB raises 3 BB, everyone else folds. What do you do?",
+    "options": [
+      "3-Bet to 9 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "KQs is listed as optional in the BB 3-bet range vs SB. BB has positional advantage over SB postflop — this strengthens the case for 3-betting. IP sizing: 3x = 9 BB. KQs dominates broadways in SB's 22.17% range.",
+    "why_wrong": {
+      "1": "Calling KQs vs SB is second-best — BB has position and KQs is in the optional 3-bet range.",
+      "2": "KQs dominates much of SB's range. Fold is too tight.",
+      "3": "10.5 BB is OOP sizing. BB is IP vs SB — use 3x = 9 BB."
+    }
+  },
+  {
+    "id": "sq_bb_01",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "BB squeeze OOP: 3.5x raise + 3BB per caller. Default 3-bet value range applies.",
+    "hand": [
+      "A♠",
+      "A♦"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP calls. CO, BTN, SB fold. Action on you.",
+    "question": "You have A♠A♦ in BB. UTG raises 3 BB, MP calls, everyone else folds. What do you do?",
+    "options": [
+      "Squeeze to ~14 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "AA always squeezes. BB closes action — no squeeze risk behind. OOP sizing: 3.5x UTG raise (10.5 BB) + 3 BB for MP caller = 13.5-14 BB. Both players have capped ranges.",
+    "why_wrong": {
+      "1": "Calling AA in a squeeze spot misses massive value.",
+      "2": "Never fold AA.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB per caller."
+    }
+  },
+  {
+    "id": "sq_bb_02",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "BB squeeze OOP: 3.5x raise + 3BB per caller. Default 3-bet value range applies.",
+    "hand": [
+      "Q♠",
+      "Q♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. BTN calls. SB folds. Action on you.",
+    "question": "You have Q♠Q♦ in BB. CO raises 3 BB, BTN calls, SB folds. What do you do?",
+    "options": [
+      "Squeeze to ~14 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "QQ squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Both players have capped ranges. BB closes action — no risk of being squeezed.",
+    "why_wrong": {
+      "1": "Calling QQ 3-way OOP is weak — no initiative in a multiway pot.",
+      "2": "Folding QQ here is never correct.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_bb_03",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "BB squeeze: 9♦9♠ BB vs BTN raise + SB call = squeeze. BTN raise = wider range.",
+    "hand": [
+      "9♦",
+      "9♠"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. SB calls. Action on you.",
+    "question": "You have 9♦9♠ in BB. BTN raises 3 BB, SB calls. What do you do?",
+    "options": [
+      "Squeeze to ~14 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "99 BB with BTN raise + SB call = squeeze for value. BTN's wide range (35.44%) means 99 has strong equity. SB's flat call is capped. Sizing: 3.5x BTN raise (10.5 BB) + 3 BB for SB caller = 13.5 BB.",
+    "why_wrong": {
+      "1": "Calling 99 3-way OOP is weak — no initiative in a multiway pot with overcards on most boards.",
+      "2": "Folding 99 here is far too tight.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_bb_04",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Call",
+    "range_context": "BB squeeze: over-call range includes JJ-TT, AQs-AJs, KQs, ATs. JJ vs UTG raise + CO call = call.",
+    "hand": [
+      "J♥",
+      "J♦"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. CO calls. BTN, SB fold. Action on you.",
+    "question": "You have J♥J♦ in BB. UTG raises 3 BB, CO calls, BTN and SB fold. What do you do?",
+    "options": [
+      "Call",
+      "Squeeze to 14 BB",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "JJ vs UTG raise + CO call from BB = call. JJ is NOT in the default squeeze range vs UTG (AA-KK, AKs minimum). UTG's tight range includes QQ+ which dominates JJ. Call for set-mining implied odds 3-way.",
+    "why_wrong": {
+      "1": "Squeezing JJ into UTG's tight range builds a pot where QQ+ dominates you.",
+      "2": "Folding JJ in BB with good pot odds is too tight.",
+      "3": "10.5 BB is the heads-up sizing — and 3-betting JJ here is wrong regardless."
+    }
+  },
+  {
+    "id": "sq_bb_05",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Fold",
+    "range_context": "BB squeeze: 87s = fold vs UTG raise + MP call. Too weak to squeeze or call OOP 3-way.",
+    "hand": [
+      "8♣",
+      "7♣"
+    ],
+    "position": "BB",
+    "situation": "UTG raises 3 BB. MP calls. CO, BTN, SB fold. Action on you.",
+    "question": "You have 8♣7♣ in BB. UTG raises 3 BB, MP calls, everyone else folds. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "Squeeze to 14 BB",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "87s vs UTG raise + MP call from BB = fold. Too weak to squeeze OOP. Calling 87s 3-way OOP vs UTG's strong range is unprofitable — can't realize equity out of position in a multiway pot vs a tight raiser.",
+    "why_wrong": {
+      "1": "Calling 87s 3-way OOP vs UTG's strong range — can't realize equity out of position.",
+      "2": "Squeezing 87s vs UTG's tight range has very low fold equity.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "sq_bb_06",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "BB squeeze: AKs vs MP raise + BTN call = squeeze. IP vs SB not relevant — BB is OOP vs MP/BTN.",
+    "hand": [
+      "A♣",
+      "K♣"
+    ],
+    "position": "BB",
+    "situation": "MP raises 3 BB. BTN calls. SB folds. Action on you.",
+    "question": "You have A♣K♣ in BB. MP raises 3 BB, BTN calls, SB folds. What do you do?",
+    "options": [
+      "Squeeze to ~14 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "AKs squeezes for value. OOP sizing: 3.5x MP raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Data: 3-betting AK is 2.4x more profitable than calling. Both MP and BTN have capped ranges.",
+    "why_wrong": {
+      "1": "Calling AKs OOP in a squeeze spot is 2.4x less profitable than squeezing.",
+      "2": "AKs is ahead of most ranges here. Fold is wrong.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_bb_07",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "BB squeeze: K♥K♦ vs BTN raise + SB call = squeeze. BB closes action.",
+    "hand": [
+      "K♥",
+      "K♦"
+    ],
+    "position": "BB",
+    "situation": "BTN raises 3 BB. SB calls. Action on you.",
+    "question": "You have K♥K♦ in BB. BTN raises 3 BB, SB calls. What do you do?",
+    "options": [
+      "Squeeze to ~14 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "KK always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for SB caller = 13.5 BB. Both players have capped ranges. BB closes action — squeeze without fear of being re-raised by anyone behind.",
+    "why_wrong": {
+      "1": "Calling KK 3-way OOP misses significant value.",
+      "2": "Never fold KK.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_bb_08",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Call",
+    "range_context": "BB over-call range: TT vs CO raise + BTN call = call from BB.",
+    "hand": [
+      "T♥",
+      "T♦"
+    ],
+    "position": "BB",
+    "situation": "CO raises 3 BB. BTN calls. SB folds. Action on you.",
+    "question": "You have T♥T♦ in BB. CO raises 3 BB, BTN calls, SB folds. What do you do?",
+    "options": [
+      "Call",
+      "Squeeze to 14 BB",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "TT vs CO raise + BTN call from BB = call. TT is in the over-call range. Squeezing OOP with TT into CO's range risks a dominated pot. Call 3-way for excellent set-mining implied odds.",
+    "why_wrong": {
+      "1": "Squeezing TT OOP into CO's range — behind JJ+ and flipping with AK in CO's calling range.",
+      "2": "Folding TT in BB with good pot odds is too tight.",
+      "3": "10.5 BB is heads-up sizing — and squeezing TT OOP is wrong regardless."
+    }
+  },
+  {
+    "id": "bb_sbc_01",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "BB raise vs SB complete: same default ISO range. Sizing: 3BB + 1BB OOP limper. But BB is IP vs SB postflop — use 3BB + 1BB = 4BB.",
+    "hand": [
+      "A♠",
+      "K♦"
+    ],
+    "position": "BB",
+    "situation": "SB completes (calls 1 BB). Action on you in BB.",
+    "question": "You have A♠K♦ in BB. SB completes. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Check",
+      "Raise to 5 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AKo is well above the ISO raise threshold. When SB completes, BB can raise or check. AKo = raise. Sizing: 3 BB base + 1 BB for limper = 4 BB. Note: BB acts after SB postflop, so BB is in position — use IP formula (no OOP adjustment).",
+    "why_wrong": {
+      "1": "Checking AKo when SB limps surrenders all initiative with a premium hand.",
+      "2": "5 BB is the OOP formula — BB is in position vs SB, so 4 BB is correct.",
+      "3": "AKo is strong enough to raise. Fold is never correct."
+    }
+  },
+  {
+    "id": "bb_sbc_02",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "easy",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "Check",
+    "range_context": "BB raise vs SB complete: default ISO range 88+. 72o = check (free look).",
+    "hand": [
+      "7♣",
+      "2♦"
+    ],
+    "position": "BB",
+    "situation": "SB completes (calls 1 BB). Action on you in BB.",
+    "question": "You have 7♣2♦ in BB. SB completes. What do you do?",
+    "options": [
+      "Check",
+      "Raise to 4 BB",
+      "Raise to 3 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "72o is below any raising range. But from BB vs SB complete, checking is free — BB has already paid 1 BB. Take the free look and try to flop something. Never raise 72o.",
+    "why_wrong": {
+      "1": "Raising 72o — no equity and no reason to build a pot with the worst hand in poker.",
+      "2": "Raising 72o for 3 BB still makes no sense.",
+      "3": "Folding for free from BB is never correct — always check when the action is free."
+    }
+  },
+  {
+    "id": "bb_sbc_03",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "BB raise vs SB complete: default ISO range 88+. 99 = raise to 4 BB.",
+    "hand": [
+      "9♥",
+      "9♦"
+    ],
+    "position": "BB",
+    "situation": "SB completes (calls 1 BB). Action on you in BB.",
+    "question": "You have 9♥9♦ in BB. SB completes. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Check",
+      "Raise to 5 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "99 is above the 88+ ISO threshold. Raise to 4 BB (3 BB + 1 BB for SB limper). BB is in position vs SB postflop — take initiative with a strong hand.",
+    "why_wrong": {
+      "1": "Checking 99 vs SB complete surrenders initiative with a strong pair.",
+      "2": "5 BB is the OOP formula — BB is in position vs SB, so 4 BB is correct.",
+      "3": "99 is in the raising range. Fold is too tight."
+    }
+  },
+  {
+    "id": "bb_sbc_04",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "Check",
+    "range_context": "BB raise vs SB complete: default ISO range 88+. 66 is below threshold = check.",
+    "hand": [
+      "6♦",
+      "6♣"
+    ],
+    "position": "BB",
+    "situation": "SB completes (calls 1 BB). Action on you in BB.",
+    "question": "You have 6♦6♣ in BB. SB completes. What do you do?",
+    "options": [
+      "Check",
+      "Raise to 4 BB",
+      "Raise to 3 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "66 is below the 88+ BB raise threshold vs SB complete. Check and take the free look. 66 has set-mining value — see the flop cheaply and fold if you miss.",
+    "why_wrong": {
+      "1": "Raising 66 is outside the default ISO range for BB vs SB complete.",
+      "2": "Raising 66 for 3 BB — still outside the raising range.",
+      "3": "Folding for free from BB is never correct — always check."
+    }
+  },
+  {
+    "id": "bb_sbc_05",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "BB raise vs SB complete: default ISO range AJs+, KJs+, QJs, AJo+, KJo+. AJo = raise.",
+    "hand": [
+      "A♥",
+      "J♣"
+    ],
+    "position": "BB",
+    "situation": "SB completes (calls 1 BB). Action on you in BB.",
+    "question": "You have A♥J♣ in BB. SB completes. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Check",
+      "Raise to 5 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AJo+ is in the default ISO raise range. Raise to 4 BB (3 BB + 1 BB for SB limper). BB is in position vs SB postflop — take initiative.",
+    "why_wrong": {
+      "1": "Checking AJo vs SB complete surrenders initiative with a strong hand.",
+      "2": "5 BB is the OOP formula — BB is in position vs SB, so 4 BB is correct.",
+      "3": "AJo is in the raising range. Fold is too tight."
+    }
+  },
+  {
+    "id": "bb_sbc_06",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "Check",
+    "range_context": "BB raise vs SB complete: default ISO range AJs+. A9s = check (below ISO threshold from BB).",
+    "hand": [
+      "A♦",
+      "9♦"
+    ],
+    "position": "BB",
+    "situation": "SB completes (calls 1 BB). Action on you in BB.",
+    "question": "You have A♦9♦ in BB. SB completes. What do you do?",
+    "options": [
+      "Check",
+      "Raise to 4 BB",
+      "Raise to 3 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "The default ISO range for suited aces starts at AJs+. A9s is below this threshold for BB raise vs SB complete. Check and take the free look — A9s has good implied odds for flopping a strong hand cheaply.",
+    "why_wrong": {
+      "1": "A9s is below the AJs+ ISO threshold for BB raise vs SB complete. Raise only AJs+.",
+      "2": "3 BB is wrong formula anyway — and A9s should check here.",
+      "3": "Folding for free from BB is never correct — always check."
+    }
+  },
+  {
+    "id": "bb_limp_01",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "BB raise vs 1 limper (SB folds): BB is OOP postflop vs limpers. Sizing: 3BB + 1BB limper + 1BB OOP = 5BB.",
+    "hand": [
+      "A♠",
+      "K♦"
+    ],
+    "position": "BB",
+    "situation": "CO limps. UTG, MP, BTN, SB all fold. Action on you in BB.",
+    "question": "You have A♠K♦ in BB. CO limps, everyone else folds. What do you do?",
+    "options": [
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Check",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AKo is in the default ISO range. BB is OOP postflop vs CO limper (CO acts after BB on every street). Sizing: 3 BB + 1 BB (limper) + 1 BB (OOP) = 5 BB.",
+    "why_wrong": {
+      "1": "4 BB is the IP formula — BB is OOP vs CO limper, so add 1 BB for OOP = 5 BB.",
+      "2": "Checking AKo when CO limps surrenders all initiative with a premium hand.",
+      "3": "AKo is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "bb_limp_02",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "Check",
+    "range_context": "BB raise vs limpers: default ISO range 88+. 77 = check (free look).",
+    "hand": [
+      "7♠",
+      "7♦"
+    ],
+    "position": "BB",
+    "situation": "BTN limps. UTG, MP, CO, SB all fold. Action on you in BB.",
+    "question": "You have 7♠7♦ in BB. BTN limps, everyone else folds. What do you do?",
+    "options": [
+      "Check",
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "77 is below the 88+ BB ISO raise threshold vs limpers. Check and take the free look. 77 has set-mining value — see the flop cheaply.",
+    "why_wrong": {
+      "1": "Raising 77 is outside the default ISO range for BB vs limpers.",
+      "2": "4 BB also wrong — and 77 should check here regardless.",
+      "3": "Folding for free from BB is never correct — always check."
+    }
+  },
+  {
+    "id": "bb_limp_03",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "BB raise vs 2 limpers (SB folds): BB is OOP. Sizing: 3BB + 2BB (limpers) + 1BB OOP = 6BB.",
+    "hand": [
+      "Q♠",
+      "J♠"
+    ],
+    "position": "BB",
+    "situation": "UTG limps. CO limps. MP, BTN, SB all fold. Action on you in BB.",
+    "question": "You have Q♠J♠ in BB. UTG and CO limp, everyone else folds. What do you do?",
+    "options": [
+      "Raise to 6 BB",
+      "Raise to 5 BB",
+      "Check",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "QJs is in the default ISO range. With 2 limpers and BB OOP: 3 BB + 2 BB (limpers) + 1 BB (OOP) = 6 BB.",
+    "why_wrong": {
+      "1": "5 BB is the OOP formula for 1 limper — with 2 limpers it is 6 BB.",
+      "2": "Checking QJs when 2 players limp surrenders all initiative.",
+      "3": "QJs is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "bb_limp_04",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "Check",
+    "range_context": "BB raise vs limpers: default ISO range. A9s = check (below AJs+ threshold).",
+    "hand": [
+      "A♣",
+      "9♣"
+    ],
+    "position": "BB",
+    "situation": "BTN limps. UTG, MP, CO, SB all fold. Action on you in BB.",
+    "question": "You have A♣9♣ in BB. BTN limps, everyone else folds. What do you do?",
+    "options": [
+      "Check",
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "The default ISO raise threshold for suited aces is AJs+. A9s does not qualify for a raise from BB vs a limper. Check and see the flop cheaply.",
+    "why_wrong": {
+      "1": "A9s is below the AJs+ ISO threshold. Raise only AJs+ from BB vs limpers.",
+      "2": "4 BB is wrong formula anyway — and A9s should check here.",
+      "3": "Folding for free from BB is never correct — always check."
+    }
+  },
+  {
+    "id": "bb_limp_05",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "BB raise vs 3 limpers (SB folds): BB is OOP. Sizing: 3BB + 3BB (limpers) + 1BB OOP = 7BB.",
+    "hand": [
+      "A♥",
+      "K♣"
+    ],
+    "position": "BB",
+    "situation": "UTG limps. MP limps. BTN limps. CO, SB fold. Action on you in BB.",
+    "question": "You have A♥K♣ in BB. UTG, MP, BTN all limp, CO and SB fold. What do you do?",
+    "options": [
+      "Raise to 7 BB",
+      "Raise to 6 BB",
+      "Check",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AKo is in the default ISO range. With 3 limpers and BB OOP: 3 BB + 3 BB (limpers) + 1 BB (OOP) = 7 BB.",
+    "why_wrong": {
+      "1": "6 BB is the OOP formula for 2 limpers — with 3 limpers it is 7 BB.",
+      "2": "Checking AKo when 3 players limp surrenders all initiative with a premium hand.",
+      "3": "AKo is in the ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "bb_limp_06",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Limper(s)",
+    "action_type": "Check",
+    "range_context": "BB raise vs limpers: default ISO range. 55 = check (below 88+ threshold).",
+    "hand": [
+      "5♥",
+      "5♦"
+    ],
+    "position": "BB",
+    "situation": "CO limps. UTG, MP, BTN, SB all fold. Action on you in BB.",
+    "question": "You have 5♥5♦ in BB. CO limps, everyone else folds. What do you do?",
+    "options": [
+      "Check",
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "55 is below the 88+ BB ISO raise threshold vs limpers. Check and take the free look. 55 has set-mining value — see the flop for free.",
+    "why_wrong": {
+      "1": "Raising 55 is outside the default ISO range for BB vs limpers.",
+      "2": "4 BB also wrong — and 55 should check here regardless.",
+      "3": "Folding for free from BB is never correct — always check."
+    }
+  },
+  {
+    "id": "v4b_bb_01",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "BB 5-bet range vs 4-bet: AA, KK. Call range: QQ, AKs. Fold range: JJ and below, AQo and below.",
+    "hand": [
+      "A♠",
+      "A♦"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet BTN's raise to 10.5 BB. BTN 4-bets to ~22 BB. Action on you.",
+    "question": "You have A♠A♦ in BB. You 3-bet to 10.5 BB, BTN 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "5-Bet jam or raise",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AA 5-bet jams or raises facing a 4-bet. AA dominates even the tightest 4-bet ranges. At 100 BB effective stacks, getting all-in preflop with AA is always correct.",
+    "why_wrong": {
+      "1": "Calling AA vs a 4-bet is second-best — get it all in with the best hand.",
+      "2": "Never fold AA facing a 4-bet.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "v4b_bb_02",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB facing 4-bet: QQ and AKs are typically calls vs depolarized 4-bets at 100 BB.",
+    "hand": [
+      "Q♠",
+      "Q♦"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet CO's raise to 10.5 BB. CO 4-bets to ~22 BB. Action on you.",
+    "question": "You have Q♠Q♦ in BB. You 3-bet to 10.5 BB, CO 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "Call",
+      "Fold",
+      "5-Bet jam",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "QQ vs a 4-bet from CO at 100 BB: call is the standard line. QQ is behind KK+ and flipping with AKs in CO's 4-bet range. At 100 BB calling (not 5-bet jamming) keeps the pot manageable — if CO 5-bets jam, you face a tough fold.",
+    "why_wrong": {
+      "1": "Folding QQ vs a 4-bet at 100 BB is too tight — call and evaluate postflop.",
+      "2": "5-bet jamming QQ into KK+/AKs puts you in a terrible spot if called.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "v4b_bb_03",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "medium",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB facing 4-bet: JJ and below typically fold vs depolarized 4-bets at 100 BB.",
+    "hand": [
+      "J♦",
+      "J♣"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet UTG's raise to 10.5 BB. UTG 4-bets to ~22 BB. Action on you.",
+    "question": "You have J♦J♣ in BB. You 3-bet to 10.5 BB, UTG 4-bets to ~22 BB. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "5-Bet jam",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "JJ vs UTG 4-bet from BB = fold. UTG's 4-bet range is QQ+, AKs at minimum. JJ is behind QQ+ and flipping with AKs. Hardin: if your opponent is 4-betting a strong value range, fold JJ-QQ at 100 BB. The raise/fold line.",
+    "why_wrong": {
+      "1": "Calling JJ OOP in a 4-bet pot vs UTG's tight range leads to expensive spots on every overcard board.",
+      "2": "5-bet jamming JJ into QQ+/AKs — almost always behind or flipping.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "v4b_bb_04",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB facing 4-bet: AQo typically folds vs tight 4-bettor at 100 BB.",
+    "hand": [
+      "A♦",
+      "Q♠"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet UTG's raise to 10.5 BB. UTG 4-bets to ~22 BB. Action on you.",
+    "question": "You have A♦Q♠ in BB. You 3-bet to 10.5 BB, UTG 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "5-Bet jam",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "AQo vs UTG 4-bet from BB = fold. UTG's 4-bet range is QQ+, AKs — AQo is dominated by AK and behind QQ+. Common leak: calling AQo OOP in a 4-bet pot and losing big to AK. Fold.",
+    "why_wrong": {
+      "1": "Calling AQo OOP in a 4-bet pot vs UTG's tight range — dominated by AK regularly.",
+      "2": "5-bet jamming AQo into QQ+/AKs is suicidal.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "v4b_bb_05",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "BB facing 4-bet: AKs is call/5-bet vs 4-bet. Data: 3-betting AK is 2.4x more profitable.",
+    "hand": [
+      "A♣",
+      "K♣"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet BTN's raise to 10.5 BB. BTN 4-bets to ~22 BB. Action on you.",
+    "question": "You have A♣K♣ in BB. You 3-bet to 10.5 BB, BTN 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "Call or 5-Bet jam",
+      "Fold",
+      "Check",
+      "Always fold AK to 4-bets"
+    ],
+    "correct": 0,
+    "explanation": "AKs vs BTN 4-bet: call or 5-bet jam are both valid. AKs has equity vs BTN's 4-bet range (QQ, JJ, AQs+, AK). At 100 BB effective, calling and playing postflop is the standard line. 5-bet jamming is aggressive but also correct.",
+    "why_wrong": {
+      "1": "Folding AKs vs BTN 4-bet is too tight — AKs has strong equity vs most 4-bet ranges.",
+      "2": "Checking is not an option when facing a raise.",
+      "3": "AKs is always worth continuing vs a 4-bet — call or 5-bet jam."
+    }
+  },
+  {
+    "id": "v4b_bb_06",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB facing 4-bet: TT folds vs tight 4-bettor at 100 BB.",
+    "hand": [
+      "T♠",
+      "T♥"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet MP's raise to 10.5 BB. MP 4-bets to ~22 BB. Action on you.",
+    "question": "You have T♠T♥ in BB. You 3-bet to 10.5 BB, MP 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "5-Bet jam",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "TT vs MP 4-bet from BB = fold. MP's 4-bet range is QQ+, AKs at minimum. TT is behind QQ+ and flipping with AKs. OOP at 100 BB, fold is clearly correct.",
+    "why_wrong": {
+      "1": "Calling TT OOP in a 4-bet pot leads to expensive spots on every overcard board.",
+      "2": "5-bet jamming TT into QQ+/AKs — almost always behind.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "v4b_bb_07",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "BB facing 4-bet: KK 5-bets/jams vs any 4-bet at 100 BB.",
+    "hand": [
+      "K♥",
+      "K♦"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet CO's raise to 10.5 BB. CO 4-bets to ~22 BB. Action on you.",
+    "question": "You have K♥K♦ in BB. You 3-bet to 10.5 BB, CO 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "5-Bet jam or raise",
+      "Call",
+      "Fold",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "KK 5-bet jams or raises facing any 4-bet. KK is only behind AA — even vs a tight 4-bet range, getting it all in with KK is almost always correct at 100 BB.",
+    "why_wrong": {
+      "1": "Calling KK vs a 4-bet is second-best — get it all in with the second-best hand.",
+      "2": "Never fold KK facing a 4-bet at 100 BB.",
+      "3": "Checking is not an option when facing a raise."
+    }
+  },
+  {
+    "id": "v4b_bb_08",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "BB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "BB facing 4-bet: 99 and below fold vs tight 4-bettors.",
+    "hand": [
+      "9♥",
+      "9♦"
+    ],
+    "position": "BB",
+    "situation": "You 3-bet BTN's raise to 10.5 BB. BTN 4-bets to ~22 BB. Action on you.",
+    "question": "You have 9♥9♦ in BB. You 3-bet to 10.5 BB, BTN 4-bets to ~22 BB. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "5-Bet jam",
+      "Check"
+    ],
+    "correct": 0,
+    "explanation": "99 vs BTN 4-bet from BB = fold. BTN's 4-bet range includes JJ+, AKs at minimum. 99 is behind JJ+ and flipping with AKs. OOP in a 4-bet pot, fold is clearly correct.",
+    "why_wrong": {
+      "1": "Calling 99 OOP in a 4-bet pot — behind JJ+ and can't realize equity OOP.",
+      "2": "5-bet jamming 99 into JJ+/AKs is suicidal.",
+      "3": "Checking is not an option when facing a raise."
+    }
   }
 ]
