@@ -2398,5 +2398,305 @@
       "2": "4-betting 99 into JJ+/AK — almost always behind or flipping.",
       "3": "Shoving 99 is a massive overplay."
     }
+  },
+  {
+    "id": "iso_mp_01",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "easy",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing: 3BB + 1BB per limper = 4BB with 1 limper.",
+    "hand": [
+      "A♠",
+      "K♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♠K♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Limp behind",
+      "Fold",
+      "Raise to 3 BB"
+    ],
+    "correct": 0,
+    "explanation": "AKo is well above the default ISO range threshold. ISO raise to 4 BB (3 BB base + 1 BB for the UTG limper). Never limp behind with a premium hand — you surrender fold equity and initiative.",
+    "why_wrong": {
+      "1": "Limping AKo behind surrenders fold equity and initiative with a premium hand.",
+      "2": "AKo is in the ISO range. Fold is too tight.",
+      "3": "Always add 1 BB per limper. 1 limper = 4 BB, not 3 BB."
+    }
+  },
+  {
+    "id": "iso_mp_02",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "easy",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing: 4BB with 1 limper.",
+    "hand": [
+      "Q♠",
+      "Q♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have Q♠Q♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Limp behind",
+      "Fold",
+      "Raise to 6 BB"
+    ],
+    "correct": 0,
+    "explanation": "QQ is well above the 88+ threshold in the default ISO range. ISO raise to 4 BB. Uniform sizing — same 4 BB for QQ as for 88. Never slow-play by limping behind.",
+    "why_wrong": {
+      "1": "Limping QQ behind is a fundamental mistake — you surrender fold equity with a premium hand.",
+      "2": "QQ is in the ISO range. Fold is too tight.",
+      "3": "Uniform sizing. 6 BB telegraphs a premium hand — always 4 BB with 1 limper."
+    }
+  },
+  {
+    "id": "iso_mp_03",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing: 4BB with 1 limper.",
+    "hand": [
+      "8♥",
+      "8♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have 8♥8♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Limp behind",
+      "Fold",
+      "Raise to 3 BB"
+    ],
+    "correct": 0,
+    "explanation": "88 is the minimum hand in the default ISO range (88+). It qualifies. ISO raise to 4 BB. With players still behind you (CO, BTN, SB, BB), the extra 1 BB over a standard open helps thin the field.",
+    "why_wrong": {
+      "1": "Limping 88 behind surrenders initiative and position advantage.",
+      "2": "88 is in the default ISO range. Fold is too tight.",
+      "3": "Always add 1 BB per limper. 1 limper = 4 BB, not 3 BB."
+    }
+  },
+  {
+    "id": "iso_mp_04",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "Over-Limp",
+    "range_context": "Default ISO Range starts at 88+. 77 is in Optional/Over-Limp range (22-77).",
+    "hand": [
+      "7♣",
+      "7♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have 7♣7♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Over-limp",
+      "Raise to 4 BB",
+      "Fold",
+      "Raise to 3 BB"
+    ],
+    "correct": 0,
+    "explanation": "77 is in the optional over-limp range (22-77), not the default ISO range (88+). With players still behind you, ISO raising a speculative hand risks a squeeze. Over-limp for set-mining implied odds.",
+    "why_wrong": {
+      "1": "ISO raising 77 is outside the default ISO range. With 4 players still to act, squeeze risk is real.",
+      "2": "Folding 77 vs a UTG limper is too tight — over-limp.",
+      "3": "3 BB ignores the limper formula anyway, and 77 should not ISO raise by default."
+    }
+  },
+  {
+    "id": "iso_mp_05",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing: 4BB with 1 limper.",
+    "hand": [
+      "A♣",
+      "J♣"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♣J♣ in MP. UTG limps. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Limp behind",
+      "Fold",
+      "Raise to 3 BB"
+    ],
+    "correct": 0,
+    "explanation": "AJs+ is in the default ISO range. ISO raise to 4 BB. AJs has top pair value, nut flush draws, and fold equity against the remaining players.",
+    "why_wrong": {
+      "1": "Limping AJs behind surrenders initiative and position advantage.",
+      "2": "AJs is in the default ISO range. Fold is too tight.",
+      "3": "Always add 1 BB per limper. 1 limper = 4 BB, not 3 BB."
+    }
+  },
+  {
+    "id": "iso_mp_06",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "Over-Limp",
+    "range_context": "Default ISO Range for suited aces starts at AJs+. A9s is in Optional/Over-Limp range.",
+    "hand": [
+      "A♦",
+      "9♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♦9♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Over-limp or Fold",
+      "Raise to 4 BB",
+      "Raise to 3 BB",
+      "Always ISO suited aces"
+    ],
+    "correct": 0,
+    "explanation": "The default ISO range for suited aces starts at AJs+. A9s is in the optional over-limp range. Over-limp for implied odds — not an ISO raise. With four players still behind, ISO raising a marginal hand risks being squeezed.",
+    "why_wrong": {
+      "1": "A9s is below the AJs+ ISO threshold. ISO raising it risks a squeeze from players behind.",
+      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default.",
+      "3": "Suited aces only ISO raise from AJs+ — not all suited aces."
+    }
+  },
+  {
+    "id": "iso_mp_07",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing: 4BB with 1 limper.",
+    "hand": [
+      "K♠",
+      "J♠"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have K♠J♠ in MP. UTG limps. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Limp behind",
+      "Fold",
+      "Raise to 3 BB"
+    ],
+    "correct": 0,
+    "explanation": "KJs+ is in the default ISO range. ISO raise to 4 BB. KJs has top pair value, flush draws, and fold equity. Uniform sizing.",
+    "why_wrong": {
+      "1": "KJs is in the default ISO range — limping surrenders initiative.",
+      "2": "KJs is in the default range. Fold is too tight.",
+      "3": "Always add 1 BB per limper — 1 limper = 4 BB, not 3 BB."
+    }
+  },
+  {
+    "id": "iso_mp_08",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "Over-Limp",
+    "range_context": "Default ISO Range for suited kings starts at KJs+. KTs is in Optional/Over-Limp range.",
+    "hand": [
+      "K♦",
+      "T♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have K♦T♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Over-limp or Fold",
+      "Raise to 4 BB",
+      "Raise to 3 BB",
+      "Always ISO suited kings"
+    ],
+    "correct": 0,
+    "explanation": "The default ISO range for suited kings starts at KJs+. KTs is in the optional over-limp range. Over-limp or fold — do not ISO raise. With four players still behind, the squeeze risk is real with a marginal hand.",
+    "why_wrong": {
+      "1": "KTs is below the KJs+ ISO threshold. Over-limp or fold is correct.",
+      "2": "3 BB is wrong sizing anyway, and KTs should not ISO raise by default.",
+      "3": "Suited kings only ISO raise from KJs+ — not all suited kings."
+    }
+  },
+  {
+    "id": "iso_mp_09",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. Sizing: 4BB with 1 limper.",
+    "hand": [
+      "A♥",
+      "J♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♥J♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Raise to 4 BB",
+      "Limp behind",
+      "Fold",
+      "Raise to 3 BB"
+    ],
+    "correct": 0,
+    "explanation": "AJo+ is in the default ISO range. AJo qualifies as the minimum off-suit ace for ISO raising. Raise to 4 BB. Uniform sizing — same 4 BB for AJo as for AKo.",
+    "why_wrong": {
+      "1": "AJo is in the default ISO range — limping surrenders initiative.",
+      "2": "AJo is in the ISO range. Fold is too tight.",
+      "3": "Always add 1 BB per limper. 1 limper = 4 BB, not 3 BB."
+    }
+  },
+  {
+    "id": "iso_mp_10",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "MP",
+    "scenario": "Limper(s)",
+    "action_type": "Over-Limp",
+    "range_context": "Default ISO Range off-suit aces starts at AJo+. ATo is in Optional/Over-Limp range.",
+    "hand": [
+      "A♠",
+      "T♦"
+    ],
+    "position": "MP",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♠T♦ in MP. UTG limps. What do you do?",
+    "options": [
+      "Over-limp or Fold",
+      "Raise to 4 BB",
+      "Raise to 3 BB",
+      "Always ISO off-suit aces"
+    ],
+    "correct": 0,
+    "explanation": "The default ISO range for off-suit aces starts at AJo+. ATo is below this threshold — it is in the optional over-limp range. Over-limp or fold. With four players still behind, ISO raising a marginal hand risks a squeeze.",
+    "why_wrong": {
+      "1": "ATo is below the AJo+ ISO threshold. Over-limp or fold is correct.",
+      "2": "3 BB is wrong sizing anyway, and ATo should not ISO raise by default.",
+      "3": "Off-suit aces only ISO raise from AJo+ — not all off-suit aces."
+    }
   }
 ]
