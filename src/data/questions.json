@@ -7708,5 +7708,1745 @@
       "2": "4-betting KJs into a 3-bet range that includes KK and AK is suicidal.",
       "3": "Shoving KJs is a massive overplay."
     }
+  },
+  {
+    "id": "rfi_sb_c_01",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "A♠",
+      "A♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♠A♣ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise 4 BB"
+    ],
+    "correct": 0,
+    "explanation": "AA raises from every position — including SB. 3 BB is the standard open sizing. Completing (limping) from SB is a fundamental mistake regardless of hand strength — you surrender fold equity and initiative heads-up.",
+    "why_wrong": {
+      "1": "Completing SB with AA gives BB a free look and surrenders all initiative. Never complete from SB.",
+      "2": "Never fold AA.",
+      "3": "Uniform 3 BB for all hands — same as every other position."
+    }
+  },
+  {
+    "id": "rfi_sb_c_02",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "7♣",
+      "2♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have 7♣2♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Complete (call 1 BB)",
+      "Raise 3 BB",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "72o is not in any range. Hardin is explicit: always raise or fold from SB — never complete. 72o has no equity so fold. Completing is the worst option — you build a pot OOP with a worthless hand.",
+    "why_wrong": {
+      "1": "Completing SB with 72o is a fundamental mistake — you're OOP with a worthless hand.",
+      "2": "Raising 72o has no merit — fold is clearly correct.",
+      "3": "Smaller sizing does not fix a hand with no equity."
+    }
+  },
+  {
+    "id": "rfi_sb_c_03",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "2♣",
+      "2♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have 2♣2♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "22+ is in the conservative SB range. All pocket pairs qualify. Raise 3 BB — never complete. You are heads-up vs BB with positional advantage on every postflop street... wait, actually BB acts after SB postflop so SB is OOP. Still: raise or fold, never complete.",
+    "why_wrong": {
+      "1": "Completing 22 SB is always wrong — raise or fold only.",
+      "2": "22 is in the SB range. Fold is too tight.",
+      "3": "Always 3 BB — uniform sizing."
+    }
+  },
+  {
+    "id": "rfi_sb_c_04",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "K♦",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♦9♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only from BTN"
+    ],
+    "correct": 0,
+    "explanation": "K9s+ is in the conservative SB range (same as CO). K9s qualifies as the minimum suited king. Raise 3 BB — never complete from SB.",
+    "why_wrong": {
+      "1": "Completing K9s SB is always wrong — raise or fold only.",
+      "2": "K9s is in the SB range. Fold is too tight.",
+      "3": "K9s is a legitimate conservative SB open."
+    }
+  },
+  {
+    "id": "rfi_sb_c_05",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Fold",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "K♠",
+      "8♠"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♠8♠ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "The conservative SB suited king range starts at K9s+. K8s does not qualify — it is in the moderate SB range. Fold. Never complete as an alternative.",
+    "why_wrong": {
+      "1": "K8s is below the K9s+ conservative SB threshold.",
+      "2": "Completing from SB is never correct — raise or fold only.",
+      "3": "Smaller sizing does not change that K8s is below threshold."
+    }
+  },
+  {
+    "id": "rfi_sb_c_06",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "J♠",
+      "9♠"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♠9♠ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only J9s or better"
+    ],
+    "correct": 0,
+    "explanation": "J9s+ is in the conservative SB range (same as CO). J9s qualifies as the minimum suited jack one-gapper. Raise 3 BB.",
+    "why_wrong": {
+      "1": "Completing J9s SB is always wrong — raise or fold only.",
+      "2": "J9s is in the SB range. Fold is too tight.",
+      "3": "J9s is a legitimate conservative SB open."
+    }
+  },
+  {
+    "id": "rfi_sb_c_07",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "A♥",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♥9♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only A9s suited"
+    ],
+    "correct": 0,
+    "explanation": "A9o+ is in the conservative SB off-suit ace range. A9o qualifies as the minimum off-suit ace. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing A9o SB is always wrong — raise or fold only.",
+      "2": "A9o is in the SB range. Fold is too tight.",
+      "3": "A9o qualifies off-suit from SB — suited is not required."
+    }
+  },
+  {
+    "id": "rfi_sb_c_08",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Fold",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "A♠",
+      "8♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♠8♣ off-suit in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "The conservative SB off-suit ace range starts at A9o+. A8o does not qualify. Fold. Never complete as an alternative — always raise or fold from SB.",
+    "why_wrong": {
+      "1": "A8o is below the A9o+ conservative SB threshold.",
+      "2": "Completing from SB is never correct — raise or fold only.",
+      "3": "Smaller sizing does not change that A8o is below threshold."
+    }
+  },
+  {
+    "id": "rfi_sb_c_09",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "K♣",
+      "T♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♣T♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only KTs suited"
+    ],
+    "correct": 0,
+    "explanation": "KTo+ is in the conservative SB off-suit king range. KTo qualifies as the minimum off-suit king. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing KTo SB is always wrong — raise or fold only.",
+      "2": "KTo is in the SB range. Fold is too tight.",
+      "3": "KTo qualifies off-suit from SB — suited is not required."
+    }
+  },
+  {
+    "id": "rfi_sb_c_10",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Fold",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "K♥",
+      "9♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♥9♣ off-suit in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "The conservative SB off-suit king range starts at KTo+. K9o does not qualify — note that K9s (suited) does qualify. The off-suit threshold is one step higher than the suited threshold. Fold.",
+    "why_wrong": {
+      "1": "K9o is below the KTo+ threshold. Suited (K9s) qualifies but off-suit (K9o) does not.",
+      "2": "Completing from SB is never correct — raise or fold only.",
+      "3": "Smaller sizing does not fix a hand below threshold."
+    }
+  },
+  {
+    "id": "rfi_sb_c_11",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "Q♠",
+      "J♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have Q♠J♣ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only QJs suited"
+    ],
+    "correct": 0,
+    "explanation": "QJo is explicitly listed in the conservative SB range (A9o+, KTo+, QJo). It is the only off-suit queen in the SB range. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing QJo SB is always wrong — raise or fold only.",
+      "2": "QJo is in the SB range. Fold is too tight.",
+      "3": "QJo qualifies off-suit — it is explicitly listed in the conservative SB range."
+    }
+  },
+  {
+    "id": "rfi_sb_c_12",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Fold",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "Q♦",
+      "T♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have Q♦T♣ off-suit in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "The conservative SB off-suit queen range contains only QJo. QTo does not qualify — it opens in the moderate SB range. Fold. Never complete as an alternative.",
+    "why_wrong": {
+      "1": "QTo is below the QJo conservative SB threshold for off-suit queens.",
+      "2": "Completing from SB is never correct — raise or fold only.",
+      "3": "Smaller sizing does not fix a hand below threshold."
+    }
+  },
+  {
+    "id": "rfi_sb_c_13",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "9♦",
+      "8♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have 9♦8♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "97s+ is in the conservative SB range. 98s is above the 97s+ threshold and qualifies. Raise 3 BB. Initiative compensates for the positional disadvantage vs BB.",
+    "why_wrong": {
+      "1": "Completing 98s SB is always wrong — raise or fold only.",
+      "2": "98s is in the SB range. Fold is too tight.",
+      "3": "Always 3 BB — uniform sizing."
+    }
+  },
+  {
+    "id": "rfi_sb_c_14",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Fold",
+    "range_context": "Conservative SB (22.17%): 22+, A2s+, K9s+, QTs+, J9s+, T8s+, 97s+, 86s+, 76s, A9o+, KTo+, QJo (same as CO)",
+    "hand": [
+      "J♦",
+      "8♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♦8♦ in SB. UTG, MP, CO, BTN all fold. Action on you. What do you do?",
+    "options": [
+      "Fold",
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "The conservative SB suited range for jacks starts at J9s+. J8s does not qualify in the conservative SB range — note J8s does open from BTN. The SB and CO share the same 22.17% range, so J8s is excluded. Fold.",
+    "why_wrong": {
+      "1": "J8s is below the J9s+ conservative SB threshold. J8s opens from BTN but not SB.",
+      "2": "Completing from SB is never correct — raise or fold only.",
+      "3": "Smaller sizing does not fix a hand below threshold."
+    }
+  },
+  {
+    "id": "rfi_sb_m_01",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Moderate SB (24.89%): adds K8s, 75s+, 65s, QTo+, JTo to conservative SB range",
+    "hand": [
+      "K♠",
+      "8♠"
+    ],
+    "position": "SB",
+    "situation": "Moderate ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♠8♠ in SB. UTG, MP, CO, BTN all fold. You are using moderate ranges. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only K9s or better"
+    ],
+    "correct": 0,
+    "explanation": "K8s is in the moderate SB range (same additions as moderate CO). Conservative SB starts at K9s+. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing from SB is always wrong — raise or fold only.",
+      "2": "K8s is in the moderate SB range. Fold is too tight.",
+      "3": "K8s meets the moderate SB threshold."
+    }
+  },
+  {
+    "id": "rfi_sb_m_02",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Moderate SB (24.89%): adds K8s, 75s+, 65s, QTo+, JTo to conservative SB range",
+    "hand": [
+      "7♦",
+      "5♦"
+    ],
+    "position": "SB",
+    "situation": "Moderate ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have 7♦5♦ in SB. UTG, MP, CO, BTN all fold. You are using moderate ranges. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only 76s or better"
+    ],
+    "correct": 0,
+    "explanation": "75s+ is in the moderate SB range. Conservative SB includes 76s but not 75s — moderate adds 75s. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing from SB is always wrong — raise or fold only.",
+      "2": "75s is in the moderate SB range. Fold is too tight.",
+      "3": "75s is a legitimate moderate SB open."
+    }
+  },
+  {
+    "id": "rfi_sb_m_03",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Moderate SB (24.89%): adds K8s, 75s+, 65s, QTo+, JTo to conservative SB range",
+    "hand": [
+      "Q♥",
+      "T♣"
+    ],
+    "position": "SB",
+    "situation": "Moderate ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have Q♥T♣ in SB. UTG, MP, CO, BTN all fold. You are using moderate ranges. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only QJs or better"
+    ],
+    "correct": 0,
+    "explanation": "QTo+ is in the moderate SB range. Conservative SB only has QJo as an off-suit queen — moderate adds QTo+. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing from SB is always wrong — raise or fold only.",
+      "2": "QTo is in the moderate SB range. Fold is too tight.",
+      "3": "QTo qualifies off-suit in moderate ranges."
+    }
+  },
+  {
+    "id": "rfi_sb_m_04",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Open Raise",
+    "range_context": "Moderate SB (24.89%): adds K8s, 75s+, 65s, QTo+, JTo to conservative SB range",
+    "hand": [
+      "J♠",
+      "T♣"
+    ],
+    "position": "SB",
+    "situation": "Moderate ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♠T♣ in SB. UTG, MP, CO, BTN all fold. You are using moderate ranges. What do you do?",
+    "options": [
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Fold",
+      "Raise only JTs suited"
+    ],
+    "correct": 0,
+    "explanation": "JTo is in the moderate SB range. Conservative SB does not include JTo — moderate adds it. Raise 3 BB — never complete.",
+    "why_wrong": {
+      "1": "Completing from SB is always wrong — raise or fold only.",
+      "2": "JTo is in the moderate SB range. Fold is too tight.",
+      "3": "JTo qualifies off-suit in moderate ranges."
+    }
+  },
+  {
+    "id": "rfi_sb_m_05",
+    "level": 1,
+    "category": "Open Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "RFI",
+    "action_type": "Fold",
+    "range_context": "Moderate SB (24.89%): adds K8s, 75s+, 65s, QTo+, JTo. 64s NOT in range.",
+    "hand": [
+      "6♣",
+      "4♣"
+    ],
+    "position": "SB",
+    "situation": "Moderate ranges. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have 6♣4♣ in SB. UTG, MP, CO, BTN all fold. You are using moderate ranges. What do you do?",
+    "options": [
+      "Fold",
+      "Raise 3 BB",
+      "Complete (call 1 BB)",
+      "Raise 2 BB"
+    ],
+    "correct": 0,
+    "explanation": "The moderate SB range includes 65s but not 64s. 64s is a two-gapper and below the moderate SB threshold. Fold — never complete.",
+    "why_wrong": {
+      "1": "64s is below the 65s threshold in the moderate SB range.",
+      "2": "Completing from SB is never correct — raise or fold only.",
+      "3": "Smaller sizing does not fix a hand below threshold."
+    }
+  },
+  {
+    "id": "3b_sb_utg_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs UTG: AA-KK, AKs (default) | QQ, AKo (optional). OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "A♦",
+      "A♣"
+    ],
+    "position": "SB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♦A♣ in SB. UTG raises 3 BB, MP, CO, BTN fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "AA is always a value 3-bet. OOP sizing: 3.5x raise = 10.5 BB. Never call or complete with AA facing a raise.",
+    "why_wrong": {
+      "1": "Calling AA OOP vs UTG misses massive value — always 3-bet.",
+      "2": "Never fold AA.",
+      "3": "Completing with AA is a fundamental mistake — surrender initiative and build no pot."
+    }
+  },
+  {
+    "id": "3b_sb_utg_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB 3-bet vs UTG: AA-KK, AKs (default) | QQ, AKo (optional). JJ = fold OOP vs UTG.",
+    "hand": [
+      "J♦",
+      "J♣"
+    ],
+    "position": "SB",
+    "situation": "UTG raises 3 BB. MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♦J♣ in SB. UTG raises 3 BB, MP, CO, BTN fold. What do you do?",
+    "options": [
+      "Fold",
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "JJ vs UTG from SB = fold. UTG's range is 9.8% — very tight. JJ is behind QQ+ and flipping with AKs. OOP at 100 BB, fold is correct. The raise/fold line: raise JJ from SB as first action, but fold to a UTG raise.",
+    "why_wrong": {
+      "1": "3-betting JJ OOP into UTG's tight range builds a large pot where you're often dominated.",
+      "2": "Calling JJ OOP vs UTG leads to expensive spots on every A/K/Q board with no initiative.",
+      "3": "Completing with JJ vs UTG raise is terrible — you'd be OOP with a dominated hand."
+    }
+  },
+  {
+    "id": "3b_sb_mp_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs MP: AA-QQ, AKs (default) | JJ, AKo, AQs (optional). OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "K♥",
+      "K♦"
+    ],
+    "position": "SB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN all fold. Action on you.",
+    "question": "You have K♥K♦ in SB. MP raises 3 BB, UTG, CO, BTN fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "KK is in the default SB 3-bet range vs MP. OOP sizing: 3.5x = 10.5 BB. Build the pot with a premium hand.",
+    "why_wrong": {
+      "1": "Calling KK OOP vs MP misses significant value.",
+      "2": "Never fold KK.",
+      "3": "Completing with KK vs a raise is a fundamental mistake."
+    }
+  },
+  {
+    "id": "3b_sb_mp_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB 3-bet vs MP: AA-QQ, AKs (default) | JJ, AKo, AQs (optional). TT = fold OOP.",
+    "hand": [
+      "T♠",
+      "T♦"
+    ],
+    "position": "SB",
+    "situation": "MP raises 3 BB. UTG, CO, BTN all fold. Action on you.",
+    "question": "You have T♠T♦ in SB. MP raises 3 BB, UTG, CO, BTN fold. What do you do?",
+    "options": [
+      "Fold",
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "TT vs MP from SB = fold. TT is not in the SB default or optional 3-bet range vs MP. MP's range includes JJ+, AQ+ which TT is behind or flipping with. OOP at 100 BB, fold.",
+    "why_wrong": {
+      "1": "3-betting TT OOP vs MP's range risks a dominated pot.",
+      "2": "Calling TT OOP vs MP leads to expensive spots on every overcard board.",
+      "3": "Completing TT vs a raise is terrible — OOP with a marginal hand."
+    }
+  },
+  {
+    "id": "3b_sb_co_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs CO: AA-TT, AJ+ (default) | KQs, ATs (optional). OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "T♥",
+      "T♦"
+    ],
+    "position": "SB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN all fold. Action on you.",
+    "question": "You have T♥T♦ in SB. CO raises 3 BB, UTG, MP, BTN fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "TT is in the default SB 3-bet range vs CO (AA-TT, AJ+). CO's range is 22.17% — TT has clear equity advantage. OOP sizing: 3.5x = 10.5 BB. Calling TT OOP from SB creates difficult spots on every overcard board.",
+    "why_wrong": {
+      "1": "Calling TT OOP from SB vs CO is a leak — every A/K/Q/J board puts you in a tough spot.",
+      "2": "Folding TT vs CO raise from SB is far too tight.",
+      "3": "Completing TT vs a CO raise is terrible — OOP with no initiative."
+    }
+  },
+  {
+    "id": "3b_sb_co_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs CO: AA-TT, AJ+ (default) | KQs, ATs (optional). AJ+ includes AJo.",
+    "hand": [
+      "A♣",
+      "J♦"
+    ],
+    "position": "SB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN all fold. Action on you.",
+    "question": "You have A♣J♦ in SB. CO raises 3 BB, UTG, MP, BTN fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "AJ+ is in the default SB 3-bet range vs CO. AJ+ includes both AJs and AJo — both are default 3-bets from SB vs CO. OOP sizing: 3.5x = 10.5 BB.",
+    "why_wrong": {
+      "1": "Calling AJo OOP from SB vs CO is second-best — it is in the default 3-bet range.",
+      "2": "AJo vs CO's 22% range has equity advantage. Fold is wrong.",
+      "3": "Completing AJo vs a CO raise surrenders all initiative."
+    }
+  },
+  {
+    "id": "3b_sb_co_03",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB 3-bet vs CO: AA-TT, AJ+ (default) | KQs, ATs (optional). 99 = fold OOP.",
+    "hand": [
+      "9♥",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "CO raises 3 BB. UTG, MP, BTN all fold. Action on you.",
+    "question": "You have 9♥9♦ in SB. CO raises 3 BB, UTG, MP, BTN fold. What do you do?",
+    "options": [
+      "Fold",
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "99 vs CO from SB = fold. TT is the bottom of the SB 3-bet range — 99 does not qualify. OOP in a 3-bet pot with a marginal hand vs CO's 22% range creates difficult spots. Fold.",
+    "why_wrong": {
+      "1": "3-betting 99 OOP vs CO — behind JJ+ and flipping with AK in CO's calling range.",
+      "2": "Calling 99 OOP from SB leads to expensive spots on every overcard board.",
+      "3": "Completing 99 vs a CO raise is terrible — OOP with no initiative."
+    }
+  },
+  {
+    "id": "3b_sb_btn_01",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs BTN: AA-TT, AJ+ (default) | KQs, ATs (optional). BTN opens 35.44%. OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "A♥",
+      "A♠"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♥A♠ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "AA always 3-bets. OOP sizing: 3.5x = 10.5 BB. BTN opens 35.44% — you have clear equity dominance. Build the pot.",
+    "why_wrong": {
+      "1": "Calling AA OOP vs BTN misses massive value.",
+      "2": "Never fold AA.",
+      "3": "Completing AA vs a raise is a fundamental mistake."
+    }
+  },
+  {
+    "id": "3b_sb_btn_02",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs BTN: AA-TT, AJ+ (default) | KQs, ATs (optional). BTN opens 35.44%. OOP sizing: 3.5x = 10.5 BB.",
+    "hand": [
+      "T♣",
+      "T♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have T♣T♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "TT is the bottom of the default SB 3-bet range vs BTN (AA-TT, AJ+). BTN opens 35.44% — TT has strong equity advantage. OOP 3.5x = 10.5 BB. Calling TT OOP from SB creates difficult spots on nearly every board.",
+    "why_wrong": {
+      "1": "Calling TT OOP from SB vs BTN is a leak — every A/K/Q/J board puts you in a tough spot.",
+      "2": "Folding TT vs BTN steal from SB is far too tight.",
+      "3": "Completing TT vs a BTN raise surrenders all initiative."
+    }
+  },
+  {
+    "id": "3b_sb_btn_03",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs BTN: AA-TT, AJ+ (default) | KQs, ATs (optional). AJ+ includes both AJs and AJo.",
+    "hand": [
+      "A♦",
+      "J♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♦J♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "AJ+ is in the default SB 3-bet range vs BTN. AJ+ includes both AJs and AJo — both are default 3-bets. OOP sizing: 3.5x = 10.5 BB. Optional additions from SB: KQs, ATs.",
+    "why_wrong": {
+      "1": "AJs OOP from SB vs BTN is a default 3-bet — calling is second-best.",
+      "2": "Folding AJs vs BTN steal from SB is too tight.",
+      "3": "Completing AJs vs a BTN raise surrenders all initiative."
+    }
+  },
+  {
+    "id": "3b_sb_btn_04",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs BTN: AA-TT, AJ+ (default) | KQs, ATs (optional). AJo is default 3-bet.",
+    "hand": [
+      "A♠",
+      "J♣"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♠J♣ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "AJo is in the default SB 3-bet range vs BTN (AJ+ means both suited and off-suit). OOP sizing: 3.5x = 10.5 BB. BTN's wide 35.44% range makes AJo a clear value 3-bet.",
+    "why_wrong": {
+      "1": "Calling AJo OOP from SB is second-best — it is in the default 3-bet range.",
+      "2": "Folding AJo vs BTN steal from SB is too tight.",
+      "3": "Completing AJo vs a BTN raise surrenders all initiative."
+    }
+  },
+  {
+    "id": "3b_sb_btn_05",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "SB calling range vs BTN: TT-77, ATs+, AJo+, KQs, QJs, JTs. 88 is in calling range.",
+    "hand": [
+      "8♥",
+      "8♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have 8♥8♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet to 10.5 BB",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "88 falls in the SB calling range vs BTN (TT-77 medium pairs). TT is the bottom of the default 3-bet range — 88 is below this and should call. On low boards continue; on overcards fold to BTN aggression.",
+    "why_wrong": {
+      "1": "TT is the bottom of the SB 3-bet range — 88 is below this threshold. Call, not 3-bet.",
+      "2": "Folding 88 vs BTN steal from SB is too tight — it is in the calling range.",
+      "3": "Completing is never an option when facing a raise."
+    }
+  },
+  {
+    "id": "3b_sb_btn_06",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB calling range vs BTN: TT-77. 66 is below calling range — fold.",
+    "hand": [
+      "6♠",
+      "6♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have 6♠6♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet to 10.5 BB",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "The SB calling range vs BTN for pairs is TT-77. 66 is below this threshold — fold. 66 can be a 3-bet bluff (it is in the bluff range: 55-22) but only when BTN has high fold-to-3-bet — that is a Level 2 adjustment.",
+    "why_wrong": {
+      "1": "Calling 66 OOP from SB vs BTN — below the calling range threshold.",
+      "2": "3-betting 66 for value is wrong — it has no value 3-bet equity vs BTN's range.",
+      "3": "Completing is never an option when facing a raise."
+    }
+  },
+  {
+    "id": "3b_sb_btn_07",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet vs BTN optional: KQs. KQs vs BTN steal = optional 3-bet.",
+    "hand": [
+      "K♠",
+      "Q♠"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have K♠Q♠ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB",
+      "Call",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "KQs is listed as optional in the SB 3-bet range vs BTN. BTN opens 35.44% — KQs dominates KJ, QJ, broadways in that wide range. Optional 3-bet to 10.5 BB (3.5x OOP). Both 3-bet and fold are defensible; 3-bet is the more aggressive line.",
+    "why_wrong": {
+      "1": "Calling KQs OOP from SB vs BTN is second-best — it has equity dominance vs BTN's wide range.",
+      "2": "Folding KQs vs BTN steal from SB is too tight when it is in the optional 3-bet range.",
+      "3": "Completing KQs vs a raise surrenders all initiative."
+    }
+  },
+  {
+    "id": "3b_sb_btn_08",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Call",
+    "range_context": "SB calling range vs BTN: TT-77, ATs+, AJo+, KQs, QJs, JTs. QJs is in calling range.",
+    "hand": [
+      "Q♦",
+      "J♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have Q♦J♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Call",
+      "3-Bet to 10.5 BB",
+      "Fold",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "QJs is in the SB calling range vs BTN steal. It has flush and straight equity. Call — equity realization is better by calling than 3-betting OOP with a suited connector.",
+    "why_wrong": {
+      "1": "3-betting QJs OOP from SB — too speculative OOP in a 3-bet pot.",
+      "2": "Folding QJs vs BTN steal from SB is too tight — it is in the calling range.",
+      "3": "Completing is never an option when facing a raise."
+    }
+  },
+  {
+    "id": "3b_sb_btn_09",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB calling range vs BTN: TT-77, ATs+, AJo+, KQs, QJs, JTs. KJo = fold.",
+    "hand": [
+      "K♥",
+      "J♣"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have K♥J♣ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "3-Bet to 10.5 BB",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "KJo is NOT in the SB calling or 3-bet range vs BTN. The SB calling range includes KQs but not KJo. KJo OOP faces domination from KQ, AK regularly. Fold.",
+    "why_wrong": {
+      "1": "Calling KJo OOP from SB vs BTN faces severe domination risk from KQ and AK.",
+      "2": "3-betting KJo OOP from SB vs BTN risks a dominated pot.",
+      "3": "Completing is never an option when facing a raise."
+    }
+  },
+  {
+    "id": "3b_sb_btn_10",
+    "level": 1,
+    "category": "3-Bet Value",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "3-Bet",
+    "range_context": "SB 3-bet bluff range: A5s-A2s, 55-22, T9s, 98s, 87s, 76s, 65s. A5s vs BTN = 3-bet bluff or fold.",
+    "hand": [
+      "A♦",
+      "5♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♦5♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "3-Bet to 10.5 BB or Fold",
+      "Call",
+      "Complete",
+      "Raise to 7 BB"
+    ],
+    "correct": 0,
+    "explanation": "A5s in SB vs BTN = 3-bet bluff or fold — never call OOP. A5s is in the conservative bluff range: Ax blocker (reduces AA/AK combos), suited, wheel straight potential. These are ideal bluff properties. OOP 3.5x = 10.5 BB. Fold when BTN is tight.",
+    "why_wrong": {
+      "1": "Calling A5s OOP from SB is the worst line — out of position every street with a weak hand.",
+      "2": "Completing is never an option when facing a raise.",
+      "3": "Non-standard sizing. 3.5x = 10.5 BB is correct OOP."
+    }
+  },
+  {
+    "id": "sq_sb_01",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "SB squeeze OOP: 3.5x raise + 3BB per caller. Default 3-bet value range applies.",
+    "hand": [
+      "A♠",
+      "A♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. CO calls. Action on you.",
+    "question": "You have A♠A♦ in SB. BTN raises 3 BB, CO calls. What do you do?",
+    "options": [
+      "Squeeze to ~13.5 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "AA always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB. Both players have capped ranges.",
+    "why_wrong": {
+      "1": "Calling AA in a squeeze spot misses massive value.",
+      "2": "Never fold AA.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB per caller."
+    }
+  },
+  {
+    "id": "sq_sb_02",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "SB squeeze OOP: 3.5x raise + 3BB per caller. Default 3-bet value range applies.",
+    "hand": [
+      "Q♠",
+      "Q♦"
+    ],
+    "position": "SB",
+    "situation": "CO raises 3 BB. BTN calls. Action on you.",
+    "question": "You have Q♠Q♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
+    "options": [
+      "Squeeze to ~13.5 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "QQ squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Both players have capped ranges — BTN's flat call is especially weak.",
+    "why_wrong": {
+      "1": "Calling QQ 3-way OOP is weak — no initiative in a multiway pot.",
+      "2": "Folding QQ here is never correct.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_sb_03",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "SB squeeze OOP: 3.5x raise + 3BB per caller. AK always squeezes.",
+    "hand": [
+      "A♣",
+      "K♣"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. CO calls. Action on you.",
+    "question": "You have A♣K♣ in SB. BTN raises 3 BB, CO calls. What do you do?",
+    "options": [
+      "Squeeze to ~13.5 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "AKs squeezes for value. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB. Data: 3-betting AK is 2.4x more profitable than calling — squeezing is even better with a capped caller.",
+    "why_wrong": {
+      "1": "Calling AKs OOP in a squeeze spot is 2.4x less profitable than squeezing.",
+      "2": "AKs is ahead of most ranges here. Fold is wrong.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_sb_04",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Fold",
+    "range_context": "SB squeeze range = default 3-bet value range. 87s = fold in squeeze spot OOP.",
+    "hand": [
+      "8♣",
+      "7♣"
+    ],
+    "position": "SB",
+    "situation": "CO raises 3 BB. BTN calls. Action on you.",
+    "question": "You have 8♣7♣ in SB. CO raises 3 BB, BTN calls. What do you do?",
+    "options": [
+      "Fold",
+      "Squeeze to 13.5 BB",
+      "Call",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "87s is too weak to squeeze OOP. Hardin recommends only value squeezing at the microstakes — 87s has no value squeeze equity. Calling 87s 3-way OOP is also unprofitable. Fold.",
+    "why_wrong": {
+      "1": "Squeezing 87s OOP into a raise and a caller — insufficient equity to squeeze for value.",
+      "2": "Calling 87s 3-way OOP is unprofitable — can't realize equity out of position.",
+      "3": "Completing is never an option when facing a raise."
+    }
+  },
+  {
+    "id": "sq_sb_05",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Squeeze",
+    "range_context": "SB squeeze OOP: 3.5x raise + 3BB per caller. TT is in SB default 3-bet range vs BTN.",
+    "hand": [
+      "T♥",
+      "T♦"
+    ],
+    "position": "SB",
+    "situation": "BTN raises 3 BB. CO calls. Action on you.",
+    "question": "You have T♥T♦ in SB. BTN raises 3 BB, CO calls. What do you do?",
+    "options": [
+      "Squeeze to ~13.5 BB",
+      "Call",
+      "Fold",
+      "3-Bet to 10.5 BB"
+    ],
+    "correct": 0,
+    "explanation": "TT is in the default SB 3-bet range vs BTN (AA-TT, AJ+). With CO's flat call, squeeze rather than just 3-bet. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB.",
+    "why_wrong": {
+      "1": "Calling TT 3-way OOP is weak — every overcard board creates difficult decisions.",
+      "2": "Folding TT vs BTN raise + CO call is too tight.",
+      "3": "10.5 BB is the heads-up OOP sizing — add 3 BB for the caller."
+    }
+  },
+  {
+    "id": "sq_sb_06",
+    "level": 1,
+    "category": "Squeeze",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing raise + caller",
+    "action_type": "Fold",
+    "range_context": "SB squeeze range = default 3-bet value range. 99 = fold OOP in squeeze spot.",
+    "hand": [
+      "9♥",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "CO raises 3 BB. BTN calls. Action on you.",
+    "question": "You have 9♥9♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
+    "options": [
+      "Fold",
+      "Squeeze to 13.5 BB",
+      "Call",
+      "Complete"
+    ],
+    "correct": 0,
+    "explanation": "99 vs CO raise + BTN call from SB = fold. 99 is not in the SB default or optional 3-bet range vs CO. Squeezing OOP with 99 risks building a large pot where you're behind JJ+ in CO's range. Fold.",
+    "why_wrong": {
+      "1": "Squeezing 99 OOP into CO's range — behind JJ+ and flipping with AK.",
+      "2": "Calling 99 3-way OOP — can't realize equity out of position on most boards.",
+      "3": "Completing is never an option when facing a raise."
+    }
+  },
+  {
+    "id": "iso_sb_01",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. OOP sizing: 3BB + 1BB/limper + 1BB OOP = 5BB with 1 limper.",
+    "hand": [
+      "A♠",
+      "K♦"
+    ],
+    "position": "SB",
+    "situation": "CO limps. UTG, MP, BTN fold. Action on you in SB.",
+    "question": "You have A♠K♦ in SB. CO limps, UTG, MP, BTN fold. What do you do and what is the sizing?",
+    "options": [
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Complete (call 1 BB)",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AKo is well above the ISO range threshold. OOP sizing from SB: 3 BB base + 1 BB for limper + 1 BB for OOP = 5 BB. The extra 1 BB compensates for playing every postflop street out of position.",
+    "why_wrong": {
+      "1": "4 BB is the IP formula — SB adds 1 BB for OOP disadvantage = 5 BB.",
+      "2": "Completing AKo SB vs a limper surrenders all initiative — always raise or fold.",
+      "3": "AKo is in the ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "iso_sb_02",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. OOP sizing: 5BB with 1 limper.",
+    "hand": [
+      "Q♠",
+      "J♠"
+    ],
+    "position": "SB",
+    "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
+    "question": "You have Q♠J♠ in SB. BTN limps, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Complete (call 1 BB)",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "QJs is in the default ISO range. OOP sizing from SB: 3 BB + 1 BB (limper) + 1 BB (OOP) = 5 BB.",
+    "why_wrong": {
+      "1": "4 BB is the IP formula — SB is OOP and adds 1 BB = 5 BB.",
+      "2": "Completing QJs SB vs a limper surrenders all initiative.",
+      "3": "QJs is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "iso_sb_03",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+. Sizing OOP: 5BB with 1 limper.",
+    "hand": [
+      "9♥",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "MP limps. UTG, CO, BTN fold. Action on you in SB.",
+    "question": "You have 9♥9♦ in SB. MP limps, UTG, CO, BTN fold. What do you do?",
+    "options": [
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Complete (call 1 BB)",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "99 is above the 88+ ISO threshold. OOP sizing from SB: 3 BB + 1 BB (limper) + 1 BB (OOP) = 5 BB.",
+    "why_wrong": {
+      "1": "4 BB is the IP formula — SB is OOP and adds 1 BB = 5 BB.",
+      "2": "Completing 99 SB vs a limper surrenders initiative with a strong pair.",
+      "3": "99 is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "iso_sb_04",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "Over-Limp",
+    "range_context": "Default ISO starts at 88+. 77 is in Optional/Over-Limp range. OOP: complete (over-limp) is the correct action.",
+    "hand": [
+      "7♠",
+      "7♦"
+    ],
+    "position": "SB",
+    "situation": "CO limps. UTG, MP, BTN fold. Action on you in SB.",
+    "question": "You have 7♠7♦ in SB. CO limps, UTG, MP, BTN fold. What do you do?",
+    "options": [
+      "Complete (call 1 BB)",
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "77 is in the optional over-limp range (22-77), not the default ISO range (88+). From SB with a limper, complete (call 1 BB) for set-mining implied odds. Note: completing from SB is only acceptable when there is already a limper — never complete first action.",
+    "why_wrong": {
+      "1": "ISO raising 77 is outside the default ISO range. Complete is correct when there is a limper.",
+      "2": "4 BB uses the wrong formula anyway, and 77 should not ISO raise by default.",
+      "3": "Folding 77 vs a limper is too tight — complete for set-mining implied odds."
+    }
+  },
+  {
+    "id": "iso_sb_05",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. OOP sizing: 5BB with 1 limper.",
+    "hand": [
+      "A♥",
+      "J♣"
+    ],
+    "position": "SB",
+    "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
+    "question": "You have A♥J♣ in SB. BTN limps, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Complete (call 1 BB)",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "AJo+ is in the default ISO range. OOP sizing from SB: 3 BB + 1 BB (limper) + 1 BB (OOP) = 5 BB.",
+    "why_wrong": {
+      "1": "4 BB is the IP formula — SB is OOP and adds 1 BB = 5 BB.",
+      "2": "Completing AJo SB vs a limper surrenders initiative.",
+      "3": "AJo is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "iso_sb_06",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. OOP sizing with 2 limpers: 6BB.",
+    "hand": [
+      "K♦",
+      "J♦"
+    ],
+    "position": "SB",
+    "situation": "UTG limps. CO limps. MP and BTN fold. Action on you in SB.",
+    "question": "You have K♦J♦ in SB. UTG and CO limp, MP and BTN fold. What do you do?",
+    "options": [
+      "Raise to 6 BB",
+      "Raise to 5 BB",
+      "Complete (call 1 BB)",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "KJs+ is in the default ISO range. With 2 limpers OOP: 3 BB + 2 BB (limpers) + 1 BB (OOP) = 6 BB.",
+    "why_wrong": {
+      "1": "5 BB is correct for 1 limper OOP — with 2 limpers it is 6 BB.",
+      "2": "Completing KJs SB vs 2 limpers surrenders all initiative.",
+      "3": "KJs is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "iso_sb_07",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "Over-Limp",
+    "range_context": "Default ISO for suited aces starts at AJs+. A9s is in Optional/Over-Limp range. From SB: complete.",
+    "hand": [
+      "A♦",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
+    "question": "You have A♦9♦ in SB. BTN limps, UTG, MP, CO fold. What do you do?",
+    "options": [
+      "Complete (call 1 BB)",
+      "Raise to 5 BB",
+      "Raise to 4 BB",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "The default ISO range for suited aces starts at AJs+. A9s is in the optional over-limp range. From SB with a limper, complete for implied odds — not an ISO raise by default.",
+    "why_wrong": {
+      "1": "A9s is below the AJs+ ISO threshold. Complete is correct with a limper present.",
+      "2": "4 BB is wrong formula anyway, and A9s should not ISO raise by default.",
+      "3": "Folding A9s vs a limper is too tight — complete for implied odds."
+    }
+  },
+  {
+    "id": "iso_sb_08",
+    "level": 1,
+    "category": "ISO Raise",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Limper(s)",
+    "action_type": "ISO Raise",
+    "range_context": "Conservative Default ISO Range: 88+, AJs+, KJs+, QJs, AJo+, KJo+. OOP sizing with 3 limpers: 7BB.",
+    "hand": [
+      "J♠",
+      "J♦"
+    ],
+    "position": "SB",
+    "situation": "UTG limps. MP limps. CO limps. BTN folds. Action on you in SB.",
+    "question": "You have J♠J♦ in SB. UTG, MP, CO all limp, BTN folds. What do you do?",
+    "options": [
+      "Raise to 7 BB",
+      "Raise to 6 BB",
+      "Complete (call 1 BB)",
+      "Fold"
+    ],
+    "correct": 0,
+    "explanation": "JJ is in the default ISO range. With 3 limpers OOP: 3 BB + 3 BB (limpers) + 1 BB (OOP) = 7 BB. Never complete JJ — always raise with a hand in the ISO range.",
+    "why_wrong": {
+      "1": "6 BB is correct for 2 limpers OOP — with 3 limpers it is 7 BB.",
+      "2": "Completing JJ SB vs 3 limpers surrenders all initiative with a strong pair.",
+      "3": "JJ is in the default ISO range. Fold is too tight."
+    }
+  },
+  {
+    "id": "v3b_sb_01",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand": [
+      "A♥",
+      "A♠"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♥A♠ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "4-Bet to ~22 BB",
+      "Call",
+      "Fold",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "AA always 4-bets. OOP 4-bet sizing: 2-2.2x the 3-bet = ~22 BB. Build the pot heads-up with the best hand.",
+    "why_wrong": {
+      "1": "Calling AA OOP vs BB 3-bet misses massive value.",
+      "2": "Never fold AA.",
+      "3": "Shoving folds out hands you want calls from."
+    }
+  },
+  {
+    "id": "v3b_sb_02",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "easy",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand": [
+      "K♣",
+      "K♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♣K♦ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "4-Bet to ~22 BB",
+      "Call",
+      "Fold",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "KK always 4-bets. OOP 4-bet sizing: 2-2.2x the 3-bet = ~22 BB. You are OOP vs BB — build the pot now rather than face difficult decisions every street.",
+    "why_wrong": {
+      "1": "Calling KK OOP in a 3-bet pot is second-best.",
+      "2": "Never fold KK.",
+      "3": "Shoving folds out hands you want calls from."
+    }
+  },
+  {
+    "id": "v3b_sb_03",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand": [
+      "J♦",
+      "J♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have J♦J♣ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "4-Bet to ~22 BB",
+      "Call",
+      "Fold",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "JJ is in the default SB 4-bet range vs BB (AA-JJ). BB's 3-bet range vs SB includes AA-TT, AJ+ — JJ has equity advantage vs the lower portion. OOP 4-bet: 2.2x = ~22 BB.",
+    "why_wrong": {
+      "1": "Calling JJ OOP in a 3-bet pot vs BB is the alternative — both defensible but 4-betting is the default.",
+      "2": "Folding JJ vs BB 3-bet is too tight.",
+      "3": "Shoving folds out hands you want calls from."
+    }
+  },
+  {
+    "id": "v3b_sb_04",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs. TT = fold.",
+    "hand": [
+      "T♠",
+      "T♥"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have T♠T♥ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "4-Bet",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "TT vs BB 3-bet from SB = fold. TT is not in the SB 4-bet range (starts at JJ). BB's 3-bet range includes JJ+, AK. TT is behind JJ+ and flipping with AK OOP. Fold.",
+    "why_wrong": {
+      "1": "Calling TT OOP in a 3-bet pot leads to expensive spots on every overcard board.",
+      "2": "4-betting TT into JJ+/AK — almost always behind or flipping.",
+      "3": "Shoving TT is a massive overplay."
+    }
+  },
+  {
+    "id": "v3b_sb_05",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand": [
+      "A♣",
+      "K♣"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♣K♣ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "4-Bet to ~22 BB",
+      "Call",
+      "Fold",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "AKs is in the default SB 4-bet range. OOP 4-bet: 2.2x = ~22 BB. Data: 4-betting AK is 2.4x more profitable than calling.",
+    "why_wrong": {
+      "1": "Calling AKs OOP in a 3-bet pot is 2.4x less profitable than 4-betting.",
+      "2": "AKs is ahead of most 3-bet ranges. Fold is wrong.",
+      "3": "Shoving folds out hands you want calls from."
+    }
+  },
+  {
+    "id": "v3b_sb_06",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs",
+    "hand": [
+      "A♦",
+      "Q♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♦Q♦ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "4-Bet to ~22 BB",
+      "Call",
+      "Fold",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "AQ+ is in the default SB 4-bet range. OOP 4-bet: 2.2x = ~22 BB. AQs dominates a large portion of BB's 3-bet range.",
+    "why_wrong": {
+      "1": "Calling AQs OOP in a 3-bet pot is second-best when it is in the default 4-bet range.",
+      "2": "AQs dominates much of BB's 3-bet range. Fold is wrong.",
+      "3": "Shoving folds out hands you want calls from."
+    }
+  },
+  {
+    "id": "v3b_sb_07",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "4-Bet",
+    "range_context": "SB 4-bet range vs BB 3-bet optional: KQs. KQs is optional 4-bet vs BB 3-bet.",
+    "hand": [
+      "K♠",
+      "Q♠"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♠Q♠ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "4-Bet to ~22 BB",
+      "Call",
+      "Fold",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "KQs is listed as optional in the SB 4-bet range vs BB. BB's 3-bet range vs SB raise = AA-TT, AJ+ — KQs dominates the lower portion (AJ, KQ and below). Optional 4-bet to ~22 BB (2.2x OOP).",
+    "why_wrong": {
+      "1": "Calling KQs OOP in a 3-bet pot vs BB — loses value vs BB's calling range.",
+      "2": "Folding KQs vs BB 3-bet when it is in the optional 4-bet range is too tight.",
+      "3": "Shoving folds out hands you want calls from."
+    }
+  },
+  {
+    "id": "v3b_sb_08",
+    "level": 1,
+    "category": "vs 3-Bet",
+    "difficulty": "hard",
+    "my_position": "SB",
+    "scenario": "Facing a raise",
+    "action_type": "Fold",
+    "range_context": "SB 4-bet range vs BB 3-bet: AA-JJ, AQ+, AJs | Optional: AJo, ATs, KQs. 99 = fold.",
+    "hand": [
+      "9♥",
+      "9♦"
+    ],
+    "position": "SB",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have 9♥9♦ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
+    "options": [
+      "Fold",
+      "Call",
+      "4-Bet",
+      "Shove"
+    ],
+    "correct": 0,
+    "explanation": "99 from SB vs BB 3-bet = fold. 99 is not in the SB 4-bet range (starts at JJ). BB's 3-bet range includes JJ+, AK. 99 is behind JJ+ and flipping with AK OOP. Fold.",
+    "why_wrong": {
+      "1": "Calling 99 OOP in a 3-bet pot — can't realize equity out of position on most boards.",
+      "2": "4-betting 99 into JJ+/AK — almost always behind or flipping.",
+      "3": "Shoving 99 is a massive overplay."
+    }
   }
 ]
