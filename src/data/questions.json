@@ -3606,7 +3606,7 @@
     "difficulty": "hard",
     "my_position": "CO",
     "scenario": "Facing a raise",
-    "action_type": "Call",
+    "action_type": "Fold",
     "range_context": "CO cold-call vs UTG: KJo+ included as gap concept hands",
     "hand": [
       "K♠",
@@ -3621,12 +3621,12 @@
       "3-Bet",
       "Raise to 4 BB"
     ],
-    "correct": 0,
-    "explanation": "KJo+ is in the CO cold-call range vs UTG (gap concept). Note: Hardin's practice hand #1 says KJo vs UTG = fold from CO with no reads. However the cold-call range table includes KJo+. Call in position — be careful on K-high boards vs UTG aggression.",
+    "correct": 1,
+    "explanation": "KJo vs UTG from CO = fold is the conservative default. Hardin's own practice hand #1 explicitly states: KJo CO vs UTG = fold with no reads. UTG's range includes KQ, AK, AJ which all dominate KJo. Calling is only defensible with a specific read that UTG opens wider than 9.8%.",
     "why_wrong": {
-      "1": "KJo is in the CO cold-call range vs UTG. Fold is too tight per the range table.",
+      "0": "Calling KJo vs UTG is the optional line — Hardin's practice hand explicitly recommends fold with no reads. KJo faces domination from KQ, AK, AJ in UTG's range.",
       "2": "3-betting KJo into UTG's tight range is suicidal.",
-      "3": "Mini-raise is not valid."
+      "3": "Mini-raise is never valid."
     }
   },
   {
@@ -5976,7 +5976,7 @@
     "difficulty": "hard",
     "my_position": "BTN",
     "scenario": "Facing a raise",
-    "action_type": "Call",
+    "action_type": "Fold",
     "range_context": "BTN cold-call vs UTG: KJo+ gap concept hands",
     "hand": [
       "K♠",
@@ -5991,12 +5991,12 @@
       "3-Bet",
       "Raise to 4 BB"
     ],
-    "correct": 0,
-    "explanation": "KJo+ is in the BTN cold-call range vs UTG (gap concept). Call in position — be careful on K-high boards vs UTG aggression. KJo faces domination from KQ, AK but overall has equity in position.",
+    "correct": 1,
+    "explanation": "KJo vs UTG's 9.8% range is dominated more often than not — UTG holds KQ, AK, AJ all of which have KJo crushed. KJo only has equity vs UTG's lower pairs (66-99) where it flips, and even then you're OOP. The conservative default is fold. Calling is the optional aggressive line only if you have reads that UTG is opening wider than the standard 9.8%.",
     "why_wrong": {
-      "1": "KJo is in the BTN cold-call range vs UTG. Fold is too tight.",
-      "2": "3-betting KJo into UTG's tight range is suicidal.",
-      "3": "Mini-raise is not valid."
+      "0": "Calling KJo vs UTG is the optional aggressive line — defensible with reads, but not the conservative default. KJo faces domination from KQ, AK, AJ in UTG's range.",
+      "2": "3-betting KJo into UTG's tight range is suicidal — dominated by KQ+, AJ+.",
+      "3": "Mini-raise is never a valid option."
     }
   },
   {
