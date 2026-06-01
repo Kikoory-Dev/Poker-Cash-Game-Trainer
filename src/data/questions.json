@@ -4174,17 +4174,17 @@
     "level": 1,
     "category": "Squeeze",
     "difficulty": "hard",
-    "my_position": "CO",
+    "my_position": "SB",
     "scenario": "Facing raise + caller",
     "action_type": "Squeeze",
-    "range_context": "Squeeze range = default 3-bet value range. AQ+ squeezes vs wide opener + caller.",
+    "range_context": "SB squeeze OOP: 3.5x raise + 3BB per caller = ~13.5 BB. AQ+ squeezes.",
     "hand": [
       "A♦",
       "Q♦"
     ],
-    "position": "CO",
-    "situation": "UTG folds. MP raises 3 BB. BTN calls. Action on you in CO.",
-    "question": "You have A♦Q♦ in CO. MP raises 3 BB, BTN calls. What do you do?",
+    "position": "SB",
+    "situation": "MP raises 3 BB. BTN calls. Action on you in SB.",
+    "question": "You have A♦Q♦ in SB. MP raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~12 BB",
       "Call",
@@ -4192,7 +4192,7 @@
       "Over-call"
     ],
     "correct": 0,
-    "explanation": "AQs squeezes for value vs MP raise + BTN call. MP's range is wider than UTG's (12.67%) and BTN's flat call is capped. Sizing: 3x MP raise (9 BB) + 3 BB for BTN caller = 12 BB. AQs is in the default 3-bet value range vs MP.",
+    "explanation": "AQs squeezes for value from SB. MP's range is wider than UTG's (12.67%) and BTN's flat call is capped. OOP sizing: 3.5x MP raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. AQs is in the default 3-bet value range vs MP.",
     "why_wrong": {
       "1": "Calling AQs in a squeeze spot vs capped ranges is second-best.",
       "2": "AQs has equity advantage vs MP's range and BTN's capped range. Fold is wrong.",
@@ -4294,7 +4294,7 @@
     "level": 1,
     "category": "vs 3-Bet",
     "difficulty": "hard",
-    "my_position": "CO",
+    "my_position": "BB",
     "scenario": "Facing a raise",
     "action_type": "Fold",
     "range_context": "CO facing MP raise + BTN 3-bet: fold most hands. KQs is a fold.",
@@ -4302,9 +4302,9 @@
       "K♠",
       "Q♠"
     ],
-    "position": "CO",
-    "situation": "UTG folds. MP raises 3 BB. BTN 3-bets to 9 BB. Action on you in CO.",
-    "question": "You have K♠Q♠ in CO. UTG folds, MP raises 3 BB, BTN 3-bets to 9 BB. What do you do?",
+    "position": "BB",
+    "situation": "UTG folds. MP raises 3 BB. BTN 3-bets to 9 BB. SB folds. Action on you in BB.",
+    "question": "You have K♠Q♠ in BB. MP raises 3 BB, BTN 3-bets to 9 BB, SB folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4312,7 +4312,7 @@
       "Squeeze"
     ],
     "correct": 0,
-    "explanation": "KQs vs MP raise + BTN 3-bet = fold. BTN's 3-bet range includes AK and KK which dominate KQs. You are OOP vs both players with a dominated hand. Clear fold.",
+    "explanation": "KQs vs MP raise + BTN 3-bet from BB = fold. BTN's 3-bet range includes AK and KK which dominate KQs. You are OOP vs both players with a dominated hand. Clear fold.",
     "why_wrong": {
       "1": "Calling KQs facing a raise and 3-bet — dominated by AK and KK in both players' ranges.",
       "2": "4-betting KQs into a 3-bet range that includes KK and AK is suicidal.",
@@ -4364,7 +4364,7 @@
     ],
     "position": "CO",
     "situation": "MP limps. UTG folds. Action on you in CO.",
-    "question": "You have Q♣J♣ in CO. MP limps, UTG folds. What do you do?",
+    "question": "You have Q♣J♣ in CO. UTG fold. MP limpss. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -4454,7 +4454,7 @@
     ],
     "position": "CO",
     "situation": "MP limps. UTG folds. Action on you in CO.",
-    "question": "You have A♦9♦ in CO. MP limps, UTG folds. What do you do?",
+    "question": "You have A♦9♦ in CO. UTG fold. MP limpss. What do you do?",
     "options": [
       "Over-limp or Fold",
       "Raise to 4 BB",
@@ -4544,7 +4544,7 @@
     ],
     "position": "CO",
     "situation": "MP limps. UTG folds. Action on you in CO.",
-    "question": "You have A♥J♣ in CO. MP limps, UTG folds. What do you do?",
+    "question": "You have A♥J♣ in CO. UTG fold. MP limpss. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -4942,9 +4942,9 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "KQs is listed as optional in the CO 4-bet range. Vs a tight BB 3-bettor, KQs faces domination from AK, KK, AA. Fold is the conservative default. Only consider 4-betting KQs vs wider 3-bet ranges.",
+    "explanation": "KQs is listed as optional in the CO 4-bet range. Calling is also defensible — KQs has equity vs BB's 3-bet range. However vs a tight BB 3-bettor, KQs risks domination from AK, KK, AA. Fold is the conservative default vs a tight player; call is acceptable vs a wider 3-bet range.",
     "why_wrong": {
-      "1": "Calling KQs OOP in a 3-bet pot vs a tight BB — dominated by AK, KK regularly.",
+      "1": "Calling KQs OOP in a 3-bet pot is defensible but risky vs a tight BB — dominated by AK, KK in their value range. Fold is the conservative line.",
       "2": "4-betting KQs vs a tight BB 3-bettor risks a dominated pot.",
       "3": "Shoving KQs is suicidal."
     }
@@ -6944,7 +6944,7 @@
     ],
     "position": "BTN",
     "situation": "CO limps. UTG and MP fold. Action on you.",
-    "question": "You have A♠K♦ on the BTN. CO limps, UTG and MP fold. What do you do?",
+    "question": "You have A♠K♦ on the BTN. UTG and MP fold. CO limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -6974,7 +6974,7 @@
     ],
     "position": "BTN",
     "situation": "MP limps. UTG and CO fold. Action on you.",
-    "question": "You have Q♣J♣ on the BTN. MP limps, UTG and CO fold. What do you do?",
+    "question": "You have Q♣J♣ on the BTN. UTG and CO fold. MP limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -7034,7 +7034,7 @@
     ],
     "position": "BTN",
     "situation": "CO limps. UTG and MP fold. Action on you.",
-    "question": "You have 7♠7♦ on the BTN. CO limps, UTG and MP fold. What do you do?",
+    "question": "You have 7♠7♦ on the BTN. UTG and MP fold. CO limps. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 4 BB",
@@ -7064,7 +7064,7 @@
     ],
     "position": "BTN",
     "situation": "MP limps. UTG and CO fold. Action on you.",
-    "question": "You have K♦J♦ on the BTN. MP limps, UTG and CO fold. What do you do?",
+    "question": "You have K♦J♦ on the BTN. UTG and CO fold. MP limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Over-limp",
@@ -7124,7 +7124,7 @@
     ],
     "position": "BTN",
     "situation": "CO limps. UTG and MP fold. Action on you.",
-    "question": "You have A♥J♣ on the BTN. CO limps, UTG and MP fold. What do you do?",
+    "question": "You have A♥J♣ on the BTN. UTG and MP fold. CO limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -7154,7 +7154,7 @@
     ],
     "position": "BTN",
     "situation": "MP limps. UTG and CO fold. Action on you.",
-    "question": "You have A♠T♣ on the BTN. MP limps, UTG and CO fold. What do you do?",
+    "question": "You have A♠T♣ on the BTN. UTG and CO fold. MP limps. What do you do?",
     "options": [
       "Over-limp or Fold",
       "Raise to 4 BB",
@@ -7214,7 +7214,7 @@
     ],
     "position": "BTN",
     "situation": "MP limps. CO limps. UTG folds. Action on you.",
-    "question": "You have A♣J♣ on the BTN. MP and CO both limp, UTG folds. What do you do?",
+    "question": "You have A♣J♣ on the BTN. UTG folds. MP and CO both limp. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Limp behind",
@@ -8504,7 +8504,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♥A♠ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have A♥A♠ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8534,7 +8534,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have T♣T♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have T♣T♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8564,7 +8564,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♦J♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have A♦J♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8594,7 +8594,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♠J♣ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have A♠J♣ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8624,7 +8624,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have 8♥8♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have 8♥8♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet to 10.5 BB",
@@ -8654,7 +8654,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have 6♠6♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have 6♠6♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -8684,7 +8684,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have K♠Q♠ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have K♠Q♠ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8714,7 +8714,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have Q♦J♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have Q♦J♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet to 10.5 BB",
@@ -8744,7 +8744,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have K♥J♣ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have K♥J♣ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -8774,7 +8774,7 @@
     ],
     "position": "SB",
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♦5♦ in SB. BTN raises 3 BB, UTG, MP, CO fold. What do you do?",
+    "question": "You have A♦5♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB or Fold",
       "Call",
@@ -9014,7 +9014,7 @@
     ],
     "position": "SB",
     "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
-    "question": "You have Q♠J♠ in SB. BTN limps, UTG, MP, CO fold. What do you do?",
+    "question": "You have Q♠J♠ in SB. UTG, MP, CO fold. BTN limps. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -9104,7 +9104,7 @@
     ],
     "position": "SB",
     "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
-    "question": "You have A♥J♣ in SB. BTN limps, UTG, MP, CO fold. What do you do?",
+    "question": "You have A♥J♣ in SB. UTG, MP, CO fold. BTN limps. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -9164,7 +9164,7 @@
     ],
     "position": "SB",
     "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
-    "question": "You have A♦9♦ in SB. BTN limps, UTG, MP, CO fold. What do you do?",
+    "question": "You have A♦9♦ in SB. UTG, MP, CO fold. BTN limps. What do you do?",
     "options": [
       "Complete (call 1 BB)",
       "Raise to 5 BB",
