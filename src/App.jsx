@@ -20,15 +20,15 @@ function Card({ rank, suit }) {
 }
 
 const CAT_COLOR = {
-  "Open Raise":    "#4caf7d",
-  "3-Bet Value":   "#9b7fe8",
-  "Cold-Call":     "#5ba8d4",
-  "ISO Raise":     "#e8a84c",
-  "Squeeze":       "#f07850",
-  "Blind Defense": "#e87070",
-  "vs 3-Bet":      "#e84c8a",
+  "Open Raise":  "#4caf7d",
+  "3-Bet Value": "#9b7fe8",
+  "Cold-Call":   "#5ba8d4",
+  "ISO Raise":   "#e8a84c",
+  "Squeeze":     "#f07850",
+  "vs 3-Bet":    "#e84c8a",
 };
 const DIFF_COLOR = { easy:"#4caf7d", medium:"#e8a84c", hard:"#e87070" };
+const POS_COLOR  = { UTG:"#e87070", MP:"#e8a84c", CO:"#4caf7d", BTN:"#5ba8d4", SB:"#9b7fe8", BB:"#f07850" };
 
 const ALL_POSITIONS  = ["UTG","MP","CO","BTN","SB","BB"];
 const ALL_SCENARIOS  = ["RFI","Facing a raise","Facing raise + caller","Limper(s)"];
@@ -37,50 +37,82 @@ const ALL_CATEGORIES = [...new Set(questionsData.map(q => q.category))];
 const ALL_DIFFS      = ["easy","medium","hard"];
 
 function loadProgress() {
-  try { return JSON.parse(localStorage.getItem("pct_l1v3") || "{}"); } catch { return {}; }
+  try { return JSON.parse(localStorage.getItem("pct_l1v4")||"{}"); } catch { return {}; }
 }
 function saveProgress(p) {
-  try { localStorage.setItem("pct_l1v3", JSON.stringify(p)); } catch {} }
+  try { localStorage.setItem("pct_l1v4", JSON.stringify(p)); } catch {} }
 
-function Pill({ label, active, color, onClick }) {
+// ── FILTER CHIP ──────────────────────────────
+function Chip({ label, active, color, onClick }) {
   return (
     <button onClick={onClick} style={{
-      padding:"6px 13px", borderRadius:20, fontSize:13, cursor:"pointer",
-      border:`1.5px solid ${active ? color : "#252836"}`,
-      background: active ? `${color}28` : "transparent",
-      color: active ? color : "#666",
-      whiteSpace:"nowrap", fontFamily:"'Syne',sans-serif",
-      fontWeight: active ? 700 : 400,
+      height:34, padding:"0 14px",
+      borderRadius:8,
+      fontSize:13, fontWeight: active ? 700 : 500,
+      cursor:"pointer",
+      border:`1px solid ${active ? color : "#23263a"}`,
+      background: active ? color : "#13151f",
+      color: active ? "#0a0c14" : "#6b7080",
+      whiteSpace:"nowrap",
+      fontFamily:"'Inter',sans-serif",
+      letterSpacing: active ? "0.01em" : 0,
+      transition:"all .12s",
       WebkitTapHighlightColor:"transparent",
+      flexShrink:0,
     }}>{label}</button>
   );
 }
 
-function FilterSection({ label, options, selected, onToggle, getColor }) {
+// ── FILTER ROW ───────────────────────────────
+function FilterRow({ label, options, selected, onToggle, getColor }) {
   return (
-    <div style={{marginBottom:16}}>
-      <div style={{fontSize:11,color:"#555",letterSpacing:2,textTransform:"uppercase",marginBottom:8,fontWeight:600}}>{label}</div>
-      <div style={{display:"flex",flexWrap:"wrap",gap:7}}>
-        <Pill label="All" active={selected.length===0} color="#e8a84c" onClick={()=>onToggle("__all__")} />
+    <div style={{marginBottom:20}}>
+      <div style={{
+        fontSize:11, fontWeight:700, color:"#3d4155",
+        letterSpacing:"0.12em", textTransform:"uppercase",
+        marginBottom:8,
+      }}>{label}</div>
+      <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:2,
+        msOverflowStyle:"none", scrollbarWidth:"none"}}>
+        <Chip label="All" active={selected.length===0} color="#e8a84c" onClick={()=>onToggle("__all__")}/>
         {options.map(o=>(
-          <Pill key={o} label={o} active={selected.includes(o)}
-            color={getColor?getColor(o):"#e8a84c"} onClick={()=>onToggle(o)} />
+          <Chip key={o} label={o}
+            active={selected.includes(o)}
+            color={getColor ? getColor(o) : "#e8a84c"}
+            onClick={()=>onToggle(o)}/>
         ))}
       </div>
     </div>
   );
 }
 
+// ── STAT CARD ────────────────────────────────
+function StatCard({ label, value, sub, color }) {
+  return (
+    <div style={{
+      background:"#13151f", borderRadius:12,
+      padding:"14px 12px", border:"1px solid #1e2130",
+      display:"flex", flexDirection:"column", gap:2,
+    }}>
+      <div style={{fontSize:11,fontWeight:700,color:"#3d4155",
+        letterSpacing:"0.1em",textTransform:"uppercase"}}>{label}</div>
+      <div style={{fontSize:26,fontWeight:800,color:color||"#e8e4d8",
+        fontFamily:"'Inter',sans-serif",lineHeight:1.1}}>{value}</div>
+      {sub&&<div style={{fontSize:11,color:"#3d4155"}}>{sub}</div>}
+    </div>
+  );
+}
+
 export default function App() {
-  const [screen, setScreen]   = useState("home");
+  const [screen, setScreen]     = useState("home");
   const [progress, setProgress] = useState(loadProgress);
   const [posF,  setPosF]  = useState([]);
   const [scenF, setScenF] = useState([]);
   const [actF,  setActF]  = useState([]);
   const [catF,  setCatF]  = useState([]);
   const [difF,  setDifF]  = useState([]);
-  const [queue, setQueue]   = useState([]);
-  const [idx, setIdx]       = useState(0);
+  const [queue, setQueue]       = useState([]);
+  const [idx, setIdx]           = useState(0);
   const [selected, setSelected] = useState(null);
   const [revealed, setRevealed] = useState(false);
   const [session, setSession]   = useState({correct:0,wrong:0});
@@ -90,7 +122,7 @@ export default function App() {
   useEffect(()=>saveProgress(progress),[progress]);
 
   function toggle(setter, current, val) {
-    if (val==="__all__"){setter([]);return;}
+    if(val==="__all__"){setter([]);return;}
     setter(current.includes(val)?current.filter(x=>x!==val):[...current,val]);
   }
 
@@ -104,10 +136,11 @@ export default function App() {
 
   const totalAttempts = Object.values(progress).reduce((a,p)=>a+p.seen,0);
   const totalCorrect  = Object.values(progress).reduce((a,p)=>a+p.correct,0);
-  const accuracy = totalAttempts>0?Math.round(totalCorrect/totalAttempts*100):0;
+  const accuracy      = totalAttempts>0 ? Math.round(totalCorrect/totalAttempts*100) : 0;
+  const attempted     = Object.keys(progress).length;
 
   function startSession() {
-    if(filtered.length===0)return;
+    if(!filtered.length)return;
     setQueue([...filtered].sort(()=>Math.random()-0.5));
     setIdx(0);setSelected(null);setRevealed(false);
     setSession({correct:0,wrong:0});setStreak(0);
@@ -122,7 +155,7 @@ export default function App() {
     setSession(s=>({correct:s.correct+(ok?1:0),wrong:s.wrong+(ok?0:1)}));
     const prev=progress[q.id]||{seen:0,correct:0};
     setProgress(p=>({...p,[q.id]:{seen:prev.seen+1,correct:prev.correct+(ok?1:0)}}));
-    setTimeout(()=>scrollRef.current?.scrollTo({top:0,behavior:"smooth"}),100);
+    setTimeout(()=>scrollRef.current?.scrollTo({top:0,behavior:"smooth"}),80);
   }
 
   function next() {
@@ -131,49 +164,65 @@ export default function App() {
     scrollRef.current?.scrollTo({top:0,behavior:"instant"});
   }
 
-  const q = queue[idx];
-  const accent = q?(CAT_COLOR[q.category]||"#888"):"#888";
+  const q=queue[idx];
+  const accent=q?(CAT_COLOR[q.category]||"#888"):"#888";
 
-  // ── HOME ──────────────────────────────────
+  // ── HOME ─────────────────────────────────────────────────────────────
   if(screen==="home") return (
-    <div style={{minHeight:"100vh",background:"#090b0f",color:"#e8e4d8",
-      fontFamily:"'Syne','DM Sans',sans-serif",
-      paddingTop:"env(safe-area-inset-top,0px)"}}>
-      <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-      <div style={{maxWidth:480,margin:"0 auto",padding:"20px 18px 120px"}}>
+    <div style={{
+      minHeight:"100vh", background:"#0a0c14",
+      fontFamily:"'Inter','SF Pro Display',sans-serif",
+      color:"#e8e4d8",
+      paddingTop:"env(safe-area-inset-top,0px)",
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+        ::-webkit-scrollbar{display:none;}
+      `}</style>
 
-        {/* Header */}
-        <div style={{marginBottom:24}}>
-          <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:4}}>
-            <div style={{width:4,height:36,background:"linear-gradient(#e8a84c,#9b7fe8)",borderRadius:3}}/>
-            <div>
-              <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,margin:0,letterSpacing:-0.5}}>Preflop Trainer</h1>
-              <p style={{color:"#555",fontSize:13,margin:0}}>Level 1 · {questionsData.length} scenarios · TAG ranges</p>
+      <div style={{maxWidth:480,margin:"0 auto",padding:"24px 20px 140px"}}>
+
+        {/* ── Top bar ── */}
+        <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:28}}>
+          <div>
+            <div style={{fontSize:11,fontWeight:700,color:"#3d4155",
+              letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:4}}>
+              Level 1 · Preflop · TAG
             </div>
+            <h1 style={{fontSize:30,fontWeight:900,margin:0,
+              letterSpacing:"-0.03em",color:"#f0ece0",lineHeight:1}}>
+              Preflop Trainer
+            </h1>
+          </div>
+          <div style={{
+            background:"#13151f",border:"1px solid #1e2130",
+            borderRadius:10,padding:"6px 12px",
+            fontSize:12,fontWeight:700,color:"#e8a84c",
+            fontFamily:"'Inter',sans-serif",
+          }}>
+            {questionsData.length} Q
           </div>
         </div>
 
-        {/* Stats */}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:24}}>
-          {[{l:"Questions",v:questionsData.length},{l:"Attempts",v:totalAttempts},{l:"Accuracy",v:totalAttempts>0?`${accuracy}%`:"—"}].map(s=>(
-            <div key={s.l} style={{background:"#12151c",borderRadius:14,padding:"14px 10px",textAlign:"center",border:"1px solid #1c2030"}}>
-              <div style={{fontSize:22,fontWeight:800,color:"#e8a84c",fontFamily:"'Syne',sans-serif"}}>{s.v}</div>
-              <div style={{fontSize:11,color:"#444",marginTop:3,textTransform:"uppercase",letterSpacing:1}}>{s.l}</div>
-            </div>
-          ))}
+        {/* ── Stats row ── */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:28}}>
+          <StatCard label="Accuracy" value={totalAttempts>0?`${accuracy}%`:"—"} color="#e8a84c"/>
+          <StatCard label="Attempted" value={attempted} sub={`of ${questionsData.length}`} color="#5ba8d4"/>
+          <StatCard label="Streak" value={streak>0?`🔥${streak}`:"—"} color="#4caf7d"/>
         </div>
 
-        {/* Filters */}
-        <FilterSection label="My Position" options={ALL_POSITIONS} selected={posF} onToggle={v=>toggle(setPosF,posF,v)} getColor={()=>"#9b7fe8"}/>
-        <FilterSection label="Scenario" options={ALL_SCENARIOS} selected={scenF} onToggle={v=>toggle(setScenF,scenF,v)} getColor={()=>"#5ba8d4"}/>
-        <FilterSection label="Action Type" options={ALL_ACTIONS} selected={actF} onToggle={v=>toggle(setActF,actF,v)} getColor={a=>a==="Fold"?"#e87070":a==="Call"?"#5ba8d4":"#4caf7d"}/>
-        <FilterSection label="Category" options={ALL_CATEGORIES} selected={catF} onToggle={v=>toggle(setCatF,catF,v)} getColor={c=>CAT_COLOR[c]||"#888"}/>
-        <FilterSection label="Difficulty" options={ALL_DIFFS} selected={difF} onToggle={v=>toggle(setDifF,difF,v)} getColor={d=>DIFF_COLOR[d]}/>
-
-        {/* Perf by category */}
+        {/* ── Category progress ── */}
         {totalAttempts>0&&(
-          <div style={{background:"#12151c",borderRadius:14,padding:"16px",border:"1px solid #1c2030",marginBottom:80}}>
-            <div style={{fontSize:11,color:"#444",letterSpacing:2,textTransform:"uppercase",marginBottom:12}}>Performance by category</div>
+          <div style={{
+            background:"#13151f",borderRadius:14,
+            border:"1px solid #1e2130",padding:"16px",
+            marginBottom:28,
+          }}>
+            <div style={{fontSize:11,fontWeight:700,color:"#3d4155",
+              letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:14}}>
+              By Category
+            </div>
             {ALL_CATEGORIES.map(cat=>{
               const cqs=questionsData.filter(q=>q.category===cat);
               const seen=cqs.reduce((a,q)=>a+(progress[q.id]?.seen||0),0);
@@ -181,45 +230,87 @@ export default function App() {
               const pct=seen>0?Math.round(corr/seen*100):null;
               const col=CAT_COLOR[cat]||"#888";
               return(
-                <div key={cat} style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}>
-                  <div style={{fontSize:12,color:"#666",width:110,flexShrink:0}}>{cat}</div>
-                  <div style={{flex:1,height:4,background:"#1c2030",borderRadius:2,overflow:"hidden"}}>
-                    <div style={{height:"100%",width:`${pct||0}%`,background:col,transition:"width .4s",borderRadius:2}}/>
+                <div key={cat} style={{marginBottom:10}}>
+                  <div style={{display:"flex",justifyContent:"space-between",
+                    alignItems:"center",marginBottom:5}}>
+                    <span style={{fontSize:13,fontWeight:600,color:"#9098b0"}}>{cat}</span>
+                    <span style={{fontSize:13,fontWeight:700,
+                      color:pct!=null?col:"#2a2d3d",fontFamily:"'Inter',sans-serif"}}>
+                      {pct!=null?`${pct}%`:"—"}
+                    </span>
                   </div>
-                  <div style={{fontSize:12,color:pct!=null?col:"#333",width:36,textAlign:"right"}}>{pct!=null?`${pct}%`:"—"}</div>
+                  <div style={{height:4,background:"#1e2130",borderRadius:2,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${pct||0}%`,
+                      background:col,borderRadius:2,transition:"width .5s"}}/>
+                  </div>
                 </div>
               );
             })}
           </div>
         )}
+
+        {/* ── Divider ── */}
+        <div style={{fontSize:11,fontWeight:700,color:"#3d4155",
+          letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:20}}>
+          Filters
+        </div>
+
+        <FilterRow label="Position" options={ALL_POSITIONS} selected={posF}
+          onToggle={v=>toggle(setPosF,posF,v)} getColor={p=>POS_COLOR[p]||"#888"}/>
+
+        <FilterRow label="Scenario" options={ALL_SCENARIOS} selected={scenF}
+          onToggle={v=>toggle(setScenF,scenF,v)} getColor={()=>"#5ba8d4"}/>
+
+        <FilterRow label="Action Type" options={ALL_ACTIONS} selected={actF}
+          onToggle={v=>toggle(setActF,actF,v)}
+          getColor={a=>a==="Fold"?"#e87070":a==="Call"?"#5ba8d4":"#4caf7d"}/>
+
+        <FilterRow label="Category" options={ALL_CATEGORIES} selected={catF}
+          onToggle={v=>toggle(setCatF,catF,v)} getColor={c=>CAT_COLOR[c]||"#888"}/>
+
+        <FilterRow label="Difficulty" options={ALL_DIFFS} selected={difF}
+          onToggle={v=>toggle(setDifF,difF,v)} getColor={d=>DIFF_COLOR[d]}/>
+
       </div>
 
-      {/* Sticky bottom bar */}
+      {/* ── Sticky footer ── */}
       <div style={{
         position:"fixed",bottom:0,left:0,right:0,
-        paddingBottom:"env(safe-area-inset-bottom,16px)",
-        background:"linear-gradient(transparent,#090b0f 30%)",
-        padding:"20px 18px",
+        background:"linear-gradient(transparent,#0a0c14 28%,#0a0c14)",
+        padding:"20px 20px",
         paddingBottom:"calc(env(safe-area-inset-bottom,0px) + 16px)",
       }}>
-        <button onClick={startSession} disabled={filtered.length===0} style={{
-          width:"100%",padding:"16px",borderRadius:14,
-          background:filtered.length>0?"linear-gradient(135deg,#e8a84c,#c97c30)":"#1c2030",
-          color:filtered.length>0?"#090b0f":"#444",
+        <button onClick={startSession} disabled={!filtered.length} style={{
+          width:"100%",height:56,borderRadius:14,
+          background:filtered.length
+            ?"linear-gradient(135deg,#e8a84c 0%,#d4832a 100%)"
+            :"#13151f",
+          color:filtered.length?"#0a0c14":"#3d4155",
           fontSize:16,fontWeight:800,border:"none",
-          cursor:filtered.length>0?"pointer":"default",
-          fontFamily:"'Syne',sans-serif",
-          boxShadow:filtered.length>0?"0 4px 24px rgba(232,168,76,0.3)":"none",
+          cursor:filtered.length?"pointer":"default",
+          fontFamily:"'Inter',sans-serif",
+          letterSpacing:"-0.01em",
+          boxShadow:filtered.length?"0 6px 28px rgba(232,168,76,0.32)":"none",
           WebkitTapHighlightColor:"transparent",
+          display:"flex",alignItems:"center",justifyContent:"center",gap:10,
         }}>
-          {filtered.length>0?`Start — ${filtered.length} questions`:"No questions match"}
+          {filtered.length>0?(
+            <>
+              <span>Start Session</span>
+              <span style={{
+                background:"rgba(0,0,0,0.15)",borderRadius:6,
+                padding:"2px 8px",fontSize:13,fontWeight:700,
+              }}>{filtered.length}</span>
+            </>
+          ):"No questions match filters"}
         </button>
+
         {totalAttempts>0&&(
           <button onClick={()=>{setProgress({});saveProgress({});}} style={{
-            width:"100%",marginTop:10,padding:"12px",borderRadius:12,
-            background:"transparent",border:"1px solid #1c2030",
-            color:"#444",fontSize:13,cursor:"pointer",
-            fontFamily:"'Syne',sans-serif",
+            width:"100%",marginTop:8,height:40,borderRadius:10,
+            background:"transparent",border:"1px solid #1e2130",
+            color:"#3d4155",fontSize:13,fontWeight:500,cursor:"pointer",
+            fontFamily:"'Inter',sans-serif",
             WebkitTapHighlightColor:"transparent",
           }}>Reset progress</button>
         )}
@@ -227,142 +318,195 @@ export default function App() {
     </div>
   );
 
-  // ── QUIZ ──────────────────────────────────
-  if(screen==="quiz"&&q) {
+  // ── QUIZ ─────────────────────────────────────────────────────────────
+  if(screen==="quiz"&&q){
     const cards=q.hand.map(c=>({rank:c.slice(0,-1),suit:c.slice(-1)}));
     const ok=selected===q.correct;
 
-    return (
+    return(
       <div style={{
-        position:"fixed",top:0,left:0,right:0,bottom:0,
-        background:"#090b0f",color:"#e8e4d8",
-        fontFamily:"'Syne','DM Sans',sans-serif",
+        position:"fixed",inset:0,
+        background:"#0a0c14",color:"#e8e4d8",
+        fontFamily:"'Inter','SF Pro Display',sans-serif",
         display:"flex",flexDirection:"column",
         paddingTop:"env(safe-area-inset-top,0px)",
         paddingBottom:"env(safe-area-inset-bottom,0px)",
       }}>
-        <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+          *{-webkit-font-smoothing:antialiased;}
+          ::-webkit-scrollbar{display:none;}
+        `}</style>
 
-        {/* Fixed header */}
-        <div style={{flexShrink:0,padding:"10px 16px 6px"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}}>
+        {/* Header */}
+        <div style={{flexShrink:0,padding:"10px 18px 8px"}}>
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
             <button onClick={()=>setScreen("home")} style={{
-              background:"none",border:"none",color:"#555",fontSize:22,
-              cursor:"pointer",padding:"4px 8px 4px 0",
+              background:"#13151f",border:"1px solid #1e2130",
+              borderRadius:8,padding:"6px 12px",
+              color:"#6b7080",fontSize:13,fontWeight:600,cursor:"pointer",
+              fontFamily:"'Inter',sans-serif",
               WebkitTapHighlightColor:"transparent",
-            }}>←</button>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <span style={{fontSize:13,color:"#555",fontFamily:"'DM Mono',monospace"}}>
-                {idx+1}<span style={{color:"#222"}}>/{queue.length}</span>
-              </span>
-              {streak>0&&<span style={{fontSize:13,color:"#4caf7d",fontWeight:700}}>🔥{streak}</span>}
-              <span style={{fontSize:11,color:DIFF_COLOR[q.difficulty],
-                background:`${DIFF_COLOR[q.difficulty]}22`,padding:"3px 9px",borderRadius:6,
-                textTransform:"capitalize",fontWeight:700}}>
-                {q.difficulty}
-              </span>
+            }}>← Home</button>
+
+            <div style={{display:"flex",alignItems:"center",gap:8}}>
+              {streak>0&&(
+                <span style={{fontSize:13,fontWeight:700,color:"#4caf7d",
+                  background:"rgba(76,175,125,0.12)",padding:"4px 10px",borderRadius:6}}>
+                  🔥 {streak}
+                </span>
+              )}
+              <span style={{
+                fontSize:11,fontWeight:700,color:DIFF_COLOR[q.difficulty],
+                background:`${DIFF_COLOR[q.difficulty]}18`,
+                padding:"4px 10px",borderRadius:6,textTransform:"capitalize",
+              }}>{q.difficulty}</span>
+              <span style={{
+                fontFamily:"'Inter',sans-serif",fontSize:13,fontWeight:600,
+                color:"#3d4155",
+              }}>{idx+1}<span style={{color:"#1e2130"}}>/{queue.length}</span></span>
             </div>
           </div>
+
           {/* Progress bar */}
-          <div style={{height:3,background:"#12151c",borderRadius:2,overflow:"hidden"}}>
-            <div style={{height:"100%",width:`${((idx+1)/queue.length)*100}%`,
-              background:accent,borderRadius:2,transition:"width .3s"}}/>
+          <div style={{height:3,background:"#13151f",borderRadius:2,overflow:"hidden"}}>
+            <div style={{
+              height:"100%",
+              width:`${((idx+1)/queue.length)*100}%`,
+              background:accent,borderRadius:2,transition:"width .25s",
+            }}/>
           </div>
         </div>
 
-        {/* Scrollable body */}
-        <div ref={scrollRef} style={{flex:1,overflowY:"auto",padding:"8px 16px 16px",WebkitOverflowScrolling:"touch"}}>
+        {/* Scrollable content */}
+        <div ref={scrollRef} style={{
+          flex:1,overflowY:"auto",
+          padding:"8px 18px 24px",
+          WebkitOverflowScrolling:"touch",
+        }}>
           <div style={{maxWidth:480,margin:"0 auto"}}>
 
-            {/* Category + scenario badges */}
-            <div style={{marginBottom:10,display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
-              <div style={{width:6,height:6,borderRadius:"50%",background:accent,flexShrink:0}}/>
-              <span style={{fontSize:11,color:accent,textTransform:"uppercase",letterSpacing:2,fontWeight:700}}>
-                {q.category}
-              </span>
-              <span style={{fontSize:11,color:"#444",background:"#1c2030",padding:"3px 8px",borderRadius:5}}>
-                {q.scenario}
-              </span>
-              <span style={{fontSize:11,color:"#555",background:"#12151c",padding:"3px 8px",borderRadius:5,
-                border:"1px solid #1c2030"}}>
-                {q.my_position}
-              </span>
+            {/* Badges */}
+            <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",marginBottom:12}}>
+              <span style={{
+                fontSize:11,fontWeight:800,color:accent,
+                background:`${accent}18`,padding:"4px 10px",
+                borderRadius:6,textTransform:"uppercase",letterSpacing:"0.08em",
+              }}>{q.category}</span>
+              <span style={{
+                fontSize:11,fontWeight:600,color:"#3d4155",
+                background:"#13151f",border:"1px solid #1e2130",
+                padding:"4px 10px",borderRadius:6,
+              }}>{q.scenario}</span>
+              <span style={{
+                fontSize:11,fontWeight:700,
+                color:POS_COLOR[q.my_position]||"#888",
+                background:`${POS_COLOR[q.my_position]||"#888"}18`,
+                padding:"4px 10px",borderRadius:6,
+              }}>{q.my_position}</span>
             </div>
 
-            {/* Range context — collapsible pill */}
-            <details style={{marginBottom:10}}>
+            {/* Range context — collapsed by default */}
+            <details style={{marginBottom:12}}>
               <summary style={{
-                fontSize:11,color:"#555",cursor:"pointer",listStyle:"none",
-                display:"flex",alignItems:"center",gap:5,
-                background:"#0d1018",padding:"7px 12px",borderRadius:8,
-                border:"1px solid #1a1f2e",
+                fontSize:12,fontWeight:600,color:"#3d4155",
+                cursor:"pointer",listStyle:"none",
+                display:"flex",alignItems:"center",gap:6,
+                background:"#13151f",padding:"9px 14px",
+                borderRadius:10,border:"1px solid #1e2130",
               }}>
-                <span style={{color:"#333"}}>▸</span>
-                <span style={{letterSpacing:1,textTransform:"uppercase"}}>Range context</span>
+                <span style={{fontSize:10}}>▶</span>
+                <span style={{letterSpacing:"0.08em",textTransform:"uppercase",fontSize:11}}>
+                  Range Context
+                </span>
               </summary>
-              <div style={{background:"#0d1018",padding:"10px 12px",borderRadius:"0 0 8px 8px",
-                borderLeft:"1px solid #1a1f2e",borderRight:"1px solid #1a1f2e",borderBottom:"1px solid #1a1f2e",
-                fontSize:12,color:"#666",lineHeight:1.6,marginTop:-1}}>
+              <div style={{
+                background:"#13151f",
+                padding:"12px 14px",
+                borderRadius:"0 0 10px 10px",
+                border:"1px solid #1e2130",borderTop:"none",
+                fontSize:12,fontWeight:500,color:"#6b7080",lineHeight:1.7,
+              }}>
                 {q.range_context}
               </div>
             </details>
 
-            {/* Scenario card */}
-            <div style={{background:"#12151c",borderRadius:16,padding:"16px",
-              border:`1.5px solid ${accent}44`,marginBottom:12,position:"relative",overflow:"hidden"}}>
-              <div style={{position:"absolute",top:-40,right:-40,width:140,height:140,
-                borderRadius:"50%",background:`${accent}12`,pointerEvents:"none"}}/>
-
-              {/* Position badge + situation */}
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
-                <span style={{fontFamily:"'DM Mono',monospace",fontSize:12,color:accent,
-                  background:`${accent}22`,padding:"4px 10px",borderRadius:6,fontWeight:700}}>
-                  {q.position}
-                </span>
-                <span style={{fontSize:12,color:"#444",flex:1,textAlign:"right",marginLeft:8,lineHeight:1.3}}>
-                  {q.situation}
-                </span>
+            {/* Question card */}
+            <div style={{
+              background:"#13151f",borderRadius:16,
+              border:`1px solid ${accent}30`,
+              padding:"18px",marginBottom:14,
+            }}>
+              {/* Position + situation */}
+              <div style={{
+                display:"flex",alignItems:"center",
+                justifyContent:"space-between",marginBottom:14,
+              }}>
+                <span style={{
+                  fontFamily:"'Inter',sans-serif",
+                  fontSize:13,fontWeight:800,
+                  color:accent,background:`${accent}18`,
+                  padding:"5px 12px",borderRadius:8,
+                }}>{q.position}</span>
+                <span style={{
+                  fontSize:12,fontWeight:500,color:"#3d4155",
+                  flex:1,textAlign:"right",marginLeft:10,lineHeight:1.4,
+                }}>{q.situation}</span>
               </div>
 
               {/* Cards */}
-              <div style={{display:"flex",gap:10,marginBottom:14}}>
+              <div style={{display:"flex",gap:10,marginBottom:16}}>
                 {cards.map((c,i)=><Card key={i} rank={c.rank} suit={c.suit}/>)}
               </div>
 
-              {/* Question */}
-              <p style={{margin:0,fontSize:16,lineHeight:1.55,fontWeight:700,color:"#e8e4d8"}}>
-                {q.question}
-              </p>
+              {/* Question text */}
+              <p style={{
+                margin:0,fontSize:17,fontWeight:700,
+                color:"#f0ece0",lineHeight:1.55,
+                letterSpacing:"-0.01em",
+              }}>{q.question}</p>
             </div>
 
             {/* Options */}
-            <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
+            <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:14}}>
               {q.options.map((opt,i)=>{
-                let bc="#1c2030",bg="#12151c",tc="#a0a0a0",icon=null;
+                let bg="#13151f",bc="#1e2130",tc="#9098b0",icon=null;
                 if(revealed){
-                  if(i===q.correct){bc="#4caf7d";bg="rgba(76,175,125,0.12)";tc="#7dd9a0";icon="✓";}
-                  else if(i===selected){bc="#e87070";bg="rgba(232,112,112,0.10)";tc="#e87070";icon="✗";}
-                  else{tc="#2a2a2a";}
+                  if(i===q.correct){bg="rgba(76,175,125,0.10)";bc="#4caf7d";tc="#7dd9a0";icon="✓";}
+                  else if(i===selected){bg="rgba(232,112,112,0.10)";bc="#e87070";tc="#e87070";icon="✗";}
+                  else{tc="#2a2d3d";}
                 }
                 return(
                   <button key={i} onClick={()=>choose(i)} disabled={revealed} style={{
-                    width:"100%",padding:"14px 14px",borderRadius:12,
+                    width:"100%",minHeight:54,
+                    padding:"14px 16px",borderRadius:12,
                     border:`1.5px solid ${bc}`,background:bg,color:tc,
-                    fontSize:15,cursor:revealed?"default":"pointer",
-                    textAlign:"left",fontFamily:"'Syne',sans-serif",lineHeight:1.4,
-                    display:"flex",alignItems:"center",justifyContent:"space-between",
-                    transition:"border-color .12s,background .12s",outline:"none",
+                    fontSize:15,fontWeight:600,
+                    cursor:revealed?"default":"pointer",
+                    textAlign:"left",
+                    fontFamily:"'Inter',sans-serif",
+                    lineHeight:1.4,
+                    display:"flex",alignItems:"center",
+                    justifyContent:"space-between",
+                    transition:"border-color .1s,background .1s",
+                    outline:"none",
                     WebkitTapHighlightColor:"transparent",
-                    minHeight:52,
                   }}>
                     <span style={{display:"flex",gap:10,alignItems:"flex-start"}}>
-                      <span style={{fontFamily:"'DM Mono',monospace",fontSize:11,
-                        color:revealed?tc:"#333",flexShrink:0,marginTop:2,fontWeight:700}}>
-                        {String.fromCharCode(65+i)}
-                      </span>
+                      <span style={{
+                        fontSize:11,fontWeight:800,
+                        color:revealed?tc:"#2a2d3d",
+                        flexShrink:0,marginTop:2,
+                        fontFamily:"'Inter',sans-serif",
+                        letterSpacing:"0.05em",
+                      }}>{String.fromCharCode(65+i)}</span>
                       <span>{opt}</span>
                     </span>
-                    {icon&&<span style={{fontWeight:800,fontSize:17,flexShrink:0,marginLeft:10}}>{icon}</span>}
+                    {icon&&(
+                      <span style={{fontWeight:900,fontSize:18,flexShrink:0,marginLeft:12}}>
+                        {icon}
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -371,43 +515,63 @@ export default function App() {
             {/* Explanation */}
             {revealed&&(
               <div style={{
-                background:ok?"rgba(76,175,125,0.08)":"rgba(232,112,112,0.08)",
+                background:ok?"rgba(76,175,125,0.07)":"rgba(232,112,112,0.07)",
                 borderRadius:14,
-                border:`1.5px solid ${ok?"#4caf7d44":"#e8707044"}`,
-                padding:"14px",marginBottom:12,
+                border:`1px solid ${ok?"rgba(76,175,125,0.2)":"rgba(232,112,112,0.2)"}`,
+                padding:"16px",marginBottom:12,
               }}>
-                <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:9}}>
-                  <span style={{fontSize:15}}>{ok?"✓":"✗"}</span>
-                  <span style={{fontSize:12,fontWeight:800,
-                    color:ok?"#4caf7d":"#e87070",textTransform:"uppercase",letterSpacing:1}}>
-                    {ok?"Correct":"Incorrect"}
-                  </span>
+                <div style={{
+                  display:"flex",alignItems:"center",gap:8,marginBottom:10,
+                }}>
+                  <div style={{
+                    width:24,height:24,borderRadius:6,
+                    background:ok?"#4caf7d":"#e87070",
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    fontSize:13,fontWeight:900,color:"#0a0c14",flexShrink:0,
+                  }}>{ok?"✓":"✗"}</div>
+                  <span style={{
+                    fontSize:12,fontWeight:800,
+                    color:ok?"#4caf7d":"#e87070",
+                    textTransform:"uppercase",letterSpacing:"0.1em",
+                  }}>{ok?"Correct":"Incorrect"}</span>
                 </div>
-                <p style={{margin:"0 0 10px",fontSize:13,color:"#a0a0a0",lineHeight:1.65}}>{q.explanation}</p>
+                <p style={{
+                  margin:"0 0 0",fontSize:14,fontWeight:500,
+                  color:"#9098b0",lineHeight:1.7,
+                }}>{q.explanation}</p>
+
                 {!ok&&q.why_wrong&&q.why_wrong[String(selected)]&&(
-                  <div style={{borderTop:"1px solid #1c2030",paddingTop:10,marginTop:4}}>
-                    <div style={{fontSize:10,color:"#e87070",letterSpacing:2,textTransform:"uppercase",marginBottom:6}}>
-                      Why {String.fromCharCode(65+selected)} is wrong
-                    </div>
-                    <p style={{margin:0,fontSize:13,color:"#666",lineHeight:1.6}}>
-                      {q.why_wrong[String(selected)]}
-                    </p>
+                  <div style={{
+                    marginTop:12,paddingTop:12,
+                    borderTop:"1px solid rgba(255,255,255,0.05)",
+                  }}>
+                    <div style={{
+                      fontSize:10,fontWeight:800,color:"#e87070",
+                      letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:6,
+                    }}>Why {String.fromCharCode(65+selected)} is wrong</div>
+                    <p style={{
+                      margin:0,fontSize:14,fontWeight:500,
+                      color:"#6b7080",lineHeight:1.65,
+                    }}>{q.why_wrong[String(selected)]}</p>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Next button — inside scroll so it's always reachable */}
+            {/* Next */}
             {revealed&&(
               <button onClick={next} style={{
-                width:"100%",padding:"16px",borderRadius:14,
-                background:"linear-gradient(135deg,#e8a84c,#c97c30)",
-                color:"#090b0f",fontSize:16,fontWeight:800,border:"none",
-                cursor:"pointer",fontFamily:"'Syne',sans-serif",
+                width:"100%",height:56,borderRadius:14,
+                background:"linear-gradient(135deg,#e8a84c,#d4832a)",
+                color:"#0a0c14",fontSize:16,fontWeight:800,
+                border:"none",cursor:"pointer",
+                fontFamily:"'Inter',sans-serif",
+                letterSpacing:"-0.01em",
+                boxShadow:"0 6px 24px rgba(232,168,76,0.28)",
                 WebkitTapHighlightColor:"transparent",
-                marginBottom:8,
+                marginBottom:4,
               }}>
-                {idx+1>=queue.length?"See results →":"Next →"}
+                {idx+1>=queue.length?"See Results →":"Next →"}
               </button>
             )}
           </div>
@@ -416,45 +580,76 @@ export default function App() {
     );
   }
 
-  // ── RESULT ────────────────────────────────
+  // ── RESULT ───────────────────────────────────────────────────────────
   if(screen==="result"){
     const total=session.correct+session.wrong;
     const acc=total>0?Math.round(session.correct/total*100):0;
-    const grade=acc>=85?{l:"Excellent",c:"#4caf7d"}:acc>=65?{l:"Good",c:"#e8a84c"}:{l:"Keep drilling",c:"#e87070"};
+    const grade=acc>=85?{l:"Excellent",c:"#4caf7d"}
+               :acc>=65?{l:"Good",c:"#e8a84c"}
+               :        {l:"Keep drilling",c:"#e87070"};
     return(
       <div style={{
-        minHeight:"100vh",background:"#090b0f",color:"#e8e4d8",
-        fontFamily:"'Syne',sans-serif",display:"flex",flexDirection:"column",
-        alignItems:"center",justifyContent:"center",padding:"32px 24px",
-        textAlign:"center",
+        minHeight:"100vh",background:"#0a0c14",color:"#e8e4d8",
+        fontFamily:"'Inter',sans-serif",
+        display:"flex",flexDirection:"column",
+        alignItems:"center",justifyContent:"center",
+        padding:"32px 24px",
         paddingTop:"calc(env(safe-area-inset-top,0px) + 32px)",
         paddingBottom:"calc(env(safe-area-inset-bottom,0px) + 32px)",
+        textAlign:"center",
       }}>
-        <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-        <div style={{fontSize:52,marginBottom:16}}>🃏</div>
-        <h2 style={{fontSize:28,fontWeight:800,margin:"0 0 6px"}}>Session done</h2>
-        <div style={{fontSize:13,color:grade.c,fontWeight:800,marginBottom:28,
-          textTransform:"uppercase",letterSpacing:1}}>{grade.l}</div>
-        <div style={{width:"100%",maxWidth:340}}>
-          <div style={{background:"#12151c",borderRadius:18,padding:24,marginBottom:16,border:"1px solid #1c2030"}}>
-            <div style={{fontSize:56,fontWeight:800,color:"#e8a84c",lineHeight:1}}>{acc}%</div>
-            <div style={{fontSize:13,color:"#555",marginTop:6}}>
-              {session.correct} correct · {session.wrong} wrong · {total} total
-            </div>
-            {streak>0&&<div style={{fontSize:13,color:"#4caf7d",marginTop:8}}>Best streak 🔥{streak}</div>}
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');*{-webkit-font-smoothing:antialiased;}`}</style>
+        <div style={{fontSize:56,marginBottom:20}}>🃏</div>
+        <div style={{fontSize:11,fontWeight:700,color:"#3d4155",
+          letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:8}}>
+          Session Complete
+        </div>
+        <h2 style={{fontSize:32,fontWeight:900,margin:"0 0 6px",letterSpacing:"-0.03em"}}>
+          {acc}%
+        </h2>
+        <div style={{fontSize:14,fontWeight:700,color:grade.c,marginBottom:32,
+          letterSpacing:"0.05em",textTransform:"uppercase"}}>
+          {grade.l}
+        </div>
+
+        <div style={{
+          width:"100%",maxWidth:340,
+          background:"#13151f",borderRadius:16,
+          border:"1px solid #1e2130",padding:"20px",
+          marginBottom:20,
+        }}>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12}}>
+            {[
+              {l:"Correct",v:session.correct,c:"#4caf7d"},
+              {l:"Wrong",v:session.wrong,c:"#e87070"},
+              {l:"Total",v:total,c:"#e8a84c"},
+            ].map(s=>(
+              <div key={s.l} style={{textAlign:"center"}}>
+                <div style={{fontSize:24,fontWeight:800,color:s.c}}>{s.v}</div>
+                <div style={{fontSize:11,fontWeight:600,color:"#3d4155",
+                  textTransform:"uppercase",letterSpacing:"0.08em",marginTop:2}}>{s.l}</div>
+              </div>
+            ))}
           </div>
+        </div>
+
+        <div style={{width:"100%",maxWidth:340}}>
           <button onClick={startSession} style={{
-            width:"100%",padding:"16px",borderRadius:14,
-            background:"linear-gradient(135deg,#e8a84c,#c97c30)",
-            color:"#090b0f",fontSize:16,fontWeight:800,border:"none",
-            cursor:"pointer",marginBottom:10,fontFamily:"'Syne',sans-serif",
+            width:"100%",height:56,borderRadius:14,
+            background:"linear-gradient(135deg,#e8a84c,#d4832a)",
+            color:"#0a0c14",fontSize:16,fontWeight:800,
+            border:"none",cursor:"pointer",marginBottom:10,
+            fontFamily:"'Inter',sans-serif",
+            boxShadow:"0 6px 24px rgba(232,168,76,0.28)",
             WebkitTapHighlightColor:"transparent",
-          }}>Retry session</button>
+          }}>Retry Session</button>
           <button onClick={()=>setScreen("home")} style={{
-            width:"100%",padding:"14px",borderRadius:12,background:"transparent",
-            border:"1px solid #1c2030",color:"#555",fontSize:14,cursor:"pointer",
-            fontFamily:"'Syne',sans-serif",WebkitTapHighlightColor:"transparent",
-          }}>Back to home</button>
+            width:"100%",height:48,borderRadius:12,
+            background:"transparent",border:"1px solid #1e2130",
+            color:"#6b7080",fontSize:14,fontWeight:600,cursor:"pointer",
+            fontFamily:"'Inter',sans-serif",
+            WebkitTapHighlightColor:"transparent",
+          }}>← Back to Home</button>
         </div>
       </div>
     );
