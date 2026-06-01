@@ -7672,7 +7672,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "ATs is listed as optional in the BTN 4-bet range. SB's default 3-bet range vs BTN = AA-TT, AJ+ — ATs has equity advantage over most of this range. IP 4-bet: 2.2x = ~20 BB.",
+    "explanation": "ATs is listed as optional in the BTN 4-bet range — not because it has equity advantage, but because of its blocker value. ATs holds an ace blocker (removing AA and AK combos from SB's range) and has nut flush potential if called. It functions as a semi-bluff 4-bet with good removal properties. IP 4-bet: 2.2x = ~20 BB. This is an aggressive optional line — fold is also correct vs a tight SB.",
     "why_wrong": {
       "1": "Calling ATs in a 3-bet pot vs SB is second-best — 4-betting extracts more value.",
       "2": "ATs has equity advantage vs SB's 3-bet range. Fold is wrong.",
@@ -9412,7 +9412,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "KQs is listed as optional in the SB 4-bet range vs BB. BB's 3-bet range vs SB raise = AA-TT, AJ+ — KQs dominates the lower portion (AJ, KQ and below). Optional 4-bet to ~22 BB (2.2x OOP).",
+    "explanation": "KQs is listed as optional in the SB 4-bet range vs BB. Like ATs, it functions as a semi-bluff 4-bet — KQs holds a king blocker (reducing KK combos in BB's range) and has nut flush potential. It is not ahead of BB's 3-bet range; it is a polarized bluff with removal properties. Optional 4-bet to ~22 BB (2.2x OOP). Fold is also correct vs a tight BB 3-bettor.",
     "why_wrong": {
       "1": "Calling KQs OOP in a 3-bet pot vs BB — loses value vs BB's calling range.",
       "2": "Folding KQs vs BB 3-bet when it is in the optional 4-bet range is too tight.",
