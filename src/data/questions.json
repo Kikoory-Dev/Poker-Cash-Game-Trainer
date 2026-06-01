@@ -3982,7 +3982,7 @@
       "3-Bet to 9 BB"
     ],
     "correct": 0,
-    "explanation": "AA always squeezes for value. Sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. Both UTG and MP have capped ranges — MP's flat call almost never includes a premium hand.",
+    "explanation": "AA always squeezes for value. Sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. MP's flat call is capped — premium hands would have 3-bet. UTG's raising range remains uncapped.",
     "why_wrong": {
       "1": "Calling AA in a squeeze spot misses massive value.",
       "2": "Never fold AA.",
@@ -4042,7 +4042,7 @@
       "3-Bet to 9 BB"
     ],
     "correct": 0,
-    "explanation": "QQ squeezes for value. Sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. Both players have capped ranges — especially MP's flat call.",
+    "explanation": "QQ squeezes for value. Sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. MP's flat call is capped — premium hands would have 3-bet.",
     "why_wrong": {
       "1": "Calling QQ in a squeeze spot with two capped ranges is weak.",
       "2": "Folding QQ here is never correct.",
@@ -4072,7 +4072,7 @@
       "3-Bet to 9 BB"
     ],
     "correct": 0,
-    "explanation": "AKs squeezes for value. Sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. Data shows 3-betting AK is 2.4x more profitable than calling — squeezing is even better with a capped caller in the pot.",
+    "explanation": "AKs squeezes for value. Sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. Data: 3-betting AK is 2.4x more profitable than calling — squeezing is even better with a capped caller in the pot.",
     "why_wrong": {
       "1": "Calling AKs in a squeeze spot is 2.4x less profitable than raising.",
       "2": "AKs is ahead of most ranges here. Fold is wrong.",
@@ -6592,7 +6592,7 @@
       "3-Bet to 9 BB"
     ],
     "correct": 0,
-    "explanation": "AA always squeezes for value. IP sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. Both UTG and MP have capped ranges — MP's flat call almost never includes a premium hand.",
+    "explanation": "AA always squeezes for value. IP sizing: 3x UTG raise (9 BB) + 3 BB for MP caller = 12 BB. MP's flat call is capped — premium hands would have 3-bet. UTG's raising range remains uncapped.",
     "why_wrong": {
       "1": "Calling AA in a squeeze spot misses massive value.",
       "2": "Never fold AA.",
@@ -6622,7 +6622,7 @@
       "3-Bet to 9 BB"
     ],
     "correct": 0,
-    "explanation": "QQ squeezes for value. IP sizing: 3x UTG raise (9 BB) + 3 BB for CO caller = 12 BB. Both players have capped ranges.",
+    "explanation": "QQ squeezes for value. IP sizing: 3x UTG raise (9 BB) + 3 BB for CO caller = 12 BB. CO's flat call is capped — premium hands would have 3-bet.",
     "why_wrong": {
       "1": "Calling QQ in a squeeze spot with two capped ranges is weak.",
       "2": "Folding QQ here is never correct.",
@@ -8812,7 +8812,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "AA always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB. Both players have capped ranges.",
+    "explanation": "AA always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB. CO's flat call is capped — premium hands would have 3-bet. BTN's raising range remains uncapped.",
     "why_wrong": {
       "1": "Calling AA in a squeeze spot misses massive value.",
       "2": "Never fold AA.",
@@ -8842,7 +8842,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "QQ squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Both players have capped ranges — BTN's flat call is especially weak.",
+    "explanation": "QQ squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. BTN's flat call is capped — premium hands would have 3-bet.",
     "why_wrong": {
       "1": "Calling QQ 3-way OOP is weak — no initiative in a multiway pot.",
       "2": "Folding QQ here is never correct.",
@@ -10792,7 +10792,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "AA always squeezes. BB closes action — no squeeze risk behind. OOP sizing: 3.5x UTG raise (10.5 BB) + 3 BB for MP caller = 13.5-14 BB. Both players have capped ranges.",
+    "explanation": "AA always squeezes. BB closes action. OOP sizing: 3.5x UTG raise (10.5 BB) + 3 BB for MP caller = 13.5 BB. MP's flat call is capped — premium hands would have 3-bet. UTG's raising range remains uncapped.",
     "why_wrong": {
       "1": "Calling AA in a squeeze spot misses massive value.",
       "2": "Never fold AA.",
@@ -10822,7 +10822,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "QQ squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Both players have capped ranges. BB closes action — no risk of being squeezed.",
+    "explanation": "QQ squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. BTN's flat call is capped — premium hands would have 3-bet. BB closes action.",
     "why_wrong": {
       "1": "Calling QQ 3-way OOP is weak — no initiative in a multiway pot.",
       "2": "Folding QQ here is never correct.",
@@ -10942,7 +10942,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "AKs squeezes for value. OOP sizing: 3.5x MP raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Data: 3-betting AK is 2.4x more profitable than calling. Both MP and BTN have capped ranges.",
+    "explanation": "AKs squeezes for value. OOP sizing: 3.5x MP raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Data: 3-betting AK is 2.4x more profitable than calling. BTN's flat call is capped — premium hands would have 3-bet.",
     "why_wrong": {
       "1": "Calling AKs OOP in a squeeze spot is 2.4x less profitable than squeezing.",
       "2": "AKs is ahead of most ranges here. Fold is wrong.",
@@ -10972,7 +10972,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "KK always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for SB caller = 13.5 BB. Both players have capped ranges. BB closes action — squeeze without fear of being re-raised by anyone behind.",
+    "explanation": "KK always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for SB caller = 13.5 BB. SB's flat call is capped — premium hands would have 3-bet. BB closes action.",
     "why_wrong": {
       "1": "Calling KK 3-way OOP misses significant value.",
       "2": "Never fold KK.",
