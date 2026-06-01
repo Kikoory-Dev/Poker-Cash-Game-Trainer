@@ -4364,7 +4364,7 @@
     ],
     "position": "CO",
     "situation": "MP limps. UTG folds. Action on you in CO.",
-    "question": "You have Q♣J♣ in CO. UTG fold. MP limpss. What do you do?",
+    "question": "You have Q♣J♣ in CO. UTG folds, MP limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -6973,8 +6973,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "MP limps. UTG and CO fold. Action on you.",
-    "question": "You have Q♣J♣ on the BTN. UTG and CO fold. MP limps. What do you do?",
+    "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
+    "question": "You have Q♣J♣ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -7063,8 +7063,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "MP limps. UTG and CO fold. Action on you.",
-    "question": "You have K♦J♦ on the BTN. UTG and CO fold. MP limps. What do you do?",
+    "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
+    "question": "You have K♦J♦ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Over-limp",
@@ -7153,8 +7153,8 @@
       "T♣"
     ],
     "position": "BTN",
-    "situation": "MP limps. UTG and CO fold. Action on you.",
-    "question": "You have A♠T♣ on the BTN. UTG and CO fold. MP limps. What do you do?",
+    "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
+    "question": "You have A♠T♣ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
       "Over-limp or Fold",
       "Raise to 4 BB",
@@ -8803,8 +8803,8 @@
       "A♦"
     ],
     "position": "SB",
-    "situation": "BTN raises 3 BB. CO calls. Action on you.",
-    "question": "You have A♠A♦ in SB. BTN raises 3 BB, CO calls. What do you do?",
+    "situation": "Conservative ranges. UTG and MP fold. CO raises 3 BB, BTN calls. Action on you in SB.",
+    "question": "You have A♠A♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8812,7 +8812,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "AA always squeezes. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB. CO's flat call is capped — premium hands would have 3-bet. BTN's raising range remains uncapped.",
+    "explanation": "AA always squeezes. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. BTN's flat call is capped — premium hands would have 3-bet.",
     "why_wrong": {
       "1": "Calling AA in a squeeze spot misses massive value.",
       "2": "Never fold AA.",
@@ -8863,8 +8863,8 @@
       "K♣"
     ],
     "position": "SB",
-    "situation": "BTN raises 3 BB. CO calls. Action on you.",
-    "question": "You have A♣K♣ in SB. BTN raises 3 BB, CO calls. What do you do?",
+    "situation": "Conservative ranges. UTG and MP fold. CO raises 3 BB, BTN calls. Action on you in SB.",
+    "question": "You have A♣K♣ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8872,7 +8872,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "AKs squeezes for value. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB. Data: 3-betting AK is 2.4x more profitable than calling — squeezing is even better with a capped caller.",
+    "explanation": "AKs squeezes for value. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB. Data: 3-betting AK is 2.4x more profitable than calling — squeezing is even better with a capped caller.",
     "why_wrong": {
       "1": "Calling AKs OOP in a squeeze spot is 2.4x less profitable than squeezing.",
       "2": "AKs is ahead of most ranges here. Fold is wrong.",
@@ -8923,8 +8923,8 @@
       "T♦"
     ],
     "position": "SB",
-    "situation": "BTN raises 3 BB. CO calls. Action on you.",
-    "question": "You have T♥T♦ in SB. BTN raises 3 BB, CO calls. What do you do?",
+    "situation": "Conservative ranges. UTG and MP fold. CO raises 3 BB, BTN calls. Action on you in SB.",
+    "question": "You have T♥T♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8932,7 +8932,7 @@
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "TT is in the default SB 3-bet range vs BTN (AA-TT, AJ+). With CO's flat call, squeeze rather than just 3-bet. OOP sizing: 3.5x BTN raise (10.5 BB) + 3 BB for CO caller = 13.5 BB.",
+    "explanation": "TT is in the default SB 3-bet range vs CO (AA-TT, AJ+). With BTN's flat call, squeeze rather than just 3-bet. OOP sizing: 3.5x CO raise (10.5 BB) + 3 BB for BTN caller = 13.5 BB.",
     "why_wrong": {
       "1": "Calling TT 3-way OOP is weak — every overcard board creates difficult decisions.",
       "2": "Folding TT vs BTN raise + CO call is too tight.",
