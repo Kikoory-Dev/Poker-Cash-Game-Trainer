@@ -1066,15 +1066,15 @@
     "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
     "question": "You have Q♠Q♥ in UTG. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet to ~22 BB",
+      "4-Bet or Call — both correct",
       "Call",
       "Fold",
       "Shove"
     ],
     "correct": 0,
-    "explanation": "QQ is listed as optional in the UTG 4-bet range (default = AA/KK/AKs). Despite being optional, QQ has clear equity advantage vs BB's 3-bet range and should 4-bet. OOP sizing 2-2.2x = ~22 BB. If BB 5-bets jam, you face a tough decision vs a very tight player.",
+    "explanation": "QQ is optional in the UTG 4-bet range. 4-betting (~22 BB) extracts value vs JJ, TT, AK in BB's range and is the aggressive default. Calling is also correct — QQ plays well in position postflop and avoids a large pot vs the rare KK/AA. Both lines are standard at this level.",
     "why_wrong": {
-      "1": "Calling QQ OOP in a 3-bet pot is second-best — you have equity dominance over most of BB's 3-bet range.",
+      "1": "Also correct — 4-Bet or Call — both correct. See explanation.",
       "2": "Folding QQ vs a 3-bet is never correct at 100 BB.",
       "3": "Shoving QQ folds out JJ, TT which you want calls from."
     }
@@ -2266,15 +2266,15 @@
     "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB.",
     "question": "You have Q♥Q♣ in MP. You raised 3 BB, CO 3-bets to 9 BB. What do you do?",
     "options": [
-      "4-Bet to ~20 BB",
+      "4-Bet or Call — both correct",
       "Call",
       "Fold",
       "Shove"
     ],
     "correct": 0,
-    "explanation": "QQ is listed as optional in the MP 4-bet range. CO is in position but QQ has clear equity advantage vs CO's 3-bet range. 4-bet to ~20 BB (2.2x the 3-bet). If CO 5-bet jams, you face a tough decision — likely fold vs a very tight player, call vs a wider one.",
+    "explanation": "QQ is optional in the MP 4-bet range vs CO. 4-betting (~20 BB) is the aggressive default — QQ dominates most of CO's 3-bet range. Calling in position is also fully correct and avoids a large pot vs KK/AA. Both lines are standard.",
     "why_wrong": {
-      "1": "Calling QQ in a 3-bet pot is the alternative but 4-betting extracts more value vs CO's bluffs and weaker value hands.",
+      "1": "Also correct — 4-Bet or Call — both correct. See explanation.",
       "2": "Folding QQ vs a 3-bet is never correct at 100 BB.",
       "3": "Shoving folds out hands you want calls from."
     }
@@ -2356,15 +2356,15 @@
     "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
     "question": "You have A♣K♦ in MP. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet to ~22 BB",
+      "4-Bet or Call — both correct",
       "Call",
       "Fold",
       "Shove"
     ],
     "correct": 0,
-    "explanation": "AKo is listed as optional in the MP 4-bet range. Even as optional, AKo has clear equity advantage vs BB's 3-bet range and should 4-bet. OOP 4-bet: 2-2.2x = ~22 BB. Data: 4-betting AK is 2.4x more profitable than calling.",
+    "explanation": "AKo is optional in the MP 4-bet range. Hardin's data shows 4-betting AK is 2.4x more profitable than calling — 4-bet is the recommended line. Calling is also defensible in position. Both lines are correct; 4-bet is the higher-EV default.",
     "why_wrong": {
-      "1": "Calling AKo OOP in a 3-bet pot is 2.4x less profitable than 4-betting.",
+      "1": "Also correct — 4-Bet or Call — both correct. See explanation.",
       "2": "AKo is ahead of most 3-bet ranges except AA/KK. Fold is wrong.",
       "3": "Shoving folds out hands you want calls from."
     }
@@ -4096,13 +4096,13 @@
     "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
     "question": "You have J♥J♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
-      "Call",
+      "Call — over-call is correct here",
       "Squeeze to 12 BB",
       "Fold",
       "Over-call"
     ],
     "correct": 0,
-    "explanation": "JJ is NOT in the default squeeze/3-bet range vs UTG (default = AA-KK, AKs; optional = QQ, AKo). UTG's range includes QQ+ which dominates JJ. Call in position — excellent implied odds, fold on A/K/Q boards vs UTG aggression. Over-calling with JJ is fine here.",
+    "explanation": "JJ vs UTG raise + MP call from CO: calling (over-calling) is correct. JJ is NOT in the default squeeze range vs UTG's tight 9.8% range — squeezing builds a large pot where QQ+ dominates. Call in position for excellent set-mining implied odds.",
     "why_wrong": {
       "1": "Squeezing JJ into UTG's tight range builds a large pot where QQ+ dominates you.",
       "2": "Folding JJ in position with good implied odds is too tight.",
@@ -6076,15 +6076,15 @@
     "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
     "question": "You have A♣Q♣ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
-      "Call",
+      "3-Bet or Call — both correct",
       "3-Bet",
       "Fold",
       "Raise to 4 BB"
     ],
     "correct": 0,
-    "explanation": "AQs is in the BTN cold-call range vs MP (gap concept). MP's range is 12.67% — AQs has equity edge but call is the conservative default. 3-betting AQs is the optional line.",
+    "explanation": "AQs BTN vs MP: calling in position is the conservative default with a hand that has equity but faces domination from AK, AA, KK in MP's range. 3-betting is the optional aggressive line — AQs is in the optional 3-bet value range vs MP. Both are correct; call is safer at passive microstakes.",
     "why_wrong": {
-      "1": "3-betting AQs vs MP is the optional line — call is the conservative default.",
+      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "AQs has equity edge vs MP's range. Fold is too tight.",
       "3": "Mini-raise is not valid."
     }
@@ -6316,13 +6316,13 @@
     "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
     "question": "You have A♦J♣ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
-      "Call",
+      "3-Bet or Call — both correct",
       "3-Bet",
       "Fold",
       "Raise to 4 BB"
     ],
     "correct": 0,
-    "explanation": "AJo is in the BTN cold-call range vs CO (gap concept). CO's range is 22.17% — AJo has equity edge. Call in position.",
+    "explanation": "AJo BTN vs CO: 3-betting to 9 BB is the aggressive default — AJo is in the optional 3-bet value range vs CO's 22% range. Calling is also fully correct — AJo faces domination from AQ+, AK in CO's value hands, so calling in position is the conservative safe line. Both are standard at microstakes.",
     "why_wrong": {
       "1": "3-betting AJo vs CO is the optional line — call is the conservative default.",
       "2": "AJo has equity edge vs CO's range. Fold is too tight.",
@@ -6706,13 +6706,13 @@
     "situation": "UTG raises 3 BB. CO calls. Action on you.",
     "question": "You have J♥J♦ on the BTN. UTG raises 3 BB, CO calls. What do you do?",
     "options": [
-      "Call",
+      "Call — over-call is correct here",
       "Squeeze to 12 BB",
       "Fold",
       "Over-call"
     ],
     "correct": 0,
-    "explanation": "JJ is NOT in the default squeeze range vs UTG (default = AA-KK, AKs; optional = QQ, AKo). UTG's range includes QQ+ which dominates JJ. Call in position for set-mining implied odds — over-calling JJ is fine here.",
+    "explanation": "JJ BTN vs UTG raise + CO call: over-calling is correct. Not in the default squeeze range vs UTG's tight range. Call in position for excellent set-mining implied odds with two opponents.",
     "why_wrong": {
       "1": "Squeezing JJ into UTG's tight range builds a pot where QQ+ dominates you.",
       "2": "Folding JJ in position with good implied odds is too tight.",
@@ -7666,16 +7666,16 @@
     "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
     "question": "You have A♠T♠ on the BTN. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet to ~20 BB",
+      "4-Bet bluff or Fold — both correct",
       "Call",
       "Fold",
       "Shove"
     ],
     "correct": 0,
-    "explanation": "ATs is listed as optional in the BTN 4-bet range — not because it has equity advantage, but because of its blocker value. ATs holds an ace blocker (removing AA and AK combos from SB's range) and has nut flush potential if called. It functions as a semi-bluff 4-bet with good removal properties. IP 4-bet: 2.2x = ~20 BB. This is an aggressive optional line — fold is also correct vs a tight SB.",
+    "explanation": "ATs BTN vs SB 3-bet: 4-betting is a semi-bluff using the ace blocker (removes AA/AK combos from SB's range) and nut flush potential. It is the optional aggressive line. Folding is also fully correct — ATs is not a value 4-bet and calling OOP is the worst option. 4-bet bluff or fold; never call.",
     "why_wrong": {
       "1": "Calling ATs in a 3-bet pot vs SB is second-best — 4-betting extracts more value.",
-      "2": "ATs has equity advantage vs SB's 3-bet range. Fold is wrong.",
+      "2": "Also correct — 4-Bet bluff or Fold — both correct. See explanation.",
       "3": "Shoving folds out hands you want calls from."
     }
   },
@@ -8572,7 +8572,7 @@
       "Complete"
     ],
     "correct": 0,
-    "explanation": "AJ+ is in the default SB 3-bet range vs BTN. AJ+ includes both AJs and AJo — both are default 3-bets. OOP sizing: 3.5x = 10.5 BB. Optional additions from SB: KQs, ATs.",
+    "explanation": "AJs SB vs BTN: AJ+ is in the default SB 3-bet range vs BTN's wide 35.44% steal range. 3-bet is the clear default. Calling OOP is second-best.",
     "why_wrong": {
       "1": "AJs OOP from SB vs BTN is a default 3-bet — calling is second-best.",
       "2": "Folding AJs vs BTN steal from SB is too tight.",
@@ -8686,16 +8686,16 @@
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
     "question": "You have K♠Q♠ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
-      "3-Bet to 10.5 BB",
+      "3-Bet or Fold — both correct",
       "Call",
       "Fold",
       "Complete"
     ],
     "correct": 0,
-    "explanation": "KQs is listed as optional in the SB 3-bet range vs BTN. BTN opens 35.44% — KQs dominates KJ, QJ, broadways in that wide range. Optional 3-bet to 10.5 BB (3.5x OOP). Both 3-bet and fold are defensible; 3-bet is the more aggressive line.",
+    "explanation": "KQs SB vs BTN steal: 3-betting is the optional aggressive line — KQs has equity vs BTN's wide range and a king blocker. Folding is also correct vs a tight BTN. Calling OOP from SB is the worst option — always raise or fold from SB. Never call from SB.",
     "why_wrong": {
       "1": "Calling KQs OOP from SB vs BTN is second-best — it has equity dominance vs BTN's wide range.",
-      "2": "Folding KQs vs BTN steal from SB is too tight when it is in the optional 3-bet range.",
+      "2": "Also correct — 3-Bet or Fold — both correct. See explanation.",
       "3": "Completing KQs vs a raise surrenders all initiative."
     }
   },
@@ -9406,16 +9406,16 @@
     "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
     "question": "You have K♠Q♠ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet to ~22 BB",
+      "4-Bet bluff or Fold — both correct",
       "Call",
       "Fold",
       "Shove"
     ],
     "correct": 0,
-    "explanation": "KQs is listed as optional in the SB 4-bet range vs BB. Like ATs, it functions as a semi-bluff 4-bet — KQs holds a king blocker (reducing KK combos in BB's range) and has nut flush potential. It is not ahead of BB's 3-bet range; it is a polarized bluff with removal properties. Optional 4-bet to ~22 BB (2.2x OOP). Fold is also correct vs a tight BB 3-bettor.",
+    "explanation": "KQs SB vs BB 3-bet: 4-betting is a semi-bluff using the king blocker and nut flush potential. Folding is also correct — KQs is not a value 4-bet. Calling OOP is the worst option. 4-bet bluff or fold; both are standard.",
     "why_wrong": {
       "1": "Calling KQs OOP in a 3-bet pot vs BB — loses value vs BB's calling range.",
-      "2": "Folding KQs vs BB 3-bet when it is in the optional 4-bet range is too tight.",
+      "2": "Also correct — 4-Bet bluff or Fold — both correct. See explanation.",
       "3": "Shoving folds out hands you want calls from."
     }
   },
@@ -9502,7 +9502,7 @@
       "Check"
     ],
     "correct": 0,
-    "explanation": "QQ vs UTG is listed as optional in the 3-bet value range (default = AA-KK, AKs). Even as optional, QQ has clear equity advantage vs UTG's 9.8% range. 3-bet for value. OOP 3.5x = 10.5 BB.",
+    "explanation": "QQ vs UTG from BB is listed as optional in the 3-bet range (default = AA-KK, AKs). Even as optional, QQ has clear equity advantage vs UTG's 9.8% range and 3-betting is the correct default. OOP 3.5x = 10.5 BB.",
     "why_wrong": {
       "1": "Calling QQ OOP vs UTG is second-best — you have equity dominance.",
       "2": "Folding QQ vs UTG raise is never correct.",
@@ -9682,7 +9682,7 @@
       "Check"
     ],
     "correct": 0,
-    "explanation": "AKo is listed as optional in the BB 3-bet range vs UTG, but Hardin's data shows 3-betting AK yields 797 BB/100 vs only 330 BB/100 when calling. Both versions should 3-bet. OOP 3.5x = 10.5 BB.",
+    "explanation": "AKo vs UTG from BB: Hardin's data shows 3-betting AK yields 797 BB/100 vs 330 BB/100 when calling — 2.4x more profitable. AKo should 3-bet. OOP 3.5x = 10.5 BB.",
     "why_wrong": {
       "1": "Calling AKo OOP vs UTG is 2.4x less profitable than 3-betting.",
       "2": "AKo is ahead of UTG's range except AA/KK. Fold is wrong.",
@@ -9736,15 +9736,15 @@
     "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
     "question": "You have J♠J♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
-      "3-Bet to 10.5 BB",
+      "3-Bet or Call — both correct",
       "Call",
       "Fold",
       "Check"
     ],
     "correct": 0,
-    "explanation": "JJ vs MP is listed as optional (default = AA-QQ, AKs). Even as optional, JJ has equity advantage vs MP's 12.67% range. 3-bet for value. OOP 3.5x = 10.5 BB.",
+    "explanation": "JJ BB vs MP: JJ is optional in the 3-bet value range vs MP (default = AA-QQ, AKs). 3-betting is the aggressive default — JJ dominates most of MP's 12.67% range. Calling is also correct — avoids a large pot where QQ+ dominates. Both lines are standard.",
     "why_wrong": {
-      "1": "Calling JJ OOP vs MP is second-best — you have equity dominance.",
+      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "Folding JJ vs MP raise is never correct.",
       "3": "Checking is not an option when facing a raise."
     }
@@ -10246,15 +10246,15 @@
     "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
     "question": "You have A♠J♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
-      "3-Bet to 10.5 BB",
+      "3-Bet or Call — both correct",
       "Call",
       "Fold",
       "Check"
     ],
     "correct": 0,
-    "explanation": "AJo is listed as optional in the BB 3-bet range vs BTN. BTN's wide 35.44% range makes AJo a clear value 3-bet — it dominates a huge portion of BTN's range. 3-bet to 10.5 BB (3.5x OOP).",
+    "explanation": "AJo BB vs BTN steal: 3-betting is the aggressive default — BTN opens 35.44% and AJo dominates most of that range. Calling is also correct — AJo faces domination from AQ+, AK in BTN's value hands. Both lines are standard; 3-bet is higher-EV vs wide steal ranges.",
     "why_wrong": {
-      "1": "Calling AJo OOP from BB vs BTN is second-best — BTN's wide range makes 3-betting highly profitable.",
+      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "Folding AJo vs BTN steal from BB is far too tight.",
       "3": "Checking is not an option when facing a raise."
     }
@@ -10756,17 +10756,17 @@
     "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
     "question": "You have K♦Q♦ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
-      "3-Bet to 9 BB",
+      "3-Bet or Call — both correct",
       "Call",
       "Fold",
       "3-Bet to 10.5 BB"
     ],
     "correct": 0,
-    "explanation": "KQs is listed as optional in the BB 3-bet range vs SB. BB has positional advantage over SB postflop — this strengthens the case for 3-betting. IP sizing: 3x = 9 BB. KQs dominates broadways in SB's 22.17% range.",
+    "explanation": "KQs BB vs SB raise: BB is in position postflop. 3-betting to 9 BB (IP sizing) is the aggressive default with KQs having equity vs SB's 22% range. Calling is also correct and plays the hand in position. Both lines are standard.",
     "why_wrong": {
-      "1": "Calling KQs vs SB is second-best — BB has position and KQs is in the optional 3-bet range.",
+      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "KQs dominates much of SB's range. Fold is too tight.",
-      "3": "10.5 BB is OOP sizing. BB is IP vs SB — use 3x = 9 BB."
+      "3": "Also correct — 3-Bet or Call — both correct. See explanation."
     }
   },
   {
