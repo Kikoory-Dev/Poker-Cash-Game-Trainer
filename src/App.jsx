@@ -84,8 +84,9 @@ const SCORE_COLOR=["#6b7d62","#d96060","#d4a847","#a8d4b0","#6db87a"];
 
 function weightedSample(questions,progress,n){
   const pool=questions.map(q=>({q,w:getWeight(progress[q.id])}));
+  const target=Math.min(n,pool.length);
   const result=[];
-  for(let i=0;i<Math.min(n,pool.length);i++){
+  for(let i=0;i<target;i++){
     const total=pool.reduce((s,x)=>s+x.w,0);
     let r=Math.random()*total,idx=0;
     for(;idx<pool.length;idx++){r-=pool[idx].w;if(r<=0)break;}
