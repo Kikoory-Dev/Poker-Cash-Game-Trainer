@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import questionsData from "./data/questions.json";
+import rangesData from "./data/ranges.json";
 
 const RED = new Set(["♥","♦"]);
 
@@ -24,7 +25,37 @@ const ALL_ACTIONS=[...new Set(questionsData.map(q=>q.action_type))].sort();
 const ALL_CATEGORIES=[...new Set(questionsData.map(q=>q.category))];
 const ALL_DIFFS=["easy","medium","hard"];
 const SESSION_SIZES=[10,20,30,50];
-const C={bg:"#1a2218",bg2:"#212d1f",bg3:"#273324",border:"#2e3d2b",text:"#e8e0cc",muted:"#6b7d62",accent:"#c8a84b",cream:"#f0e8d0"};
+const C={bg:"#1a2218",bg2:"#212d1f",bg3:"#273324",border:"#2e3d2b",text:"#e8e0cc",muted:"#6b7d62",accent:"#c8a84b",cream:"#f0e8d0",sage:"#8fa882"};
+
+// ── RANGE CHART (lookup reference) ──────────────────────────
+const CHART_RANKS = ["A","K","Q","J","T","9","8","7","6","5","4","3","2"];
+function chartHandLabel(r, c) {
+  if (r === c) return CHART_RANKS[r] + CHART_RANKS[c];
+  if (r < c)  return CHART_RANKS[r] + CHART_RANKS[c] + "s";
+  return CHART_RANKS[c] + CHART_RANKS[r] + "o";
+}
+
+function ChartGrid({ highlightSet, optionalSet }) {
+  return (
+    <div style={{display:"grid",gridTemplateColumns:"repeat(13, 1fr)",gap:2,width:"100%",maxWidth:430,margin:"0 auto"}}>
+      {CHART_RANKS.map((_, r) =>
+        CHART_RANKS.map((_, c) => {
+          const label = chartHandLabel(r, c);
+          const inRange = highlightSet.has(label);
+          const isOptional = optionalSet && optionalSet.has(label);
+          const isPair = r === c;
+          let bg = C.bg3, border = C.border, color = "#3d4a36";
+          if (inRange) { bg = `${C.accent}40`; border = C.accent; color = C.cream; }
+          else if (isOptional) { bg = "rgba(112,180,212,0.22)"; border = "#70b4d4"; color = "#a8d0e8"; }
+          return (
+            <div key={label} style={{aspectRatio:"1",fontSize:8.5,fontWeight:isPair?800:600,fontFamily:"'Inter',-apple-system,sans-serif",background:bg,border:`1px solid ${border}`,borderRadius:4,color,display:"flex",alignItems:"center",justifyContent:"center",lineHeight:1}}>{label}</div>
+          );
+        })
+      )}
+    </div>
+  );
+}
+
 
 // Spaced repetition weights
 function getScore(prog){
@@ -87,6 +118,10 @@ export default function App(){
   const[session,setSession]=useState({correct:0,wrong:0});
   const[streak,setStreak]=useState(0);
   const scrollRef=useRef(null);
+  // Chart lookup state
+  const [chartCat, setChartCat] = useState(Object.keys(rangesData)[0]);
+  const [chartGroup, setChartGroup] = useState(Object.keys(rangesData[Object.keys(rangesData)[0]])[0]);
+  const [chartVariant, setChartVariant] = useState("conservative");
 
   useEffect(()=>saveProgress(progress),[progress]);
 
@@ -142,6 +177,96 @@ export default function App(){
   const q=queue[idx];
   const accent=q?(CAT_COLOR[q.category]||C.accent):C.accent;
 
+  // ════════ CHARTS (lookup reference) ════════
+  if(screen==="charts"){
+    const categories = Object.keys(rangesData);
+    const groups = Object.keys(rangesData[chartCat] || {});
+    const groupData = rangesData[chartCat]?.[chartGroup] || {};
+    const variants = Object.keys(groupData).filter(k => Array.isArray(groupData[k]));
+    const activeVariant = variants.includes(chartVariant) ? chartVariant : variants[0];
+    const handsArr = groupData[activeVariant] || [];
+    const highlightSet = new Set(handsArr);
+    // optional set (for vs 3-bet etc.)
+    const optionalSet = groupData.optional && activeVariant !== "optional" ? new Set(groupData.optional) : null;
+    const noteText = groupData.note || null;
+    const pct = Math.round((handsArr.length / 169) * 100 * 10) / 10;
+
+    return (
+      <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Inter',-apple-system,sans-serif",color:C.text,paddingTop:"env(safe-area-inset-top,0px)"}}>
+        <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');*{-webkit-font-smoothing:antialiased;}::-webkit-scrollbar{display:none;}`}</style>
+        <div style={{maxWidth:430,margin:"0 auto",padding:"16px 18px 60px"}}>
+
+          {/* Header */}
+          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
+            <button onClick={()=>setScreen("home")} style={{background:C.bg3,border:`1px solid ${C.border}`,borderRadius:10,padding:"7px 14px",color:C.muted,fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"'Inter',-apple-system,sans-serif",WebkitTapHighlightColor:"transparent"}}>← Home</button>
+            <span style={{fontSize:11,fontWeight:700,color:C.muted,letterSpacing:"0.14em",textTransform:"uppercase"}}>Range Charts</span>
+          </div>
+
+          {/* Category selector */}
+          <div style={{fontSize:11,fontWeight:700,color:C.muted,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:8}}>Action Type</div>
+          <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4,marginBottom:16,scrollbarWidth:"none"}}>
+            {categories.map(cat=>(
+              <button key={cat} onClick={()=>{setChartCat(cat);setChartGroup(Object.keys(rangesData[cat])[0]);}} style={{height:34,padding:"0 13px",borderRadius:17,fontSize:12,fontWeight:chartCat===cat?700:500,fontFamily:"'Inter',-apple-system,sans-serif",cursor:"pointer",border:`1.5px solid ${chartCat===cat?C.accent:C.border}`,background:chartCat===cat?`${C.accent}28`:"transparent",color:chartCat===cat?C.accent:C.muted,whiteSpace:"nowrap",flexShrink:0,WebkitTapHighlightColor:"transparent"}}>{cat.split(" (")[0]}</button>
+            ))}
+          </div>
+
+          {/* Group (position) selector */}
+          <div style={{fontSize:11,fontWeight:700,color:C.muted,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:8}}>Position / Scenario</div>
+          <div style={{display:"flex",gap:6,overflowX:"auto",paddingBottom:4,marginBottom:16,scrollbarWidth:"none"}}>
+            {groups.map(g=>(
+              <button key={g} onClick={()=>setChartGroup(g)} style={{height:34,padding:"0 13px",borderRadius:17,fontSize:12,fontWeight:chartGroup===g?700:500,fontFamily:"'Inter',-apple-system,sans-serif",cursor:"pointer",border:`1.5px solid ${chartGroup===g?"#70b4d4":C.border}`,background:chartGroup===g?"rgba(112,180,212,0.16)":"transparent",color:chartGroup===g?"#70b4d4":C.muted,whiteSpace:"nowrap",flexShrink:0,WebkitTapHighlightColor:"transparent"}}>{g}</button>
+            ))}
+          </div>
+
+          {/* Variant toggle (conservative/moderate or default/optional) */}
+          {variants.length>1 && (
+            <div style={{display:"flex",gap:6,marginBottom:18}}>
+              {variants.map(v=>(
+                <button key={v} onClick={()=>setChartVariant(v)} style={{flex:1,height:38,borderRadius:10,border:`1.5px solid ${activeVariant===v?C.accent:C.border}`,background:activeVariant===v?`${C.accent}28`:"transparent",color:activeVariant===v?C.accent:C.muted,fontSize:13,fontWeight:700,cursor:"pointer",textTransform:"capitalize",fontFamily:"'Inter',-apple-system,sans-serif",WebkitTapHighlightColor:"transparent"}}>{v}</button>
+              ))}
+            </div>
+          )}
+
+          {/* Stats line */}
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+            <span style={{fontSize:13,fontWeight:600,color:C.cream}}>{handsArr.length} hand types</span>
+            <span style={{fontSize:13,fontWeight:700,color:C.accent}}>{pct}% of hands</span>
+          </div>
+
+          {/* The grid */}
+          <ChartGrid highlightSet={highlightSet} optionalSet={optionalSet}/>
+
+          {/* Legend */}
+          <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:14,flexWrap:"wrap"}}>
+            <div style={{display:"flex",alignItems:"center",gap:6}}>
+              <div style={{width:12,height:12,borderRadius:3,background:`${C.accent}40`,border:`1px solid ${C.accent}`}}/>
+              <span style={{fontSize:12,color:C.muted}}>In range</span>
+            </div>
+            {optionalSet && (
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <div style={{width:12,height:12,borderRadius:3,background:"rgba(112,180,212,0.22)",border:"1px solid #70b4d4"}}/>
+                <span style={{fontSize:12,color:C.muted}}>Optional</span>
+              </div>
+            )}
+          </div>
+
+          {/* Note */}
+          {noteText && (
+            <div style={{marginTop:18,background:C.bg2,borderRadius:12,border:`1px solid ${C.border}`,padding:"14px 16px"}}>
+              <p style={{margin:0,fontSize:13,fontWeight:500,color:"#8fa882",lineHeight:1.6}}>{noteText}</p>
+            </div>
+          )}
+
+          {/* Hand list */}
+          <div style={{marginTop:18,background:C.bg2,borderRadius:12,border:`1px solid ${C.border}`,padding:"14px 16px"}}>
+            <div style={{fontSize:10,fontWeight:700,color:C.muted,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:8}}>Hand list</div>
+            <p style={{margin:0,fontSize:13,fontWeight:500,color:C.sage,lineHeight:1.8,fontFamily:"'Inter',-apple-system,sans-serif",wordSpacing:"2px"}}>{handsArr.join(", ")}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if(screen==="home")return(
     <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Inter',-apple-system,sans-serif",color:C.text,paddingTop:"env(safe-area-inset-top,0px)"}}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');*{-webkit-font-smoothing:antialiased;}::-webkit-scrollbar{display:none;}`}</style>
@@ -151,6 +276,11 @@ export default function App(){
           <p style={{margin:"0 0 5px",fontSize:11,fontWeight:700,color:C.muted,letterSpacing:"0.14em",textTransform:"uppercase"}}>Level 1 · Preflop · TAG</p>
           <h1 style={{margin:0,fontSize:34,fontWeight:900,color:C.cream,letterSpacing:"-0.03em",lineHeight:1.05}}>Preflop<br/>Trainer</h1>
         </div>
+
+        {/* Charts button */}
+        <button onClick={()=>setScreen("charts")} style={{width:"100%",height:50,marginBottom:20,borderRadius:12,background:C.bg2,border:`1px solid ${C.border}`,color:C.accent,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',-apple-system,sans-serif",display:"flex",alignItems:"center",justifyContent:"center",gap:8,WebkitTapHighlightColor:"transparent"}}>
+          <span style={{fontSize:16}}>▦</span> Range Charts — Lookup Reference
+        </button>
 
         {/* Progress card */}
         <div style={{background:C.bg2,borderRadius:14,border:`1px solid ${C.border}`,padding:"18px 16px",marginBottom:20}}>
