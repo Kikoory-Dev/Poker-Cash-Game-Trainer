@@ -95,6 +95,9 @@ function weightedSample(questions,progress,n){
   return result;
 }
 
+function isCorrect(choice, correct){
+  return Array.isArray(correct) ? correct.includes(choice) : choice===correct;
+}
 function loadProgress(){try{return JSON.parse(localStorage.getItem("pct_l1v7")||"{}");}catch{return{};}}
 function saveProgress(p){try{localStorage.setItem("pct_l1v7",JSON.stringify(p));}catch{}}
 
@@ -172,7 +175,7 @@ export default function App(){
   function choose(i){
     if(revealed)return;
     setSelected(i);setRevealed(true);
-    const q=queue[idx];const ok=i===q.correct;
+    const q=queue[idx];const ok=isCorrect(i, q.correct);
     setStreak(s=>ok?s+1:0);
     setSession(s=>({correct:s.correct+(ok?1:0),wrong:s.wrong+(ok?0:1)}));
     const prev=progress[q.id]||{seen:0,correct:0};
@@ -386,7 +389,7 @@ export default function App(){
 
   if(screen==="quiz"&&q){
     const cards=q.hand.map(c=>({rank:c.slice(0,-1),suit:c.slice(-1)}));
-    const ok=selected===q.correct;
+    const ok=isCorrect(selected, q.correct);
     const qScore=getScore(progress[q.id]);
     return(
       <div style={{position:"fixed",inset:0,background:C.bg,color:C.text,fontFamily:"'Inter',-apple-system,sans-serif",display:"flex",flexDirection:"column",paddingTop:"env(safe-area-inset-top,0px)",paddingBottom:"env(safe-area-inset-bottom,0px)"}}>
@@ -434,7 +437,7 @@ export default function App(){
               {q.options.map((opt,i)=>{
                 let bg=C.bg2,bc=C.border,tc="#8fa882",icon=null;
                 if(revealed){
-                  if(i===q.correct){bg="rgba(109,184,122,0.10)";bc="#6db87a";tc="#8fd49e";icon="✓";}
+                  if(isCorrect(i, q.correct)){bg="rgba(109,184,122,0.10)";bc="#6db87a";tc="#8fd49e";icon="✓";}
                   else if(i===selected){bg="rgba(217,96,96,0.10)";bc="#d96060";tc="#d96060";icon="✗";}
                   else{tc=C.border;}
                 }

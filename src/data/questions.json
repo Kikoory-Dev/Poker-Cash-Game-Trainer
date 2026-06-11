@@ -6021,10 +6021,12 @@
       "3-Bet bluff",
       "Raise to 4 BB"
     ],
-    "correct": 0,
-    "explanation": "54s is in the BTN cold-call range vs UTG as a weaker implied odds hand. In position with straight and flush equity — call for implied odds. UTG's strong range means good payoffs when you connect strongly.",
+    "correct": [
+      0,
+      1
+    ],
+    "explanation": "54s on the BTN vs a UTG raise is situational. It's a weak implied-odds hand — it can make straights and flushes but flops a strong pair rarely. The book lists suited connectors as cold-call candidates ONLY in good implied-odds spots: deep stacks, a wide opener, or bad players left to act. Vs a tight UTG range with nobody behind, calling is thin. Call is defensible when deep-stacked in position; folding is correct if stacks are shallow or the opener is very tight. Both are acceptable depending on the read.",
     "why_wrong": {
-      "1": "54s has solid implied odds vs UTG's strong range. Fold is too tight.",
       "2": "3-bet bluffing 54s vs UTG has very low fold equity.",
       "3": "Mini-raise is not valid."
     }
@@ -7701,10 +7703,12 @@
       "4-Bet",
       "Shove"
     ],
-    "correct": 0,
-    "explanation": "KJs from BTN vs BB 3-bet = fold. KJs is not in the BTN 4-bet range. BB's 3-bet range includes AK, KK, AA which dominate KJs. Fold.",
+    "correct": [
+      0,
+      1
+    ],
+    "explanation": "KJs on the BTN vs a BB 3-bet is a borderline spot. The conservative default is fold — KJs isn't in the BTN 4-bet range and is dominated by the value portion of BB's 3-bet range (AK, KK, KQ). However, since you're IN POSITION with a suited hand that has good playability, calling for implied odds is defensible when stacks are deep — the book prefers flatting playable hands in position over folding or bluff-4-betting. Both fold (vs a tight 3-bettor) and call (in position, deep, vs a wider 3-bettor) are acceptable.",
     "why_wrong": {
-      "1": "Calling KJs in a 3-bet pot — dominated by AK, KK in BB's range.",
       "2": "4-betting KJs into a 3-bet range that includes KK and AK is suicidal.",
       "3": "Shoving KJs is a massive overplay."
     }
@@ -8961,11 +8965,13 @@
       "Call",
       "Complete"
     ],
-    "correct": 0,
-    "explanation": "99 vs CO raise + BTN call from SB = fold. 99 is not in the SB default or optional 3-bet range vs CO. Squeezing OOP with 99 risks building a large pot where you're behind JJ+ in CO's range. Fold.",
+    "correct": [
+      0,
+      2
+    ],
+    "explanation": "99 in SB facing CO raise + BTN call is a borderline spot. Over-calling for set-mining implied odds is defensible — you have two opponents who can pay you off when you flop a set. But from the SB you're out of position AND not closing the action (BB can squeeze behind you). 99 is below the SB value 3-bet range (TT+), so squeezing for value isn't standard. Both calling (set-mine) and folding (avoid OOP multiway trouble) are acceptable; the choice depends on stack depth and the BB's tendencies.",
     "why_wrong": {
       "1": "Squeezing 99 OOP into CO's range — behind JJ+ and flipping with AK.",
-      "2": "Calling 99 3-way OOP — can't realize equity out of position on most boards.",
       "3": "Completing is never an option when facing a raise."
     }
   },
