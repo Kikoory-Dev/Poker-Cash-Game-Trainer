@@ -651,10 +651,9 @@
       "Limp",
       "Raise 4 BB"
     ],
-    "correct": 0,
-    "explanation": "QJs is NOT in the conservative UTG range. Only JTs is listed as a suited connector. QJs opens from MP onwards. From UTG it faces too many players and too much domination risk. Fold.",
+    "correct": 1,
+    "explanation": "QJs opens from UTG in the moderate range (QTs+, which includes QJs). It's a strong suited broadway with good playability — two pair, straight and flush potential. Note: in the strictest conservative 9.8% range only JTs is included as a suited connector, but QJs is a standard UTG open in the moderate 12.07% range and for most players. Since QTs is already an open, QJs (strictly better) certainly is too. Raise 3 BB.",
     "why_wrong": {
-      "1": "QJs is not in the conservative UTG range. Only JTs qualifies as a suited non-broadway hand.",
       "2": "Never limp as first to act.",
       "3": "Non-standard sizing does not fix a hand below threshold."
     }
