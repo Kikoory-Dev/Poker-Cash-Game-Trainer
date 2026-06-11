@@ -27,6 +27,18 @@ const ALL_DIFFS=["easy","medium","hard"];
 const SESSION_SIZES=[10,20,30,50];
 const C={bg:"#1a2218",bg2:"#212d1f",bg3:"#273324",border:"#2e3d2b",text:"#e8e0cc",muted:"#6b7d62",accent:"#c8a84b",cream:"#f0e8d0",sage:"#8fa882"};
 
+
+// Combo-weighted percentage (pairs=6, suited=4, offsuit=12, total=1326)
+function comboCount(label){
+  if(label.length===2) return 6;
+  if(label[2]==='s') return 4;
+  return 12;
+}
+function rangePct(hands){
+  const c = hands.reduce((s,h)=>s+comboCount(h),0);
+  return Math.round(c/1326*100*10)/10;
+}
+
 // ── RANGE CHART (lookup reference) ──────────────────────────
 const CHART_RANKS = ["A","K","Q","J","T","9","8","7","6","5","4","3","2"];
 function chartHandLabel(r, c) {
@@ -189,7 +201,7 @@ export default function App(){
     // optional set (for vs 3-bet etc.)
     const optionalSet = groupData.optional && activeVariant !== "optional" ? new Set(groupData.optional) : null;
     const noteText = groupData.note || null;
-    const pct = Math.round((handsArr.length / 169) * 100 * 10) / 10;
+    const pct = rangePct(handsArr);
 
     return (
       <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Inter',-apple-system,sans-serif",color:C.text,paddingTop:"env(safe-area-inset-top,0px)"}}>
@@ -229,7 +241,7 @@ export default function App(){
 
           {/* Stats line */}
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-            <span style={{fontSize:13,fontWeight:600,color:C.cream}}>{handsArr.length} hand types</span>
+            <span style={{fontSize:13,fontWeight:600,color:C.cream}}>{handsArr.length} hand types · {handsArr.reduce((s,h)=>s+comboCount(h),0)} combos</span>
             <span style={{fontSize:13,fontWeight:700,color:C.accent}}>{pct}% of hands</span>
           </div>
 
