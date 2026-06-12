@@ -158,9 +158,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="dash-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
+      <input type="date" id="dash-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()"><input type="date" id="dash-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
       <select id="dash-stakes" onchange="renderDashboard()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -221,9 +221,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="hands-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
+      <input type="date" id="hands-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()"><input type="date" id="hands-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
       <select id="hands-stakes" onchange="renderHands()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -261,9 +261,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="pos-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
+      <input type="date" id="pos-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()"><input type="date" id="pos-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
       <select id="pos-stakes" onchange="renderPositions()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -285,9 +285,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="mistakes-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
+      <input type="date" id="mistakes-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()"><input type="date" id="mistakes-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
       <select id="mistakes-stakes" onchange="renderMistakes()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -352,9 +352,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="analysis-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
+      <input type="date" id="analysis-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()"><input type="date" id="analysis-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
       <select id="analysis-stakes" onchange="renderAnalysis()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -376,9 +376,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="grid-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
+      <input type="date" id="grid-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()"><input type="date" id="grid-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
       <select id="grid-stakes" onchange="renderGrid()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -406,9 +406,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="last3s">Last 3 sessions</option>
         <option value="last5s">Last 5 sessions</option>
         <option value="last10s">Last 10 sessions</option>
-        <option value="date">Specific date...</option>
+        <option value="date">Date range...</option>
       </select>
-      <input type="date" id="starting-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
+      <input type="date" id="starting-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()"><input type="date" id="starting-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
       <select id="starting-stakes" onchange="renderStartingHands()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -848,16 +848,25 @@ function filterByTime(hands, tf, dateInputId) {
     return hands.filter(function(h){return fileSet[h.filename];});
   }
   if (tf==='date' && dateInputId) {
-    var el=document.getElementById(dateInputId);
-    if (el) el.style.display='inline-block';
-    var val=el?el.value:'';
-    if (val) {
-      var sel=val.split('-').join('/');
-      return hands.filter(function(h){return h.date===sel;});
-    }
-    return hands;
+    var elF=document.getElementById(dateInputId+'-from');
+    var elT=document.getElementById(dateInputId+'-to');
+    if (elF) elF.style.display='inline-block';
+    if (elT) elT.style.display='inline-block';
+    var from=elF&&elF.value?elF.value.split('-').join('/'):'';
+    var to=elT&&elT.value?elT.value.split('-').join('/'):'';
+    if (!from && !to) return hands;
+    return hands.filter(function(h){
+      if (from && h.date < from) return false;
+      if (to && h.date > to) return false;
+      return true;
+    });
   }
-  if (dateInputId) { var el2=document.getElementById(dateInputId); if(el2) el2.style.display='none'; }
+  if (dateInputId) {
+    var eF=document.getElementById(dateInputId+'-from');
+    var eT=document.getElementById(dateInputId+'-to');
+    if (eF) eF.style.display='none';
+    if (eT) eT.style.display='none';
+  }
   return hands;
 }
 
@@ -889,7 +898,7 @@ function switchTab(tab, btn) {
 // ─── DASHBOARD ────────────────────────────────────────────────
 function renderDashboard() {
   const tf = getEl('dash-filter');
-  const hands = filterHands(allHands, tf, getEl('dash-stakes'), getEl('dash-type'));
+  const hands = filterHands(allHands, tf, getEl('dash-stakes'), getEl('dash-type'), 'dash-date');
   const netBB = hands.reduce((s,h)=>s+h.netBB,0);
   const bb100 = hands.length ? (netBB/hands.length*100) : 0;
   const mistakes = hands.filter(h=>h.tagIssues.length>0);
@@ -1058,7 +1067,7 @@ function renderHands() {
   const tf = getEl('hands-filter');
   const show = getEl('hands-show');
   const pos = getEl('hands-pos');
-  let hands = filterHands(allHands, tf, getEl('hands-stakes'), 'all');
+  let hands = filterHands(allHands, tf, getEl('hands-stakes'), 'all', 'hands-date');
   if (pos!=='all') hands = hands.filter(h=>h.position===pos);
   if (show==='mistakes') hands = hands.filter(h=>h.tagIssues.length>0);
   if (show==='losses') hands = hands.filter(h=>h.netBB<0).sort((a,b)=>a.netBB-b.netBB);
@@ -1263,7 +1272,7 @@ function closeModal() { document.getElementById('modal').style.display = 'none';
 // ─── POSITIONS ────────────────────────────────────────────────
 function renderPositions() {
   const tf = getEl('pos-filter');
-  const hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all', 'pos-date');
   const positions = ['BTN','CO','HJ','UTG','SB','BB'];
   const grid = document.getElementById('pos-detail-grid');
   grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
@@ -1297,7 +1306,7 @@ function renderPositions() {
 function renderMistakes() {
   const tf = getEl('mistakes-filter');
   const type = getEl('mistakes-type');
-  const hands = filterHands(allHands, tf, getEl('mistakes-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('mistakes-stakes'), 'all', 'mistakes-date');
   const mistakeHands = hands.filter(h=>h.tagIssues.length>0);
   const pfMistakes = mistakeHands.filter(h=>h.isPreflop);
   const pfMistakes2 = mistakeHands.filter(h=>h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i)));
@@ -1421,7 +1430,7 @@ function renderStartingHands() {
   const tf = getEl('starting-filter');
   const sort = getEl('starting-sort');
   const catFilter = getEl('starting-cat');
-  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all', 'starting-date');
 
   // Group by hand notation
   const groups = {};
@@ -1595,7 +1604,7 @@ function showStartingDetail(notation) {
 // ─── ANALYSIS ─────────────────────────────────────────────────
 function renderAnalysis() {
   const tf = getEl('analysis-filter');
-  const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date');
   const el = document.getElementById('analysis-body');
   if (!hands.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'; return; }
 
@@ -1928,6 +1937,11 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
+console.log('Poker Tracker v2.2');
+var vEl=document.createElement('div');
+vEl.textContent='v2.2';
+vEl.style.cssText='position:fixed;bottom:64px;right:8px;font-size:9px;color:#4a5d47;z-index:5;pointer-events:none';
+document.body.appendChild(vEl);
 init();
 
 </script>
