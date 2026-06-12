@@ -840,22 +840,9 @@ function renderDashboard() {
   // Net USD and duration
   const stakesBBval = {'NL25':0.25,'NL10':0.10};
   const netUSDval = hands.reduce((s,h)=>s+(h.netBB*(stakesBBval[h.stakes]||0.25)),0);
-  // Duration: per-file intervals merged with 5min gap tolerance (handles multitabling)
-  const fileSpans = {};
-  hands.forEach(h => {
-    if (!h.filename || !h.date || !h.time) return;
-    const ts = new Date((h.date+' '+h.time).split('/').join('-')).getTime();
-    if (!fileSpans[h.filename]) fileSpans[h.filename] = [ts, ts];
-    else { fileSpans[h.filename][0]=Math.min(fileSpans[h.filename][0],ts); fileSpans[h.filename][1]=Math.max(fileSpans[h.filename][1],ts); }
-  });
-  const sortedSpans = Object.values(fileSpans).sort((a,b)=>a[0]-b[0]);
-  const mergedSpans = [];
-  for (const [s,e] of sortedSpans) {
-    if (mergedSpans.length && s <= mergedSpans[mergedSpans.length-1][1] + 300000) {
-      mergedSpans[mergedSpans.length-1][1] = Math.max(mergedSpans[mergedSpans.length-1][1], e);
-    } else { mergedSpans.push([s,e]); }
-  }
-  let durHours = mergedSpans.reduce((sum,[s,e])=>sum+(e-s)/3600000, 0);
+  // Duration using filtered hands for current view
+  const filtSessions = buildSessions(hands);
+  let durHours = filtSessions.reduce((s,x)=>s+x.durMin/60, 0);
   const usdPerHour = durHours > 0 ? netUSDval/durHours : 0;
   const durH = Math.floor(durHours);
   const durM = Math.round((durHours%1)*60);
@@ -898,7 +885,7 @@ function renderDashboard() {
       </div>`).join('')
     : '<p style="color:#6b7d62;font-size:13px;margin:8px 0">No violations found</p>';
   // Sessions
-  const sessions = [...new Set(allHands.map(h=>h.filename))];
+  const sessions = buildSessions(allHands);
   const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
   const nl25h=hands.filter(x=>x.stakes==='NL25');
   const nl10h=hands.filter(x=>x.stakes==='NL10');
@@ -911,7 +898,7 @@ function renderDashboard() {
   const sbd=document.getElementById('dash-stakes-breakdown');
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:var(--text3);margin:0 0 10px">${sessions.length} session${sessions.length!==1?'s':''} · ${hands.length} hands shown · ${allHands.length} total in DB</p>`
-    : '<p style="font-size:13px;color:var(--muted);margin:0">No sessions uploaded yet — tap Upload</p>';
+    : '<p style="font-size:13px;color:var(--muted);margin:0">No sessions uploaded yet</p>';
   if(sbd) sbd.innerHTML=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div class="stat"><p class="stat-label">NL25 · ${nl25h.length} hands</p><p class="stat-value ${nl25bb100>=0?'green':'red'}" style="font-size:15px">${nl25bb100>=0?'+':''}${nl25bb100.toFixed(1)}<span style="font-size:11px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>
