@@ -1585,6 +1585,8 @@ function renderAnalysis() {
   const nonBlind=hands.filter(h=>!['SB','BB'].includes(h.position));
   const nonBlindNet=lpHands.reduce((s,h)=>s+h.netBB,0);
   const blindNet=blindHands.reduce((s,h)=>s+h.netBB,0);
+  const epNet=epHands.reduce((s,h)=>s+h.netBB,0);
+  const mpNet=mpHands.reduce((s,h)=>s+h.netBB,0);
 
   // Issues summary
   const issueCounts={};
@@ -1605,11 +1607,11 @@ function renderAnalysis() {
     <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div>
         <p class="stat-label" style="margin:0 0 2px">EP · UTG</p>
-        <p style="margin:0;font-size:14px;font-weight:700;color:${epHands.reduce((s,h)=>s+h.netBB,0)>=0?'var(--green)':'var(--red)'}">${epHands.reduce((s,h)=>s+h.netBB,0)>=0?'+':''}${epHands.reduce((s,h)=>s+h.netBB,0).toFixed(1)} BB</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${epNet>=0?'var(--green)':'var(--red)'}">${epNet>=0?'+':''}${epNet.toFixed(1)} BB</p>
       </div>
       <div>
         <p class="stat-label" style="margin:0 0 2px">MP · HJ</p>
-        <p style="margin:0;font-size:14px;font-weight:700;color:${mpHands.reduce((s,h)=>s+h.netBB,0)>=0?'var(--green)':'var(--red)'}">${mpHands.reduce((s,h)=>s+h.netBB,0)>=0?'+':''}${mpHands.reduce((s,h)=>s+h.netBB,0).toFixed(1)} BB</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${mpNet>=0?'var(--green)':'var(--red)'}">${mpNet>=0?'+':''}${mpNet.toFixed(1)} BB</p>
       </div>
       <div>
         <p class="stat-label" style="margin:0 0 2px">LP · CO + BTN</p>
