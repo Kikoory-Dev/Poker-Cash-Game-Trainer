@@ -154,6 +154,16 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
       </select>
+      <select id="dash-stakes" onchange="renderDashboard()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
+      </select>
+      <select id="dash-type" onchange="renderDashboard()">
+        <option value="all">All formats</option>
+        <option value="Regular">Regular</option>
+        <option value="Rush&Cash">Rush &amp; Cash</option>
+      </select>
     </div>
     <div class="stat-grid" id="dash-stats"></div>
     <div class="card">
@@ -165,8 +175,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       <div id="dash-violations"></div>
     </div>
     <div class="card">
-      <div class="card-title">Sessions</div>
+      <div class="card-title">Sessions &amp; stakes</div>
       <div id="dash-sessions"></div>
+      <div id="dash-stakes-breakdown" style="margin-top:10px"></div>
     </div>
   </div>
 
@@ -199,6 +210,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
       </select>
+      <select id="hands-stakes" onchange="renderHands()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
+      </select>
       <select id="hands-show" onchange="renderHands()">
         <option value="all">All hands</option>
         <option value="mistakes">Mistakes only</option>
@@ -227,6 +243,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
       </select>
+      <select id="pos-stakes" onchange="renderPositions()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
+      </select>
     </div>
     <div id="pos-detail-grid"></div>
   </div>
@@ -238,6 +259,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+      </select>
+      <select id="mistakes-stakes" onchange="renderMistakes()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
       </select>
       <select id="mistakes-type" onchange="renderMistakes()">
         <option value="all">All mistakes</option>
@@ -285,6 +311,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+      </select>
+      <select id="starting-stakes" onchange="renderStartingHands()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
       </select>
       <select id="starting-sort" onchange="renderStartingHands()">
         <option value="hands">Most played</option>
@@ -535,6 +566,15 @@ function filterByTime(hands, tf) {
   return hands;
 }
 
+function filterHands(hands, tf, stakes, gameType) {
+  let h = filterByTime(hands, tf);
+  if (stakes && stakes!=='all') h = h.filter(x=>x.stakes===stakes);
+  if (gameType && gameType!=='all') h = h.filter(x=>x.gameType===gameType);
+  return h;
+}
+
+function getEl(id) { const e=document.getElementById(id); return e?e.value:'all'; }
+
 // ─── TAB SWITCHING ────────────────────────────────────────────
 function switchTab(tab, btn) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -550,8 +590,8 @@ function switchTab(tab, btn) {
 
 // ─── DASHBOARD ────────────────────────────────────────────────
 function renderDashboard() {
-  const tf = document.getElementById('dash-filter').value;
-  const hands = filterByTime(allHands, tf);
+  const tf = getEl('dash-filter');
+  const hands = filterHands(allHands, tf, getEl('dash-stakes'), getEl('dash-type'));
   const netBB = hands.reduce((s,h)=>s+h.netBB,0);
   const bb100 = hands.length ? (netBB/hands.length*100) : 0;
   const mistakes = hands.filter(h=>h.tagIssues.length>0);
@@ -595,6 +635,14 @@ function renderDashboard() {
   // Sessions
   const sessions = [...new Set(allHands.map(h=>h.filename))];
   const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
+  const nl25h=hands.filter(x=>x.stakes==='NL25');
+  const nl10h=hands.filter(x=>x.stakes==='NL10');
+  const nl25bb=nl25h.reduce((s,x)=>s+x.netBB,0);
+  const nl10bb=nl10h.reduce((s,x)=>s+x.netBB,0);
+  const nl25bb100=nl25h.length?nl25bb/nl25h.length*100:0;
+  const nl10bb100=nl10h.length?nl10bb/nl10h.length*100:0;
+  const rushH=hands.filter(x=>x.gameType==='Rush&Cash');
+  const regH=hands.filter(x=>x.gameType==='Regular');
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:#8fa882;margin:0">${sessions.length} session file${sessions.length!==1?'s':''} loaded · ${allHands.length} total hands</p>`
     : '<p style="font-size:13px;color:#6b7d62;margin:0">No sessions uploaded yet</p>';
@@ -655,10 +703,10 @@ async function clearAllData() {
 // ─── HANDS TABLE ──────────────────────────────────────────────
 function renderHands() {
   currentPage = 1;
-  const tf = document.getElementById('hands-filter').value;
-  const show = document.getElementById('hands-show').value;
-  const pos = document.getElementById('hands-pos').value;
-  let hands = filterByTime(allHands, tf);
+  const tf = getEl('hands-filter');
+  const show = getEl('hands-show');
+  const pos = getEl('hands-pos');
+  let hands = filterHands(allHands, tf, getEl('hands-stakes'), 'all');
   if (pos!=='all') hands = hands.filter(h=>h.position===pos);
   if (show==='mistakes') hands = hands.filter(h=>h.tagIssues.length>0);
   if (show==='losses') hands = hands.filter(h=>h.netBB<0).sort((a,b)=>a.netBB-b.netBB);
@@ -691,7 +739,7 @@ function renderHandsPage() {
       </div>
       <div class="hand-card-bot">
         <span class="hand-meta">${h.handCat}</span>
-        <span class="hand-meta">${h.date.slice(5)}</span>
+        <span class="hand-meta">${h.stakes||''} ${h.gameType==='Rush&Cash'?'· R&C':''} · ${h.date.slice(5)}</span>
       </div>
     </div>`;
   }).join('');
@@ -761,8 +809,8 @@ function closeModal() { document.getElementById('modal').style.display = 'none';
 
 // ─── POSITIONS ────────────────────────────────────────────────
 function renderPositions() {
-  const tf = document.getElementById('pos-filter').value;
-  const hands = filterByTime(allHands, tf);
+  const tf = getEl('pos-filter');
+  const hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all');
   const positions = ['BTN','CO','HJ','UTG','SB','BB'];
   const grid = document.getElementById('pos-detail-grid');
   grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
@@ -794,9 +842,9 @@ function renderPositions() {
 
 // ─── MISTAKES ─────────────────────────────────────────────────
 function renderMistakes() {
-  const tf = document.getElementById('mistakes-filter').value;
-  const type = document.getElementById('mistakes-type').value;
-  const hands = filterByTime(allHands, tf);
+  const tf = getEl('mistakes-filter');
+  const type = getEl('mistakes-type');
+  const hands = filterHands(allHands, tf, getEl('mistakes-stakes'), 'all');
   const mistakeHands = hands.filter(h=>h.tagIssues.length>0);
   const pfMistakes = mistakeHands.filter(h=>h.isPreflop);
   const pfMistakes2 = mistakeHands.filter(h=>h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i)));
@@ -931,10 +979,10 @@ function getHardinVerdict(notation, position, pfAction) {
 }
 
 function renderStartingHands() {
-  const tf = document.getElementById('starting-filter').value;
-  const sort = document.getElementById('starting-sort').value;
-  const catFilter = document.getElementById('starting-cat').value;
-  const hands = filterByTime(allHands, tf);
+  const tf = getEl('starting-filter');
+  const sort = getEl('starting-sort');
+  const catFilter = getEl('starting-cat');
+  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all');
 
   // Group by hand notation
   const groups = {};
