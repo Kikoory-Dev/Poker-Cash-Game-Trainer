@@ -388,9 +388,7 @@ let filteredHandsCache = [];
 async function loadFromGitHub() {
   try {
     // Use raw API — no 1MB limit unlike contents API
-    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-    });
+    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
     if (r.status === 404) return [];
     const content = await r.json();
     return Array.isArray(content) ? content : [];
@@ -1354,10 +1352,15 @@ function showToast(msg) {
 // ─── INIT ─────────────────────────────────────────────────────
 async function init() {
   showToast('Loading data from GitHub...');
-  allHands = await loadFromGitHub();
+  try {
+    allHands = await loadFromGitHub();
+    console.log('Loaded hands:', allHands.length);
+  } catch(e) {
+    console.error('Init error:', e);
+    allHands = [];
+  }
   renderDashboard();
   renderStoredSessions();
-  // pre-render analysis so it's ready when tab opens
   setTimeout(()=>renderAnalysis(), 200);
 }
 init();
