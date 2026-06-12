@@ -1065,15 +1065,17 @@
     "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
     "question": "You have Q♠Q♥ in UTG. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet or Call — both correct",
+      "4-Bet to 24 BB",
       "Call",
       "Fold",
       "Shove"
     ],
-    "correct": 0,
-    "explanation": "QQ is optional in the UTG 4-bet range. 4-betting (~22 BB) extracts value vs JJ, TT, AK in BB's range and is the aggressive default. Calling is also correct — QQ plays well in position postflop and avoids a large pot vs the rare KK/AA. Both lines are standard at this level.",
+    "correct": [
+      0,
+      1
+    ],
+    "explanation": "QQ facing a 3-bet from UTG is a spot where both 4-betting and calling are standard. 4-betting for value is fine (you're ahead of most 3-bet ranges), but flatting to keep the BB's bluffs in and avoid stacking off vs the AA/KK at the top of their range is equally defensible. Both are scored correct. Folding QQ is far too weak; shoving over-commits and folds out worse.",
     "why_wrong": {
-      "1": "Also correct — 4-Bet or Call — both correct. See explanation.",
       "2": "Folding QQ vs a 3-bet is never correct at 100 BB.",
       "3": "Shoving QQ folds out JJ, TT which you want calls from."
     }
@@ -2085,15 +2087,17 @@
     "situation": "Conservative ranges. UTG raises 3 BB. Aggressive player on BTN.",
     "question": "You have A♣T♣ in MP. UTG raises 3 BB. There is an aggressive 3-bettor on the BTN. What do you do?",
     "options": [
-      "Fold or 3-Bet bluff",
+      "Fold",
+      "3-Bet bluff",
       "Call",
-      "Raise to 4 BB",
-      "Always call suited aces in position"
+      "Raise to 4 BB"
     ],
-    "correct": 0,
-    "explanation": "ATs is in the weaker portion of the MP cold-call range vs UTG. But with an aggressive 3-bettor on the BTN, you risk being squeezed into a large pot OOP with a marginal hand. Fold or turn into a 3-bet bluff — do not cold-call with squeeze risk behind you.",
+    "correct": [
+      0,
+      1
+    ],
+    "explanation": "ATs in MP vs a UTG raise WITH an aggressive 3-bettor on the BTN is a trap spot for flatting. If you call, the BTN will often 3-bet and you're stuck with a dominated hand out of position to the squeeze. Better to either fold (clean) or turn it into a 3-bet bluff yourself to take initiative. Both are scored correct. Flat-calling is the mistake here — it invites the squeeze.",
     "why_wrong": {
-      "1": "ATs normally has implied odds but the aggressive BTN changes the calculation entirely.",
       "2": "Mini-raise is not valid.",
       "3": "Aggressive players behind are a key factor — always consider who is left to act."
     }
@@ -2265,15 +2269,17 @@
     "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB.",
     "question": "You have Q♥Q♣ in MP. You raised 3 BB, CO 3-bets to 9 BB. What do you do?",
     "options": [
-      "4-Bet or Call — both correct",
+      "4-Bet",
       "Call",
       "Fold",
       "Shove"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "QQ is optional in the MP 4-bet range vs CO. 4-betting (~20 BB) is the aggressive default — QQ dominates most of CO's 3-bet range. Calling in position is also fully correct and avoids a large pot vs KK/AA. Both lines are standard.",
     "why_wrong": {
-      "1": "Also correct — 4-Bet or Call — both correct. See explanation.",
       "2": "Folding QQ vs a 3-bet is never correct at 100 BB.",
       "3": "Shoving folds out hands you want calls from."
     }
@@ -2355,15 +2361,17 @@
     "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
     "question": "You have A♣K♦ in MP. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet or Call — both correct",
+      "4-Bet",
       "Call",
       "Fold",
       "Shove"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "AKo is optional in the MP 4-bet range. Hardin's data shows 4-betting AK is 2.4x more profitable than calling — 4-bet is the recommended line. Calling is also defensible in position. Both lines are correct; 4-bet is the higher-EV default.",
     "why_wrong": {
-      "1": "Also correct — 4-Bet or Call — both correct. See explanation.",
       "2": "AKo is ahead of most 3-bet ranges except AA/KK. Fold is wrong.",
       "3": "Shoving folds out hands you want calls from."
     }
@@ -2565,17 +2573,19 @@
     "situation": "Conservative ranges. UTG limps. Action on you.",
     "question": "You have A♦9♦ in MP. UTG limps. What do you do?",
     "options": [
-      "Over-limp or Fold",
+      "Over-limp",
       "Raise to 4 BB",
       "Raise to 3 BB",
-      "Always ISO suited aces"
+      "Fold"
     ],
-    "correct": 0,
-    "explanation": "The default ISO range for suited aces starts at AJs+. A9s is in the optional over-limp range. Over-limp for implied odds — not an ISO raise. With four players still behind, ISO raising a marginal hand risks being squeezed.",
+    "correct": [
+      0,
+      3
+    ],
+    "explanation": "A9s in MP behind a UTG limper is a marginal hand. Over-limping behind to see a cheap flop in position is fine, and folding is also acceptable since A9s can be dominated by better aces. Both are scored correct. The iso-raise sizes (3-4 BB) are too thin here — A9s isn't strong enough to iso for value against a UTG limp, which is often a trap or a decent hand.",
     "why_wrong": {
       "1": "A9s is below the AJs+ ISO threshold. ISO raising it risks a squeeze from players behind.",
-      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default.",
-      "3": "Suited aces only ISO raise from AJs+ — not all suited aces."
+      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default."
     }
   },
   {
@@ -2625,17 +2635,19 @@
     "situation": "Conservative ranges. UTG limps. Action on you.",
     "question": "You have K♦T♦ in MP. UTG limps. What do you do?",
     "options": [
-      "Over-limp or Fold",
-      "Raise to 4 BB",
+      "Over-limp",
       "Raise to 3 BB",
-      "Always ISO suited kings"
+      "Raise to 4 BB",
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      3
+    ],
     "explanation": "The default ISO range for suited kings starts at KJs+. KTs is in the optional over-limp range. Over-limp or fold — do not ISO raise. With four players still behind, the squeeze risk is real with a marginal hand.",
     "why_wrong": {
       "1": "KTs is below the KJs+ ISO threshold. Over-limp or fold is correct.",
-      "2": "3 BB is wrong sizing anyway, and KTs should not ISO raise by default.",
-      "3": "Suited kings only ISO raise from KJs+ — not all suited kings."
+      "2": "3 BB is wrong sizing anyway, and KTs should not ISO raise by default."
     }
   },
   {
@@ -2685,17 +2697,19 @@
     "situation": "Conservative ranges. UTG limps. Action on you.",
     "question": "You have A♠T♦ in MP. UTG limps. What do you do?",
     "options": [
-      "Over-limp or Fold",
-      "Raise to 4 BB",
+      "Over-limp",
       "Raise to 3 BB",
-      "Always ISO off-suit aces"
+      "Raise to 4 BB",
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      3
+    ],
     "explanation": "The default ISO range for off-suit aces starts at AJo+. ATo is below this threshold — it is in the optional over-limp range. Over-limp or fold. With four players still behind, ISO raising a marginal hand risks a squeeze.",
     "why_wrong": {
       "1": "ATo is below the AJo+ ISO threshold. Over-limp or fold is correct.",
-      "2": "3 BB is wrong sizing anyway, and ATo should not ISO raise by default.",
-      "3": "Off-suit aces only ISO raise from AJo+ — not all off-suit aces."
+      "2": "3 BB is wrong sizing anyway, and ATo should not ISO raise by default."
     }
   },
   {
@@ -3555,15 +3569,17 @@
     "situation": "UTG raises 3 BB. MP folds. Aggressive player on BTN.",
     "question": "You have A♠T♠ in CO. UTG raises 3 BB, MP folds. The BTN is an aggressive 3-bettor. What do you do?",
     "options": [
-      "Fold or 3-Bet bluff",
+      "Fold",
+      "3-Bet bluff",
       "Call",
-      "Raise to 4 BB",
-      "Always call ATs in position"
+      "Raise to 4 BB"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "ATs is a borderline cold-call vs UTG. But with an aggressive BTN behind, calling risks being squeezed into a large pot OOP with a marginal hand. Fold or turn into a 3-bet bluff — do not cold-call. This is Hardin's practice hand #2 applied to CO.",
     "why_wrong": {
-      "1": "ATs has implied odds but the aggressive BTN changes the calculation entirely.",
       "2": "Mini-raise is not valid.",
       "3": "Aggressive players behind are always a key consideration for cold-calls."
     }
@@ -4095,17 +4111,17 @@
     "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
     "question": "You have J♥J♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
-      "Call — over-call is correct here",
+      "Call",
       "Squeeze to 12 BB",
       "Fold",
-      "Over-call"
+      "3-Bet to 14 BB"
     ],
     "correct": 0,
-    "explanation": "JJ vs UTG raise + MP call from CO: calling (over-calling) is correct. JJ is NOT in the default squeeze range vs UTG's tight 9.8% range — squeezing builds a large pot where QQ+ dominates. Call in position for excellent set-mining implied odds.",
+    "explanation": "JJ in CO facing a UTG raise + MP caller is a flat call. JJ plays well in a multiway pot in position and isn't strong enough to squeeze for value against a tight UTG range — you'd rather keep dominated hands in and realize your equity. Calling is correct; squeezing turns JJ into a bluff-catcher vs the raiser's uncapped strong range.",
     "why_wrong": {
-      "1": "Squeezing JJ into UTG's tight range builds a large pot where QQ+ dominates you.",
-      "2": "Folding JJ in position with good implied odds is too tight.",
-      "3": "Over-call = call — that IS the correct action here."
+      "1": "Squeezing turns your hand into a bluff-catcher against the raiser's strong continuing range. The raiser is uncapped and can have premium hands.",
+      "2": "Folding is far too tight — your hand has good equity and position in a multiway pot.",
+      "3": "This sizing over-commits with a hand that prefers to see a flop cheaply in position."
     }
   },
   {
@@ -4455,17 +4471,19 @@
     "situation": "MP limps. UTG folds. Action on you in CO.",
     "question": "You have A♦9♦ in CO. UTG fold. MP limpss. What do you do?",
     "options": [
-      "Over-limp or Fold",
-      "Raise to 4 BB",
+      "Over-limp",
       "Raise to 3 BB",
-      "Always ISO suited aces"
+      "Raise to 4 BB",
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      3
+    ],
     "explanation": "The default ISO range for suited aces starts at AJs+. A9s is in the optional over-limp range. Over-limp or fold — not an ISO raise by default.",
     "why_wrong": {
       "1": "A9s is below the AJs+ ISO threshold. Over-limp or fold is correct.",
-      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default.",
-      "3": "Suited aces only ISO from AJs+ — not all suited aces."
+      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default."
     }
   },
   {
@@ -4515,17 +4533,19 @@
     "situation": "UTG limps. MP folds. Action on you in CO.",
     "question": "You have K♣T♣ in CO. UTG limps, MP folds. What do you do?",
     "options": [
-      "Over-limp or Fold",
-      "Raise to 4 BB",
+      "Over-limp",
       "Raise to 3 BB",
-      "Always ISO suited kings"
+      "Raise to 4 BB",
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      3
+    ],
     "explanation": "The default ISO range for suited kings starts at KJs+. KTs is in the optional over-limp range. Over-limp or fold — not an ISO raise by default.",
     "why_wrong": {
       "1": "KTs is below the KJs+ ISO threshold. Over-limp or fold is correct.",
-      "2": "3 BB is wrong sizing anyway, and KTs should not ISO raise by default.",
-      "3": "Suited kings only ISO from KJs+ — not all suited kings."
+      "2": "3 BB is wrong sizing anyway, and KTs should not ISO raise by default."
     }
   },
   {
@@ -6077,15 +6097,17 @@
     "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
     "question": "You have A♣Q♣ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
-      "3-Bet or Call — both correct",
       "3-Bet",
+      "Call",
       "Fold",
       "Raise to 4 BB"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "AQs BTN vs MP: calling in position is the conservative default with a hand that has equity but faces domination from AK, AA, KK in MP's range. 3-betting is the optional aggressive line — AQs is in the optional 3-bet value range vs MP. Both are correct; call is safer at passive microstakes.",
     "why_wrong": {
-      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "AQs has equity edge vs MP's range. Fold is too tight.",
       "3": "Mini-raise is not valid."
     }
@@ -6317,15 +6339,17 @@
     "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
     "question": "You have A♦J♣ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
-      "3-Bet or Call — both correct",
       "3-Bet",
+      "Call",
       "Fold",
       "Raise to 4 BB"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "AJo BTN vs CO: 3-betting to 9 BB is the aggressive default — AJo is in the optional 3-bet value range vs CO's 22% range. Calling is also fully correct — AJo faces domination from AQ+, AK in CO's value hands, so calling in position is the conservative safe line. Both are standard at microstakes.",
     "why_wrong": {
-      "1": "3-betting AJo vs CO is the optional line — call is the conservative default.",
       "2": "AJo has equity edge vs CO's range. Fold is too tight.",
       "3": "Mini-raise is not valid."
     }
@@ -6707,17 +6731,17 @@
     "situation": "UTG raises 3 BB. CO calls. Action on you.",
     "question": "You have J♥J♦ on the BTN. UTG raises 3 BB, CO calls. What do you do?",
     "options": [
-      "Call — over-call is correct here",
+      "Call",
       "Squeeze to 12 BB",
       "Fold",
-      "Over-call"
+      "3-Bet to 14 BB"
     ],
     "correct": 0,
-    "explanation": "JJ BTN vs UTG raise + CO call: over-calling is correct. Not in the default squeeze range vs UTG's tight range. Call in position for excellent set-mining implied odds with two opponents.",
+    "explanation": "JJ on the BTN facing a UTG raise + CO caller is a flat call. It's not in the squeeze value range against UTG's tight opening range. Call in position for excellent implied odds and pot control — you keep the initiative-taker's dominated hands in and play a multiway pot with position on everyone.",
     "why_wrong": {
-      "1": "Squeezing JJ into UTG's tight range builds a pot where QQ+ dominates you.",
-      "2": "Folding JJ in position with good implied odds is too tight.",
-      "3": "Over-call = call — that IS the correct action here."
+      "1": "Squeezing turns your hand into a bluff-catcher against the raiser's strong continuing range. The raiser is uncapped and can have premium hands.",
+      "2": "Folding is far too tight — your hand has good equity and position in a multiway pot.",
+      "3": "This sizing over-commits with a hand that prefers to see a flop cheaply in position."
     }
   },
   {
@@ -7097,17 +7121,19 @@
     "situation": "UTG limps. MP and CO fold. Action on you.",
     "question": "You have A♦9♦ on the BTN. UTG limps, MP and CO fold. What do you do?",
     "options": [
-      "Over-limp or Fold",
-      "Raise to 4 BB",
+      "Over-limp",
       "Raise to 3 BB",
-      "Always ISO suited aces"
+      "Raise to 4 BB",
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      3
+    ],
     "explanation": "The default ISO range for suited aces starts at AJs+. A9s is in the optional over-limp range. Over-limp for implied odds — not an ISO raise by default.",
     "why_wrong": {
       "1": "A9s is below the AJs+ ISO threshold. Over-limp or fold is correct.",
-      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default.",
-      "3": "Suited aces only ISO from AJs+ — not all suited aces."
+      "2": "3 BB is wrong sizing anyway, and A9s should not ISO raise by default."
     }
   },
   {
@@ -7157,17 +7183,19 @@
     "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
     "question": "You have A♠T♣ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
-      "Over-limp or Fold",
-      "Raise to 4 BB",
+      "Over-limp",
       "Raise to 3 BB",
-      "Always ISO off-suit aces"
+      "Raise to 4 BB",
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      3
+    ],
     "explanation": "The default ISO range for off-suit aces starts at AJo+. ATo is in the optional over-limp range. Over-limp or fold — not an ISO raise by default.",
     "why_wrong": {
       "1": "ATo is below the AJo+ ISO threshold. Over-limp or fold is correct.",
-      "2": "3 BB is wrong sizing anyway, and ATo should not ISO raise by default.",
-      "3": "Off-suit aces only ISO from AJo+ — not all off-suit aces."
+      "2": "3 BB is wrong sizing anyway, and ATo should not ISO raise by default."
     }
   },
   {
@@ -7667,15 +7695,17 @@
     "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
     "question": "You have A♠T♠ on the BTN. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet bluff or Fold — both correct",
-      "Call",
+      "4-Bet bluff",
       "Fold",
+      "Call",
       "Shove"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "ATs BTN vs SB 3-bet: 4-betting is a semi-bluff using the ace blocker (removes AA/AK combos from SB's range) and nut flush potential. It is the optional aggressive line. Folding is also fully correct — ATs is not a value 4-bet and calling OOP is the worst option. 4-bet bluff or fold; never call.",
     "why_wrong": {
-      "1": "Calling ATs in a 3-bet pot vs SB is second-best — 4-betting extracts more value.",
       "2": "Also correct — 4-Bet bluff or Fold — both correct. See explanation.",
       "3": "Shoving folds out hands you want calls from."
     }
@@ -8689,15 +8719,17 @@
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
     "question": "You have K♠Q♠ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
-      "3-Bet or Fold — both correct",
-      "Call",
+      "3-Bet",
       "Fold",
+      "Call",
       "Complete"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "KQs SB vs BTN steal: 3-betting is the optional aggressive line — KQs has equity vs BTN's wide range and a king blocker. Folding is also correct vs a tight BTN. Calling OOP from SB is the worst option — always raise or fold from SB. Never call from SB.",
     "why_wrong": {
-      "1": "Calling KQs OOP from SB vs BTN is second-best — it has equity dominance vs BTN's wide range.",
       "2": "Also correct — 3-Bet or Fold — both correct. See explanation.",
       "3": "Completing KQs vs a raise surrenders all initiative."
     }
@@ -8779,15 +8811,17 @@
     "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
     "question": "You have A♦5♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
-      "3-Bet to 10.5 BB or Fold",
+      "3-Bet to 10.5 BB",
+      "Fold",
       "Call",
-      "Complete",
-      "Raise to 7 BB"
+      "Complete"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "A5s in SB vs BTN = 3-bet bluff or fold — never call OOP. A5s is in the conservative bluff range: Ax blocker (reduces AA/AK combos), suited, wheel straight potential. These are ideal bluff properties. OOP 3.5x = 10.5 BB. Fold when BTN is tight.",
     "why_wrong": {
-      "1": "Calling A5s OOP from SB is the worst line — out of position every street with a weak hand.",
       "2": "Completing is never an option when facing a raise.",
       "3": "Non-standard sizing. 3.5x = 10.5 BB is correct OOP."
     }
@@ -9411,15 +9445,17 @@
     "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
     "question": "You have K♠Q♠ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
-      "4-Bet bluff or Fold — both correct",
-      "Call",
+      "4-Bet bluff",
       "Fold",
+      "Call",
       "Shove"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "KQs SB vs BB 3-bet: 4-betting is a semi-bluff using the king blocker and nut flush potential. Folding is also correct — KQs is not a value 4-bet. Calling OOP is the worst option. 4-bet bluff or fold; both are standard.",
     "why_wrong": {
-      "1": "Calling KQs OOP in a 3-bet pot vs BB — loses value vs BB's calling range.",
       "2": "Also correct — 4-Bet bluff or Fold — both correct. See explanation.",
       "3": "Shoving folds out hands you want calls from."
     }
@@ -9741,15 +9777,17 @@
     "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
     "question": "You have J♠J♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
-      "3-Bet or Call — both correct",
+      "3-Bet",
       "Call",
       "Fold",
       "Check"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "JJ BB vs MP: JJ is optional in the 3-bet value range vs MP (default = AA-QQ, AKs). 3-betting is the aggressive default — JJ dominates most of MP's 12.67% range. Calling is also correct — avoids a large pot where QQ+ dominates. Both lines are standard.",
     "why_wrong": {
-      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "Folding JJ vs MP raise is never correct.",
       "3": "Checking is not an option when facing a raise."
     }
@@ -10251,15 +10289,17 @@
     "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
     "question": "You have A♠J♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
-      "3-Bet or Call — both correct",
+      "3-Bet",
       "Call",
       "Fold",
       "Check"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "AJo BB vs BTN steal: 3-betting is the aggressive default — BTN opens 35.44% and AJo dominates most of that range. Calling is also correct — AJo faces domination from AQ+, AK in BTN's value hands. Both lines are standard; 3-bet is higher-EV vs wide steal ranges.",
     "why_wrong": {
-      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "Folding AJo vs BTN steal from BB is far too tight.",
       "3": "Checking is not an option when facing a raise."
     }
@@ -10761,15 +10801,17 @@
     "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
     "question": "You have K♦Q♦ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
-      "3-Bet or Call — both correct",
+      "3-Bet",
       "Call",
       "Fold",
       "3-Bet to 10.5 BB"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "KQs BB vs SB raise: BB is in position postflop. 3-betting to 9 BB (IP sizing) is the aggressive default with KQs having equity vs SB's 22% range. Calling is also correct and plays the hand in position. Both lines are standard.",
     "why_wrong": {
-      "1": "Also correct — 3-Bet or Call — both correct. See explanation.",
       "2": "KQs dominates much of SB's range. Fold is too tight.",
       "3": "Also correct — 3-Bet or Call — both correct. See explanation."
     }
@@ -11391,15 +11433,17 @@
     "situation": "You 3-bet BTN's raise to 10.5 BB. BTN 4-bets to ~22 BB. Action on you.",
     "question": "You have A♠A♦ in BB. You 3-bet to 10.5 BB, BTN 4-bets to ~22 BB. What do you do?",
     "options": [
-      "5-Bet jam or raise",
+      "5-Bet jam",
+      "Raise",
       "Call",
-      "Fold",
-      "Check"
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "AA 5-bet jams or raises facing a 4-bet. AA dominates even the tightest 4-bet ranges. At 100 BB effective stacks, getting all-in preflop with AA is always correct.",
     "why_wrong": {
-      "1": "Calling AA vs a 4-bet is second-best — get it all in with the best hand.",
       "2": "Never fold AA facing a 4-bet.",
       "3": "Checking is not an option when facing a raise."
     }
@@ -11511,15 +11555,17 @@
     "situation": "You 3-bet BTN's raise to 10.5 BB. BTN 4-bets to ~22 BB. Action on you.",
     "question": "You have A♣K♣ in BB. You 3-bet to 10.5 BB, BTN 4-bets to ~22 BB. What do you do?",
     "options": [
-      "Call or 5-Bet jam",
+      "Call",
+      "5-Bet jam",
       "Fold",
-      "Check",
-      "Always fold AK to 4-bets"
+      "Raise"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "AKs vs BTN 4-bet: call or 5-bet jam are both valid. AKs has equity vs BTN's 4-bet range (QQ, JJ, AQs+, AK). At 100 BB effective, calling and playing postflop is the standard line. 5-bet jamming is aggressive but also correct.",
     "why_wrong": {
-      "1": "Folding AKs vs BTN 4-bet is too tight — AKs has strong equity vs most 4-bet ranges.",
       "2": "Checking is not an option when facing a raise.",
       "3": "AKs is always worth continuing vs a 4-bet — call or 5-bet jam."
     }
@@ -11571,15 +11617,17 @@
     "situation": "You 3-bet CO's raise to 10.5 BB. CO 4-bets to ~22 BB. Action on you.",
     "question": "You have K♥K♦ in BB. You 3-bet to 10.5 BB, CO 4-bets to ~22 BB. What do you do?",
     "options": [
-      "5-Bet jam or raise",
+      "5-Bet jam",
+      "Raise",
       "Call",
-      "Fold",
-      "Check"
+      "Fold"
     ],
-    "correct": 0,
+    "correct": [
+      0,
+      1
+    ],
     "explanation": "KK 5-bet jams or raises facing any 4-bet. KK is only behind AA — even vs a tight 4-bet range, getting it all in with KK is almost always correct at 100 BB.",
     "why_wrong": {
-      "1": "Calling KK vs a 4-bet is second-best — get it all in with the second-best hand.",
       "2": "Never fold KK facing a 4-bet at 100 BB.",
       "3": "Checking is not an option when facing a raise."
     }
