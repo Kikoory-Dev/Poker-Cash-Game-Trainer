@@ -79,6 +79,55 @@ function getScore(prog){
   return 1;
 }
 function getWeight(prog){return[8,6,3,1.5,0.5][getScore(prog)];}
+
+// ── WANIKANI-STYLE SRS ENGINE ──────────────────────────────
+// 9 stages: 0 Unseen, 1-4 Apprentice, 5 Guru, 6 Master, 7 Enlightened, 8 Burned
+// Intervals (ms) to NEXT review after answering correctly at each stage:
+const SRS_INTERVALS_MS = [
+  0,                    // 0 unseen (immediate)
+  4*60*60*1000,         // 1 -> 4h
+  8*60*60*1000,         // 2 -> 8h
+  24*60*60*1000,        // 3 -> 1d
+  2*24*60*60*1000,      // 4 -> 2d
+  7*24*60*60*1000,      // 5 Guru -> 1w
+  14*24*60*60*1000,     // 6 Master -> 2w
+  30*24*60*60*1000,     // 7 Enlightened -> 1mo
+  120*24*60*60*1000,    // 8 Burned -> 4mo (effectively done)
+];
+const SRS_STAGE_LABEL = ["Unseen","Apprentice I","Apprentice II","Apprentice III","Apprentice IV","Guru","Master","Enlightened","Burned"];
+const SRS_STAGE_SHORT = ["—","App I","App II","App III","App IV","Guru","Master","Enlit","Burned"];
+const SRS_STAGE_COLOR = ["#6b7d62","#d96060","#d4737d","#d4a847","#d4c047","#a98fe8","#70b4d4","#6db87a","#4a9d5e"];
+const SRS_TIER_COLOR = {apprentice:"#d96060", guru:"#a98fe8", master:"#70b4d4", enlightened:"#6db87a", burned:"#4a9d5e"};
+
+function getStage(prog){ return prog?.stage || 0; }
+
+// Advance stage on correct, drop on wrong (WaniKani: wrong drops ~2 stages, min Apprentice I)
+function nextStage(stage, correct){
+  if(correct) return Math.min(stage+1, 8);
+  if(stage<=1) return 1;
+  // drop 2 stages but never below 1, with bigger penalty for higher stages
+  const penalty = stage>=5 ? 2 : 1;
+  return Math.max(stage-penalty, 1);
+}
+
+// When is this card next due? Returns timestamp (ms). Stage 0 = due now.
+function dueTime(prog){
+  if(!prog || !prog.stage) return 0;           // unseen = due now
+  if(prog.due) return prog.due;                 // explicit timer
+  return 0;
+}
+function isDue(prog, now){ return dueTime(prog) <= now; }
+
+function timeUntil(ms){
+  if(ms<=0) return "now";
+  const h=ms/(60*60*1000);
+  if(h<1) return Math.ceil(ms/(60*1000))+"m";
+  if(h<24) return Math.round(h)+"h";
+  const d=h/24;
+  if(d<7) return Math.round(d)+"d";
+  if(d<30) return Math.round(d/7)+"w";
+  return Math.round(d/30)+"mo";
+}
 const SCORE_LABEL=["Unseen","Struggling","Learning","Solid","Mastered"];
 const SCORE_COLOR=["#6b7d62","#d96060","#d4a847","#a8d4b0","#6db87a"];
 
@@ -138,8 +187,12 @@ export default function App(){
   const [chartCat, setChartCat] = useState(Object.keys(rangesData)[0]);
   const [chartGroup, setChartGroup] = useState(Object.keys(rangesData[Object.keys(rangesData)[0]])[0]);
   const [chartVariant, setChartVariant] = useState("conservative");
+  const [reviewMode, setReviewMode] = useState(false);
+  const [now, setNow] = useState(Date.now());
 
   useEffect(()=>saveProgress(progress),[progress]);
+  // tick every minute so due counts/timers refresh
+  useEffect(()=>{ const t=setInterval(()=>setNow(Date.now()),60000); return ()=>clearInterval(t); },[]);
 
   function toggle(setter,current,val){
     if(val==="__all__"){setter([]);return;}
@@ -164,10 +217,33 @@ export default function App(){
   const struggling=scores.filter(s=>s===1).length;
   const unseen=scores.filter(s=>s===0).length;
   const dueCount=filtered.filter(q=>getWeight(progress[q.id])>1).length;
+  // SRS review queue: cards whose timer has elapsed (excludes burned + not-yet-started unseen optionally)
+  const reviewDue = questionsData.filter(q=>{
+    const p=progress[q.id];
+    if(!p || !p.stage) return false;          // only cards in the SRS system (seen at least once)
+    if(p.stage>=8) return false;              // burned = done
+    return isDue(p, now);
+  });
+  const reviewDueCount = reviewDue.length;
+  // upcoming (in system, not yet due)
+  const upcoming = questionsData.filter(q=>{ const p=progress[q.id]; return p&&p.stage>0&&p.stage<8&&!isDue(p,now); });
+  const nextDueMs = upcoming.length? Math.min(...upcoming.map(q=>dueTime(progress[q.id])-now)) : null;
 
   function startSession(){
     if(!filtered.length)return;
+    setReviewMode(false);
     setQueue(weightedSample(filtered,progress,sessionSize));
+    setIdx(0);setSelected(null);setRevealed(false);
+    setSession({correct:0,wrong:0});setStreak(0);
+    setScreen("quiz");
+  }
+
+  function startReviews(){
+    if(!reviewDue.length)return;
+    setReviewMode(true);
+    // review ALL due cards (WaniKani does the full due pile), ordered weakest-stage first
+    const ordered=[...reviewDue].sort((a,b)=>getStage(progress[a.id])-getStage(progress[b.id]));
+    setQueue(ordered);
     setIdx(0);setSelected(null);setRevealed(false);
     setSession({correct:0,wrong:0});setStreak(0);
     setScreen("quiz");
@@ -179,8 +255,10 @@ export default function App(){
     const q=queue[idx];const ok=isCorrect(i, q.correct);
     setStreak(s=>ok?s+1:0);
     setSession(s=>({correct:s.correct+(ok?1:0),wrong:s.wrong+(ok?0:1)}));
-    const prev=progress[q.id]||{seen:0,correct:0};
-    setProgress(p=>({...p,[q.id]:{seen:prev.seen+1,correct:prev.correct+(ok?1:0)}}));
+    const prev=progress[q.id]||{seen:0,correct:0,stage:0};
+    const ns=nextStage(prev.stage||0, ok);
+    const due=Date.now()+SRS_INTERVALS_MS[ns];
+    setProgress(p=>({...p,[q.id]:{seen:prev.seen+1,correct:prev.correct+(ok?1:0),stage:ns,due}}));
     setTimeout(()=>scrollRef.current?.scrollTo({top:0,behavior:"smooth"}),80);
   }
 
@@ -297,6 +375,42 @@ export default function App(){
         <button onClick={()=>setScreen("charts")} style={{width:"100%",height:50,marginBottom:20,borderRadius:12,background:C.bg2,border:`1px solid ${C.border}`,color:C.accent,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"'Inter',-apple-system,sans-serif",display:"flex",alignItems:"center",justifyContent:"center",gap:8,WebkitTapHighlightColor:"transparent"}}>
           <span style={{fontSize:16}}>▦</span> Range Charts — Lookup Reference
         </button>
+
+        {/* SRS Reviews panel (WaniKani-style) */}
+        <div style={{background:reviewDueCount>0?"rgba(169,143,232,0.12)":C.bg2,borderRadius:14,border:`1.5px solid ${reviewDueCount>0?"#a98fe8":C.border}`,padding:"18px 16px",marginBottom:20}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:reviewDueCount>0?14:0}}>
+            <div>
+              <div style={{fontSize:11,fontWeight:700,color:reviewDueCount>0?"#a98fe8":C.muted,letterSpacing:"0.12em",textTransform:"uppercase",marginBottom:5}}>Reviews Due</div>
+              <div style={{fontSize:32,fontWeight:900,color:reviewDueCount>0?"#a98fe8":C.muted,letterSpacing:"-0.02em",lineHeight:1}}>{reviewDueCount}</div>
+              <div style={{fontSize:11,color:C.muted,marginTop:4}}>
+                {reviewDueCount>0 ? "spaced-repetition cards ready" : (nextDueMs!=null ? `next review in ${timeUntil(nextDueMs)}` : "answer questions to start the SRS")}
+              </div>
+            </div>
+            {/* SRS stage breakdown */}
+            <div>
+              {(()=>{ 
+                const inSys=questionsData.map(q=>getStage(progress[q.id])).filter(s=>s>0);
+                const app=inSys.filter(s=>s>=1&&s<=4).length;
+                const guru=inSys.filter(s=>s===5).length;
+                const master=inSys.filter(s=>s===6).length;
+                const enl=inSys.filter(s=>s===7).length;
+                const burned=inSys.filter(s=>s===8).length;
+                return [["Apprentice",app,"#d96060"],["Guru",guru,"#a98fe8"],["Master",master,"#70b4d4"],["Enlightened",enl,"#6db87a"],["Burned",burned,"#4a9d5e"]].map(([l,n,c])=>(
+                  <div key={l} style={{display:"flex",alignItems:"center",gap:5,marginBottom:3}}>
+                    <div style={{width:6,height:6,borderRadius:"50%",background:c,flexShrink:0}}/>
+                    <span style={{fontSize:11,color:C.muted,width:78}}>{l}</span>
+                    <span style={{fontSize:11,fontWeight:700,color:n>0?c:C.border}}>{n}</span>
+                  </div>
+                ));
+              })()}
+            </div>
+          </div>
+          {reviewDueCount>0 && (
+            <button onClick={startReviews} style={{width:"100%",height:48,borderRadius:12,background:"#a98fe8",color:"#1a2218",fontSize:15,fontWeight:800,border:"none",cursor:"pointer",fontFamily:"'Inter',-apple-system,sans-serif",WebkitTapHighlightColor:"transparent",boxShadow:"0 0 24px rgba(169,143,232,0.25)"}}>
+              Start {reviewDueCount} Reviews
+            </button>
+          )}
+        </div>
 
         {/* Progress card */}
         <div style={{background:C.bg2,borderRadius:14,border:`1px solid ${C.border}`,padding:"18px 16px",marginBottom:20}}>
@@ -415,7 +529,9 @@ export default function App(){
               <span style={{fontSize:11,fontWeight:800,color:accent,background:`${accent}20`,padding:"4px 10px",borderRadius:8,textTransform:"uppercase",letterSpacing:"0.08em"}}>{q.category}</span>
               <span style={{fontSize:11,fontWeight:600,color:C.muted,background:C.bg3,border:`1px solid ${C.border}`,padding:"4px 10px",borderRadius:8}}>{q.scenario}</span>
               <span style={{fontSize:11,fontWeight:700,color:POS_COLOR[q.my_position]||C.accent,background:`${POS_COLOR[q.my_position]||C.accent}20`,padding:"4px 10px",borderRadius:8}}>{q.my_position}</span>
-              <span style={{fontSize:10,fontWeight:700,color:SCORE_COLOR[qScore],background:`${SCORE_COLOR[qScore]}18`,padding:"4px 10px",borderRadius:8,marginLeft:"auto"}}>{SCORE_LABEL[qScore]}</span>
+              {(()=>{ const st=getStage(progress[q.id]); return (
+                <span style={{fontSize:10,fontWeight:700,color:SRS_STAGE_COLOR[st],background:`${SRS_STAGE_COLOR[st]}18`,padding:"4px 10px",borderRadius:8,marginLeft:"auto"}}>{SRS_STAGE_SHORT[st]}</span>
+              ); })()}
             </div>
 
             <details style={{marginBottom:12}}>
@@ -467,6 +583,13 @@ export default function App(){
                     <p style={{margin:0,fontSize:14,fontWeight:500,color:C.muted,lineHeight:1.65}}>{q.why_wrong[String(selected)]}</p>
                   </div>
                 )}
+                {(()=>{ const p=progress[q.id]; if(!p||!p.stage) return null; const ms=SRS_INTERVALS_MS[p.stage];
+                  return (
+                    <div style={{marginTop:12,paddingTop:12,borderTop:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+                      <span style={{fontSize:12,fontWeight:700,color:SRS_STAGE_COLOR[p.stage]}}>{SRS_STAGE_LABEL[p.stage]}{p.stage>=8?" 🔥":""}</span>
+                      <span style={{fontSize:12,fontWeight:600,color:C.muted}}>{p.stage>=8?"mastered":`next review in ${timeUntil(ms)}`}</span>
+                    </div>
+                  ); })()}
               </div>
             )}
             {revealed&&(
