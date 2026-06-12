@@ -501,6 +501,9 @@ function parseHands(text, filename) {
     const heroPF = [...pfText.matchAll(/Hero: (calls|raises|bets|checks|folds)/g)].map(m=>m[1]);
     h.vpip = heroPF.some(a=>['calls','raises'].includes(a)) ? 1 : 0;
     h.pfr = heroPF.includes('raises') ? 1 : 0;
+    // Did someone else raise before Hero acted preflop?
+    const otherRaises = [...pfText.matchAll(/(?!Hero)\w+: raises/g)];
+    h.facedRaise = otherRaises.length > 0 ? 1 : 0;
     if (h.pfr) h.pfAction='RAISE';
     else if (heroPF.includes('calls')) h.pfAction='CALL';
     else if (h.inBB && heroPF.includes('checks')) h.pfAction='CHECK_BB';
@@ -536,7 +539,7 @@ function parseHands(text, filename) {
     }
     const issues = [];
     if (h.vpip && h.tagQuality==='Outside') issues.push('VPIP_TRASH');
-    if (h.pfAction==='CALL' && !h.inBB && ['SB','UTG'].includes(h.position)) issues.push('LIMP_OOP');
+    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise) issues.push('LIMP_OOP');
     if (h.pfAction==='CALL' && !h.pfr && ['Trash','Weak Ace','Suited Trash'].includes(h.handCat) && !h.inBB) issues.push('CALL_WEAK');
     if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
     if (h.pfAction==='FOLD' && h.tagQuality==='A-Range' && ['BTN','CO','HJ'].includes(h.position)) issues.push('FOLD_STRONG_LP');
@@ -587,6 +590,21 @@ const ISSUE_EXPLAIN = {
     explain:`Late position is your biggest edge in poker. Hardin's TAG ranges have wide opens from BTN/CO/HJ precisely because you act last post-flop. Folding A-range hands here forfeits fold equity (nobody else in the pot = free steal), and gives up value against wider calling ranges. From BTN especially, Hardin opens very wide. These hands should be raises, not folds.`
   }
 };
+
+// ─── CARD FORMATTER ──────────────────────────────────────────
+function formatCards(cards) {
+  if (!cards) return '??';
+  const suitMap = {'s':'♠','h':'♥','d':'♦','c':'♣'};
+  const suitColor = {'s':'var(--text)','h':'var(--red)','d':'var(--red)','c':'var(--text)'};
+  return cards.split(' ').map(c => {
+    if (c.length < 2) return c;
+    const rank = c.slice(0,-1);
+    const suit = c.slice(-1).toLowerCase();
+    const sym = suitMap[suit] || suit;
+    const col = suitColor[suit] || 'var(--text)';
+    return `<span style="color:${col}">${rank}${sym}</span>`;
+  }).join(' ');
+}
 
 // ─── FILTER UTILITY ───────────────────────────────────────────
 function filterByTime(hands, tf) {
@@ -768,7 +786,7 @@ function renderHandsPage() {
     const issueBadge = issues.length ? `<span class="badge err">${issues.length} issue${issues.length>1?'s':''}</span>` : `<span class="badge ok">OK</span>`;
     return `<div class="hand-card" onclick="showHandDetail('${h.id}')">
       <div class="hand-card-top">
-        <span class="hand-cards-display">${h.holeCards||'??'}</span>
+        <span class="hand-cards-display">${formatCards(h.holeCards)}</span>
         <span class="hand-net" style="color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
       </div>
       <div class="hand-card-mid">
@@ -808,7 +826,7 @@ function showHandDetail(id) {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
       <div class="stat"><p class="stat-label">Position</p><p class="stat-value blue" style="font-size:18px">${h.position}</p></div>
       <div class="stat"><p class="stat-label">Net result</p><p class="stat-value ${h.netBB>=0?'green':'red'}" style="font-size:18px">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</p></div>
-      <div class="stat"><p class="stat-label">Hole cards</p><p class="stat-value" style="font-size:18px">${h.holeCards}</p></div>
+      <div class="stat"><p class="stat-label">Hole cards</p><p class="stat-value" style="font-size:18px">${formatCards(h.holeCards)}</p></div>
       <div class="stat"><p class="stat-label">Hand category</p><p class="stat-value amber" style="font-size:14px">${h.handCat}</p></div>
     </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
