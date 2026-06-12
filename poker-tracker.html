@@ -844,7 +844,7 @@ function filterByTime(hands, tf, dateInputId) {
     sessions.sort(function(a,b){return b.start-a.start;});
     var lastN = sessions.slice(0,n);
     var fileSet = {};
-    lastN.forEach(function(s){s.files.forEach(function(f){fileSet[f]=true;});});
+    lastN.forEach(function(s){s.fileList.forEach(function(f){fileSet[f]=true;});});
     return hands.filter(function(h){return fileSet[h.filename];});
   }
   if (tf==='date' && dateInputId) {
@@ -1017,7 +1017,7 @@ function buildSessions(handsArr) {
     const durMin = (sess.end-sess.start)/60000;
     const d = new Date(sess.start);
     const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
-    return {date, durMin, hands:sh.length, netBB, netUSD, files:sess.files.length};
+    return {date, durMin, hands:sh.length, netBB, netUSD, files:sess.files.length, start:sess.start, fileList:sess.files};
   });
 }
 
