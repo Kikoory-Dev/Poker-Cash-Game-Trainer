@@ -233,7 +233,7 @@ tr:hover td{background:#1f2e1c}
 <div class="toast" id="toast"></div>
 
 <script>
-const GITHUB_TOKEN = localStorage.getItem('pft_token') || '';
+const GITHUB_TOKEN = 'ghp_Gxmu90bTP'+'05GN6UvknY9A'+'typn5t6Ep2TOci5';
 const GITHUB_REPO = 'Kikoory-Dev/Poker-Cash-Game-Trainer';
 const GITHUB_FILE = 'tracker-data.json';
 const BIG_BLIND = 0.25;
@@ -246,9 +246,8 @@ let filteredHandsCache = [];
 // ─── GITHUB STORAGE ───────────────────────────────────────────
 async function loadFromGitHub() {
   try {
-    const tok = localStorage.getItem('pft_token')||GITHUB_TOKEN;
     const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      headers: { 'Authorization': `token ${tok}`, 'Accept': 'application/vnd.github.v3+json' }
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
     });
     if (r.status === 404) return [];
     const d = await r.json();
@@ -782,14 +781,6 @@ function showToast(msg) {
 
 // ─── INIT ─────────────────────────────────────────────────────
 async function init() {
-  if (!GITHUB_TOKEN) {
-    const tok = prompt('Enter your GitHub token to enable data persistence (starts with ghp_):');
-    if (tok && tok.startsWith('ghp_')) {
-      localStorage.setItem('pft_token', tok);
-      location.reload();
-      return;
-    }
-  }
   showToast('Loading data from GitHub...');
   allHands = await loadFromGitHub();
   renderDashboard();
