@@ -1741,6 +1741,163 @@ function renderAnalysis() {
     }).join('')}
   </div>`;
 }
+// ─── HAND COMBO GRID ─────────────────────────────────────────
+// ─── HAND COMBO GRID ─────────────────────────────────────────
+function renderGrid() {
+  const tf = getEl('grid-filter');
+  const skEl = getEl('grid-stakes');
+  const mtEl = getEl('grid-metric');
+  const hands = filterHands(allHands, tf, skEl, 'all', 'grid-date');
+  const metric = mtEl ? mtEl.value : 'net';
+  const el = document.getElementById('grid-container');
+  if (!hands.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🃏</div><p>No data yet</p></div>';
+    return;
+  }
+
+  var RANKS = ['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+
+  // Build lookup per notation
+  var lookup = {};
+  for (var hi = 0; hi < hands.length; hi++) {
+    var h = hands[hi];
+    var n = h.handNotation;
+    if (!n) continue;
+    if (!lookup[n]) lookup[n] = {net:0, netBB:0, count:0};
+    var bbVal = h.stakes === 'NL10' ? 0.10 : 0.25;
+    lookup[n].net += h.netBB * bbVal;
+    lookup[n].netBB += h.netBB;
+    lookup[n].count++;
+  }
+
+  var cellSize = Math.max(28, Math.min(42, Math.floor((Math.min(window.innerWidth, 560) - 20) / 14)));
+  var fSize = Math.max(7, cellSize - 16);
+  var vSize = Math.max(6, cellSize - 20);
+
+  var rows = '';
+  for (var i = 0; i < 13; i++) {
+    var r1 = RANKS[i];
+    var cols = '';
+    for (var j = 0; j < 13; j++) {
+      var r2 = RANKS[j];
+      var notation;
+      if (i === j) {
+        notation = r1 + r1;
+      } else if (i < j) {
+        notation = r1 + r2 + 's';
+      } else {
+        notation = r2 + r1 + 'o';
+      }
+      var d = lookup[notation];
+      var count = d ? d.count : 0;
+      var bg, valStr;
+      if (!count) {
+        bg = '#1e2a1e';
+        valStr = '';
+      } else {
+        var val = metric === 'bb100' ? d.netBB / count * 100 : metric === 'hands' ? count : d.net;
+        var intensity;
+        if (metric === 'hands') {
+          bg = '#1a3a2a';
+          valStr = count + 'x';
+        } else if (val > 0) {
+          intensity = Math.min(val / (metric === 'bb100' ? 80 : 3), 1);
+          var g = Math.round(60 + intensity * 80);
+          bg = 'rgb(20,' + g + ',20)';
+          valStr = (metric === 'bb100' ? (val >= 0 ? '+' : '') + val.toFixed(0) : (val >= 0 ? '+' : '') + '$' + Math.abs(val).toFixed(2));
+        } else if (val < 0) {
+          intensity = Math.min(Math.abs(val) / (metric === 'bb100' ? 80 : 3), 1);
+          var rr = Math.round(60 + intensity * 80);
+          bg = 'rgb(' + rr + ',20,20)';
+          valStr = (metric === 'bb100' ? val.toFixed(0) : '-$' + Math.abs(val).toFixed(2));
+        } else {
+          bg = '#2a2a2a';
+          valStr = '0';
+        }
+      }
+      cols += '<div onclick="showGridDetail(\'' + notation + '\')" style="width:' + cellSize + 'px;height:' + cellSize + 'px;background:' + bg + ';display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-radius:2px;box-sizing:border-box">'
+        + '<span style="font-size:' + fSize + 'px;font-weight:700;color:#e0ead8;line-height:1">' + notation + '</span>'
+        + (valStr ? '<span style="font-size:' + vSize + 'px;color:#b0c8a8;line-height:1.2">' + valStr + '</span>' : '')
+        + '</div>';
+    }
+    rows += '<div style="display:flex;gap:1px">' + cols + '</div>';
+  }
+
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:1px">' + rows + '</div>';
+}
+
+function showGridDetail(notation) {
+  var tf = getEl('grid-filter');
+  var skEl = getEl('grid-stakes');
+  var allFiltered = filterHands(allHands, tf, skEl, 'all', 'grid-date');
+  var hands = [];
+  for (var i = 0; i < allFiltered.length; i++) {
+    if (allFiltered[i].handNotation === notation) hands.push(allFiltered[i]);
+  }
+  if (!hands.length) { showToast('No hands with ' + notation); return; }
+
+  var net = 0; var netUSD = 0;
+  for (var i = 0; i < hands.length; i++) {
+    net += hands[i].netBB;
+    netUSD += hands[i].netBB * (hands[i].stakes === 'NL10' ? 0.10 : 0.25);
+  }
+  var bb100v = net / hands.length * 100;
+  var bbCol = net >= 0 ? 'var(--green)' : 'var(--red)';
+
+  var positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  var posRows = '';
+  for (var pi = 0; pi < positions.length; pi++) {
+    var p = positions[pi];
+    var ph = []; var pnet = 0;
+    for (var i = 0; i < hands.length; i++) {
+      if (hands[i].position === p) { ph.push(hands[i]); pnet += hands[i].netBB; }
+    }
+    if (!ph.length) continue;
+    var pc = pnet >= 0 ? 'var(--green)' : 'var(--red)';
+    var pbb = pnet / ph.length * 100;
+    posRows += '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span class="badge info">' + p + '</span>'
+      + '<span style="font-size:12px;color:var(--muted)">' + ph.length + ' hand' + (ph.length > 1 ? 's' : '') + '</span>'
+      + '</div>'
+      + '<span style="font-size:13px;font-weight:700;color:' + pc + '">' + (pbb >= 0 ? '+' : '') + pbb.toFixed(0) + ' bb/100</span>'
+      + '</div>';
+  }
+
+  var sorted = hands.slice().sort(function(a,b){return a.netBB-b.netBB;});
+  var worst = sorted.slice(0, Math.min(5, sorted.length));
+  var worstRows = '';
+  for (var i = 0; i < worst.length; i++) {
+    var wh = worst[i];
+    var wc = wh.netBB >= 0 ? 'var(--green)' : 'var(--red)';
+    worstRows += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:6px;align-items:center">'
+      + '<span class="badge info">' + wh.position + '</span>'
+      + '<span style="font-size:12px;color:var(--muted)">' + wh.date.slice(5) + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span style="font-size:13px;font-weight:700;color:' + wc + '">' + (wh.netBB >= 0 ? '+' : '') + wh.netBB.toFixed(1) + ' BB</span>'
+      + '<button onclick="closeModal();showHandDetail(\'' + wh.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  var body = '<div class="stat-grid" style="margin-bottom:14px">'
+    + '<div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">' + hands.length + '</p></div>'
+    + '<div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:' + bbCol + '">' + (net >= 0 ? '+' : '') + net.toFixed(1) + '</p></div>'
+    + '<div class="stat"><p class="stat-label">Net $</p><p class="stat-value" style="color:' + bbCol + '">' + (netUSD >= 0 ? '+' : '-') + '$' + Math.abs(netUSD).toFixed(2) + '</p></div>'
+    + '<div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:' + bbCol + '">' + (bb100v >= 0 ? '+' : '') + bb100v.toFixed(0) + '</p></div>'
+    + '</div>'
+    + '<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>'
+    + posRows
+    + '<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 8px">Worst hands</p>'
+    + worstRows;
+
+  document.getElementById('modal-title').textContent = notation + ' — ' + hands.length + ' hands';
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
 
 // ─── DRAG DROP ────────────────────────────────────────────────
 const dz = document.getElementById('drop-zone');
