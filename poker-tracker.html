@@ -563,11 +563,22 @@ function parseHands(text, filename) {
     else if (heroPF.includes('calls')) h.pfAction='CALL';
     else if (h.inBB && heroPF.includes('checks')) h.pfAction='CHECK_BB';
     else h.pfAction='FOLD';
-    if (/\*\*\* RIVER \*\*\*/.test(raw)) h.streetReached='River';
-    else if (/\*\*\* TURN \*\*\*/.test(raw)) h.streetReached='Turn';
-    else if (/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/.test(raw)) h.streetReached='Flop';
-    else h.streetReached='Preflop';
-    h.sawFlop = h.streetReached!=='Preflop' && h.pfAction!=='FOLD' ? 1 : 0;
+    // streetReached = last street where Hero was still active (folded hands = Preflop)
+    if (h.pfAction === 'FOLD') {
+      h.streetReached = 'Preflop';
+    } else {
+      // Check if Hero has actions on each street
+      const rawAfterPF = raw.slice(raw.search(/\*\*\* (?:FLOP|FIRST FLOP|TURN|RIVER) \*\*\*/));
+      const riverSection = raw.match(/\*\*\* RIVER \*\*\*[\s\S]*?(?=\*\*\*|$)/);
+      const turnSection  = raw.match(/\*\*\* TURN \*\*\*[\s\S]*?(?=\*\*\* RIVER|\*\*\* SHOW|\*\*\* SUM|$)/);
+      const flopSection  = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\*[\s\S]*?(?=\*\*\* TURN|\*\*\* SHOW|\*\*\* SUM|$)/);
+      if (riverSection && /Hero:/.test(riverSection[0])) h.streetReached = 'River';
+      else if (turnSection && /Hero:/.test(turnSection[0])) h.streetReached = 'Turn';
+      else if (flopSection && /Hero:/.test(flopSection[0])) h.streetReached = 'Flop';
+      else if (/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/.test(raw)) h.streetReached = 'Flop';
+      else h.streetReached = 'Preflop';
+    }
+    h.sawFlop = h.streetReached !== 'Preflop' && h.pfAction !== 'FOLD' ? 1 : 0;
     h.showdown = /Hero: shows/.test(raw) ? 1 : 0;
     // Store villain showdown cards
     const villainShows = [...raw.matchAll(/(\w+): shows \[([^\]]+)\]/g)]
@@ -979,11 +990,15 @@ function showHandDetail(id) {
     body += `<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Hero opened to $${h.pfRaiseAmt}</p>`;
   }
 
+  // Only show streets up to and including the one where Hero was active
+  const streetOrder = ['preflop','flop','turn','river'];
+  const heroStreetIdx = streetOrder.indexOf((h.streetReached||'Preflop').toLowerCase());
   streets.forEach(({key,label,board}) => {
     const st = sa[key];
     if (!st && !board) return;
     const actions = st ? st.actions : [];
-    // Only show streets that were reached and had actions
+    // Stop at Hero's last active street
+    if (streetOrder.indexOf(key) > heroStreetIdx) return;
     if (key!=='preflop' && !board) return;
     if (key==='preflop' && !actions.length) return;
 
