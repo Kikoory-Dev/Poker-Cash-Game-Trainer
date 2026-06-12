@@ -23,6 +23,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Copy tracker to dist
+        run: cp public/poker-tracker.html dist/poker-tracker.html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
