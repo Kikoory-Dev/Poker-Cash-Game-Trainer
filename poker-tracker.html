@@ -557,8 +557,8 @@ function parseHands(text, filename) {
     h.vpip = heroPF.some(a=>['calls','raises'].includes(a)) ? 1 : 0;
     h.pfr = heroPF.includes('raises') ? 1 : 0;
     // Did someone else raise before Hero acted preflop?
-    const otherRaises = [...pfText.matchAll(/(?!Hero)\w+: raises/g)];
-    h.facedRaise = otherRaises.length > 0 ? 1 : 0;
+    const otherRaisers = [...pfText.matchAll(/^(\w+): raises/gm)].filter(m=>m[1]!=='Hero');
+    h.facedRaise = otherRaisers.length > 0 ? 1 : 0;
     if (h.pfr) h.pfAction='RAISE';
     else if (heroPF.includes('calls')) h.pfAction='CALL';
     else if (h.inBB && heroPF.includes('checks')) h.pfAction='CHECK_BB';
