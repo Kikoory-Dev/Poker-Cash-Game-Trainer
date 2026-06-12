@@ -604,7 +604,18 @@ function parseHands(text, filename) {
       const fp = raw.split(/\*\*\* (?:FIRST )?FLOP \*\*\*[^\n]*\n/);
       if (fp.length>1) {
         const flopOnly = fp[1].split(/\*\*\* TURN \*\*\*/)[0];
-        if (/Hero:/.test(flopOnly)) { h.cbetOpp=1; if (/Hero: bets/.test(flopOnly)) h.cbetMade=1; }
+        if (/Hero:/.test(flopOnly)) {
+          // Only a c-bet opportunity if Hero acts FIRST on flop (not facing a bet already)
+          // Check if first action in flop block is Hero's
+          const firstActor = flopOnly.match(/(\w+):/);
+          const heroActsFirst = firstActor && firstActor[1] === 'Hero';
+          // Also exclude 3-bet pots where Hero called (villain is aggressor, not Hero)
+          const calledThreeBet = h.facedRaise && /Hero: calls/.test(raw.split(/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/)[0]);
+          if (heroActsFirst && !calledThreeBet) {
+            h.cbetOpp=1;
+            if (/Hero: bets/.test(flopOnly)) h.cbetMade=1;
+          }
+        }
       }
     }
     const issues = [];
