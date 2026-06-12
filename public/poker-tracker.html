@@ -2,108 +2,153 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Poker Flags & Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased}
-html,body{margin:0;padding:0;min-height:100%;background:#1a2218;font-family:'Inter',-apple-system,sans-serif;color:#e8f0e4}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#1a2218}::-webkit-scrollbar-thumb{background:#3a5035;border-radius:3px}
-.app{max-width:1100px;margin:0 auto;padding:20px 16px 60px}
-h1{font-size:22px;font-weight:800;color:#6db87a;margin:0 0 4px}
-.subtitle{font-size:13px;color:#6b7d62;margin:0 0 24px}
-.nav{display:flex;gap:8px;margin-bottom:24px;border-bottom:1px solid #2e3d2b;padding-bottom:0}
-.nav-btn{background:none;border:none;padding:10px 16px;font-size:13px;font-weight:600;color:#6b7d62;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
-.nav-btn.active{color:#6db87a;border-bottom-color:#6db87a}
-.nav-btn:hover{color:#a8d4b0}
+*,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+:root{--bg:#1a2218;--bg2:#1f2e1c;--bg3:#162014;--border:#2e3d2b;--border2:#3a5035;--green:#6db87a;--green2:#a8d4b0;--green3:#4a9d5e;--red:#d96060;--amber:#d4a847;--blue:#70b4d4;--muted:#6b7d62;--text:#e8f0e4;--text2:#c8dbc4;--text3:#8fa882;--nav-h:56px;--safe-b:env(safe-area-inset-bottom,0px)}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden}
+.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 16px)}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.header h1{font-size:20px;font-weight:800;color:var(--green);margin:0}
+.header .subtitle{font-size:11px;color:var(--muted);margin:0}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:90}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--muted);cursor:pointer;padding:0;transition:color .15s;min-height:44px}
+.bnav-btn.active{color:var(--green)}
+.bnav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bnav-btn span{font-size:10px;font-weight:600}
+
+/* SECTIONS */
 .section{display:none}.section.active{display:block}
-.card{background:#1f2e1c;border:1px solid #2e3d2b;border-radius:10px;padding:16px 20px;margin-bottom:16px}
-.card-title{font-size:12px;font-weight:600;color:#6b7d62;text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
-.stat{background:#162014;border:1px solid #2e3d2b;border-radius:8px;padding:12px 16px}
-.stat-label{font-size:11px;color:#6b7d62;font-weight:500;margin:0 0 4px}
-.stat-value{font-size:22px;font-weight:700;color:#e8f0e4;margin:0}
-.stat-value.green{color:#6db87a}.stat-value.red{color:#d96060}.stat-value.amber{color:#d4a847}.stat-value.blue{color:#70b4d4}
-.upload-area{border:2px dashed #3a5035;border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:20px}
-.upload-area:hover,.upload-area.drag{border-color:#6db87a;background:#1f2e1c}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-grid.three{grid-template-columns:1fr 1fr 1fr}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+.stat-label{font-size:11px;color:var(--muted);font-weight:500;margin:0 0 3px}
+.stat-value{font-size:20px;font-weight:700;color:var(--text);margin:0;line-height:1.2}
+.stat-value.green{color:var(--green)}.stat-value.red{color:var(--red)}.stat-value.amber{color:var(--amber)}.stat-value.blue{color:var(--blue)}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filter-row label{font-size:12px;color:var(--muted);font-weight:500}
+select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;-webkit-appearance:none;min-height:36px}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;line-height:1.4}
+.badge.ok{background:#1a3320;color:var(--green)}
+.badge.warn{background:#3d2e0a;color:var(--amber)}
+.badge.err{background:#3d1e1e;color:var(--red)}
+.badge.info{background:#0e2535;color:var(--blue)}
+.badge.muted{background:var(--bg3);color:var(--muted)}
+
+/* BUTTONS */
+.btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green2);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--green3);border-color:var(--green3);color:#fff}
+.btn.danger{background:#3d1e1e;border-color:var(--red);color:var(--red)}
+.btn.small{padding:7px 12px;font-size:12px;min-height:36px}
+.btn.full{width:100%}
+
+/* UPLOAD */
+.upload-area{border:2px dashed var(--border2);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:14px;min-height:44px}
+.upload-area.drag{border-color:var(--green);background:var(--bg2)}
 .upload-area input{display:none}
-.upload-icon{font-size:32px;margin-bottom:8px}
-.upload-text{font-size:14px;color:#8fa882;margin:0 0 4px}
-.upload-sub{font-size:12px;color:#6b7d62}
-.btn{background:#2e3d2b;border:1px solid #3a5035;color:#a8d4b0;padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
-.btn:hover{background:#3a5035;color:#6db87a}
-.btn.primary{background:#4a9d5e;border-color:#4a9d5e;color:#fff}
-.btn.primary:hover{background:#5ab370}
-.btn.danger{background:#3d1e1e;border-color:#d96060;color:#d96060}
-.btn.danger:hover{background:#4d2222}
-.btn.small{padding:5px 10px;font-size:12px}
-.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
-.filter-row label{font-size:12px;color:#6b7d62;font-weight:500}
-select{background:#1f2e1c;border:1px solid #3a5035;color:#e8f0e4;padding:7px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:inherit}
-select:focus{outline:none;border-color:#6db87a}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:8px 10px;font-size:11px;font-weight:600;color:#6b7d62;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #2e3d2b}
-td{padding:9px 10px;border-bottom:1px solid #1a2218;color:#c8dbc4}
-tr:hover td{background:#1f2e1c}
-.badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600}
-.badge.ok{background:#1a3320;color:#6db87a}
-.badge.warn{background:#3d2e0a;color:#d4a847}
-.badge.err{background:#3d1e1e;color:#d96060}
-.badge.info{background:#0e2535;color:#70b4d4}
-.pos-bar{display:flex;flex-direction:column;gap:6px}
-.pos-row{display:grid;grid-template-columns:40px 1fr 70px;gap:8px;align-items:center;font-size:13px}
-.pos-name{color:#8fa882;font-weight:600;font-size:12px}
-.pos-bar-track{background:#162014;border-radius:3px;height:14px;overflow:hidden}
-.pos-bar-fill{height:100%;border-radius:3px;transition:width .4s ease}
-.pos-bb{text-align:right;font-weight:600;font-size:12px}
-.hand-detail{background:#162014;border:1px solid #2e3d2b;border-radius:8px;padding:14px 16px;margin-top:8px}
-.hand-detail h4{margin:0 0 8px;font-size:13px;color:#6db87a}
-.hand-detail p{margin:0 0 6px;font-size:13px;color:#a8d4b0;line-height:1.6}
-.hand-detail .mistake{color:#d96060}
-.hand-detail .correct{color:#6db87a}
-.pagination{display:flex;gap:6px;align-items:center;margin-top:12px;justify-content:flex-end}
-.page-info{font-size:12px;color:#6b7d62}
-.progress-bar{background:#2e3d2b;border-radius:4px;height:6px;overflow:hidden;margin-top:6px}
-.progress-fill{height:100%;background:#6db87a;border-radius:4px;transition:width .5s ease}
-.empty{text-align:center;padding:48px 20px;color:#6b7d62}
-.empty-icon{font-size:40px;margin-bottom:8px}
-.toast{position:fixed;bottom:20px;right:20px;background:#2e3d2b;border:1px solid #6db87a;color:#6db87a;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:500;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100}
+.upload-icon{font-size:36px;margin-bottom:8px}
+.upload-text{font-size:15px;color:var(--text3);margin:0 0 4px;font-weight:500}
+.upload-sub{font-size:12px;color:var(--muted)}
+
+/* POSITION BARS */
+.pos-bar{display:flex;flex-direction:column;gap:8px}
+.pos-row{display:grid;grid-template-columns:36px 1fr 60px;gap:8px;align-items:center}
+.pos-name{color:var(--text3);font-weight:700;font-size:12px}
+.pos-bar-track{background:var(--bg3);border-radius:4px;height:16px;overflow:hidden}
+.pos-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.pos-bb{text-align:right;font-weight:700;font-size:12px}
+
+/* HAND CARDS (replaces table) */
+.hand-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;-webkit-user-select:none}
+.hand-card:active{border-color:var(--green)}
+.hand-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.hand-cards-display{font-size:17px;font-weight:700;color:var(--text)}
+.hand-net{font-size:17px;font-weight:700}
+.hand-card-mid{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hand-card-bot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.hand-meta{font-size:11px;color:var(--muted)}
+
+/* PROGRESS */
+.progress-bar{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s ease}
+
+/* PAGINATION */
+.pagination{display:flex;gap:8px;align-items:center;margin-top:14px;justify-content:center}
+.page-info{font-size:12px;color:var(--muted)}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--green);color:var(--green);padding:10px 18px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;white-space:nowrap}
 .toast.show{opacity:1}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
-.modal{background:#1f2e1c;border:1px solid #3a5035;border-radius:12px;padding:24px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto}
-.modal h3{margin:0 0 16px;color:#6db87a;font-size:16px}
-.modal-close{float:right;background:none;border:none;color:#6b7d62;font-size:20px;cursor:pointer;line-height:1}
-.modal-close:hover{color:#d96060}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:150;padding:0}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:600px;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + var(--safe-b))}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.modal h3{margin:0 0 14px;color:var(--green);font-size:17px;font-weight:700}
+.modal-close{float:right;background:var(--bg3);border:none;color:var(--muted);font-size:16px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-4px}
 .issue-list{list-style:none;padding:0;margin:0}
-.issue-list li{padding:10px 0;border-bottom:1px solid #2e3d2b;font-size:13px;color:#a8d4b0;line-height:1.6}
+.issue-list li{padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.65}
 .issue-list li:last-child{border-bottom:none}
-.issue-list li strong{color:#d4a847}
-.chart-container{display:flex;gap:4px;align-items:flex-end;height:80px;margin-top:8px}
-.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-.chart-bar{width:100%;border-radius:3px 3px 0 0;min-height:2px;transition:height .4s ease}
-.chart-label{font-size:10px;color:#6b7d62;text-align:center}
-.chart-val{font-size:10px;font-weight:600;text-align:center}
-.status-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.hands-table-wrap{overflow-x:auto}
+.issue-list li strong{color:var(--amber);display:block;margin-bottom:4px;font-size:14px}
+
+/* STATUS ROW */
+.status-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
+/* MISTAKE CARD */
+.mistake-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.mistake-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.mistake-title{font-size:15px;font-weight:700;color:var(--text);margin:0 0 3px}
+.mistake-sub{font-size:12px;color:var(--text3);margin:0}
+.mistake-explain{background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--text3);line-height:1.65}
+.mistake-hand-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bg3)}
+.mistake-hand-row:last-child{border-bottom:none}
+
+/* SESSION ITEM */
+.session-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.session-item:last-child{border-bottom:none}
+.session-name{font-size:13px;color:var(--text2);font-weight:500;word-break:break-all}
+.session-meta{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:44px;margin-bottom:10px}
+.empty p{font-size:14px;margin:0}
 </style>
 </head>
 <body>
 <div class="app">
-  <h1>🃏 Poker Flags & Tracker</h1>
-  <p class="subtitle">Hand history analysis · Hardin TAG framework · NL25 6-max</p>
-
-  <div class="nav">
-    <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-    <button class="nav-btn" onclick="switchTab('upload')">Upload Hands</button>
-    <button class="nav-btn" onclick="switchTab('hands')">Hand Review</button>
-    <button class="nav-btn" onclick="switchTab('positions')">Positions</button>
-    <button class="nav-btn" onclick="switchTab('mistakes')">Mistakes</button>
+  <div class="header">
+    <div>
+      <h1>🃏 Poker Tracker</h1>
+      <p class="subtitle">Hardin TAG · NL25 6-max</p>
+    </div>
+    <div id="hand-count-badge" style="text-align:right">
+      <p style="font-size:20px;font-weight:800;color:var(--green);margin:0" id="total-hands-header">—</p>
+      <p style="font-size:10px;color:var(--muted);margin:0">hands</p>
+    </div>
   </div>
 
   <!-- DASHBOARD -->
   <div class="section active" id="tab-dashboard">
     <div class="filter-row">
-      <label>Time frame:</label>
       <select id="dash-filter" onchange="renderDashboard()">
         <option value="all">All time</option>
         <option value="may">May 2026</option>
@@ -111,18 +156,16 @@ tr:hover td{background:#1f2e1c}
       </select>
     </div>
     <div class="stat-grid" id="dash-stats"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-      <div class="card">
-        <div class="card-title">Win/Loss by position (BB)</div>
-        <div class="pos-bar" id="dash-positions"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Top TAG violations</div>
-        <div id="dash-violations"></div>
-      </div>
+    <div class="card">
+      <div class="card-title">Position P&L (BB)</div>
+      <div class="pos-bar" id="dash-positions"></div>
     </div>
-    <div class="card" style="margin-top:16px">
-      <div class="card-title">Sessions uploaded</div>
+    <div class="card">
+      <div class="card-title">Top TAG violations</div>
+      <div id="dash-violations"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Sessions</div>
       <div id="dash-sessions"></div>
     </div>
   </div>
@@ -130,41 +173,38 @@ tr:hover td{background:#1f2e1c}
   <!-- UPLOAD -->
   <div class="section" id="tab-upload">
     <div class="card">
-      <div class="card-title">Upload GGPoker hand history (.txt)</div>
+      <div class="card-title">Upload GGPoker hand history</div>
       <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
         <input type="file" id="file-input" accept=".txt" multiple onchange="handleFiles(this.files)"/>
         <div class="upload-icon">📂</div>
-        <p class="upload-text">Drop .txt files here or click to browse</p>
-        <p class="upload-sub">Supports multiple files · GGPoker NLH format</p>
+        <p class="upload-text">Tap to select .txt files</p>
+        <p class="upload-sub">Multiple files supported · GGPoker NLH format</p>
       </div>
       <div id="upload-status"></div>
     </div>
     <div class="card">
       <div class="status-row">
         <div class="card-title" style="margin:0">Stored sessions</div>
-        <button class="btn danger small" onclick="clearAllData()">Clear all data</button>
+        <button class="btn danger small" onclick="clearAllData()">Clear all</button>
       </div>
-      <div id="stored-sessions" style="margin-top:12px"></div>
+      <div id="stored-sessions"></div>
     </div>
   </div>
 
   <!-- HAND REVIEW -->
   <div class="section" id="tab-hands">
     <div class="filter-row">
-      <label>Time frame:</label>
       <select id="hands-filter" onchange="renderHands()">
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
       </select>
-      <label>Show:</label>
       <select id="hands-show" onchange="renderHands()">
         <option value="all">All hands</option>
-        <option value="mistakes">TAG mistakes only</option>
+        <option value="mistakes">Mistakes only</option>
         <option value="losses">Biggest losses</option>
-        <option value="played">Hands played (VPIP)</option>
+        <option value="played">Played (VPIP)</option>
       </select>
-      <label>Position:</label>
       <select id="hands-pos" onchange="renderHands()">
         <option value="all">All positions</option>
         <option value="BTN">BTN</option>
@@ -175,55 +215,69 @@ tr:hover td{background:#1f2e1c}
         <option value="BB">BB</option>
       </select>
     </div>
-    <div class="hands-table-wrap">
-      <table>
-        <thead><tr>
-          <th>Hand</th><th>Date</th><th>Pos</th><th>Cards</th><th>Category</th>
-          <th>PF Action</th><th>Street</th><th>Net BB</th><th>TAG Issues</th><th></th>
-        </tr></thead>
-        <tbody id="hands-tbody"></tbody>
-      </table>
-    </div>
+    <div id="hands-list"></div>
     <div class="pagination" id="hands-pagination"></div>
   </div>
 
   <!-- POSITIONS -->
   <div class="section" id="tab-positions">
     <div class="filter-row">
-      <label>Time frame:</label>
       <select id="pos-filter" onchange="renderPositions()">
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
       </select>
     </div>
-    <div id="pos-detail-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px"></div>
+    <div id="pos-detail-grid"></div>
   </div>
 
   <!-- MISTAKES -->
   <div class="section" id="tab-mistakes">
     <div class="filter-row">
-      <label>Time frame:</label>
       <select id="mistakes-filter" onchange="renderMistakes()">
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
       </select>
-      <label>Type:</label>
       <select id="mistakes-type" onchange="renderMistakes()">
         <option value="all">All mistakes</option>
         <option value="preflop">Preflop only</option>
         <option value="postflop">Postflop only</option>
       </select>
     </div>
-    <div id="mistakes-summary" class="stat-grid" style="margin-bottom:20px"></div>
+    <div class="stat-grid" id="mistakes-summary"></div>
     <div id="mistakes-list"></div>
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" onclick="switchTab('dashboard',this)" id="bnav-dashboard">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <span>Dashboard</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('upload',this)" id="bnav-upload">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    <span>Upload</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('hands',this)" id="bnav-hands">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span>Hands</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('positions',this)" id="bnav-positions">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <span>Positions</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('mistakes',this)" id="bnav-mistakes">
+    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span>Mistakes</span>
+  </button>
+</nav>
+
+<!-- MODAL (sheet from bottom) -->
 <div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
   <div class="modal">
+    <div class="modal-handle"></div>
     <button class="modal-close" onclick="closeModal()">×</button>
     <h3 id="modal-title"></h3>
     <div id="modal-body"></div>
@@ -447,11 +501,11 @@ function filterByTime(hands, tf) {
 }
 
 // ─── TAB SWITCHING ────────────────────────────────────────────
-function switchTab(tab) {
+function switchTab(tab, btn) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(`tab-${tab}`).classList.add('active');
-  event.target.classList.add('active');
+  if(btn) btn.classList.add('active');
   if (tab==='dashboard') renderDashboard();
   if (tab==='hands') renderHands();
   if (tab==='positions') renderPositions();
@@ -503,6 +557,7 @@ function renderDashboard() {
     : '<p style="color:#6b7d62;font-size:13px;margin:8px 0">No violations found</p>';
   // Sessions
   const sessions = [...new Set(allHands.map(h=>h.filename))];
+  const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:#8fa882;margin:0">${sessions.length} session file${sessions.length!==1?'s':''} loaded · ${allHands.length} total hands</p>`
     : '<p style="font-size:13px;color:#6b7d62;margin:0">No sessions uploaded yet</p>';
@@ -579,26 +634,29 @@ function renderHandsPage() {
   const hands = filteredHandsCache;
   const start = (currentPage-1)*PAGE_SIZE;
   const page = hands.slice(start, start+PAGE_SIZE);
-  const tbody = document.getElementById('hands-tbody');
-  if (!page.length) { tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;color:#6b7d62;padding:32px">No hands match this filter</td></tr>`; return; }
-  tbody.innerHTML = page.map(h=>{
+  const el = document.getElementById('hands-list');
+  if (!page.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">🃏</div><p>No hands match this filter</p></div>`; return; }
+  el.innerHTML = page.map(h=>{
     const issues = h.tagIssues;
-    const badgeHtml = issues.length
-      ? `<span class="badge err">${issues.length} issue${issues.length>1?'s':''}</span>`
-      : `<span class="badge ok">OK</span>`;
-    const bbCol = h.netBB>=0?'#6db87a':h.netBB<-5?'#d96060':'#d4a847';
-    return `<tr>
-      <td style="font-size:11px;color:#6b7d62">${h.id.slice(-6)}</td>
-      <td>${h.date.slice(5)}</td>
-      <td><span class="badge info">${h.position}</span></td>
-      <td style="font-weight:600;color:#e8f0e4">${h.holeCards}</td>
-      <td style="font-size:12px;color:#8fa882">${h.handCat}</td>
-      <td><span class="badge ${h.pfAction==='RAISE'?'ok':h.pfAction==='FOLD'?'':h.pfAction==='CALL'?'warn':''}">${h.pfAction}</span></td>
-      <td style="font-size:12px;color:#8fa882">${h.streetReached}</td>
-      <td style="font-weight:600;color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)}</td>
-      <td>${badgeHtml}</td>
-      <td><button class="btn small" onclick="showHandDetail('${h.id}')">Review</button></td>
-    </tr>`;
+    const bbCol = h.netBB>=0?'var(--green)':h.netBB<-5?'var(--red)':'var(--amber)';
+    const pfBadge = h.pfAction==='RAISE'?'ok':h.pfAction==='CALL'?'warn':'muted';
+    const issueBadge = issues.length ? `<span class="badge err">${issues.length} issue${issues.length>1?'s':''}</span>` : `<span class="badge ok">OK</span>`;
+    return `<div class="hand-card" onclick="showHandDetail('${h.id}')">
+      <div class="hand-card-top">
+        <span class="hand-cards-display">${h.holeCards||'??'}</span>
+        <span class="hand-net" style="color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
+      </div>
+      <div class="hand-card-mid">
+        <span class="badge info">${h.position}</span>
+        <span class="badge ${pfBadge}">${h.pfAction}</span>
+        ${issueBadge}
+        <span class="badge muted">${h.streetReached}</span>
+      </div>
+      <div class="hand-card-bot">
+        <span class="hand-meta">${h.handCat}</span>
+        <span class="hand-meta">${h.date.slice(5)}</span>
+      </div>
+    </div>`;
   }).join('');
   // Pagination
   const total = Math.ceil(hands.length/PAGE_SIZE);
@@ -670,6 +728,7 @@ function renderPositions() {
   const hands = filterByTime(allHands, tf);
   const positions = ['BTN','CO','HJ','UTG','SB','BB'];
   const grid = document.getElementById('pos-detail-grid');
+  grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
   grid.innerHTML = positions.map(pos=>{
     const ph = hands.filter(h=>h.position===pos);
     if (!ph.length) return `<div class="card"><div class="card-title">${pos}</div><p style="color:#6b7d62;font-size:13px;margin:0">No hands</p></div>`;
@@ -787,6 +846,7 @@ async function init() {
   renderStoredSessions();
 }
 init();
+
 </script>
 </body>
 </html>
