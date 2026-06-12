@@ -986,7 +986,8 @@ async function handleFiles(files) {
   status.innerHTML = `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ Added ${added} new hands · Saving to GitHub...</p>`;
   const saved = await saveToGitHub(allHands);
   status.innerHTML = saved
-    ? `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ ${added} hands added · Saved to GitHub successfully</p>`
+    ? `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ ${added} hands added · Saved to GitHub successfully</p>
+       <p style="color:#d4a847;font-size:12px;margin:6px 0 0">📊 Reminder: log your Fish Buffet balance in your G-Sheet — our net figures exclude rakeback (~$7 per 500 hands).</p>`
     : `<p style="color:#d4a847;font-size:13px;margin:8px 0">⚠ ${added} hands added locally but GitHub save failed — check token</p>`;
   renderStoredSessions();
   renderDashboard();
