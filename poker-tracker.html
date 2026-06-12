@@ -477,6 +477,7 @@ function classifyHand(cards) {
     notation=`${rn(hi)}${rn(lo)}${suited?'s':'o'}`;
     if (hi===14&&lo>=10) cat='Premium';
     else if (hi===14&&lo>=7) cat='Strong Ace';
+    else if (hi===14&&suited) cat='Strong Ace';  // suited aces (A2s-A6s) always playable
     else if (hi===14) cat='Weak Ace';
     else if (hi>=12&&lo>=10) cat='Broadway';
     else if (hi===13&&lo>=10) cat='Broadway';
