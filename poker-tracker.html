@@ -272,7 +272,42 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     <span>Mistakes</span>
   </button>
+  <button class="bnav-btn" onclick="switchTab('starting',this)" id="bnav-starting">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
+    <span>Hands</span>
+  </button>
 </nav>
+
+  <!-- STARTING HANDS -->
+  <div class="section" id="tab-starting">
+    <div class="filter-row">
+      <select id="starting-filter" onchange="renderStartingHands()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+      <select id="starting-sort" onchange="renderStartingHands()">
+        <option value="hands">Most played</option>
+        <option value="bb100">Best BB/100</option>
+        <option value="worst">Worst BB/100</option>
+        <option value="netloss">Biggest loss</option>
+      </select>
+      <select id="starting-cat" onchange="renderStartingHands()">
+        <option value="all">All categories</option>
+        <option value="Premium Pair">Premium Pairs</option>
+        <option value="Mid Pair">Mid Pairs</option>
+        <option value="Low Pair">Low Pairs</option>
+        <option value="Premium">Premium</option>
+        <option value="Broadway">Broadway</option>
+        <option value="Strong Ace">Strong Ace</option>
+        <option value="Suited Connector">Suited Connectors</option>
+        <option value="Trash">Trash</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="starting-summary"></div>
+    <div id="starting-list"></div>
+  </div>
+</div>
 
 <!-- MODAL (sheet from bottom) -->
 <div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
@@ -517,19 +552,21 @@ function switchTab(tab, btn) {
 function renderDashboard() {
   const tf = document.getElementById('dash-filter').value;
   const hands = filterByTime(allHands, tf);
-  const played = hands.filter(h=>h.vpip);
-  const pfr = hands.filter(h=>h.pfr);
   const netBB = hands.reduce((s,h)=>s+h.netBB,0);
   const bb100 = hands.length ? (netBB/hands.length*100) : 0;
   const mistakes = hands.filter(h=>h.tagIssues.length>0);
   const compliance = hands.length ? Math.round((1-mistakes.length/hands.length)*100) : 0;
+  const bigLosses = hands.filter(h=>h.netBB < -10).length;
+  const wonHands = hands.filter(h=>h.netBB > 0 && h.vpip).length;
+  const playedHands = hands.filter(h=>h.vpip).length;
+  const winRate = playedHands ? Math.round(wonHands/playedHands*100) : 0;
   document.getElementById('dash-stats').innerHTML = `
     <div class="stat"><p class="stat-label">Total hands</p><p class="stat-value blue">${hands.length}</p></div>
     <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value ${netBB>=0?'green':'red'}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
-    <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value ${bb100>=0?'green':'red'}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
-    <div class="stat"><p class="stat-label">VPIP</p><p class="stat-value amber">${hands.length?Math.round(played.length/hands.length*100):0}%</p></div>
-    <div class="stat"><p class="stat-label">PFR</p><p class="stat-value amber">${hands.length?Math.round(pfr.length/hands.length*100):0}%</p></div>
+    <div class="stat"><p class="stat-label">BB / 100</p><p class="stat-value ${bb100>=0?'green':'red'}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
     <div class="stat"><p class="stat-label">TAG compliance</p><p class="stat-value ${compliance>=80?'green':compliance>=60?'amber':'red'}">${compliance}%</p></div>
+    <div class="stat"><p class="stat-label">Win rate (played)</p><p class="stat-value amber">${winRate}%</p></div>
+    <div class="stat"><p class="stat-label">Big losses (&gt;10bb)</p><p class="stat-value ${bigLosses?'red':''}">${bigLosses}</p></div>
   `;
   // Positions
   const positions = ['BTN','CO','HJ','UTG','SB','BB'];
@@ -823,6 +860,249 @@ function renderMistakes() {
           </div>`).join('')}
       </div>`;
     }).join('');
+}
+
+// ─── STARTING HANDS ──────────────────────────────────────────
+const HARDIN_ACTION = {
+  // Pairs
+  'AA':{rfi:'ALL',note:'Always raise. Never limp.'},
+  'KK':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet.'},
+  'QQ':{rfi:'ALL',note:'Always raise. Call or 4-bet vs 3-bet.'},
+  'JJ':{rfi:'ALL',note:'Raise all positions. Call 3-bet IP, fold OOP vs tight players.'},
+  'TT':{rfi:'ALL',note:'Raise all positions. Set-mine vs 3-bets.'},
+  '99':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold to 3-bet unless good odds.'},
+  '88':{rfi:'CO/BTN',note:'Raise CO+. Fold UTG/HJ to 3-bets.'},
+  '77':{rfi:'CO/BTN',note:'Raise CO/BTN primarily. Set-mine in multiway.'},
+  '66':{rfi:'BTN',note:'BTN steal. Fold most 3-bets.'},
+  '55':{rfi:'BTN',note:'BTN/SB steal only. Set value only.'},
+  '44':{rfi:'BTN',note:'BTN only. Mostly fold to 3-bets.'},
+  '33':{rfi:'BTN',note:'BTN only.'},
+  '22':{rfi:'BTN',note:'BTN only. Pure set-mine.'},
+  // Premium
+  'AKs':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet standard.'},
+  'AKo':{rfi:'ALL',note:'Always raise. 4-bet or call 3-bet.'},
+  'AQs':{rfi:'ALL',note:'Raise all positions.'},
+  'AQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold UTG to 3-bets.'},
+  'AJs':{rfi:'ALL',note:'Raise all positions.'},
+  'AJo':{rfi:'CO/BTN',note:'Raise CO/BTN. Fold to 3-bets usually.'},
+  'ATs':{rfi:'ALL',note:'Raise all positions.'},
+  'ATo':{rfi:'CO/BTN',note:'Raise CO+. Marginal UTG/HJ.'},
+  // Broadway
+  'KQs':{rfi:'ALL',note:'Raise all positions.'},
+  'KQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Marginal UTG.'},
+  'KJs':{rfi:'ALL',note:'Raise all positions.'},
+  'KJo':{rfi:'CO/BTN',note:'Raise CO/BTN.'},
+  'KTs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
+  'KTo':{rfi:'BTN',note:'BTN raise only.'},
+  'QJs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
+  'QJo':{rfi:'BTN',note:'BTN only.'},
+  'QTs':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'JTs':{rfi:'CO/BTN/SB',note:'Raise CO+. Good hand.'},
+  // Suited connectors
+  'T9s':{rfi:'BTN/CO',note:'Late position only.'},
+  '98s':{rfi:'BTN/CO',note:'Late position only.'},
+  '87s':{rfi:'BTN',note:'BTN steal / multiway value.'},
+  '76s':{rfi:'BTN',note:'BTN only.'},
+  // Suited aces
+  'A9s':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'A8s':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'A7s':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'A5s':{rfi:'BTN/CO',note:'Nut-flush + straight draws.'},
+  'A4s':{rfi:'BTN',note:'BTN only.'},
+  'A3s':{rfi:'BTN',note:'BTN only.'},
+  'A2s':{rfi:'BTN',note:'BTN only.'},
+};
+
+function getHardinVerdict(notation, position, pfAction) {
+  const rule = HARDIN_ACTION[notation];
+  if (!rule) return {verdict:'no-data', note:'Hand not in Hardin primary ranges — should generally fold.'};
+  const rfiPos = rule.rfi;
+  const shouldRaise = rfiPos==='ALL' ||
+    (rfiPos.includes('BTN') && position==='BTN') ||
+    (rfiPos.includes('CO') && position==='CO') ||
+    (rfiPos.includes('HJ') && ['HJ','CO','BTN'].includes(position)) ||
+    (rfiPos.includes('SB') && position==='SB') ||
+    (rfiPos.includes('UTG') && position==='UTG');
+  if (pfAction==='FOLD' && shouldRaise) return {verdict:'should-raise', note:rule.note};
+  if (pfAction==='CALL' && shouldRaise) return {verdict:'should-raise-not-call', note:rule.note};
+  if (pfAction==='RAISE' && !shouldRaise) return {verdict:'too-loose', note:rule.note};
+  if (pfAction==='RAISE' && shouldRaise) return {verdict:'correct', note:rule.note};
+  return {verdict:'ok', note:rule.note};
+}
+
+function renderStartingHands() {
+  const tf = document.getElementById('starting-filter').value;
+  const sort = document.getElementById('starting-sort').value;
+  const catFilter = document.getElementById('starting-cat').value;
+  const hands = filterByTime(allHands, tf);
+
+  // Group by hand notation
+  const groups = {};
+  hands.forEach(h=>{
+    if (!h.handNotation) return;
+    if (!groups[h.handNotation]) groups[h.handNotation]={
+      notation:h.handNotation, cat:h.handCat, quality:h.tagQuality,
+      hands:[], netBB:0, mistakes:0, correct:0
+    };
+    groups[h.handNotation].hands.push(h);
+    groups[h.handNotation].netBB += h.netBB;
+    if (h.tagIssues.length) groups[h.handNotation].mistakes++;
+    else groups[h.handNotation].correct++;
+  });
+
+  let rows = Object.values(groups);
+  if (catFilter!=='all') rows = rows.filter(r=>r.cat===catFilter);
+
+  // Sort
+  if (sort==='hands') rows.sort((a,b)=>b.hands.length-a.hands.length);
+  else if (sort==='bb100') rows.sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length));
+  else if (sort==='worst') rows.sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length));
+  else if (sort==='netloss') rows.sort((a,b)=>a.netBB-b.netBB);
+
+  // Summary stats
+  const totalPlayed = Object.values(groups).reduce((s,g)=>s+g.hands.filter(h=>h.vpip).length,0);
+  const bestHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length))[0];
+  const worstHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length))[0];
+  document.getElementById('starting-summary').innerHTML = `
+    <div class="stat"><p class="stat-label">Hand types seen</p><p class="stat-value blue">${rows.length}</p></div>
+    <div class="stat"><p class="stat-label">Hands played</p><p class="stat-value amber">${totalPlayed}</p></div>
+    <div class="stat"><p class="stat-label">Best hand (3+ dealt)</p><p class="stat-value green" style="font-size:15px">${bestHand?bestHand.notation:'—'}</p></div>
+    <div class="stat"><p class="stat-label">Worst hand (3+ dealt)</p><p class="stat-value red" style="font-size:15px">${worstHand?worstHand.notation:'—'}</p></div>
+  `;
+
+  const el = document.getElementById('starting-list');
+  if (!rows.length) {
+    el.innerHTML='<div class="empty"><div class="empty-icon">🃏</div><p>No hand data yet — upload sessions first</p></div>';
+    return;
+  }
+
+  el.innerHTML = rows.map(g=>{
+    const n = g.hands.length;
+    const bb100 = n ? g.netBB/n*100 : 0;
+    const bbCol = g.netBB>=0?'var(--green)':g.netBB<-5?'var(--red)':'var(--amber)';
+    const b100Col = bb100>=0?'var(--green)':bb100<-50?'var(--red)':'var(--amber)';
+    const qualBadge = g.quality==='A-Range'?'ok':g.quality==='B-Range'?'warn':'err';
+    const hardinRule = HARDIN_ACTION[g.notation];
+    const sampleWarn = n < 5 ? '<span class="badge warn" style="font-size:10px">small sample</span>' : '';
+
+    // Check if any hands had position/action deviation
+    const deviations = g.hands.filter(hh=>{
+      if (!hh.vpip && !hh.pfr) return false;
+      const v = getHardinVerdict(g.notation, hh.position, hh.pfAction);
+      return ['should-raise','should-raise-not-call','too-loose'].includes(v.verdict);
+    });
+
+    return `<div class="hand-card" onclick="showStartingDetail('${g.notation}')">
+      <div class="hand-card-top">
+        <div>
+          <span style="font-size:19px;font-weight:800;color:var(--text)">${g.notation}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px">${g.cat}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:17px;font-weight:700;color:${bbCol}">${g.netBB>=0?'+':''}${g.netBB.toFixed(1)} BB</div>
+          <div style="font-size:11px;color:${b100Col};font-weight:600">${bb100>=0?'+':''}${bb100.toFixed(0)}/100</div>
+        </div>
+      </div>
+      <div class="hand-card-mid">
+        <span class="badge ${qualBadge}">${g.quality}</span>
+        <span class="badge muted">${n} dealt</span>
+        ${deviations.length?`<span class="badge err">${deviations.length} deviation${deviations.length>1?'s':''}</span>`:''}
+        ${sampleWarn}
+      </div>
+      <div class="hand-card-bot">
+        <span class="hand-meta">${hardinRule?'Hardin: '+hardinRule.rfi:'Outside primary ranges'}</span>
+        <span class="hand-meta">${g.mistakes} mistake${g.mistakes!==1?'s':''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showStartingDetail(notation) {
+  const tf = document.getElementById('starting-filter').value;
+  const hands = filterByTime(allHands, tf).filter(h=>h.handNotation===notation);
+  if (!hands.length) return;
+  const netBB = hands.reduce((s,h)=>s+h.netBB,0);
+  const n = hands.length;
+  const bb100 = netBB/n*100;
+  const rule = HARDIN_ACTION[notation];
+  const bbCol = netBB>=0?'var(--green)':'var(--red)';
+
+  // Per-position breakdown
+  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  const posBreakdown = positions.map(p=>{
+    const ph = hands.filter(h=>h.position===p);
+    if (!ph.length) return null;
+    const pNet = ph.reduce((s,h)=>s+h.netBB,0);
+    return {p, count:ph.length, net:pNet, bb100:pNet/ph.length*100};
+  }).filter(Boolean);
+
+  // Deviations
+  const deviations = hands.map(hh=>{
+    const v = getHardinVerdict(notation, hh.position, hh.pfAction);
+    return {...hh, verdict:v};
+  }).filter(hh=>['should-raise','should-raise-not-call','too-loose'].includes(hh.verdict.verdict));
+
+  document.getElementById('modal-title').textContent = `${notation} analysis`;
+  let body = `
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">${n}</p></div>
+      <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:${bbCol}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
+      <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:${bbCol}">${bb100>=0?'+':''}${bb100.toFixed(0)}</p></div>
+      <div class="stat"><p class="stat-label">Mistakes</p><p class="stat-value ${hands.filter(h=>h.tagIssues.length).length?'red':''}">${hands.filter(h=>h.tagIssues.length).length}</p></div>
+    </div>`;
+
+  if (rule) {
+    body += `<div style="background:var(--bg3);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px">Hardin framework</p>
+      <p style="font-size:13px;color:var(--green2);margin:0 0 4px;font-weight:600">Raise from: ${rule.rfi}</p>
+      <p style="font-size:13px;color:var(--text3);margin:0;line-height:1.6">${rule.note}</p>
+    </div>`;
+  } else {
+    body += `<div style="background:#3d1e1e;border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:13px;color:var(--red);margin:0;font-weight:600">Outside Hardin primary ranges</p>
+      <p style="font-size:12px;color:var(--text3);margin:4px 0 0">Playing this hand is likely a VPIP leak unless from BB defense.</p>
+    </div>`;
+  }
+
+  if (posBreakdown.length) {
+    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>`;
+    body += posBreakdown.map(p=>{
+      const col = p.net>=0?'var(--green)':'var(--red)';
+      return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge info">${p.p}</span>
+          <span style="font-size:12px;color:var(--muted)">${p.count} hand${p.count>1?'s':''}</span>
+        </div>
+        <div style="text-align:right">
+          <span style="font-size:13px;font-weight:700;color:${col}">${p.net>=0?'+':''}${p.net.toFixed(1)} BB</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:6px">${p.bb100>=0?'+':''}${p.bb100.toFixed(0)}/100</span>
+        </div>
+      </div>`;
+    }).join('');
+    body += '<div style="margin-bottom:14px"></div>';
+  }
+
+  if (deviations.length) {
+    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">Hardin deviations</p>`;
+    body += deviations.map(hh=>`
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <div><span class="badge info">${hh.position}</span> <span class="badge warn" style="margin-left:4px">${hh.pfAction}</span></div>
+          <span style="font-size:13px;font-weight:700;color:${hh.netBB>=0?'var(--green)':'var(--red)'}">${hh.netBB>=0?'+':''}${hh.netBB.toFixed(1)} BB</span>
+        </div>
+        <p style="font-size:12px;color:var(--red);margin:0;font-weight:600">${hh.verdict.verdict.replace(/-/g,' ').toUpperCase()}</p>
+        <p style="font-size:12px;color:var(--text3);margin:3px 0 0">${hh.verdict.note}</p>
+      </div>`).join('');
+  }
+
+  if (n < 5) {
+    body += `<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-top:10px">
+      <p style="font-size:12px;color:var(--amber);margin:0">⚠ Small sample (${n} hands) — results are not statistically significant yet.</p>
+    </div>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
 }
 
 // ─── DRAG DROP ────────────────────────────────────────────────
