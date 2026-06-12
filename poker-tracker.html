@@ -843,9 +843,9 @@ function renderDashboard() {
   const sortedTimes = hands.map(h=>h.date+' '+h.time).sort();
   let durHours = 0;
   if (sortedTimes.length >= 2) {
-    const t1 = new Date(sortedTimes[0].replace(/\/g,'-'));
-    const t2 = new Date(sortedTimes[sortedTimes.length-1].replace(/\/g,'-'));
-    durHours = (t2-t1)/3600000;
+    const t1 = new Date(sortedTimes[0].split('/').join('-'));
+    const t2 = new Date(sortedTimes[sortedTimes.length-1].split('/').join('-'));
+    durHours = Math.max(0,(t2-t1)/3600000);
   }
   const usdPerHour = durHours > 0 ? netUSDval/durHours : 0;
   const durH = Math.floor(durHours);
