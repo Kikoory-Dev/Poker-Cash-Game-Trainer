@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Poker Flags & Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+:root{--bg:#1a2218;--bg2:#1f2e1c;--bg3:#162014;--border:#2e3d2b;--border2:#3a5035;--green:#6db87a;--green2:#a8d4b0;--green3:#4a9d5e;--red:#d96060;--amber:#d4a847;--blue:#70b4d4;--muted:#6b7d62;--text:#e8f0e4;--text2:#c8dbc4;--text3:#8fa882;--nav-h:56px;--safe-b:env(safe-area-inset-bottom,0px)}
+html,body{margin:0;padding:0;height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden}
+.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 16px)}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.header h1{font-size:20px;font-weight:800;color:var(--green);margin:0}
+.header .subtitle{font-size:11px;color:var(--muted);margin:0}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:90}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--muted);cursor:pointer;padding:0;transition:color .15s;min-height:44px}
+.bnav-btn.active{color:var(--green)}
+.bnav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bnav-btn span{font-size:10px;font-weight:600}
+
+/* SECTIONS */
+.section{display:none}.section.active{display:block}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-grid.three{grid-template-columns:1fr 1fr 1fr}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+.stat-label{font-size:11px;color:var(--muted);font-weight:500;margin:0 0 3px}
+.stat-value{font-size:20px;font-weight:700;color:var(--text);margin:0;line-height:1.2}
+.stat-value.green{color:var(--green)}.stat-value.red{color:var(--red)}.stat-value.amber{color:var(--amber)}.stat-value.blue{color:var(--blue)}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filter-row label{font-size:12px;color:var(--muted);font-weight:500}
+select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;-webkit-appearance:none;min-height:36px}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;line-height:1.4}
+.badge.ok{background:#1a3320;color:var(--green)}
+.badge.warn{background:#3d2e0a;color:var(--amber)}
+.badge.err{background:#3d1e1e;color:var(--red)}
+.badge.info{background:#0e2535;color:var(--blue)}
+.badge.muted{background:var(--bg3);color:var(--muted)}
+
+/* BUTTONS */
+.btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green2);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--green3);border-color:var(--green3);color:#fff}
+.btn.danger{background:#3d1e1e;border-color:var(--red);color:var(--red)}
+.btn.small{padding:7px 12px;font-size:12px;min-height:36px}
+.btn.full{width:100%}
+
+/* UPLOAD */
+.upload-area{border:2px dashed var(--border2);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:14px;min-height:44px}
+.upload-area.drag{border-color:var(--green);background:var(--bg2)}
+.upload-area input{display:none}
+.upload-icon{font-size:36px;margin-bottom:8px}
+.upload-text{font-size:15px;color:var(--text3);margin:0 0 4px;font-weight:500}
+.upload-sub{font-size:12px;color:var(--muted)}
+
+/* POSITION BARS */
+.pos-bar{display:flex;flex-direction:column;gap:8px}
+.pos-row{display:grid;grid-template-columns:36px 1fr 60px;gap:8px;align-items:center}
+.pos-name{color:var(--text3);font-weight:700;font-size:12px}
+.pos-bar-track{background:var(--bg3);border-radius:4px;height:16px;overflow:hidden}
+.pos-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.pos-bb{text-align:right;font-weight:700;font-size:12px}
+
+/* HAND CARDS (replaces table) */
+.hand-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;-webkit-user-select:none}
+.hand-card:active{border-color:var(--green)}
+.hand-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.hand-cards-display{font-size:17px;font-weight:700;color:var(--text)}
+.hand-net{font-size:17px;font-weight:700}
+.hand-card-mid{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hand-card-bot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.hand-meta{font-size:11px;color:var(--muted)}
+
+/* PROGRESS */
+.progress-bar{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s ease}
+
+/* PAGINATION */
+.pagination{display:flex;gap:8px;align-items:center;margin-top:14px;justify-content:center}
+.page-info{font-size:12px;color:var(--muted)}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--green);color:var(--green);padding:10px 18px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:150;padding:0}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:600px;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + var(--safe-b))}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.modal h3{margin:0 0 14px;color:var(--green);font-size:17px;font-weight:700}
+.modal-close{float:right;background:var(--bg3);border:none;color:var(--muted);font-size:16px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-4px}
+.issue-list{list-style:none;padding:0;margin:0}
+.issue-list li{padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.65}
+.issue-list li:last-child{border-bottom:none}
+.issue-list li strong{color:var(--amber);display:block;margin-bottom:4px;font-size:14px}
+
+/* STATUS ROW */
+.status-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
+/* MISTAKE CARD */
+.mistake-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.mistake-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.mistake-title{font-size:15px;font-weight:700;color:var(--text);margin:0 0 3px}
+.mistake-sub{font-size:12px;color:var(--text3);margin:0}
+.mistake-explain{background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--text3);line-height:1.65}
+.mistake-hand-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bg3)}
+.mistake-hand-row:last-child{border-bottom:none}
+
+/* SESSION ITEM */
+.session-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.session-item:last-child{border-bottom:none}
+.session-name{font-size:13px;color:var(--text2);font-weight:500;word-break:break-all}
+.session-meta{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:44px;margin-bottom:10px}
+.empty p{font-size:14px;margin:0}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <h1>🃏 Poker Tracker</h1>
+      <p class="subtitle">Hardin TAG · NL25 6-max</p>
+    </div>
+    <div id="hand-count-badge" style="text-align:right">
+      <p style="font-size:20px;font-weight:800;color:var(--green);margin:0" id="total-hands-header">—</p>
+      <p style="font-size:10px;color:var(--muted);margin:0">hands</p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="section active" id="tab-dashboard">
+    <div class="filter-row">
+      <select id="dash-filter" onchange="renderDashboard()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="dash-stats"></div>
+    <div class="card">
+      <div class="card-title">Position P&L (BB)</div>
+      <div class="pos-bar" id="dash-positions"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Top TAG violations</div>
+      <div id="dash-violations"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Sessions</div>
+      <div id="dash-sessions"></div>
+    </div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="section" id="tab-upload">
+    <div class="card">
+      <div class="card-title">Upload GGPoker hand history</div>
+      <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" accept=".txt" multiple onchange="handleFiles(this.files)"/>
+        <div class="upload-icon">📂</div>
+        <p class="upload-text">Tap to select .txt files</p>
+        <p class="upload-sub">Multiple files supported · GGPoker NLH format</p>
+      </div>
+      <div id="upload-status"></div>
+    </div>
+    <div class="card">
+      <div class="status-row">
+        <div class="card-title" style="margin:0">Stored sessions</div>
+        <button class="btn danger small" onclick="clearAllData()">Clear all</button>
+      </div>
+      <div id="stored-sessions"></div>
+    </div>
+  </div>
+
+  <!-- HAND REVIEW -->
+  <div class="section" id="tab-hands">
+    <div class="filter-row">
+      <select id="hands-filter" onchange="renderHands()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+      <select id="hands-show" onchange="renderHands()">
+        <option value="all">All hands</option>
+        <option value="mistakes">Mistakes only</option>
+        <option value="losses">Biggest losses</option>
+        <option value="played">Played (VPIP)</option>
+      </select>
+      <select id="hands-pos" onchange="renderHands()">
+        <option value="all">All positions</option>
+        <option value="BTN">BTN</option>
+        <option value="CO">CO</option>
+        <option value="HJ">HJ</option>
+        <option value="UTG">UTG</option>
+        <option value="SB">SB</option>
+        <option value="BB">BB</option>
+      </select>
+    </div>
+    <div id="hands-list"></div>
+    <div class="pagination" id="hands-pagination"></div>
+  </div>
+
+  <!-- POSITIONS -->
+  <div class="section" id="tab-positions">
+    <div class="filter-row">
+      <select id="pos-filter" onchange="renderPositions()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+    </div>
+    <div id="pos-detail-grid"></div>
+  </div>
+
+  <!-- MISTAKES -->
+  <div class="section" id="tab-mistakes">
+    <div class="filter-row">
+      <select id="mistakes-filter" onchange="renderMistakes()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+      <select id="mistakes-type" onchange="renderMistakes()">
+        <option value="all">All mistakes</option>
+        <option value="preflop">Preflop only</option>
+        <option value="postflop">Postflop only</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="mistakes-summary"></div>
+    <div id="mistakes-list"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" onclick="switchTab('dashboard',this)" id="bnav-dashboard">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <span>Dashboard</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('upload',this)" id="bnav-upload">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    <span>Upload</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('hands',this)" id="bnav-hands">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span>Hands</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('positions',this)" id="bnav-positions">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <span>Positions</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('mistakes',this)" id="bnav-mistakes">
+    <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span>Mistakes</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('starting',this)" id="bnav-starting">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
+    <span>Hands</span>
+  </button>
+</nav>
+
+  <!-- STARTING HANDS -->
+  <div class="section" id="tab-starting">
+    <div class="filter-row">
+      <select id="starting-filter" onchange="renderStartingHands()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+      <select id="starting-sort" onchange="renderStartingHands()">
+        <option value="hands">Most played</option>
+        <option value="bb100">Best BB/100</option>
+        <option value="worst">Worst BB/100</option>
+        <option value="netloss">Biggest loss</option>
+      </select>
+      <select id="starting-cat" onchange="renderStartingHands()">
+        <option value="all">All categories</option>
+        <option value="Premium Pair">Premium Pairs</option>
+        <option value="Mid Pair">Mid Pairs</option>
+        <option value="Low Pair">Low Pairs</option>
+        <option value="Premium">Premium</option>
+        <option value="Broadway">Broadway</option>
+        <option value="Strong Ace">Strong Ace</option>
+        <option value="Suited Connector">Suited Connectors</option>
+        <option value="Trash">Trash</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="starting-summary"></div>
+    <div id="starting-list"></div>
+  </div>
+</div>
+
+<!-- MODAL (sheet from bottom) -->
+<div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GITHUB_TOKEN = 'ghp_Gxmu90bTP'+'05GN6UvknY9A'+'typn5t6Ep2TOci5';
+const GITHUB_REPO = 'Kikoory-Dev/Poker-Cash-Game-Trainer';
+const GITHUB_FILE = 'tracker-data.json';
+const BIG_BLIND = 0.25;
+const PAGE_SIZE = 30;
+
+let allHands = [];
+let currentPage = 1;
+let filteredHandsCache = [];
+
+// ─── GITHUB STORAGE ───────────────────────────────────────────
+async function loadFromGitHub() {
+  try {
+    const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (r.status === 404) return [];
+    const d = await r.json();
+    const content = JSON.parse(atob(d.content.replace(/\n/g, '')));
+    return content;
+  } catch(e) { console.error('Load error:', e); return []; }
+}
+
+async function saveToGitHub(hands) {
+  try {
+    let sha = null;
+    const check = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+    });
+    if (check.ok) { const d = await check.json(); sha = d.sha; }
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(hands))));
+    const body = { message: `Update tracker data – ${new Date().toISOString().slice(0,10)}`, content };
+    if (sha) body.sha = sha;
+    const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      method: 'PUT', headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    return r.ok;
+  } catch(e) { console.error('Save error:', e); return false; }
+}
+
+// ─── PARSER ───────────────────────────────────────────────────
+function getPosition(heroSeat, btnSeat, seatList) {
+  const sorted = [...seatList].sort((a,b)=>a-b);
+  const n = sorted.length;
+  if (!n || !sorted.includes(heroSeat)) return 'UNKNOWN';
+  const btnIdx = sorted.indexOf(btnSeat);
+  const heroIdx = sorted.indexOf(heroSeat);
+  const steps = (heroIdx - btnIdx + n) % n;
+  const maps = {
+    6:{0:'BTN',1:'SB',2:'BB',3:'UTG',4:'HJ',5:'CO'},
+    5:{0:'BTN',1:'SB',2:'BB',3:'UTG',4:'HJ'},
+    4:{0:'BTN',1:'SB',2:'BB',3:'UTG'},
+    3:{0:'BTN',1:'SB',2:'BB'},
+    2:{0:'BTN/SB',1:'BB'}
+  };
+  return (maps[n]||{})[steps] || `P${steps}`;
+}
+
+function classifyHand(cards) {
+  if (!cards || cards.length < 2) return {cat:'N/A', notation:'', quality:'Unknown'};
+  const ranks = {A:14,K:13,Q:12,J:11,T:10,9:9,8:8,7:7,6:6,5:5,4:4,3:3,2:2};
+  const rn = r => ({14:'A',13:'K',12:'Q',11:'J',10:'T'}[r]||String(r));
+  const c = cards.split(' ');
+  if (c.length < 2) return {cat:'N/A', notation:'', quality:'Unknown'};
+  const r1=ranks[c[0][0]]||0, r2=ranks[c[1][0]]||0;
+  const suited=c[0][1]===c[1][1], hi=Math.max(r1,r2), lo=Math.min(r1,r2);
+  let cat, notation;
+  if (r1===r2) {
+    notation=`${rn(hi)}${rn(hi)}`;
+    cat=hi>=10?'Premium Pair':hi>=7?'Mid Pair':'Low Pair';
+  } else {
+    notation=`${rn(hi)}${rn(lo)}${suited?'s':'o'}`;
+    if (hi===14&&lo>=10) cat='Premium';
+    else if (hi===14&&lo>=7) cat='Strong Ace';
+    else if (hi===14) cat='Weak Ace';
+    else if (hi>=12&&lo>=10) cat='Broadway';
+    else if (hi===13&&lo>=10) cat='Broadway';
+    else if (suited&&(hi-lo<=2)&&lo>=6) cat='Suited Connector';
+    else if (suited&&hi>=12) cat='Suited Broadway';
+    else if (suited) cat='Suited Trash';
+    else cat='Trash';
+  }
+  const A=['Premium Pair','Mid Pair','Premium','Broadway','Suited Broadway','Strong Ace'];
+  const B=['Low Pair','Suited Connector'];
+  const quality=A.includes(cat)?'A-Range':B.includes(cat)?'B-Range':'Outside';
+  return {cat, notation, quality};
+}
+
+function parseHands(text, filename) {
+  const rawHands = text.split(/\n\n(?=Poker Hand #)/);
+  const hands = [];
+  for (const raw of rawHands) {
+    if (!raw.trim() || !raw.includes('Hero')) continue;
+    const h = {};
+    const mid = raw.match(/Poker Hand #(\w+):/); if (!mid) continue;
+    h.id = mid[1];
+    h.filename = filename;
+    const dm = raw.match(/- (\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/);
+    h.date = dm ? dm[1].slice(0,10) : '';
+    h.time = dm ? dm[1].slice(11) : '';
+    const tm = raw.match(/Table '(\w+)'/); h.table = tm ? tm[1] : '';
+    const bm = raw.match(/Seat #(\d+) is the button/); const btnSeat = bm ? parseInt(bm[1]) : 0;
+    const seats = [...raw.matchAll(/Seat (\d+): (\w+) \(\$([\d.]+) in chips\)/g)];
+    const seatMap = {}; seats.forEach(s=>seatMap[parseInt(s[1])]=s[2]);
+    const seatNums = Object.keys(seatMap).map(Number);
+    const heroSeat = seatNums.find(n=>seatMap[n]==='Hero'); if (!heroSeat) continue;
+    h.position = getPosition(heroSeat, btnSeat, seatNums);
+    h.numPlayers = seatNums.length;
+    const sm = raw.match(new RegExp(`Seat ${heroSeat}: Hero \\(\\$([\\.\\d]+) in chips\\)`));
+    h.stackStart = sm ? parseFloat(sm[1]) : 25;
+    const hcm = raw.match(/Dealt to Hero \[([^\]]+)\]/); h.holeCards = hcm ? hcm[1] : '';
+    const {cat,notation,quality} = classifyHand(h.holeCards);
+    h.handCat = cat; h.handNotation = notation; h.tagQuality = quality;
+    const summ = raw.match(/\*\*\* SUMMARY \*\*\*([\s\S]*)/);
+    const summText = summ ? summ[1] : '';
+    h.inSB = /small blind/.test(summText.match(new RegExp(`Seat ${heroSeat}.*`))?.[0]||'');
+    h.inBB = /big blind/.test(summText.match(new RegExp(`Seat ${heroSeat}.*`))?.[0]||'');
+    const pfEnd = raw.search(/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/);
+    const pfText = pfEnd > 0 ? raw.slice(0,pfEnd) : raw;
+    const heroPF = [...pfText.matchAll(/Hero: (calls|raises|bets|checks|folds)/g)].map(m=>m[1]);
+    h.vpip = heroPF.some(a=>['calls','raises'].includes(a)) ? 1 : 0;
+    h.pfr = heroPF.includes('raises') ? 1 : 0;
+    if (h.pfr) h.pfAction='RAISE';
+    else if (heroPF.includes('calls')) h.pfAction='CALL';
+    else if (h.inBB && heroPF.includes('checks')) h.pfAction='CHECK_BB';
+    else h.pfAction='FOLD';
+    if (/\*\*\* RIVER \*\*\*/.test(raw)) h.streetReached='River';
+    else if (/\*\*\* TURN \*\*\*/.test(raw)) h.streetReached='Turn';
+    else if (/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/.test(raw)) h.streetReached='Flop';
+    else h.streetReached='Preflop';
+    h.sawFlop = h.streetReached!=='Preflop' && h.pfAction!=='FOLD' ? 1 : 0;
+    h.showdown = /Hero: shows/.test(raw) ? 1 : 0;
+    const collM = [...summText.matchAll(/Hero.*?collected \(\$([\d.]+)\)/g)];
+    const collected = collM.reduce((s,m)=>s+parseFloat(m[1]),0);
+    let contrib = (h.inSB?0.10:0)+(h.inBB?0.25:0);
+    [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
+    [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
+    [...raw.matchAll(/Hero: raises \$([\d.]+) to /g)].forEach(m=>contrib+=parseFloat(m[1]));
+    h.netUSD = Math.round((collected-contrib)*100)/100;
+    h.netBB = Math.round(h.netUSD/BIG_BLIND*100)/100;
+    const fm = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\* \[([^\]]+)\]/);
+    h.boardFlop = fm ? fm[1] : '';
+    h.cbetOpp=0; h.cbetMade=0;
+    if (h.pfr && h.sawFlop) {
+      const fp = raw.split(/\*\*\* (?:FIRST )?FLOP \*\*\*[^\n]*\n/);
+      if (fp.length>1) {
+        const flopOnly = fp[1].split(/\*\*\* TURN \*\*\*/)[0];
+        if (/Hero:/.test(flopOnly)) { h.cbetOpp=1; if (/Hero: bets/.test(flopOnly)) h.cbetMade=1; }
+      }
+    }
+    const issues = [];
+    if (h.vpip && h.tagQuality==='Outside') issues.push('VPIP_TRASH');
+    if (h.pfAction==='CALL' && !h.inBB && ['SB','UTG'].includes(h.position)) issues.push('LIMP_OOP');
+    if (h.pfAction==='CALL' && !h.pfr && ['Trash','Weak Ace','Suited Trash'].includes(h.handCat) && !h.inBB) issues.push('CALL_WEAK');
+    if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
+    if (h.pfAction==='FOLD' && h.tagQuality==='A-Range' && ['BTN','CO','HJ'].includes(h.position)) issues.push('FOLD_STRONG_LP');
+    h.tagIssues = issues;
+    h.tagCompliant = issues.length===0 ? 1 : 0;
+    const reviews = [];
+    if (h.netUSD < -2) reviews.push('BIG_LOSS');
+    if (h.sawFlop && ['Turn','River'].includes(h.streetReached)) reviews.push('POSTFLOP');
+    if (h.showdown) reviews.push('SHOWDOWN');
+    h.reviewFlags = reviews;
+    h.isPreflop = issues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i));
+    h.isPostflop = issues.some(i=>['MISSED_CBET'].includes(i)) || h.reviewFlags.includes('POSTFLOP');
+    hands.push(h);
+  }
+  return hands;
+}
+
+// ─── HARDIN EXPLANATIONS ──────────────────────────────────────
+const ISSUE_EXPLAIN = {
+  VPIP_TRASH: {
+    label:'VPIP with trash hand',
+    type:'preflop',
+    short:'Voluntarily put money in with a hand outside Hardin\'s opening ranges.',
+    explain:`Hardin's TAG strategy requires tight preflop selection. Playing trash hands (weak unsuited cards, bad kickers) costs you money in two ways: you're often dominated when you do connect, and you're burning money in pots where you have no equity edge. Rule: if it's not in your position's opening range, fold it.`
+  },
+  LIMP_OOP: {
+    label:'Limp/call out of position',
+    type:'preflop',
+    short:'Called from SB/UTG without a raise — playing OOP without initiative.',
+    explain:`Hardin stresses position and aggression. Calling from SB puts you out of position for every street. The SB is the worst seat in poker. Hardin's rule: from SB, either 3-bet (if strong) or fold. Never flat-call a raise from SB — you give up initiative and play OOP with a capped range.`
+  },
+  CALL_WEAK: {
+    label:'Calling raise with weak hand',
+    type:'preflop',
+    short:'Called a preflop raise with a hand that should be folded.',
+    explain:`TAG poker is built on fold equity and hand selection. Calling raises with weak hands (trash, weak aces) puts you in marginal situations post-flop where you rarely have a strong equity advantage. Hardin: when in doubt preflop, fold. The money you save by folding weak calls is as valuable as money won.`
+  },
+  MISSED_CBET: {
+    label:'Missed continuation bet',
+    type:'postflop',
+    short:'You raised preflop, saw the flop, but didn\'t c-bet — giving up initiative.',
+    explain:`Hardin emphasizes the c-bet as a core profit tool. When you raise preflop, you represent a strong range. On most flops, your opponent misses (they miss ~2/3 of the time). A c-bet of 50-75% pot here takes down the pot immediately. Checking gives your opponent a free card and signals weakness. Against one opponent on a dry board, Hardin recommends c-betting almost always.`
+  },
+  FOLD_STRONG_LP: {
+    label:'Folded strong hand in late position',
+    type:'preflop',
+    short:'Folded an A-range hand (KQo, KJo, ATo+) from BTN/CO/HJ — missed a steal or value spot.',
+    explain:`Late position is your biggest edge in poker. Hardin's TAG ranges have wide opens from BTN/CO/HJ precisely because you act last post-flop. Folding A-range hands here forfeits fold equity (nobody else in the pot = free steal), and gives up value against wider calling ranges. From BTN especially, Hardin opens very wide. These hands should be raises, not folds.`
+  }
+};
+
+// ─── FILTER UTILITY ───────────────────────────────────────────
+function filterByTime(hands, tf) {
+  if (tf==='all') return hands;
+  if (tf==='may') return hands.filter(h=>h.date.startsWith('2026/05'));
+  if (tf==='june') return hands.filter(h=>h.date.startsWith('2026/06'));
+  return hands;
+}
+
+// ─── TAB SWITCHING ────────────────────────────────────────────
+function switchTab(tab, btn) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if (tab==='dashboard') renderDashboard();
+  if (tab==='hands') renderHands();
+  if (tab==='positions') renderPositions();
+  if (tab==='mistakes') renderMistakes();
+  if (tab==='upload') renderStoredSessions();
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────
+function renderDashboard() {
+  const tf = document.getElementById('dash-filter').value;
+  const hands = filterByTime(allHands, tf);
+  const netBB = hands.reduce((s,h)=>s+h.netBB,0);
+  const bb100 = hands.length ? (netBB/hands.length*100) : 0;
+  const mistakes = hands.filter(h=>h.tagIssues.length>0);
+  const compliance = hands.length ? Math.round((1-mistakes.length/hands.length)*100) : 0;
+  const bigLosses = hands.filter(h=>h.netBB < -10).length;
+  const wonHands = hands.filter(h=>h.netBB > 0 && h.vpip).length;
+  const playedHands = hands.filter(h=>h.vpip).length;
+  const winRate = playedHands ? Math.round(wonHands/playedHands*100) : 0;
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat"><p class="stat-label">Total hands</p><p class="stat-value blue">${hands.length}</p></div>
+    <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value ${netBB>=0?'green':'red'}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
+    <div class="stat"><p class="stat-label">BB / 100</p><p class="stat-value ${bb100>=0?'green':'red'}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
+    <div class="stat"><p class="stat-label">TAG compliance</p><p class="stat-value ${compliance>=80?'green':compliance>=60?'amber':'red'}">${compliance}%</p></div>
+    <div class="stat"><p class="stat-label">Win rate (played)</p><p class="stat-value amber">${winRate}%</p></div>
+    <div class="stat"><p class="stat-label">Big losses (&gt;10bb)</p><p class="stat-value ${bigLosses?'red':''}">${bigLosses}</p></div>
+  `;
+  // Positions
+  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  const posData = positions.map(p=>({p, hands:hands.filter(h=>h.position===p), net:hands.filter(h=>h.position===p).reduce((s,h)=>s+h.netBB,0)}));
+  const maxAbs = Math.max(...posData.map(d=>Math.abs(d.net)),1);
+  document.getElementById('dash-positions').innerHTML = posData.map(d=>{
+    const pct = Math.round(Math.abs(d.net)/maxAbs*100);
+    const col = d.net>=0?'#6db87a':'#d96060';
+    return `<div class="pos-row">
+      <span class="pos-name">${d.p}</span>
+      <div class="pos-bar-track"><div class="pos-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      <span class="pos-bb" style="color:${col}">${d.net>=0?'+':''}${d.net.toFixed(1)}</span>
+    </div>`;
+  }).join('');
+  // Violations
+  const counts = {};
+  hands.forEach(h=>h.tagIssues.forEach(i=>{counts[i]=(counts[i]||0)+1}));
+  const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('dash-violations').innerHTML = sorted.length
+    ? sorted.map(([k,v])=>`
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #2e3d2b">
+        <span style="font-size:13px;color:#a8d4b0">${ISSUE_EXPLAIN[k]?.label||k}</span>
+        <span class="badge err">${v}x</span>
+      </div>`).join('')
+    : '<p style="color:#6b7d62;font-size:13px;margin:8px 0">No violations found</p>';
+  // Sessions
+  const sessions = [...new Set(allHands.map(h=>h.filename))];
+  const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
+  document.getElementById('dash-sessions').innerHTML = sessions.length
+    ? `<p style="font-size:13px;color:#8fa882;margin:0">${sessions.length} session file${sessions.length!==1?'s':''} loaded · ${allHands.length} total hands</p>`
+    : '<p style="font-size:13px;color:#6b7d62;margin:0">No sessions uploaded yet</p>';
+}
+
+// ─── UPLOAD ───────────────────────────────────────────────────
+async function handleFiles(files) {
+  const status = document.getElementById('upload-status');
+  status.innerHTML = '<p style="color:#d4a847;font-size:13px;margin:8px 0">⏳ Parsing files...</p>';
+  let added = 0;
+  const existingIds = new Set(allHands.map(h=>h.id));
+  for (const file of files) {
+    const text = await file.text();
+    const parsed = parseHands(text, file.name);
+    const newHands = parsed.filter(h=>!existingIds.has(h.id));
+    newHands.forEach(h=>existingIds.add(h.id));
+    allHands = [...allHands, ...newHands];
+    added += newHands.length;
+  }
+  status.innerHTML = `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ Added ${added} new hands · Saving to GitHub...</p>`;
+  const saved = await saveToGitHub(allHands);
+  status.innerHTML = saved
+    ? `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ ${added} hands added · Saved to GitHub successfully</p>`
+    : `<p style="color:#d4a847;font-size:13px;margin:8px 0">⚠ ${added} hands added locally but GitHub save failed — check token</p>`;
+  renderStoredSessions();
+  renderDashboard();
+}
+
+function renderStoredSessions() {
+  const sessions = {};
+  allHands.forEach(h=>{
+    if (!sessions[h.filename]) sessions[h.filename]={hands:0,dates:new Set(),net:0};
+    sessions[h.filename].hands++;
+    sessions[h.filename].dates.add(h.date);
+    sessions[h.filename].net+=h.netBB;
+  });
+  const el = document.getElementById('stored-sessions');
+  if (!Object.keys(sessions).length) { el.innerHTML='<p style="color:#6b7d62;font-size:13px">No sessions stored</p>'; return; }
+  el.innerHTML = Object.entries(sessions).map(([name,d])=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2e3d2b">
+      <div>
+        <span style="font-size:13px;color:#a8d4b0;font-weight:500">${name}</span>
+        <span style="font-size:11px;color:#6b7d62;margin-left:8px">${d.hands} hands</span>
+      </div>
+      <span class="badge ${d.net>=0?'ok':'err'}">${d.net>=0?'+':''}${d.net.toFixed(1)} BB</span>
+    </div>`).join('');
+}
+
+async function clearAllData() {
+  if (!confirm('Delete ALL stored hands? This cannot be undone.')) return;
+  allHands = [];
+  await saveToGitHub([]);
+  renderStoredSessions();
+  renderDashboard();
+  showToast('All data cleared');
+}
+
+// ─── HANDS TABLE ──────────────────────────────────────────────
+function renderHands() {
+  currentPage = 1;
+  const tf = document.getElementById('hands-filter').value;
+  const show = document.getElementById('hands-show').value;
+  const pos = document.getElementById('hands-pos').value;
+  let hands = filterByTime(allHands, tf);
+  if (pos!=='all') hands = hands.filter(h=>h.position===pos);
+  if (show==='mistakes') hands = hands.filter(h=>h.tagIssues.length>0);
+  if (show==='losses') hands = hands.filter(h=>h.netBB<0).sort((a,b)=>a.netBB-b.netBB);
+  if (show==='played') hands = hands.filter(h=>h.vpip);
+  filteredHandsCache = hands;
+  renderHandsPage();
+}
+
+function renderHandsPage() {
+  const hands = filteredHandsCache;
+  const start = (currentPage-1)*PAGE_SIZE;
+  const page = hands.slice(start, start+PAGE_SIZE);
+  const el = document.getElementById('hands-list');
+  if (!page.length) { el.innerHTML=`<div class="empty"><div class="empty-icon">🃏</div><p>No hands match this filter</p></div>`; return; }
+  el.innerHTML = page.map(h=>{
+    const issues = h.tagIssues;
+    const bbCol = h.netBB>=0?'var(--green)':h.netBB<-5?'var(--red)':'var(--amber)';
+    const pfBadge = h.pfAction==='RAISE'?'ok':h.pfAction==='CALL'?'warn':'muted';
+    const issueBadge = issues.length ? `<span class="badge err">${issues.length} issue${issues.length>1?'s':''}</span>` : `<span class="badge ok">OK</span>`;
+    return `<div class="hand-card" onclick="showHandDetail('${h.id}')">
+      <div class="hand-card-top">
+        <span class="hand-cards-display">${h.holeCards||'??'}</span>
+        <span class="hand-net" style="color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
+      </div>
+      <div class="hand-card-mid">
+        <span class="badge info">${h.position}</span>
+        <span class="badge ${pfBadge}">${h.pfAction}</span>
+        ${issueBadge}
+        <span class="badge muted">${h.streetReached}</span>
+      </div>
+      <div class="hand-card-bot">
+        <span class="hand-meta">${h.handCat}</span>
+        <span class="hand-meta">${h.date.slice(5)}</span>
+      </div>
+    </div>`;
+  }).join('');
+  // Pagination
+  const total = Math.ceil(hands.length/PAGE_SIZE);
+  const pag = document.getElementById('hands-pagination');
+  pag.innerHTML = total>1 ? `
+    <span class="page-info">${hands.length} hands · page ${currentPage}/${total}</span>
+    <button class="btn small" onclick="changePage(-1)" ${currentPage===1?'disabled':''}>‹</button>
+    <button class="btn small" onclick="changePage(1)" ${currentPage===total?'disabled':''}>›</button>
+  ` : `<span class="page-info">${hands.length} hands</span>`;
+}
+
+function changePage(dir) {
+  const total = Math.ceil(filteredHandsCache.length/PAGE_SIZE);
+  currentPage = Math.max(1, Math.min(total, currentPage+dir));
+  renderHandsPage();
+}
+
+function showHandDetail(id) {
+  const h = allHands.find(x=>x.id===id);
+  if (!h) return;
+  document.getElementById('modal-title').textContent = `Hand review: ${h.holeCards} · ${h.position} · ${h.date}`;
+  const issues = h.tagIssues;
+  let body = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
+      <div class="stat"><p class="stat-label">Position</p><p class="stat-value blue" style="font-size:18px">${h.position}</p></div>
+      <div class="stat"><p class="stat-label">Net result</p><p class="stat-value ${h.netBB>=0?'green':'red'}" style="font-size:18px">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</p></div>
+      <div class="stat"><p class="stat-label">Hole cards</p><p class="stat-value" style="font-size:18px">${h.holeCards}</p></div>
+      <div class="stat"><p class="stat-label">Hand category</p><p class="stat-value amber" style="font-size:14px">${h.handCat}</p></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <span class="badge info">PF: ${h.pfAction}</span>
+      <span class="badge info">Street: ${h.streetReached}</span>
+      ${h.boardFlop?`<span class="badge" style="background:#1a2e1a;color:#8fa882">Board: ${h.boardFlop}</span>`:''}
+      <span class="badge ${h.tagQuality==='A-Range'?'ok':h.tagQuality==='B-Range'?'warn':'err'}">${h.tagQuality}</span>
+    </div>`;
+  if (!issues.length) {
+    body += `<div style="background:#1a3320;border:1px solid #2e5030;border-radius:8px;padding:12px 16px">
+      <p style="color:#6db87a;font-size:13px;margin:0;font-weight:600">✓ No TAG violations detected</p>
+      <p style="color:#8fa882;font-size:13px;margin:6px 0 0">This hand appears to follow Hardin's framework correctly. ${h.netBB<0?'The loss is variance — you made the right decisions.':''}</p>
+    </div>`;
+  } else {
+    body += `<ul class="issue-list">`;
+    issues.forEach(issue=>{
+      const ex = ISSUE_EXPLAIN[issue];
+      if (!ex) return;
+      body += `<li>
+        <strong>${ex.label}</strong>
+        <span class="badge ${ex.type==='preflop'?'warn':'err'}" style="margin-left:6px">${ex.type}</span>
+        <br/>${ex.explain}
+      </li>`;
+    });
+    body += `</ul>`;
+  }
+  if (h.reviewFlags.includes('BIG_LOSS')) {
+    body += `<div style="background:#3d1e1e;border:1px solid #d96060;border-radius:8px;padding:10px 14px;margin-top:12px">
+      <p style="color:#d96060;font-size:13px;margin:0;font-weight:600">⚠ Big loss flag (>${2} BB)</p>
+      <p style="color:#a8a0a0;font-size:13px;margin:4px 0 0">Review this hand carefully. Was the loss due to a mistake or pure variance (cooler, bad beat)?</p>
+    </div>`;
+  }
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+// ─── POSITIONS ────────────────────────────────────────────────
+function renderPositions() {
+  const tf = document.getElementById('pos-filter').value;
+  const hands = filterByTime(allHands, tf);
+  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  const grid = document.getElementById('pos-detail-grid');
+  grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
+  grid.innerHTML = positions.map(pos=>{
+    const ph = hands.filter(h=>h.position===pos);
+    if (!ph.length) return `<div class="card"><div class="card-title">${pos}</div><p style="color:#6b7d62;font-size:13px;margin:0">No hands</p></div>`;
+    const net = ph.reduce((s,h)=>s+h.netBB,0);
+    const vpip = ph.filter(h=>h.vpip).length;
+    const pfr = ph.filter(h=>h.pfr).length;
+    const mistakes = ph.filter(h=>h.tagIssues.length>0).length;
+    const bb100 = net/ph.length*100;
+    const col = net>=0?'#6db87a':'#d96060';
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div class="card-title" style="margin:0">${pos}</div>
+        <span style="font-size:18px;font-weight:700;color:${col}">${net>=0?'+':''}${net.toFixed(1)} BB</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div class="stat"><p class="stat-label">Hands</p><p class="stat-value blue" style="font-size:16px">${ph.length}</p></div>
+        <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value ${bb100>=0?'green':'red'}" style="font-size:16px">${bb100.toFixed(1)}</p></div>
+        <div class="stat"><p class="stat-label">VPIP</p><p class="stat-value amber" style="font-size:16px">${Math.round(vpip/ph.length*100)}%</p></div>
+        <div class="stat"><p class="stat-label">TAG issues</p><p class="stat-value ${mistakes?'red':''}" style="font-size:16px">${mistakes}</p></div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100,Math.round(pfr/ph.length*100))}%;background:${col}"></div></div>
+      <p style="font-size:11px;color:#6b7d62;margin:4px 0 0">PFR: ${Math.round(pfr/ph.length*100)}%</p>
+    </div>`;
+  }).join('');
+}
+
+// ─── MISTAKES ─────────────────────────────────────────────────
+function renderMistakes() {
+  const tf = document.getElementById('mistakes-filter').value;
+  const type = document.getElementById('mistakes-type').value;
+  const hands = filterByTime(allHands, tf);
+  const mistakeHands = hands.filter(h=>h.tagIssues.length>0);
+  const pfMistakes = mistakeHands.filter(h=>h.isPreflop);
+  const pfMistakes2 = mistakeHands.filter(h=>h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i)));
+  const postMistakes = mistakeHands.filter(h=>h.tagIssues.some(i=>['MISSED_CBET'].includes(i)));
+  document.getElementById('mistakes-summary').innerHTML = `
+    <div class="stat"><p class="stat-label">Total mistakes</p><p class="stat-value red">${mistakeHands.length}</p></div>
+    <div class="stat"><p class="stat-label">Preflop</p><p class="stat-value amber">${pfMistakes2.length}</p></div>
+    <div class="stat"><p class="stat-label">Postflop</p><p class="stat-value amber">${postMistakes.length}</p></div>
+    <div class="stat"><p class="stat-label">BB lost (mistake hands)</p><p class="stat-value red">${mistakeHands.reduce((s,h)=>s+h.netBB,0).toFixed(1)}</p></div>
+  `;
+  // Group by issue type
+  const issueGroups = {};
+  let filtered = mistakeHands;
+  if (type==='preflop') filtered = filtered.filter(h=>h.isPreflop);
+  if (type==='postflop') filtered = filtered.filter(h=>h.isPostflop);
+  filtered.forEach(h=>h.tagIssues.forEach(i=>{
+    if (!issueGroups[i]) issueGroups[i]=[];
+    issueGroups[i].push(h);
+  }));
+  const listEl = document.getElementById('mistakes-list');
+  if (!Object.keys(issueGroups).length) {
+    listEl.innerHTML = '<div class="empty"><div class="empty-icon">✓</div><p>No mistakes found for this filter</p></div>';
+    return;
+  }
+  listEl.innerHTML = Object.entries(issueGroups)
+    .sort((a,b)=>b[1].length-a[1].length)
+    .map(([issue, iHands])=>{
+      const ex = ISSUE_EXPLAIN[issue];
+      const totalBB = iHands.reduce((s,h)=>s+h.netBB,0);
+      const worst = [...iHands].sort((a,b)=>a.netBB-b.netBB).slice(0,5);
+      return `<div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+              <span style="font-size:15px;font-weight:700;color:#e8f0e4">${ex?.label||issue}</span>
+              <span class="badge ${ex?.type==='preflop'?'warn':'err'}">${ex?.type||'unknown'}</span>
+            </div>
+            <p style="font-size:13px;color:#8fa882;margin:0">${ex?.short||''}</p>
+          </div>
+          <div style="text-align:right">
+            <span class="badge err" style="font-size:13px">${iHands.length}x</span>
+            <p style="font-size:12px;color:#d96060;margin:4px 0 0">${totalBB.toFixed(1)} BB</p>
+          </div>
+        </div>
+        <div style="background:#162014;border-radius:6px;padding:10px 12px;margin-bottom:10px">
+          <p style="font-size:12px;color:#8fa882;margin:0;line-height:1.6">${ex?.explain||''}</p>
+        </div>
+        <div class="card-title" style="margin-bottom:6px">Worst hands with this issue</div>
+        ${worst.map(h=>`
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1a2218">
+            <div style="display:flex;gap:10px;align-items:center">
+              <span class="badge info">${h.position}</span>
+              <span style="font-size:13px;font-weight:600;color:#e8f0e4">${h.holeCards}</span>
+              <span style="font-size:12px;color:#6b7d62">${h.handCat}</span>
+              <span style="font-size:12px;color:#6b7d62">${h.date.slice(5)}</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <span style="font-size:13px;font-weight:600;color:${h.netBB>=0?'#6db87a':'#d96060'}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
+              <button class="btn small" onclick="showHandDetail('${h.id}')">Review</button>
+            </div>
+          </div>`).join('')}
+      </div>`;
+    }).join('');
+}
+
+// ─── STARTING HANDS ──────────────────────────────────────────
+const HARDIN_ACTION = {
+  // Pairs
+  'AA':{rfi:'ALL',note:'Always raise. Never limp.'},
+  'KK':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet.'},
+  'QQ':{rfi:'ALL',note:'Always raise. Call or 4-bet vs 3-bet.'},
+  'JJ':{rfi:'ALL',note:'Raise all positions. Call 3-bet IP, fold OOP vs tight players.'},
+  'TT':{rfi:'ALL',note:'Raise all positions. Set-mine vs 3-bets.'},
+  '99':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold to 3-bet unless good odds.'},
+  '88':{rfi:'CO/BTN',note:'Raise CO+. Fold UTG/HJ to 3-bets.'},
+  '77':{rfi:'CO/BTN',note:'Raise CO/BTN primarily. Set-mine in multiway.'},
+  '66':{rfi:'BTN',note:'BTN steal. Fold most 3-bets.'},
+  '55':{rfi:'BTN',note:'BTN/SB steal only. Set value only.'},
+  '44':{rfi:'BTN',note:'BTN only. Mostly fold to 3-bets.'},
+  '33':{rfi:'BTN',note:'BTN only.'},
+  '22':{rfi:'BTN',note:'BTN only. Pure set-mine.'},
+  // Premium
+  'AKs':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet standard.'},
+  'AKo':{rfi:'ALL',note:'Always raise. 4-bet or call 3-bet.'},
+  'AQs':{rfi:'ALL',note:'Raise all positions.'},
+  'AQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold UTG to 3-bets.'},
+  'AJs':{rfi:'ALL',note:'Raise all positions.'},
+  'AJo':{rfi:'CO/BTN',note:'Raise CO/BTN. Fold to 3-bets usually.'},
+  'ATs':{rfi:'ALL',note:'Raise all positions.'},
+  'ATo':{rfi:'CO/BTN',note:'Raise CO+. Marginal UTG/HJ.'},
+  // Broadway
+  'KQs':{rfi:'ALL',note:'Raise all positions.'},
+  'KQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Marginal UTG.'},
+  'KJs':{rfi:'ALL',note:'Raise all positions.'},
+  'KJo':{rfi:'CO/BTN',note:'Raise CO/BTN.'},
+  'KTs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
+  'KTo':{rfi:'BTN',note:'BTN raise only.'},
+  'QJs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
+  'QJo':{rfi:'BTN',note:'BTN only.'},
+  'QTs':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'JTs':{rfi:'CO/BTN/SB',note:'Raise CO+. Good hand.'},
+  // Suited connectors
+  'T9s':{rfi:'BTN/CO',note:'Late position only.'},
+  '98s':{rfi:'BTN/CO',note:'Late position only.'},
+  '87s':{rfi:'BTN',note:'BTN steal / multiway value.'},
+  '76s':{rfi:'BTN',note:'BTN only.'},
+  // Suited aces
+  'A9s':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'A8s':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'A7s':{rfi:'CO/BTN',note:'Raise CO+.'},
+  'A5s':{rfi:'BTN/CO',note:'Nut-flush + straight draws.'},
+  'A4s':{rfi:'BTN',note:'BTN only.'},
+  'A3s':{rfi:'BTN',note:'BTN only.'},
+  'A2s':{rfi:'BTN',note:'BTN only.'},
+};
+
+function getHardinVerdict(notation, position, pfAction) {
+  const rule = HARDIN_ACTION[notation];
+  if (!rule) return {verdict:'no-data', note:'Hand not in Hardin primary ranges — should generally fold.'};
+  const rfiPos = rule.rfi;
+  const shouldRaise = rfiPos==='ALL' ||
+    (rfiPos.includes('BTN') && position==='BTN') ||
+    (rfiPos.includes('CO') && position==='CO') ||
+    (rfiPos.includes('HJ') && ['HJ','CO','BTN'].includes(position)) ||
+    (rfiPos.includes('SB') && position==='SB') ||
+    (rfiPos.includes('UTG') && position==='UTG');
+  if (pfAction==='FOLD' && shouldRaise) return {verdict:'should-raise', note:rule.note};
+  if (pfAction==='CALL' && shouldRaise) return {verdict:'should-raise-not-call', note:rule.note};
+  if (pfAction==='RAISE' && !shouldRaise) return {verdict:'too-loose', note:rule.note};
+  if (pfAction==='RAISE' && shouldRaise) return {verdict:'correct', note:rule.note};
+  return {verdict:'ok', note:rule.note};
+}
+
+function renderStartingHands() {
+  const tf = document.getElementById('starting-filter').value;
+  const sort = document.getElementById('starting-sort').value;
+  const catFilter = document.getElementById('starting-cat').value;
+  const hands = filterByTime(allHands, tf);
+
+  // Group by hand notation
+  const groups = {};
+  hands.forEach(h=>{
+    if (!h.handNotation) return;
+    if (!groups[h.handNotation]) groups[h.handNotation]={
+      notation:h.handNotation, cat:h.handCat, quality:h.tagQuality,
+      hands:[], netBB:0, mistakes:0, correct:0
+    };
+    groups[h.handNotation].hands.push(h);
+    groups[h.handNotation].netBB += h.netBB;
+    if (h.tagIssues.length) groups[h.handNotation].mistakes++;
+    else groups[h.handNotation].correct++;
+  });
+
+  let rows = Object.values(groups);
+  if (catFilter!=='all') rows = rows.filter(r=>r.cat===catFilter);
+
+  // Sort
+  if (sort==='hands') rows.sort((a,b)=>b.hands.length-a.hands.length);
+  else if (sort==='bb100') rows.sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length));
+  else if (sort==='worst') rows.sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length));
+  else if (sort==='netloss') rows.sort((a,b)=>a.netBB-b.netBB);
+
+  // Summary stats
+  const totalPlayed = Object.values(groups).reduce((s,g)=>s+g.hands.filter(h=>h.vpip).length,0);
+  const bestHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length))[0];
+  const worstHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length))[0];
+  document.getElementById('starting-summary').innerHTML = `
+    <div class="stat"><p class="stat-label">Hand types seen</p><p class="stat-value blue">${rows.length}</p></div>
+    <div class="stat"><p class="stat-label">Hands played</p><p class="stat-value amber">${totalPlayed}</p></div>
+    <div class="stat"><p class="stat-label">Best hand (3+ dealt)</p><p class="stat-value green" style="font-size:15px">${bestHand?bestHand.notation:'—'}</p></div>
+    <div class="stat"><p class="stat-label">Worst hand (3+ dealt)</p><p class="stat-value red" style="font-size:15px">${worstHand?worstHand.notation:'—'}</p></div>
+  `;
+
+  const el = document.getElementById('starting-list');
+  if (!rows.length) {
+    el.innerHTML='<div class="empty"><div class="empty-icon">🃏</div><p>No hand data yet — upload sessions first</p></div>';
+    return;
+  }
+
+  el.innerHTML = rows.map(g=>{
+    const n = g.hands.length;
+    const bb100 = n ? g.netBB/n*100 : 0;
+    const bbCol = g.netBB>=0?'var(--green)':g.netBB<-5?'var(--red)':'var(--amber)';
+    const b100Col = bb100>=0?'var(--green)':bb100<-50?'var(--red)':'var(--amber)';
+    const qualBadge = g.quality==='A-Range'?'ok':g.quality==='B-Range'?'warn':'err';
+    const hardinRule = HARDIN_ACTION[g.notation];
+    const sampleWarn = n < 5 ? '<span class="badge warn" style="font-size:10px">small sample</span>' : '';
+
+    // Check if any hands had position/action deviation
+    const deviations = g.hands.filter(hh=>{
+      if (!hh.vpip && !hh.pfr) return false;
+      const v = getHardinVerdict(g.notation, hh.position, hh.pfAction);
+      return ['should-raise','should-raise-not-call','too-loose'].includes(v.verdict);
+    });
+
+    return `<div class="hand-card" onclick="showStartingDetail('${g.notation}')">
+      <div class="hand-card-top">
+        <div>
+          <span style="font-size:19px;font-weight:800;color:var(--text)">${g.notation}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px">${g.cat}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:17px;font-weight:700;color:${bbCol}">${g.netBB>=0?'+':''}${g.netBB.toFixed(1)} BB</div>
+          <div style="font-size:11px;color:${b100Col};font-weight:600">${bb100>=0?'+':''}${bb100.toFixed(0)}/100</div>
+        </div>
+      </div>
+      <div class="hand-card-mid">
+        <span class="badge ${qualBadge}">${g.quality}</span>
+        <span class="badge muted">${n} dealt</span>
+        ${deviations.length?`<span class="badge err">${deviations.length} deviation${deviations.length>1?'s':''}</span>`:''}
+        ${sampleWarn}
+      </div>
+      <div class="hand-card-bot">
+        <span class="hand-meta">${hardinRule?'Hardin: '+hardinRule.rfi:'Outside primary ranges'}</span>
+        <span class="hand-meta">${g.mistakes} mistake${g.mistakes!==1?'s':''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showStartingDetail(notation) {
+  const tf = document.getElementById('starting-filter').value;
+  const hands = filterByTime(allHands, tf).filter(h=>h.handNotation===notation);
+  if (!hands.length) return;
+  const netBB = hands.reduce((s,h)=>s+h.netBB,0);
+  const n = hands.length;
+  const bb100 = netBB/n*100;
+  const rule = HARDIN_ACTION[notation];
+  const bbCol = netBB>=0?'var(--green)':'var(--red)';
+
+  // Per-position breakdown
+  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  const posBreakdown = positions.map(p=>{
+    const ph = hands.filter(h=>h.position===p);
+    if (!ph.length) return null;
+    const pNet = ph.reduce((s,h)=>s+h.netBB,0);
+    return {p, count:ph.length, net:pNet, bb100:pNet/ph.length*100};
+  }).filter(Boolean);
+
+  // Deviations
+  const deviations = hands.map(hh=>{
+    const v = getHardinVerdict(notation, hh.position, hh.pfAction);
+    return {...hh, verdict:v};
+  }).filter(hh=>['should-raise','should-raise-not-call','too-loose'].includes(hh.verdict.verdict));
+
+  document.getElementById('modal-title').textContent = `${notation} analysis`;
+  let body = `
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">${n}</p></div>
+      <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:${bbCol}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
+      <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:${bbCol}">${bb100>=0?'+':''}${bb100.toFixed(0)}</p></div>
+      <div class="stat"><p class="stat-label">Mistakes</p><p class="stat-value ${hands.filter(h=>h.tagIssues.length).length?'red':''}">${hands.filter(h=>h.tagIssues.length).length}</p></div>
+    </div>`;
+
+  if (rule) {
+    body += `<div style="background:var(--bg3);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px">Hardin framework</p>
+      <p style="font-size:13px;color:var(--green2);margin:0 0 4px;font-weight:600">Raise from: ${rule.rfi}</p>
+      <p style="font-size:13px;color:var(--text3);margin:0;line-height:1.6">${rule.note}</p>
+    </div>`;
+  } else {
+    body += `<div style="background:#3d1e1e;border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:13px;color:var(--red);margin:0;font-weight:600">Outside Hardin primary ranges</p>
+      <p style="font-size:12px;color:var(--text3);margin:4px 0 0">Playing this hand is likely a VPIP leak unless from BB defense.</p>
+    </div>`;
+  }
+
+  if (posBreakdown.length) {
+    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>`;
+    body += posBreakdown.map(p=>{
+      const col = p.net>=0?'var(--green)':'var(--red)';
+      return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge info">${p.p}</span>
+          <span style="font-size:12px;color:var(--muted)">${p.count} hand${p.count>1?'s':''}</span>
+        </div>
+        <div style="text-align:right">
+          <span style="font-size:13px;font-weight:700;color:${col}">${p.net>=0?'+':''}${p.net.toFixed(1)} BB</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:6px">${p.bb100>=0?'+':''}${p.bb100.toFixed(0)}/100</span>
+        </div>
+      </div>`;
+    }).join('');
+    body += '<div style="margin-bottom:14px"></div>';
+  }
+
+  if (deviations.length) {
+    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">Hardin deviations</p>`;
+    body += deviations.map(hh=>`
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <div><span class="badge info">${hh.position}</span> <span class="badge warn" style="margin-left:4px">${hh.pfAction}</span></div>
+          <span style="font-size:13px;font-weight:700;color:${hh.netBB>=0?'var(--green)':'var(--red)'}">${hh.netBB>=0?'+':''}${hh.netBB.toFixed(1)} BB</span>
+        </div>
+        <p style="font-size:12px;color:var(--red);margin:0;font-weight:600">${hh.verdict.verdict.replace(/-/g,' ').toUpperCase()}</p>
+        <p style="font-size:12px;color:var(--text3);margin:3px 0 0">${hh.verdict.note}</p>
+      </div>`).join('');
+  }
+
+  if (n < 5) {
+    body += `<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-top:10px">
+      <p style="font-size:12px;color:var(--amber);margin:0">⚠ Small sample (${n} hands) — results are not statistically significant yet.</p>
+    </div>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+// ─── DRAG DROP ────────────────────────────────────────────────
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files)});
+
+// ─── TOAST ────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+async function init() {
+  showToast('Loading data from GitHub...');
+  allHands = await loadFromGitHub();
+  renderDashboard();
+  renderStoredSessions();
+}
+init();
+
+</script>
+</body>
+</html>
