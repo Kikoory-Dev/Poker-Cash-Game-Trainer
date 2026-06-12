@@ -298,11 +298,32 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     <span>Mistakes</span>
   </button>
+  <button class="bnav-btn" onclick="switchTab('analysis',this)" id="bnav-analysis">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>Analysis</span>
+  </button>
   <button class="bnav-btn" onclick="switchTab('starting',this)" id="bnav-starting">
     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
     <span>Hands</span>
   </button>
 </nav>
+
+  <!-- ANALYSIS -->
+  <div class="section" id="tab-analysis">
+    <div class="filter-row">
+      <select id="analysis-filter" onchange="renderAnalysis()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+      </select>
+      <select id="analysis-stakes" onchange="renderAnalysis()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
+      </select>
+    </div>
+    <div id="analysis-body"></div>
+  </div>
 
   <!-- STARTING HANDS -->
   <div class="section" id="tab-starting">
@@ -445,12 +466,19 @@ function classifyHand(cards) {
 function parseHands(text, filename) {
   const rawHands = text.split(/\n\n(?=Poker Hand #)/);
   const hands = [];
+  const isMini = filename.includes('0.05') || filename.includes('RushAndCash') && !filename.includes('0.1 - 0.25');
+  const fileBB = (filename.includes('0.05 - 0.1') || filename.includes('0.05-0.1')) ? 0.10 : 0.25;
+  const fileStakes = fileBB===0.10 ? 'NL10' : 'NL25';
+  const fileGameType = filename.includes('Rush') ? 'Rush&Cash' : 'Regular';
+
   for (const raw of rawHands) {
     if (!raw.trim() || !raw.includes('Hero')) continue;
     const h = {};
     const mid = raw.match(/Poker Hand #(\w+):/); if (!mid) continue;
     h.id = mid[1];
     h.filename = filename;
+    h.stakes = fileStakes;
+    h.gameType = fileGameType;
     const dm = raw.match(/- (\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/);
     h.date = dm ? dm[1].slice(0,10) : '';
     h.time = dm ? dm[1].slice(11) : '';
@@ -486,14 +514,19 @@ function parseHands(text, filename) {
     else h.streetReached='Preflop';
     h.sawFlop = h.streetReached!=='Preflop' && h.pfAction!=='FOLD' ? 1 : 0;
     h.showdown = /Hero: shows/.test(raw) ? 1 : 0;
-    const collM = [...summText.matchAll(/Hero.*?collected \(\$([\d.]+)\)/g)];
-    const collected = collM.reduce((s,m)=>s+parseFloat(m[1]),0);
-    let contrib = (h.inSB?0.10:0)+(h.inBB?0.25:0);
+    // Collect winnings — GGPoker uses both "collected" and "won"
+    const heroSummLine = summText.match(new RegExp(`Seat ${heroSeat}: Hero[^\n]*`))?.[0]||'';
+    const collM = heroSummLine.match(/(?:collected|won) \(\$([\d.]+)\)/);
+    const collected = collM ? parseFloat(collM[1]) : 0;
+    // Actual blind posts
+    const sbPost = raw.match(/Hero: posts small blind \$([\d.]+)/);
+    const bbPost = raw.match(/Hero: posts big blind \$([\d.]+)/);
+    let contrib = (h.inSB&&sbPost ? parseFloat(sbPost[1]) : 0) + (h.inBB&&bbPost ? parseFloat(bbPost[1]) : 0);
     [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
     [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
     [...raw.matchAll(/Hero: raises \$([\d.]+) to /g)].forEach(m=>contrib+=parseFloat(m[1]));
     h.netUSD = Math.round((collected-contrib)*100)/100;
-    h.netBB = Math.round(h.netUSD/BIG_BLIND*100)/100;
+    h.netBB = Math.round(h.netUSD/fileBB*100)/100;
     const fm = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\* \[([^\]]+)\]/);
     h.boardFlop = fm ? fm[1] : '';
     h.cbetOpp=0; h.cbetMade=0;
@@ -513,7 +546,7 @@ function parseHands(text, filename) {
     h.tagIssues = issues;
     h.tagCompliant = issues.length===0 ? 1 : 0;
     const reviews = [];
-    if (h.netUSD < -2) reviews.push('BIG_LOSS');
+    if (h.netBB < -10) reviews.push('BIG_LOSS');
     if (h.sawFlop && ['Turn','River'].includes(h.streetReached)) reviews.push('POSTFLOP');
     if (h.showdown) reviews.push('SHOWDOWN');
     h.reviewFlags = reviews;
@@ -586,6 +619,8 @@ function switchTab(tab, btn) {
   if (tab==='positions') renderPositions();
   if (tab==='mistakes') renderMistakes();
   if (tab==='upload') renderStoredSessions();
+  if (tab==='starting') renderStartingHands();
+  if (tab==='analysis') renderAnalysis();
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────
@@ -643,9 +678,17 @@ function renderDashboard() {
   const nl10bb100=nl10h.length?nl10bb/nl10h.length*100:0;
   const rushH=hands.filter(x=>x.gameType==='Rush&Cash');
   const regH=hands.filter(x=>x.gameType==='Regular');
+  const sbd=document.getElementById('dash-stakes-breakdown');
   document.getElementById('dash-sessions').innerHTML = sessions.length
-    ? `<p style="font-size:13px;color:#8fa882;margin:0">${sessions.length} session file${sessions.length!==1?'s':''} loaded · ${allHands.length} total hands</p>`
-    : '<p style="font-size:13px;color:#6b7d62;margin:0">No sessions uploaded yet</p>';
+    ? `<p style="font-size:13px;color:var(--text3);margin:0 0 10px">${sessions.length} session${sessions.length!==1?'s':''} · ${hands.length} hands shown · ${allHands.length} total in DB</p>`
+    : '<p style="font-size:13px;color:var(--muted);margin:0">No sessions uploaded yet — tap Upload</p>';
+  if(sbd) sbd.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="stat"><p class="stat-label">NL25 · ${nl25h.length} hands</p><p class="stat-value ${nl25bb100>=0?'green':'red'}" style="font-size:15px">${nl25bb100>=0?'+':''}${nl25bb100.toFixed(1)}<span style="font-size:11px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>
+      <div class="stat"><p class="stat-label">NL10 · ${nl10h.length} hands</p><p class="stat-value ${nl10bb100>=0?'green':'red'}" style="font-size:15px">${nl10bb100>=0?'+':''}${nl10bb100.toFixed(1)}<span style="font-size:11px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>
+      <div class="stat"><p class="stat-label">Regular NLH</p><p class="stat-value blue" style="font-size:15px">${regH.length}</p></div>
+      <div class="stat"><p class="stat-label">Rush &amp; Cash</p><p class="stat-value blue" style="font-size:15px">${rushH.length}</p></div>
+    </div>`;
 }
 
 // ─── UPLOAD ───────────────────────────────────────────────────
@@ -1153,6 +1196,144 @@ function showStartingDetail(notation) {
   document.getElementById('modal').style.display = 'flex';
 }
 
+// ─── ANALYSIS ─────────────────────────────────────────────────
+function renderAnalysis() {
+  const tf = getEl('analysis-filter');
+  const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all');
+  const el = document.getElementById('analysis-body');
+  if (!hands.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'; return; }
+
+  const net = hands.reduce((s,h)=>s+h.netBB,0);
+  const bb100 = net/hands.length*100;
+  const played = hands.filter(h=>h.vpip);
+  const pfr = hands.filter(h=>h.pfr);
+
+  // Position data
+  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  const posData = positions.map(p=>{
+    const ph=hands.filter(h=>h.position===p);
+    if(!ph.length) return null;
+    const pnet=ph.reduce((s,h)=>s+h.netBB,0);
+    return {p,n:ph.length,net:pnet,bb100:pnet/ph.length*100,
+            vpip:ph.filter(h=>h.vpip).length/ph.length*100,
+            issues:ph.filter(h=>h.tagIssues.length).length};
+  }).filter(Boolean);
+
+  // Blind analysis
+  const sb=hands.filter(h=>h.position==='SB');
+  const sbCall=sb.filter(h=>h.pfAction==='CALL');
+  const sbRaise=sb.filter(h=>h.pfAction==='RAISE');
+  const sbFold=sb.filter(h=>h.pfAction==='FOLD');
+  const bb=hands.filter(h=>h.position==='BB');
+
+  // C-bet
+  const cbetOpp=hands.filter(h=>h.cbetOpp);
+  const cbetMade=hands.filter(h=>h.cbetMade);
+  const cbetMissed=hands.filter(h=>h.cbetOpp&&!h.cbetMade);
+  const cbetPct=cbetOpp.length?Math.round(cbetMade.length/cbetOpp.length*100):0;
+
+  // Non-blind net
+  const nonBlind=hands.filter(h=>!['SB','BB'].includes(h.position));
+  const nonBlindNet=nonBlind.reduce((s,h)=>s+h.netBB,0);
+  const blindNet=hands.filter(h=>['SB','BB'].includes(h.position)).reduce((s,h)=>s+h.netBB,0);
+
+  // Issues summary
+  const issueCounts={};
+  hands.forEach(h=>h.tagIssues.forEach(i=>{issueCounts[i]=(issueCounts[i]||0)+1}));
+
+  const colNet = net>=0?'var(--green)':'var(--red)';
+  const colBB100 = bb100>=0?'var(--green)':'var(--red)';
+
+  el.innerHTML = `
+  <div class="card">
+    <div class="card-title">Overall performance</div>
+    <div class="stat-grid">
+      <div class="stat"><p class="stat-label">Total hands</p><p class="stat-value blue">${hands.length}</p></div>
+      <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:${colNet}">${net>=0?'+':''}${net.toFixed(1)}</p></div>
+      <div class="stat"><p class="stat-label">BB / 100</p><p class="stat-value" style="color:${colBB100}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
+      <div class="stat"><p class="stat-label">VPIP / PFR</p><p class="stat-value amber" style="font-size:15px">${(played.length/hands.length*100).toFixed(1)}% / ${(pfr.length/hands.length*100).toFixed(1)}%</p></div>
+    </div>
+    <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div>
+        <p class="stat-label" style="margin:0 0 2px">Late pos (BTN/CO/HJ/UTG)</p>
+        <p style="margin:0;font-size:15px;font-weight:700;color:${nonBlindNet>=0?'var(--green)':'var(--red)'}">${nonBlindNet>=0?'+':''}${nonBlindNet.toFixed(1)} BB</p>
+      </div>
+      <div>
+        <p class="stat-label" style="margin:0 0 2px">Blinds (SB+BB)</p>
+        <p style="margin:0;font-size:15px;font-weight:700;color:${blindNet>=0?'var(--green)':'var(--red)'}">${blindNet>=0?'+':''}${blindNet.toFixed(1)} BB</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Position breakdown</div>
+    ${posData.map(d=>{
+      const col=d.bb100>=0?'var(--green)':d.bb100<-50?'var(--red)':'var(--amber)';
+      const isBlind=['SB','BB'].includes(d.p);
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge ${isBlind?'err':'info'}" style="width:36px;text-align:center">${d.p}</span>
+          <span style="font-size:12px;color:var(--muted)">${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
+        </div>
+        <div style="text-align:right">
+          <span style="font-size:14px;font-weight:700;color:${col}">${d.bb100>=0?'+':''}${d.bb100.toFixed(1)}</span>
+          <span style="font-size:10px;color:var(--muted)"> bb/100</span>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚨 Priority leak — SB calling</div>
+    <div style="background:#3d1e1e;border-radius:8px;padding:10px 12px;margin-bottom:10px">
+      <p style="font-size:13px;color:var(--red);font-weight:700;margin:0 0 4px">SB Call: ${(sbCall.reduce((s,h)=>s+h.netBB,0)/Math.max(sbCall.length,1)*100).toFixed(0)} bb/100 on ${sbCall.length} hands</p>
+      <p style="font-size:12px;color:var(--text3);margin:0">Hardin's rule: SB is raise or fold. Never call. Calling puts you OOP with a capped range for every street.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+      ${[['RAISE',sbRaise],['CALL',sbCall],['FOLD',sbFold]].map(([act,ah])=>{
+        const n=ah.reduce((s,h)=>s+h.netBB,0);
+        const col=act==='RAISE'?'var(--green)':act==='CALL'?'var(--red)':'var(--muted)';
+        return `<div class="stat"><p class="stat-label">SB ${act}</p><p class="stat-value" style="color:${col};font-size:13px">${ah.length} hands</p><p style="font-size:11px;color:${col};margin:2px 0 0;font-weight:600">${n>=0?'+':''}${n.toFixed(1)} BB</p></div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">C-bet frequency</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <div style="flex:1;background:var(--bg3);border-radius:8px;height:8px;overflow:hidden">
+        <div style="height:100%;width:${cbetPct}%;background:${cbetPct>=60?'var(--green)':cbetPct>=40?'var(--amber)':'var(--red)'};border-radius:8px;transition:width .5s"></div>
+      </div>
+      <span style="font-size:18px;font-weight:800;color:${cbetPct>=60?'var(--green)':cbetPct>=40?'var(--amber)':'var(--red)'}">${cbetPct}%</span>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin:0 0 10px">Target: 60–70% · You: ${cbetPct}% (${cbetMade.length}/${cbetOpp.length} opportunities)</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="stat"><p class="stat-label">C-bet made</p><p class="stat-value green" style="font-size:14px">${cbetMade.reduce((s,h)=>s+h.netBB,0)>=0?'+':''}${cbetMade.reduce((s,h)=>s+h.netBB,0).toFixed(1)} BB</p></div>
+      <div class="stat"><p class="stat-label">C-bet missed</p><p class="stat-value red" style="font-size:14px">${cbetMissed.reduce((s,h)=>s+h.netBB,0).toFixed(1)} BB</p></div>
+    </div>
+    ${cbetPct<60?`<div style="background:#3d2e0a;border-radius:8px;padding:10px 12px;margin-top:10px"><p style="font-size:12px;color:var(--amber);margin:0">When you raise preflop and see the flop, fire a c-bet ~65% of the time regardless of whether you hit. Your opponents miss the flop 2/3 of the time — they'll fold to pressure.</p></div>`:''}
+  </div>
+
+  <div class="card">
+    <div class="card-title">TAG violations summary</div>
+    ${Object.entries(issueCounts).sort((a,b)=>b[1]-a[1]).map(([issue,count])=>{
+      const ex=ISSUE_EXPLAIN[issue];
+      const aff=hands.filter(h=>h.tagIssues.includes(issue));
+      const affNet=aff.reduce((s,h)=>s+h.netBB,0);
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
+        <div>
+          <p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p>
+          <p style="font-size:11px;color:var(--muted);margin:1px 0 0">${ex?.type||''}</p>
+        </div>
+        <div style="text-align:right">
+          <span class="badge err">${count}x</span>
+          <p style="font-size:11px;color:var(--red);margin:2px 0 0">${affNet.toFixed(1)} BB</p>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
 // ─── DRAG DROP ────────────────────────────────────────────────
 const dz = document.getElementById('drop-zone');
 dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
@@ -1172,6 +1353,8 @@ async function init() {
   allHands = await loadFromGitHub();
   renderDashboard();
   renderStoredSessions();
+  // pre-render analysis so it's ready when tab opens
+  setTimeout(()=>renderAnalysis(), 200);
 }
 init();
 
