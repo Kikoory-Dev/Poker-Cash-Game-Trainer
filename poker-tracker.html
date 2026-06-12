@@ -1578,11 +1578,13 @@ function renderAnalysis() {
   const cbetPct=cbetOpp.length?Math.round(cbetMade.length/cbetOpp.length*100):0;
 
   // Non-blind net
-  const latePos=hands.filter(h=>['BTN','CO','HJ'].includes(h.position));
-  const earlyPos=hands.filter(h=>['UTG'].includes(h.position));
+  const epHands=hands.filter(h=>h.position==='UTG');
+  const mpHands=hands.filter(h=>h.position==='HJ');
+  const lpHands=hands.filter(h=>['CO','BTN'].includes(h.position));
+  const blindHands=hands.filter(h=>['SB','BB'].includes(h.position));
   const nonBlind=hands.filter(h=>!['SB','BB'].includes(h.position));
-  const nonBlindNet=latePos.reduce((s,h)=>s+h.netBB,0);
-  const blindNet=hands.filter(h=>['SB','BB'].includes(h.position)).reduce((s,h)=>s+h.netBB,0);
+  const nonBlindNet=lpHands.reduce((s,h)=>s+h.netBB,0);
+  const blindNet=blindHands.reduce((s,h)=>s+h.netBB,0);
 
   // Issues summary
   const issueCounts={};
@@ -1602,12 +1604,20 @@ function renderAnalysis() {
     </div>
     <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div>
-        <p class="stat-label" style="margin:0 0 2px">Late pos (BTN/CO/HJ)</p>
-        <p style="margin:0;font-size:15px;font-weight:700;color:${nonBlindNet>=0?'var(--green)':'var(--red)'}">${nonBlindNet>=0?'+':''}${nonBlindNet.toFixed(1)} BB</p>
+        <p class="stat-label" style="margin:0 0 2px">EP · UTG</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${epHands.reduce((s,h)=>s+h.netBB,0)>=0?'var(--green)':'var(--red)'}">${epHands.reduce((s,h)=>s+h.netBB,0)>=0?'+':''}${epHands.reduce((s,h)=>s+h.netBB,0).toFixed(1)} BB</p>
       </div>
       <div>
-        <p class="stat-label" style="margin:0 0 2px">Blinds (SB+BB)</p>
-        <p style="margin:0;font-size:15px;font-weight:700;color:${blindNet>=0?'var(--green)':'var(--red)'}">${blindNet>=0?'+':''}${blindNet.toFixed(1)} BB</p>
+        <p class="stat-label" style="margin:0 0 2px">MP · HJ</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${mpHands.reduce((s,h)=>s+h.netBB,0)>=0?'var(--green)':'var(--red)'}">${mpHands.reduce((s,h)=>s+h.netBB,0)>=0?'+':''}${mpHands.reduce((s,h)=>s+h.netBB,0).toFixed(1)} BB</p>
+      </div>
+      <div>
+        <p class="stat-label" style="margin:0 0 2px">LP · CO + BTN</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${nonBlindNet>=0?'var(--green)':'var(--red)'}">${nonBlindNet>=0?'+':''}${nonBlindNet.toFixed(1)} BB</p>
+      </div>
+      <div>
+        <p class="stat-label" style="margin:0 0 2px">Blinds · SB + BB</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${blindNet>=0?'var(--green)':'var(--red)'}">${blindNet>=0?'+':''}${blindNet.toFixed(1)} BB</p>
       </div>
     </div>
   </div>
@@ -1619,8 +1629,8 @@ function renderAnalysis() {
       const isBlind=['SB','BB'].includes(d.p);
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
         <div style="display:flex;gap:8px;align-items:center">
-          <span class="badge ${isBlind?'err':'info'}" style="width:36px;text-align:center">${d.p}</span>
-          <span style="font-size:12px;color:var(--muted)">${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
+          <span class="badge ${d.p==='UTG'?'warn':['CO','BTN'].includes(d.p)?'ok':['SB','BB'].includes(d.p)?'err':'info'}" style="width:36px;text-align:center">${d.p}</span>
+          <span style="font-size:12px;color:var(--muted)">${{'UTG':'EP','HJ':'MP','CO':'LP','BTN':'LP','SB':'Blind','BB':'Blind'}[d.p]||''} · ${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
         </div>
         <div style="text-align:right">
           <span style="font-size:14px;font-weight:700;color:${col}">${d.bb100>=0?'+':''}${d.bb100.toFixed(1)}</span>
