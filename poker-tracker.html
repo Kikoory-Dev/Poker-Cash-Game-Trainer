@@ -387,10 +387,13 @@ let filteredHandsCache = [];
 // ─── GITHUB STORAGE ───────────────────────────────────────────
 async function loadFromGitHub() {
   try {
-    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
+    const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
     if (r.status === 404) return [];
-    const content = await r.json();
-    return Array.isArray(content) ? content : [];
+    const d = await r.json();
+    const content = JSON.parse(atob(d.content.replace(/\n/g, '')));
+    return content;
   } catch(e) { console.error('Load error:', e); return []; }
 }
 
