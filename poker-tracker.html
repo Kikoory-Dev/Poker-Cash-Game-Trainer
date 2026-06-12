@@ -387,7 +387,13 @@ let filteredHandsCache = [];
 // ─── GITHUB STORAGE ───────────────────────────────────────────
 async function loadFromGitHub() {
   try {
-    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
+    // Get the latest commit SHA first to force fresh fetch
+    const metaR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?path=${GITHUB_FILE}&per_page=1`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+    });
+    const meta = await metaR.json();
+    const commitSha = Array.isArray(meta) && meta[0] ? meta[0].sha : Date.now();
+    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?v=${commitSha}`);
     if (r.status === 404) return [];
     const content = await r.json();
     return Array.isArray(content) ? content : [];
