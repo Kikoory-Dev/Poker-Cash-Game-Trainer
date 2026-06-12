@@ -155,6 +155,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="june">June 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
         <option value="date">Specific date...</option>
       </select>
       <input type="date" id="dash-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
@@ -215,6 +218,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="june">June 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
         <option value="date">Specific date...</option>
       </select>
       <input type="date" id="hands-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
@@ -252,6 +258,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="june">June 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
         <option value="date">Specific date...</option>
       </select>
       <input type="date" id="pos-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
@@ -273,6 +282,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="june">June 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
         <option value="date">Specific date...</option>
       </select>
       <input type="date" id="mistakes-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
@@ -322,6 +334,10 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
     <span>Hands</span>
   </button>
+  <button class="bnav-btn" onclick="switchTab('grid',this)" id="bnav-grid">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="4" height="4" rx="0.5"/><rect x="10" y="3" width="4" height="4" rx="0.5"/><rect x="17" y="3" width="4" height="4" rx="0.5"/><rect x="3" y="10" width="4" height="4" rx="0.5"/><rect x="10" y="10" width="4" height="4" rx="0.5"/><rect x="17" y="10" width="4" height="4" rx="0.5"/><rect x="3" y="17" width="4" height="4" rx="0.5"/><rect x="10" y="17" width="4" height="4" rx="0.5"/><rect x="17" y="17" width="4" height="4" rx="0.5"/></svg>
+    <span>Grid</span>
+  </button>
 </nav>
 
   <!-- ANALYSIS -->
@@ -333,6 +349,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="june">June 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
         <option value="date">Specific date...</option>
       </select>
       <input type="date" id="analysis-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
@@ -345,6 +364,36 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <div id="analysis-body"></div>
   </div>
 
+  <!-- HAND COMBO GRID -->
+  <div class="section" id="tab-grid">
+    <div class="filter-row">
+      <select id="grid-filter" onchange="renderGrid()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Specific date...</option>
+      </select>
+      <input type="date" id="grid-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
+      <select id="grid-stakes" onchange="renderGrid()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
+      </select>
+      <select id="grid-metric" onchange="renderGrid()">
+        <option value="net">Net $</option>
+        <option value="bb100">BB/100</option>
+        <option value="hands">Hands</option>
+      </select>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Tap any combo to review · Green = won · Red = lost</div>
+    <div id="grid-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
+  </div>
+
   <!-- STARTING HANDS -->
   <div class="section" id="tab-starting">
     <div class="filter-row">
@@ -354,6 +403,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="june">June 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
         <option value="date">Specific date...</option>
       </select>
       <input type="date" id="starting-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
@@ -776,28 +828,36 @@ function formatCards(cards) {
 // ─── FILTER UTILITY ───────────────────────────────────────────
 function filterByTime(hands, tf, dateInputId) {
   if (tf==='all') return hands;
-  if (tf==='may') return hands.filter(h=>h.date.startsWith('2026/05'));
-  if (tf==='june') return hands.filter(h=>h.date.startsWith('2026/06'));
+  if (tf==='may') return hands.filter(function(h){return h.date.startsWith('2026/05');});
+  if (tf==='june') return hands.filter(function(h){return h.date.startsWith('2026/06');});
   if (tf==='last7') {
-    const d=new Date(); d.setDate(d.getDate()-7);
-    return hands.filter(h=>new Date(h.date.replace(/\//g,'-'))>=d);
+    var d=new Date(); d.setDate(d.getDate()-7);
+    return hands.filter(function(h){return new Date(h.date.split('/').join('-'))>=d;});
   }
   if (tf==='last30') {
-    const d=new Date(); d.setDate(d.getDate()-30);
-    return hands.filter(h=>new Date(h.date.replace(/\//g,'-'))>=d);
+    var d=new Date(); d.setDate(d.getDate()-30);
+    return hands.filter(function(h){return new Date(h.date.split('/').join('-'))>=d;});
+  }
+  if (tf==='last3s'||tf==='last5s'||tf==='last10s') {
+    var n = tf==='last3s'?3:tf==='last5s'?5:10;
+    var sessions = buildSessions(allHands);
+    sessions.sort(function(a,b){return b.start-a.start;});
+    var lastN = sessions.slice(0,n);
+    var fileSet = {};
+    lastN.forEach(function(s){s.files.forEach(function(f){fileSet[f]=true;});});
+    return hands.filter(function(h){return fileSet[h.filename];});
   }
   if (tf==='date' && dateInputId) {
-    const el=document.getElementById(dateInputId);
-    if (el) { el.style.display='inline-block'; }
-    const val=el?el.value:'';
+    var el=document.getElementById(dateInputId);
+    if (el) el.style.display='inline-block';
+    var val=el?el.value:'';
     if (val) {
-      const sel=val.replace(/-/g,'/');
-      return hands.filter(h=>h.date===sel);
+      var sel=val.split('-').join('/');
+      return hands.filter(function(h){return h.date===sel;});
     }
     return hands;
   }
-  // Hide date inputs when not needed
-  if (dateInputId) { const el=document.getElementById(dateInputId); if(el) el.style.display='none'; }
+  if (dateInputId) { var el2=document.getElementById(dateInputId); if(el2) el2.style.display='none'; }
   return hands;
 }
 
@@ -823,6 +883,7 @@ function switchTab(tab, btn) {
   if (tab==='upload') renderStoredSessions();
   if (tab==='starting') renderStartingHands();
   if (tab==='analysis') renderAnalysis();
+  if (tab==='grid') renderGrid();
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────
