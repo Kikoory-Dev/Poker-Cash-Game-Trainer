@@ -652,15 +652,16 @@ function parseHands(text, filename) {
       const limpRange = HARDIN_RANGES[h.position];
       if (limpRange && limpRange.all.includes(h.handNotation)) issues.push('LIMP');
     }
-    // CALL_WEAK: cold-called a raise with a hand outside Hardin's range
-    if (h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise) {
+    // CALL_WEAK: cold-called a raise with a hand outside Hardin's range (not already flagged as VPIP_TRASH)
+    if (h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise && !issues.includes('VPIP_TRASH')) {
       const callRange = HARDIN_RANGES[h.position];
       if (!callRange || !callRange.all.includes(h.handNotation)) issues.push('CALL_WEAK');
     }
     if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
-    // FOLD_STRONG_LP: folded a must-raise hand from this position
+    // FOLD_STRONG_LP: folded a must-raise hand in a true RFI spot (no prior raise)
+    // If someone already raised, folding is often correct — different range applies
     const foldPosRange = HARDIN_RANGES[h.position];
-    if (h.pfAction==='FOLD' && foldPosRange && foldPosRange.must.includes(h.handNotation)) issues.push('FOLD_STRONG_LP');
+    if (h.pfAction==='FOLD' && !h.facedRaise && foldPosRange && foldPosRange.must.includes(h.handNotation)) issues.push('FOLD_STRONG_LP');
     h.tagIssues = issues;
     h.tagCompliant = issues.length===0 ? 1 : 0;
     const reviews = [];
