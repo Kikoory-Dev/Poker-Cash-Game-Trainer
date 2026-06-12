@@ -582,13 +582,22 @@ function parseHands(text, filename) {
     const heroSummLine = summText.match(new RegExp(`Seat ${heroSeat}: Hero[^\n]*`))?.[0]||'';
     const collM = heroSummLine.match(/(?:collected|won) \(\$([\d.]+)\)/);
     const collected = collM ? parseFloat(collM[1]) : 0;
-    // Actual blind posts
+    // Contribution: raise "to Y" = total, subtract uncalled returns, blinds only if no raise
+    const heroRaisesY = [...raw.matchAll(/Hero: raises \$[\d.]+ to \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
+    const heroCalls   = [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
+    const heroBetsArr = [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
+    const uncalledArr = [...raw.matchAll(/Uncalled bet \(\$([\d.]+)\) returned to Hero/g)].map(m=>parseFloat(m[1]));
     const sbPost = raw.match(/Hero: posts small blind \$([\d.]+)/);
     const bbPost = raw.match(/Hero: posts big blind \$([\d.]+)/);
-    let contrib = (h.inSB&&sbPost ? parseFloat(sbPost[1]) : 0) + (h.inBB&&bbPost ? parseFloat(bbPost[1]) : 0);
-    [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
-    [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
-    [...raw.matchAll(/Hero: raises \$([\d.]+) to /g)].forEach(m=>contrib+=parseFloat(m[1]));
+    let contrib = heroRaisesY.reduce((s,v)=>s+v,0)
+                + heroCalls.reduce((s,v)=>s+v,0)
+                + heroBetsArr.reduce((s,v)=>s+v,0)
+                - uncalledArr.reduce((s,v)=>s+v,0);
+    if (!heroRaisesY.length) {
+      if (h.inSB && sbPost) contrib += parseFloat(sbPost[1]);
+      if (h.inBB && bbPost) contrib += parseFloat(bbPost[1]);
+    }
+    contrib = Math.max(0, Math.round(contrib*100)/100);
     h.netUSD = Math.round((collected-contrib)*100)/100;
     h.netBB = Math.round(h.netUSD/fileBB*100)/100;
     const fm = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\* \[([^\]]+)\]/);
