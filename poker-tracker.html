@@ -322,10 +322,6 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
     <span>Hands</span>
   </button>
-  <button class="bnav-btn" onclick="switchTab('grid',this)" id="bnav-grid">
-    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="4" height="4" rx="0.5"/><rect x="10" y="3" width="4" height="4" rx="0.5"/><rect x="17" y="3" width="4" height="4" rx="0.5"/><rect x="3" y="10" width="4" height="4" rx="0.5"/><rect x="10" y="10" width="4" height="4" rx="0.5"/><rect x="17" y="10" width="4" height="4" rx="0.5"/><rect x="3" y="17" width="4" height="4" rx="0.5"/><rect x="10" y="17" width="4" height="4" rx="0.5"/><rect x="17" y="17" width="4" height="4" rx="0.5"/></svg>
-    <span>Grid</span>
-  </button>
 </nav>
 
   <!-- ANALYSIS -->
@@ -386,40 +382,6 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     </div>
     <div class="stat-grid" id="starting-summary"></div>
     <div id="starting-list"></div>
-  </div>
-</div>
-
-  <!-- HAND COMBO GRID -->
-  <div class="section" id="tab-grid">
-    <div class="filter-row">
-      <select id="grid-filter" onchange="renderGrid()">
-        <option value="all">All time</option>
-        <option value="may">May 2026</option>
-        <option value="june">June 2026</option>
-        <option value="last7">Last 7 days</option>
-        <option value="last30">Last 30 days</option>
-        <option value="date">Specific date...</option>
-      </select>
-      <input type="date" id="grid-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
-      <select id="grid-stakes" onchange="renderGrid()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
-      </select>
-      <select id="grid-metric" onchange="renderGrid()">
-        <option value="net">Net $</option>
-        <option value="bb100">BB/100</option>
-        <option value="hands">Hands played</option>
-      </select>
-    </div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Tap any cell to review hands with that combo</div>
-    <div id="grid-legend" style="display:flex;gap:12px;margin-bottom:10px;font-size:11px;color:var(--muted)">
-      <span><span style="display:inline-block;width:10px;height:10px;background:#2d5a2d;border-radius:2px;margin-right:4px"></span>Won</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:#3a3a3a;border-radius:2px;margin-right:4px"></span>Break even</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:#5a2d2d;border-radius:2px;margin-right:4px"></span>Lost</span>
-      <span><span style="display:inline-block;width:10px;height:10px;background:var(--bg3);border-radius:2px;margin-right:4px"></span>No data</span>
-    </div>
-    <div id="grid-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
   </div>
 </div>
 
@@ -861,7 +823,6 @@ function switchTab(tab, btn) {
   if (tab==='upload') renderStoredSessions();
   if (tab==='starting') renderStartingHands();
   if (tab==='analysis') renderAnalysis();
-  if (tab==='grid') renderGrid();
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────
@@ -876,27 +837,29 @@ function renderDashboard() {
   const wonHands = hands.filter(h=>h.netBB > 0 && h.vpip).length;
   const playedHands = hands.filter(h=>h.vpip).length;
   const winRate = playedHands ? Math.round(wonHands/playedHands*100) : 0;
-  // Duration + $ calculations
-  const stakesBB = {'NL25':0.25,'NL10':0.10};
-  // Net USD: sum netBB * respective BB value
-  const netUSD = hands.reduce((s,h)=>s+(h.netBB*(stakesBB[h.stakes]||0.25)),0);
-  // Duration from timestamps
-  const times = hands.map(h=>h.date+' '+h.time).sort();
-  let durationHours = 0;
-  if (times.length >= 2) {
-    const t1 = new Date(times[0].replace(/\//g,'-')); 
-    const t2 = new Date(times[times.length-1].replace(/\//g,'-'));
-    durationHours = (t2-t1)/3600000;
+  // Net USD and duration
+  const stakesBBval = {'NL25':0.25,'NL10':0.10};
+  const netUSDval = hands.reduce((s,h)=>s+(h.netBB*(stakesBBval[h.stakes]||0.25)),0);
+  const sortedTimes = hands.map(h=>h.date+' '+h.time).sort();
+  let durHours = 0;
+  if (sortedTimes.length >= 2) {
+    const t1 = new Date(sortedTimes[0].replace(/\/g,'-'));
+    const t2 = new Date(sortedTimes[sortedTimes.length-1].replace(/\/g,'-'));
+    durHours = (t2-t1)/3600000;
   }
-  const usdPerHour = durationHours > 0 ? netUSD/durationHours : 0;
-  const durStr = durationHours > 0 ? (durationHours>=1 ? Math.floor(durationHours)+'h '+(Math.round((durationHours%1)*60))+'m' : Math.round(durationHours*60)+'m') : '—';
+  const usdPerHour = durHours > 0 ? netUSDval/durHours : 0;
+  const durH = Math.floor(durHours);
+  const durM = Math.round((durHours%1)*60);
+  const durStr = durHours > 0 ? (durH > 0 ? durH+'h '+durM+'m' : durM+'m') : '—';
+  const netUSDabs = Math.abs(netUSDval).toFixed(2);
+  const usdHrAbs = Math.abs(usdPerHour).toFixed(2);
 
   document.getElementById('dash-stats').innerHTML = `
     <div class="stat"><p class="stat-label">Total hands</p><p class="stat-value blue">${hands.length}</p></div>
     <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value ${netBB>=0?'green':'red'}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
-    <div class="stat"><p class="stat-label">Net $</p><p class="stat-value ${netUSD>=0?'green':'red'}">${netUSD>=0?'+':''}$${Math.abs(netUSD).toFixed(2)}</p></div>
+    <div class="stat"><p class="stat-label">Net $</p><p class="stat-value ${netUSDval>=0?'green':'red'}">${netUSDval>=0?'+':'-'}$${netUSDabs}</p></div>
     <div class="stat"><p class="stat-label">BB / 100</p><p class="stat-value ${bb100>=0?'green':'red'}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
-    <div class="stat"><p class="stat-label">$ / hour</p><p class="stat-value ${usdPerHour>=0?'green':'red'}">${usdPerHour>=0?'+':''}$${Math.abs(usdPerHour).toFixed(2)}</p></div>
+    <div class="stat"><p class="stat-label">$ / hour</p><p class="stat-value ${usdPerHour>=0?'green':'red'}">${usdPerHour>=0?'+':'-'}$${usdHrAbs}</p></div>
     <div class="stat"><p class="stat-label">Duration</p><p class="stat-value blue" style="font-size:16px">${durStr}</p></div>
     <div class="stat"><p class="stat-label">TAG compliance</p><p class="stat-value ${compliance>=80?'green':compliance>=60?'amber':'red'}">${compliance}%</p></div>
     <div class="stat"><p class="stat-label">Big losses (&gt;10bb)</p><p class="stat-value ${bigLosses?'red':''}">${bigLosses}</p></div>
@@ -1581,10 +1544,9 @@ function renderAnalysis() {
   const epHands=hands.filter(h=>h.position==='UTG');
   const mpHands=hands.filter(h=>h.position==='HJ');
   const lpHands=hands.filter(h=>['CO','BTN'].includes(h.position));
-  const blindHands=hands.filter(h=>['SB','BB'].includes(h.position));
   const nonBlind=hands.filter(h=>!['SB','BB'].includes(h.position));
   const nonBlindNet=lpHands.reduce((s,h)=>s+h.netBB,0);
-  const blindNet=blindHands.reduce((s,h)=>s+h.netBB,0);
+  const blindNet=hands.filter(h=>['SB','BB'].includes(h.position)).reduce((s,h)=>s+h.netBB,0);
   const epNet=epHands.reduce((s,h)=>s+h.netBB,0);
   const mpNet=mpHands.reduce((s,h)=>s+h.netBB,0);
 
@@ -1632,7 +1594,7 @@ function renderAnalysis() {
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
         <div style="display:flex;gap:8px;align-items:center">
           <span class="badge ${d.p==='UTG'?'warn':['CO','BTN'].includes(d.p)?'ok':['SB','BB'].includes(d.p)?'err':'info'}" style="width:36px;text-align:center">${d.p}</span>
-          <span style="font-size:12px;color:var(--muted)">${{'UTG':'EP','HJ':'MP','CO':'LP','BTN':'LP','SB':'Blind','BB':'Blind'}[d.p]||''} · ${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
+          <span style="font-size:12px;color:var(--muted)">${({'UTG':'EP','HJ':'MP','CO':'LP','BTN':'LP','SB':'Blind','BB':'Blind'}[d.p]||'')} · ${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
         </div>
         <div style="text-align:right">
           <span style="font-size:14px;font-weight:700;color:${col}">${d.bb100>=0?'+':''}${d.bb100.toFixed(1)}</span>
@@ -1691,151 +1653,6 @@ function renderAnalysis() {
       </div>`;
     }).join('')}
   </div>`;
-}
-
-// ─── HAND COMBO GRID ─────────────────────────────────────────
-function renderGrid() {
-  const tf = getEl('grid-filter');
-  const hands = filterHands(allHands, tf, getEl('grid-stakes'), 'all', 'grid-date');
-  const metric = getEl('grid-metric');
-  const el = document.getElementById('grid-container');
-  if (!hands.length) { el.innerHTML='<div class="empty"><div class="empty-icon">🃏</div><p>No data yet</p></div>'; return; }
-
-  const RANKS = ['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
-
-  // Build lookup: notation → {net, netBB, count}
-  const lookup = {};
-  hands.forEach(h => {
-    const n = h.handNotation;
-    if (!n) return;
-    if (!lookup[n]) lookup[n] = {net:0, netBB:0, count:0, hands:[]};
-    const bbVal = h.stakes==='NL10' ? 0.10 : 0.25;
-    lookup[n].net += h.netBB * bbVal;
-    lookup[n].netBB += h.netBB;
-    lookup[n].count++;
-    lookup[n].hands.push(h);
-  });
-
-  // Color scale
-  function cellColor(val, count) {
-    if (!count) return 'var(--bg3)';
-    if (Math.abs(val) < 0.01) return '#2a2a2a';
-    if (val > 0) {
-      const intensity = Math.min(val/2, 1);
-      return `rgb(${Math.round(30+intensity*20)},${Math.round(60+intensity*60)},${Math.round(30+intensity*20)})`;
-    } else {
-      const intensity = Math.min(Math.abs(val)/2, 1);
-      return `rgb(${Math.round(60+intensity*60)},${Math.round(30+intensity*10)},${Math.round(30+intensity*10)})`;
-    }
-  }
-
-  const cellSize = Math.floor((Math.min(window.innerWidth, 600) - 32) / 14);
-  const fontSize = Math.max(8, cellSize - 14);
-
-  let html2 = `<div style="display:grid;grid-template-columns:repeat(13,${cellSize}px);gap:1px;font-family:'Inter',sans-serif">`;
-
-  RANKS.forEach((r1, i) => {
-    RANKS.forEach((r2, j) => {
-      let notation;
-      if (i === j) notation = r1+r1; // pair
-      else if (i < j) notation = r1+r2+'s'; // suited (upper triangle)
-      else notation = r2+r1+'o'; // offsuit (lower triangle)
-
-      const d = lookup[notation];
-      const count = d ? d.count : 0;
-      let displayVal = '';
-      let bgColor = cellColor(0, 0);
-
-      if (d && count > 0) {
-        if (metric === 'net') {
-          bgColor = cellColor(d.net, count);
-          displayVal = (d.net>=0?'+':'')+'$'+Math.abs(d.net).toFixed(2);
-        } else if (metric === 'bb100') {
-          const bb100v = d.netBB/count*100;
-          bgColor = cellColor(bb100v/50, count); // normalize to ±50bb/100
-          displayVal = (bb100v>=0?'+':'')+bb100v.toFixed(0);
-        } else {
-          bgColor = count > 0 ? '#1a3a2a' : 'var(--bg3)';
-          displayVal = count+'x';
-        }
-      }
-
-      // Is pair, suited, or offsuit
-      const isPair = i===j;
-      const textCol = !count ? 'var(--muted)' : '#e8f0e4';
-
-      html2 += `<div onclick="showGridDetail('${notation}')"
-        style="width:${cellSize}px;height:${cellSize}px;background:${bgColor};display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-radius:2px;padding:1px;box-sizing:border-box;transition:opacity .1s"
-        ontouchstart="this.style.opacity=0.7" ontouchend="this.style.opacity=1">
-        <span style="font-size:${fontSize}px;font-weight:700;color:${textCol};line-height:1">${notation}</span>
-        ${count>0?`<span style="font-size:${Math.max(6,fontSize-2)}px;color:${textCol}88;line-height:1.2">${displayVal}</span>`:''}
-      </div>`;
-    });
-  });
-
-  html2 += '</div>';
-  el.innerHTML = html2;
-}
-
-function showGridDetail(notation) {
-  const tf = getEl('grid-filter');
-  const hands = filterHands(allHands, tf, getEl('grid-stakes'), 'all', 'grid-date')
-    .filter(h=>h.handNotation===notation);
-
-  if (!hands.length) { showToast('No hands with '+notation); return; }
-
-  const net = hands.reduce((s,h)=>s+h.netBB,0);
-  const bb100v = net/hands.length*100;
-  const netUSD = hands.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
-  const bbCol = net>=0?'var(--green)':'var(--red)';
-
-  const byPos = ['BTN','CO','HJ','UTG','SB','BB'].map(p=>{
-    const ph=hands.filter(h=>h.position===p);
-    if (!ph.length) return null;
-    const pnet=ph.reduce((s,h)=>s+h.netBB,0);
-    return {p,n:ph.length,net:pnet,bb100:pnet/ph.length*100};
-  }).filter(Boolean);
-
-  let body = `<div class="stat-grid" style="margin-bottom:14px">
-    <div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">${hands.length}</p></div>
-    <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:${bbCol}">${net>=0?'+':''}${net.toFixed(1)}</p></div>
-    <div class="stat"><p class="stat-label">Net $</p><p class="stat-value" style="color:${bbCol}">${netUSD>=0?'+':''}$${Math.abs(netUSD).toFixed(2)}</p></div>
-    <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:${bbCol}">${bb100v>=0?'+':''}${bb100v.toFixed(0)}</p></div>
-  </div>`;
-
-  // Position breakdown
-  body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>`;
-  byPos.forEach(p=>{
-    const col=p.bb100>=0?'var(--green)':'var(--red)';
-    body+=`<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;gap:8px;align-items:center">
-        <span class="badge info">${p.p}</span>
-        <span style="font-size:12px;color:var(--muted)">${p.n} hand${p.n>1?'s':''}</span>
-      </div>
-      <span style="font-size:13px;font-weight:700;color:${col}">${p.bb100>=0?'+':''}${p.bb100.toFixed(0)} bb/100</span>
-    </div>`;
-  });
-
-  // Worst hands
-  const worst = [...hands].sort((a,b)=>a.netBB-b.netBB).slice(0,5);
-  body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 8px">Worst hands</p>`;
-  worst.forEach(h=>{
-    const col=h.netBB>=0?'var(--green)':'var(--red)';
-    body+=`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">
-      <div style="display:flex;gap:6px;align-items:center">
-        <span class="badge info">${h.position}</span>
-        <span style="font-size:12px;color:var(--muted)">${h.date.slice(5)}</span>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <span style="font-size:13px;font-weight:700;color:${col}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
-        <button class="btn small" onclick="closeModal();showHandDetail('${h.id}')">Review</button>
-      </div>
-    </div>`;
-  });
-
-  document.getElementById('modal-title').textContent = notation + ' analysis';
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal').style.display = 'flex';
 }
 
 // ─── DRAG DROP ────────────────────────────────────────────────
