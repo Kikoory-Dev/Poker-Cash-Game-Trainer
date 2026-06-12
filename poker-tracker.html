@@ -583,8 +583,9 @@ function parseHands(text, filename) {
     // Did someone else raise before Hero acted preflop?
     const otherRaisers = [...pfText.matchAll(/^(\w+): raises/gm)].filter(m=>m[1]!=='Hero');
     h.facedRaise = otherRaisers.length > 0 ? 1 : 0;
-    if (h.pfr) h.pfAction='RAISE';
-    else if (heroPF.includes('calls')) h.pfAction='CALL';
+    // pfAction = last voluntary action (calls overrides raises for 3bet-then-call-4bet spots)
+    if (heroPF.includes('calls')) h.pfAction='CALL';
+    else if (h.pfr) h.pfAction='RAISE';
     else if (h.inBB && heroPF.includes('checks')) h.pfAction='CHECK_BB';
     else h.pfAction='FOLD';
     // streetReached = last street where Hero was still active (folded hands = Preflop)
