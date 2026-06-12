@@ -510,6 +510,10 @@ function parseHands(text, filename) {
     const heroSeat = seatNums.find(n=>seatMap[n]==='Hero'); if (!heroSeat) continue;
     h.position = getPosition(heroSeat, btnSeat, seatNums);
     h.numPlayers = seatNums.length;
+    // Build seat→position map for villain labeling in review
+    const seatPosMap = {};
+    seatNums.forEach(sn => { seatPosMap[seatMap[sn]] = getPosition(sn, btnSeat, seatNums); });
+    h.seatPositions = seatPosMap;
     const sm = raw.match(new RegExp(`Seat ${heroSeat}: Hero \\(\\$([\\.\\d]+) in chips\\)`));
     h.stackStart = sm ? parseFloat(sm[1]) : 25;
     const hcm = raw.match(/Dealt to Hero \[([^\]]+)\]/); h.holeCards = hcm ? hcm[1] : '';
@@ -537,6 +541,15 @@ function parseHands(text, filename) {
     else h.streetReached='Preflop';
     h.sawFlop = h.streetReached!=='Preflop' && h.pfAction!=='FOLD' ? 1 : 0;
     h.showdown = /Hero: shows/.test(raw) ? 1 : 0;
+    // Store villain showdown cards
+    const villainShows = [...raw.matchAll(/(\w+): shows \[([^\]]+)\]/g)]
+      .filter(m => m[1] !== 'Hero')
+      .map(m => ({
+        player: m[1],
+        cards: m[2],
+        pos: ''  // filled below
+      }));
+    h.villainShown = villainShows;
     // Collect winnings — GGPoker uses both "collected" and "won"
     const heroSummLine = summText.match(new RegExp(`Seat ${heroSeat}: Hero[^\n]*`))?.[0]||'';
     const collM = heroSummLine.match(/(?:collected|won) \(\$([\d.]+)\)/);
@@ -849,17 +862,18 @@ function changePage(dir) {
   renderHandsPage();
 }
 
-function renderAction(player, action) {
+function renderAction(player, action, seatPositions) {
   const isHero = player==='Hero';
   const col = isHero?'var(--green)':'var(--text3)';
-  const name = isHero?'Hero':'Villain';
+  const pos = seatPositions && seatPositions[player] ? seatPositions[player] : null;
+  const name = isHero ? 'Hero' : (pos ? `Villain (${pos})` : 'Villain');
   let verb = action;
   if (action==='folds') verb='<span style="color:var(--muted)">folds</span>';
   else if (action==='checks') verb='<span style="color:var(--blue)">checks</span>';
   else if (action.startsWith('calls')) verb=`<span style="color:var(--amber)">${action}</span>`;
   else if (action.startsWith('bets')||action.startsWith('raises')) verb=`<span style="color:var(--green)">${action}</span>`;
   return `<div style="display:flex;gap:8px;padding:4px 0;font-size:13px">
-    <span style="font-weight:600;color:${col};min-width:44px">${name}</span>
+    <span style="font-weight:600;color:${col};min-width:80px">${name}</span>
     <span>${verb}</span>
   </div>`;
 }
@@ -912,7 +926,7 @@ function showHandDetail(id) {
     </div>`;
     if (actions.length) {
       body += `<div style="background:var(--bg3);border-radius:6px;padding:6px 10px">`;
-      actions.forEach(a => { body += renderAction(a.player||a[0], a.action||a[1]); });
+      actions.forEach(a => { body += renderAction(a.player||a[0], a.action||a[1], h.seatPositions); });
       body += `</div>`;
     }
     body += `</div>`;
@@ -937,6 +951,19 @@ function showHandDetail(id) {
         </div>
         <p style="font-size:12px;color:var(--red);margin:0 0 6px;font-weight:600">${ex.short}</p>
         <p style="font-size:12px;color:var(--text3);margin:0;line-height:1.65">${ex.explain}</p>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
+  // Villain showdown cards
+  if (h.villainShown && h.villainShown.length) {
+    body += `<div class="card" style="margin-bottom:12px"><div class="card-title">Showdown</div>`;
+    h.villainShown.forEach(v => {
+      const label = v.pos ? `Villain (${v.pos})` : 'Villain';
+      body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+        <span style="font-size:13px;color:var(--text3);font-weight:600">${label}</span>
+        <span style="font-size:16px;font-weight:700">${formatCards(v.cards)}</span>
       </div>`;
     });
     body += `</div>`;
