@@ -153,7 +153,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="date">Specific date...</option>
       </select>
+      <input type="date" id="dash-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
       <select id="dash-stakes" onchange="renderDashboard()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -209,7 +213,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="date">Specific date...</option>
       </select>
+      <input type="date" id="hands-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
       <select id="hands-stakes" onchange="renderHands()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -242,7 +250,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="date">Specific date...</option>
       </select>
+      <input type="date" id="pos-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
       <select id="pos-stakes" onchange="renderPositions()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -259,7 +271,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="date">Specific date...</option>
       </select>
+      <input type="date" id="mistakes-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
       <select id="mistakes-stakes" onchange="renderMistakes()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -315,7 +331,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="date">Specific date...</option>
       </select>
+      <input type="date" id="analysis-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
       <select id="analysis-stakes" onchange="renderAnalysis()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -332,7 +352,11 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="date">Specific date...</option>
       </select>
+      <input type="date" id="starting-date" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
       <select id="starting-stakes" onchange="renderStartingHands()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -732,15 +756,35 @@ function formatCards(cards) {
 }
 
 // ─── FILTER UTILITY ───────────────────────────────────────────
-function filterByTime(hands, tf) {
+function filterByTime(hands, tf, dateInputId) {
   if (tf==='all') return hands;
   if (tf==='may') return hands.filter(h=>h.date.startsWith('2026/05'));
   if (tf==='june') return hands.filter(h=>h.date.startsWith('2026/06'));
+  if (tf==='last7') {
+    const d=new Date(); d.setDate(d.getDate()-7);
+    return hands.filter(h=>new Date(h.date.replace(/\//g,'-'))>=d);
+  }
+  if (tf==='last30') {
+    const d=new Date(); d.setDate(d.getDate()-30);
+    return hands.filter(h=>new Date(h.date.replace(/\//g,'-'))>=d);
+  }
+  if (tf==='date' && dateInputId) {
+    const el=document.getElementById(dateInputId);
+    if (el) { el.style.display='inline-block'; }
+    const val=el?el.value:'';
+    if (val) {
+      const sel=val.replace(/-/g,'/');
+      return hands.filter(h=>h.date===sel);
+    }
+    return hands;
+  }
+  // Hide date inputs when not needed
+  if (dateInputId) { const el=document.getElementById(dateInputId); if(el) el.style.display='none'; }
   return hands;
 }
 
-function filterHands(hands, tf, stakes, gameType) {
-  let h = filterByTime(hands, tf);
+function filterHands(hands, tf, stakes, gameType, dateInputId) {
+  let h = filterByTime(hands, tf, dateInputId);
   if (stakes && stakes!=='all') h = h.filter(x=>x.stakes===stakes);
   if (gameType && gameType!=='all') h = h.filter(x=>x.gameType===gameType);
   return h;
@@ -911,7 +955,7 @@ function renderHandsPage() {
     const issueBadge = issues.length ? `<span class="badge err">${issues.length} issue${issues.length>1?'s':''}</span>` : `<span class="badge ok">OK</span>`;
     return `<div class="hand-card" onclick="showHandDetail('${h.id}')">
       <div class="hand-card-top">
-        <span class="hand-cards-display">${formatCards(h.holeCards)}</span>
+        <span class="hand-cards-display">${formatCards(h.holeCards)}</span> <span class="badge info" style="font-size:12px">${h.position}</span>
         <span class="hand-net" style="color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
       </div>
       <div class="hand-card-mid">
@@ -1018,10 +1062,35 @@ function showHandDetail(id) {
   body += `</div>`;
 
   // ── TAG verdict ──
+  // Determine verdict tier
+  const isShowdown = h.showdown;
+  const bigLoss = h.netBB < -10;
+  const sawPostflop = h.sawFlop && ['Turn','River'].includes(h.streetReached);
+  let verdictTier, verdictColor, verdictText, verdictSub;
   if (!issues.length) {
-    body += `<div style="background:#1a3320;border:1px solid #2e5030;border-radius:10px;padding:12px 14px;margin-bottom:12px">
-      <p style="color:var(--green);font-size:14px;margin:0;font-weight:700">✓ No TAG violations</p>
-      <p style="color:var(--text3);font-size:12px;margin:5px 0 0">${h.netBB<0?'The loss is variance — decisions were correct according to Hardin.':'Played correctly.'}</p>
+    if (!sawPostflop && !isShowdown) {
+      verdictTier='✓ Played correctly'; verdictColor='var(--green)';
+      verdictText='Clean preflop decision per Hardin framework.';
+      verdictSub='';
+    } else if (isShowdown && bigLoss) {
+      verdictTier='✓ No TAG violations — statistical variance'; verdictColor='var(--green)';
+      verdictText='All decisions correct per Hardin. The loss is variance, not a mistake.';
+      verdictSub='Big losses with no violations are coolers or bad beats — unavoidable in the long run.';
+    } else if (sawPostflop) {
+      verdictTier='✓ Correct — review postflop sizing'; verdictColor='var(--amber)';
+      verdictText='No framework violations detected. Postflop sizing and line choices may still have room for improvement.';
+      verdictSub='Consider: was your bet sizing appropriate? Did you take the most profitable line?';
+    } else {
+      verdictTier='✓ Played correctly'; verdictColor='var(--green)';
+      verdictText=h.netBB<0?'Loss is variance — correct decisions.':'Well played.';
+      verdictSub='';
+    }
+  }
+  if (!issues.length) {
+    body += `<div style="background:var(--bg3);border:1px solid ${verdictColor}40;border-radius:10px;padding:12px 14px;margin-bottom:12px">
+      <p style="color:${verdictColor};font-size:14px;margin:0;font-weight:700">${verdictTier}</p>
+      <p style="color:var(--text3);font-size:12px;margin:5px 0 0">${verdictText}</p>
+      ${verdictSub?`<p style="color:var(--muted);font-size:11px;margin:4px 0 0;line-height:1.5">${verdictSub}</p>`:''}
     </div>`;
   } else {
     body += `<div class="card" style="border-color:#d96060;margin-bottom:12px"><div class="card-title" style="color:var(--red)">TAG violations</div>`;
