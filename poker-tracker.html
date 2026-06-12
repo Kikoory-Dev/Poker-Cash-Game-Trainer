@@ -1550,9 +1550,15 @@ function showToast(msg) {
 async function init() {
   showToast('Loading data from GitHub...');
   allHands = await loadFromGitHub();
+  // Patch legacy DB: fix streetReached for hands where Hero folded preflop
+  allHands = allHands.map(h => {
+    if (h.pfAction === 'FOLD' && h.streetReached !== 'Preflop') {
+      return Object.assign({}, h, {streetReached: 'Preflop', sawFlop: 0});
+    }
+    return h;
+  });
   renderDashboard();
   renderStoredSessions();
-  // pre-render analysis so it's ready when tab opens
   setTimeout(()=>renderAnalysis(), 200);
 }
 init();
