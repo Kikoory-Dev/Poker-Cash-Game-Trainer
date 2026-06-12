@@ -840,26 +840,22 @@ function renderDashboard() {
   // Net USD and duration
   const stakesBBval = {'NL25':0.25,'NL10':0.10};
   const netUSDval = hands.reduce((s,h)=>s+(h.netBB*(stakesBBval[h.stakes]||0.25)),0);
-  // Duration: sum per-session spans, then deduplicate overlapping sessions (multitabling)
-  const sessionSpans = {};
+  // Duration: per-file intervals merged with 5min gap tolerance (handles multitabling)
+  const fileSpans = {};
   hands.forEach(h => {
     if (!h.filename || !h.date || !h.time) return;
     const ts = new Date((h.date+' '+h.time).split('/').join('-')).getTime();
-    if (!sessionSpans[h.filename]) sessionSpans[h.filename] = {min: ts, max: ts};
-    else {
-      if (ts < sessionSpans[h.filename].min) sessionSpans[h.filename].min = ts;
-      if (ts > sessionSpans[h.filename].max) sessionSpans[h.filename].max = ts;
-    }
+    if (!fileSpans[h.filename]) fileSpans[h.filename] = [ts, ts];
+    else { fileSpans[h.filename][0]=Math.min(fileSpans[h.filename][0],ts); fileSpans[h.filename][1]=Math.max(fileSpans[h.filename][1],ts); }
   });
-  // Merge overlapping intervals to get real clock time
-  const intervals = Object.values(sessionSpans).map(s=>([s.min, s.max])).sort((a,b)=>a[0]-b[0]);
-  const merged = [];
-  for (const [s,e] of intervals) {
-    if (merged.length && s <= merged[merged.length-1][1]) {
-      merged[merged.length-1][1] = Math.max(merged[merged.length-1][1], e);
-    } else { merged.push([s,e]); }
+  const sortedSpans = Object.values(fileSpans).sort((a,b)=>a[0]-b[0]);
+  const mergedSpans = [];
+  for (const [s,e] of sortedSpans) {
+    if (mergedSpans.length && s <= mergedSpans[mergedSpans.length-1][1] + 300000) {
+      mergedSpans[mergedSpans.length-1][1] = Math.max(mergedSpans[mergedSpans.length-1][1], e);
+    } else { mergedSpans.push([s,e]); }
   }
-  let durHours = merged.reduce((sum,[s,e])=>sum+(e-s)/3600000, 0);
+  let durHours = mergedSpans.reduce((sum,[s,e])=>sum+(e-s)/3600000, 0);
   const usdPerHour = durHours > 0 ? netUSDval/durHours : 0;
   const durH = Math.floor(durHours);
   const durM = Math.round((durHours%1)*60);
