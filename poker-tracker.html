@@ -486,9 +486,11 @@ function classifyHand(cards) {
     else if (suited) cat='Suited Trash';
     else cat='Trash';
   }
-  const A=['Premium Pair','Mid Pair','Premium','Broadway','Suited Broadway','Strong Ace'];
-  const B=['Low Pair','Suited Connector'];
-  const quality=A.includes(cat)?'A-Range':B.includes(cat)?'B-Range':'Outside';
+  // Quality based on actual Hardin ranges
+  const earlyMust = new Set([...(HARDIN_RANGES.UTG?.must||[]),...(HARDIN_RANGES.HJ?.must||[])]);
+  const anyMust = new Set(Object.values(HARDIN_RANGES).flatMap(r=>r.must||[]));
+  const anyAll = new Set(Object.values(HARDIN_RANGES).flatMap(r=>r.all||[]));
+  const quality = earlyMust.has(notation) ? 'A-Range' : anyAll.has(notation) ? 'B-Range' : 'Outside';
   return {cat, notation, quality};
 }
 
@@ -620,11 +622,25 @@ function parseHands(text, filename) {
       }
     }
     const issues = [];
-    if (h.vpip && h.tagQuality==='Outside') issues.push('VPIP_TRASH');
+    // VPIP_TRASH: played a hand not in any Hardin range for this position
+    const posRangeCheck = HARDIN_RANGES[h.position];
+    if (h.vpip && posRangeCheck && !posRangeCheck.all.includes(h.handNotation)) issues.push('VPIP_TRASH');
+    // LIMP_OOP: called from SB facing a raise with a hand that should 3-bet or fold
     if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise) issues.push('LIMP_OOP');
-    if (h.pfAction==='CALL' && !h.pfr && ['Trash','Weak Ace','Suited Trash'].includes(h.handCat) && !h.inBB) issues.push('CALL_WEAK');
+    // LIMP: limped from non-blind position with a raiseable hand
+    if (h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise) {
+      const limpRange = HARDIN_RANGES[h.position];
+      if (limpRange && limpRange.all.includes(h.handNotation)) issues.push('LIMP');
+    }
+    // CALL_WEAK: cold-called a raise with a hand outside Hardin's range
+    if (h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise) {
+      const callRange = HARDIN_RANGES[h.position];
+      if (!callRange || !callRange.all.includes(h.handNotation)) issues.push('CALL_WEAK');
+    }
     if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
-    if (h.pfAction==='FOLD' && h.tagQuality==='A-Range' && ['BTN','CO','HJ'].includes(h.position)) issues.push('FOLD_STRONG_LP');
+    // FOLD_STRONG_LP: folded a must-raise hand from this position
+    const foldPosRange = HARDIN_RANGES[h.position];
+    if (h.pfAction==='FOLD' && foldPosRange && foldPosRange.must.includes(h.handNotation)) issues.push('FOLD_STRONG_LP');
     h.tagIssues = issues;
     h.tagCompliant = issues.length===0 ? 1 : 0;
     const reviews = [];
@@ -666,10 +682,16 @@ const ISSUE_EXPLAIN = {
     explain:`Hardin emphasizes the c-bet as a core profit tool. When you raise preflop, you represent a strong range. On most flops, your opponent misses (they miss ~2/3 of the time). A c-bet of 50-75% pot here takes down the pot immediately. Checking gives your opponent a free card and signals weakness. Against one opponent on a dry board, Hardin recommends c-betting almost always.`
   },
   FOLD_STRONG_LP: {
-    label:'Folded strong hand in late position',
+    label:'Folded a must-raise hand',
     type:'preflop',
-    short:'Folded an A-range hand (KQo, KJo, ATo+) from BTN/CO/HJ — missed a steal or value spot.',
-    explain:`Late position is your biggest edge in poker. Hardin's TAG ranges have wide opens from BTN/CO/HJ precisely because you act last post-flop. Folding A-range hands here forfeits fold equity (nobody else in the pot = free steal), and gives up value against wider calling ranges. From BTN especially, Hardin opens very wide. These hands should be raises, not folds.`
+    short:'Folded a hand that Hardin says must be raised from this position.',
+    explain:'Late position is your biggest edge. Hardin defines must-raise hands per position — these are not optional. Folding them gives up fold equity (free steal when everyone folds), position advantage postflop, and value against wider calling ranges. These hands should always be opened.'
+  },
+  LIMP: {
+    label:'Limped with a raiseable hand',
+    type:'preflop',
+    short:'Called the BB instead of raising — limping is almost never correct in TAG poker.',
+    explain:"Hardin's TAG strategy has no limp range. If a hand is worth playing, it's worth raising. Limping gives up fold equity, lets the BB see a cheap flop with any two cards, and signals weakness. Raise or fold — there is no in-between in TAG preflop play."
   }
 };
 
@@ -1123,71 +1145,55 @@ function renderMistakes() {
 }
 
 // ─── STARTING HANDS ──────────────────────────────────────────
-const HARDIN_ACTION = {
-  // Pairs
-  'AA':{rfi:'ALL',note:'Always raise. Never limp.'},
-  'KK':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet.'},
-  'QQ':{rfi:'ALL',note:'Always raise. Call or 4-bet vs 3-bet.'},
-  'JJ':{rfi:'ALL',note:'Raise all positions. Call 3-bet IP, fold OOP vs tight players.'},
-  'TT':{rfi:'ALL',note:'Raise all positions. Set-mine vs 3-bets.'},
-  '99':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold to 3-bet unless good odds.'},
-  '88':{rfi:'CO/BTN',note:'Raise CO+. Fold UTG/HJ to 3-bets.'},
-  '77':{rfi:'CO/BTN',note:'Raise CO/BTN primarily. Set-mine in multiway.'},
-  '66':{rfi:'BTN',note:'BTN steal. Fold most 3-bets.'},
-  '55':{rfi:'BTN',note:'BTN/SB steal only. Set value only.'},
-  '44':{rfi:'BTN',note:'BTN only. Mostly fold to 3-bets.'},
-  '33':{rfi:'BTN',note:'BTN only.'},
-  '22':{rfi:'BTN',note:'BTN only. Pure set-mine.'},
-  // Premium
-  'AKs':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet standard.'},
-  'AKo':{rfi:'ALL',note:'Always raise. 4-bet or call 3-bet.'},
-  'AQs':{rfi:'ALL',note:'Raise all positions.'},
-  'AQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold UTG to 3-bets.'},
-  'AJs':{rfi:'ALL',note:'Raise all positions.'},
-  'AJo':{rfi:'CO/BTN',note:'Raise CO/BTN. Fold to 3-bets usually.'},
-  'ATs':{rfi:'ALL',note:'Raise all positions.'},
-  'ATo':{rfi:'CO/BTN',note:'Raise CO+. Marginal UTG/HJ.'},
-  // Broadway
-  'KQs':{rfi:'ALL',note:'Raise all positions.'},
-  'KQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Marginal UTG.'},
-  'KJs':{rfi:'ALL',note:'Raise all positions.'},
-  'KJo':{rfi:'CO/BTN',note:'Raise CO/BTN.'},
-  'KTs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
-  'KTo':{rfi:'BTN',note:'BTN raise only.'},
-  'QJs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
-  'QJo':{rfi:'BTN',note:'BTN only.'},
-  'QTs':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'JTs':{rfi:'CO/BTN/SB',note:'Raise CO+. Good hand.'},
-  // Suited connectors
-  'T9s':{rfi:'BTN/CO',note:'Late position only.'},
-  '98s':{rfi:'BTN/CO',note:'Late position only.'},
-  '87s':{rfi:'BTN',note:'BTN steal / multiway value.'},
-  '76s':{rfi:'BTN',note:'BTN only.'},
-  // Suited aces
-  'A9s':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'A8s':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'A7s':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'A5s':{rfi:'BTN/CO',note:'Nut-flush + straight draws.'},
-  'A4s':{rfi:'BTN',note:'BTN only.'},
-  'A3s':{rfi:'BTN',note:'BTN only.'},
-  'A2s':{rfi:'BTN',note:'BTN only.'},
+const HARDIN_RANGES = {
+  'UTG': {
+    must: ["66", "77", "88", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "QQ", "TT"],
+    optional: ["55", "87s", "98s", "KTs", "QTs", "T9s"],
+    all: ["55", "66", "77", "87s", "88", "98s", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QQ", "QTs", "T9s", "TT"],
+  },
+  'HJ': {
+    must: ["55", "66", "77", "88", "99", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QQ", "QTs", "T9s", "TT"],
+    optional: ["44", "76s", "87s", "97s", "98s", "A4s", "A5s", "J9s", "T8s"],
+    all: ["44", "55", "66", "76s", "77", "87s", "88", "97s", "98s", "99", "A4s", "A5s", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QQ", "QTs", "T8s", "T9s", "TT"],
+  },
+  'CO': {
+    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+    optional: ["65s", "75s", "A8o", "J8s", "JTo", "K8s", "K9o", "Q9s", "QTo"],
+    all: ["22", "33", "44", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J8s", "J9s", "JJ", "JTo", "JTs", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9s", "TT"],
+  },
+  'BTN': {
+    must: ["22", "33", "44", "54s", "55", "64s", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J8s", "J9s", "JJ", "JTo", "JTs", "K7s", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T7s", "T8s", "T9o", "T9s", "TT"],
+    optional: ["43s", "53s", "87o", "J7s", "J9o", "K5s", "K6s", "K7o", "K8o", "Q6s", "Q7s", "Q8s", "Q9o", "T8o"],
+    all: ["22", "33", "43s", "44", "53s", "54s", "55", "64s", "65s", "66", "75s", "76s", "77", "86s", "87o", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J7s", "J8s", "J9o", "J9s", "JJ", "JTo", "JTs", "K5s", "K6s", "K7o", "K7s", "K8o", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q6s", "Q7s", "Q8s", "Q9o", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T7s", "T8o", "T8s", "T9o", "T9s", "TT"],
+  },
+  'SB': {
+    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+    optional: [],
+    all: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+  },
 };
 
 function getHardinVerdict(notation, position, pfAction) {
-  const rule = HARDIN_ACTION[notation];
-  if (!rule) return {verdict:'no-data', note:'Hand not in Hardin primary ranges — should generally fold.'};
-  const rfiPos = rule.rfi;
-  const shouldRaise = rfiPos==='ALL' ||
-    (rfiPos.includes('BTN') && position==='BTN') ||
-    (rfiPos.includes('CO') && position==='CO') ||
-    (rfiPos.includes('HJ') && ['HJ','CO','BTN'].includes(position)) ||
-    (rfiPos.includes('SB') && position==='SB') ||
-    (rfiPos.includes('UTG') && position==='UTG');
-  if (pfAction==='FOLD' && shouldRaise) return {verdict:'should-raise', note:rule.note};
-  if (pfAction==='CALL' && shouldRaise) return {verdict:'should-raise-not-call', note:rule.note};
-  if (pfAction==='RAISE' && !shouldRaise) return {verdict:'too-loose', note:rule.note};
-  if (pfAction==='RAISE' && shouldRaise) return {verdict:'correct', note:rule.note};
-  return {verdict:'ok', note:rule.note};
+  const posRange = HARDIN_RANGES[position];
+  if (!posRange) return {verdict:'no-data', note:'Position not tracked.'};
+  const inMust = posRange.must.includes(notation);
+  const inOptional = posRange.optional.includes(notation);
+  const inAll = posRange.all.includes(notation);
+
+  if (pfAction === 'RAISE') {
+    if (inAll) return {verdict:'correct', note:`${notation} is a raise from ${position} per Hardin.`};
+    return {verdict:'too-loose', note:`${notation} is outside Hardin's opening range from ${position}.`};
+  }
+  if (pfAction === 'FOLD') {
+    if (inMust) return {verdict:'should-raise', note:`${notation} is a must-raise from ${position}. Folding gives up steal equity and value.`};
+    if (inOptional) return {verdict:'fold-ok-optional', note:`${notation} is optional from ${position}. Folding is acceptable but raising is also correct.`};
+    return {verdict:'correct-fold', note:`${notation} is outside Hardin's range from ${position}. Fold is correct.`};
+  }
+  if (pfAction === 'CALL') {
+    if (inMust || inOptional) return {verdict:'should-raise-not-call', note:`${notation} from ${position} should be raised, not called. Calling gives up fold equity and initiative.`};
+    return {verdict:'ok', note:`Calling with ${notation} from ${position}.`};
+  }
+  return {verdict:'ok', note:''};
 }
 
 function renderStartingHands() {
