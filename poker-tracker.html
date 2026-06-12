@@ -460,6 +460,23 @@ function classifyHand(cards) {
   return {cat, notation, quality};
 }
 
+function extractStreetActions(raw) {
+  const streets = {};
+  const parts = raw.split(/\*\*\* (?:FIRST )?(?:FLOP|TURN|RIVER) \*\*\*[^\n]*\n/);
+  const headers = [...raw.matchAll(/\*\*\* ((?:FIRST )?FLOP|TURN|RIVER) \*\*\* (\[[^\]]+\])?/g)];
+  const pfStart = raw.indexOf('*** HOLE CARDS ***');
+  const pfEnd = raw.search(/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/);
+  const pfBlock = pfStart >= 0 ? raw.slice(pfStart, pfEnd > 0 ? pfEnd : undefined) : '';
+  streets.preflop = {board:'', actions:[...pfBlock.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}))};
+  headers.forEach((hdr,i) => {
+    const sname = hdr[1].replace('FIRST ','').toLowerCase();
+    const board = hdr[2]||'';
+    const block = parts[i+1]||'';
+    streets[sname] = {board, actions:[...block.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}))};
+  });
+  return streets;
+}
+
 function parseHands(text, filename) {
   const rawHands = text.split(/\n\n(?=Poker Hand #)/);
   const hands = [];
@@ -529,6 +546,15 @@ function parseHands(text, filename) {
     h.netBB = Math.round(h.netUSD/fileBB*100)/100;
     const fm = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\* \[([^\]]+)\]/);
     h.boardFlop = fm ? fm[1] : '';
+    const tm2 = raw.match(/\*\*\* TURN \*\*\* \[[^\]]+\] \[([^\]]+)\]/);
+    h.boardTurn = tm2 ? tm2[1] : '';
+    const rm2 = raw.match(/\*\*\* RIVER \*\*\* \[[^\]]+\] \[([^\]]+)\]/);
+    h.boardRiver = rm2 ? rm2[1] : '';
+    // Street-by-street actions for review
+    h.streetActions = extractStreetActions(raw);
+    const pfRaiserM = pfText.match(/(?!Hero)(\w+): raises \$[\d.]+ to \$([\d.]+)/);
+    h.pfRaiser = pfRaiserM ? pfRaiserM[1] : '';
+    h.pfRaiseAmt = pfRaiserM ? pfRaiserM[2] : '';
     h.cbetOpp=0; h.cbetMade=0;
     if (h.pfr && h.sawFlop) {
       const fp = raw.split(/\*\*\* (?:FIRST )?FLOP \*\*\*[^\n]*\n/);
@@ -817,48 +843,106 @@ function changePage(dir) {
   renderHandsPage();
 }
 
+function renderAction(player, action) {
+  const isHero = player==='Hero';
+  const col = isHero?'var(--green)':'var(--text3)';
+  const name = isHero?'Hero':'Villain';
+  let verb = action;
+  if (action==='folds') verb='<span style="color:var(--muted)">folds</span>';
+  else if (action==='checks') verb='<span style="color:var(--blue)">checks</span>';
+  else if (action.startsWith('calls')) verb=`<span style="color:var(--amber)">${action}</span>`;
+  else if (action.startsWith('bets')||action.startsWith('raises')) verb=`<span style="color:var(--green)">${action}</span>`;
+  return `<div style="display:flex;gap:8px;padding:4px 0;font-size:13px">
+    <span style="font-weight:600;color:${col};min-width:44px">${name}</span>
+    <span>${verb}</span>
+  </div>`;
+}
+
 function showHandDetail(id) {
   const h = allHands.find(x=>x.id===id);
   if (!h) return;
-  document.getElementById('modal-title').textContent = `Hand review: ${h.holeCards} · ${h.position} · ${h.date}`;
   const issues = h.tagIssues;
-  let body = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-      <div class="stat"><p class="stat-label">Position</p><p class="stat-value blue" style="font-size:18px">${h.position}</p></div>
-      <div class="stat"><p class="stat-label">Net result</p><p class="stat-value ${h.netBB>=0?'green':'red'}" style="font-size:18px">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</p></div>
-      <div class="stat"><p class="stat-label">Hole cards</p><p class="stat-value" style="font-size:18px">${formatCards(h.holeCards)}</p></div>
-      <div class="stat"><p class="stat-label">Hand category</p><p class="stat-value amber" style="font-size:14px">${h.handCat}</p></div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-      <span class="badge info">PF: ${h.pfAction}</span>
-      <span class="badge info">Street: ${h.streetReached}</span>
-      ${h.boardFlop?`<span class="badge" style="background:#1a2e1a;color:#8fa882">Board: ${h.boardFlop}</span>`:''}
-      <span class="badge ${h.tagQuality==='A-Range'?'ok':h.tagQuality==='B-Range'?'warn':'err'}">${h.tagQuality}</span>
+  const bbCol = h.netBB>=0?'var(--green)':'var(--red)';
+
+  // ── Header ──
+  let body = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+    <div class="stat"><p class="stat-label">Cards</p><p class="stat-value" style="font-size:20px">${formatCards(h.holeCards)}</p></div>
+    <div class="stat"><p class="stat-label">Result</p><p class="stat-value" style="font-size:20px;color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</p></div>
+    <div class="stat"><p class="stat-label">Position</p><p class="stat-value blue" style="font-size:16px">${h.position}</p></div>
+    <div class="stat"><p class="stat-label">Hand type</p><p class="stat-value amber" style="font-size:13px">${h.handCat}<br/><span class="badge ${h.tagQuality==='A-Range'?'ok':h.tagQuality==='B-Range'?'warn':'err'}" style="margin-top:3px">${h.tagQuality}</span></p></div>
+  </div>`;
+
+  // ── Hand story — street by street ──
+  const sa = h.streetActions || {};
+  const streets = [
+    {key:'preflop', label:'Preflop', board:''},
+    {key:'flop', label:'Flop', board:h.boardFlop},
+    {key:'turn', label:'Turn', board:h.boardTurn},
+    {key:'river', label:'River', board:h.boardRiver},
+  ];
+
+  body += `<div class="card" style="margin-bottom:12px">`;
+  body += `<div class="card-title">Hand story</div>`;
+
+  // Show context: who raised preflop
+  if (h.pfRaiser && h.pfRaiser!=='Hero') {
+    body += `<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Villain opened to $${h.pfRaiseAmt}</p>`;
+  } else if (h.pfRaiser==='Hero') {
+    body += `<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Hero opened to $${h.pfRaiseAmt}</p>`;
+  }
+
+  streets.forEach(({key,label,board}) => {
+    const st = sa[key];
+    if (!st && !board) return;
+    const actions = st ? st.actions : [];
+    // Only show streets that were reached and had actions
+    if (key!=='preflop' && !board) return;
+    if (key==='preflop' && !actions.length) return;
+
+    body += `<div style="margin-bottom:10px">`;
+    body += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${label}</span>
+      ${board?`<span style="font-size:13px;font-weight:600;color:var(--text2)">${formatCards(board)}</span>`:''}
     </div>`;
+    if (actions.length) {
+      body += `<div style="background:var(--bg3);border-radius:6px;padding:6px 10px">`;
+      actions.forEach(a => { body += renderAction(a.player||a[0], a.action||a[1]); });
+      body += `</div>`;
+    }
+    body += `</div>`;
+  });
+  body += `</div>`;
+
+  // ── TAG verdict ──
   if (!issues.length) {
-    body += `<div style="background:#1a3320;border:1px solid #2e5030;border-radius:8px;padding:12px 16px">
-      <p style="color:#6db87a;font-size:13px;margin:0;font-weight:600">✓ No TAG violations detected</p>
-      <p style="color:#8fa882;font-size:13px;margin:6px 0 0">This hand appears to follow Hardin's framework correctly. ${h.netBB<0?'The loss is variance — you made the right decisions.':''}</p>
+    body += `<div style="background:#1a3320;border:1px solid #2e5030;border-radius:10px;padding:12px 14px;margin-bottom:12px">
+      <p style="color:var(--green);font-size:14px;margin:0;font-weight:700">✓ No TAG violations</p>
+      <p style="color:var(--text3);font-size:12px;margin:5px 0 0">${h.netBB<0?'The loss is variance — decisions were correct according to Hardin.':'Played correctly.'}</p>
     </div>`;
   } else {
-    body += `<ul class="issue-list">`;
-    issues.forEach(issue=>{
+    body += `<div class="card" style="border-color:#d96060;margin-bottom:12px"><div class="card-title" style="color:var(--red)">TAG violations</div>`;
+    issues.forEach(issue => {
       const ex = ISSUE_EXPLAIN[issue];
       if (!ex) return;
-      body += `<li>
-        <strong>${ex.label}</strong>
-        <span class="badge ${ex.type==='preflop'?'warn':'err'}" style="margin-left:6px">${ex.type}</span>
-        <br/>${ex.explain}
-      </li>`;
+      body += `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          <span style="font-size:14px;font-weight:700;color:var(--text)">${ex.label}</span>
+          <span class="badge ${ex.type==='preflop'?'warn':'err'}">${ex.type}</span>
+        </div>
+        <p style="font-size:12px;color:var(--red);margin:0 0 6px;font-weight:600">${ex.short}</p>
+        <p style="font-size:12px;color:var(--text3);margin:0;line-height:1.65">${ex.explain}</p>
+      </div>`;
     });
-    body += `</ul>`;
+    body += `</div>`;
   }
+
   if (h.reviewFlags.includes('BIG_LOSS')) {
-    body += `<div style="background:#3d1e1e;border:1px solid #d96060;border-radius:8px;padding:10px 14px;margin-top:12px">
-      <p style="color:#d96060;font-size:13px;margin:0;font-weight:600">⚠ Big loss flag (>${2} BB)</p>
-      <p style="color:#a8a0a0;font-size:13px;margin:4px 0 0">Review this hand carefully. Was the loss due to a mistake or pure variance (cooler, bad beat)?</p>
+    body += `<div style="background:#3d1e1e;border-radius:8px;padding:10px 12px">
+      <p style="color:var(--red);font-size:13px;margin:0;font-weight:600">⚠ Big loss — was this a cooler or a mistake?</p>
     </div>`;
   }
+
+  document.getElementById('modal-title').textContent = `${formatCards(h.holeCards).replace(/<[^>]+>/g,'')} · ${h.position} · ${h.date.slice(5)}`;
   document.getElementById('modal-body').innerHTML = body;
   document.getElementById('modal').style.display = 'flex';
 }
