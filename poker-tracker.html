@@ -931,24 +931,54 @@ async function handleFiles(files) {
   renderDashboard();
 }
 
-function renderStoredSessions() {
-  const sessions = {};
-  allHands.forEach(h=>{
-    if (!sessions[h.filename]) sessions[h.filename]={hands:0,dates:new Set(),net:0};
-    sessions[h.filename].hands++;
-    sessions[h.filename].dates.add(h.date);
-    sessions[h.filename].net+=h.netBB;
+function buildSessions(handsArr) {
+  const fileSpans = {};
+  handsArr.forEach(h => {
+    if (!h.filename||!h.date||!h.time) return;
+    const ts = new Date((h.date+' '+h.time).split('/').join('-')).getTime();
+    if (!fileSpans[h.filename]) fileSpans[h.filename]=[ts,ts];
+    else { fileSpans[h.filename][0]=Math.min(fileSpans[h.filename][0],ts); fileSpans[h.filename][1]=Math.max(fileSpans[h.filename][1],ts); }
   });
+  const sorted = Object.entries(fileSpans).sort((a,b)=>a[1][0]-b[1][0]);
+  const merged = [];
+  for (const [fn,[s,e]] of sorted) {
+    if (merged.length && s <= merged[merged.length-1].end + 300000) {
+      merged[merged.length-1].end = Math.max(merged[merged.length-1].end, e);
+      merged[merged.length-1].files.push(fn);
+    } else { merged.push({start:s,end:e,files:[fn]}); }
+  }
+  return merged.map(sess => {
+    const fset = new Set(sess.files);
+    const sh = handsArr.filter(h=>fset.has(h.filename));
+    const netBB = sh.reduce((s,h)=>s+h.netBB,0);
+    const netUSD = sh.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
+    const durMin = (sess.end-sess.start)/60000;
+    const d = new Date(sess.start);
+    const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
+    return {date, durMin, hands:sh.length, netBB, netUSD, files:sess.files.length};
+  });
+}
+
+function renderStoredSessions() {
   const el = document.getElementById('stored-sessions');
-  if (!Object.keys(sessions).length) { el.innerHTML='<p style="color:#6b7d62;font-size:13px">No sessions stored</p>'; return; }
-  el.innerHTML = Object.entries(sessions).map(([name,d])=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2e3d2b">
-      <div>
-        <span style="font-size:13px;color:#a8d4b0;font-weight:500">${name}</span>
-        <span style="font-size:11px;color:#6b7d62;margin-left:8px">${d.hands} hands</span>
-      </div>
-      <span class="badge ${d.net>=0?'ok':'err'}">${d.net>=0?'+':''}${d.net.toFixed(1)} BB</span>
-    </div>`).join('');
+  if (!allHands.length) { el.innerHTML='<p style="color:var(--muted);font-size:13px">No sessions stored</p>'; return; }
+  const sessions = buildSessions(allHands);
+  const totalMin = sessions.reduce((s,x)=>s+x.durMin,0);
+  const totalH = Math.floor(totalMin/60); const totalM = Math.round(totalMin%60);
+  el.innerHTML = '<p style="font-size:12px;color:var(--muted);margin:0 0 10px">'+sessions.length+' sessions \u00b7 '+totalH+'h '+totalM+'m total \u00b7 '+allHands.length+' hands</p>' +
+  sessions.map(s=>{
+    const col = s.netBB>=0?'var(--green)':'var(--red)';
+    const h = Math.floor(s.durMin/60); const m = Math.round(s.durMin%60);
+    const durStr = h>0 ? h+'h '+m+'m' : m+'m';
+    const usdStr = (s.netUSD>=0?'+':'-')+'$'+Math.abs(s.netUSD).toFixed(2);
+    const bbStr = (s.netBB>=0?'+':'')+s.netBB.toFixed(1)+' BB';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">'
+      +'<div><span style="font-size:13px;color:var(--text2);font-weight:600">'+s.date+'</span>'
+      +'<span style="font-size:11px;color:var(--muted);margin-left:8px">'+durStr+' \u00b7 '+s.hands+' hands \u00b7 '+s.files+' file'+(s.files>1?'s':'')+'</span></div>'
+      +'<div style="text-align:right"><span style="font-size:13px;font-weight:700;color:'+col+'">'+bbStr+'</span>'
+      +'<span style="font-size:11px;color:'+col+';margin-left:6px">'+usdStr+'</span></div>'
+      +'</div>';
+  }).join('');
 }
 
 async function clearAllData() {
