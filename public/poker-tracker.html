@@ -387,27 +387,23 @@ let filteredHandsCache = [];
 // ─── GITHUB STORAGE ───────────────────────────────────────────
 async function loadFromGitHub() {
   try {
-    // Use raw API — no 1MB limit unlike contents API
-    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+    const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
     });
     if (r.status === 404) return [];
-    const content = await r.json();
-    return Array.isArray(content) ? content : [];
+    const d = await r.json();
+    const content = JSON.parse(atob(d.content.replace(/\n/g, '')));
+    return content;
   } catch(e) { console.error('Load error:', e); return []; }
 }
 
 async function saveToGitHub(hands) {
   try {
-    // Get current SHA via refs API (works regardless of file size)
     let sha = null;
-    const checkR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    const check = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
     });
-    if (checkR.ok) {
-      const cd = await checkR.json();
-      sha = cd.sha || null;
-    }
+    if (check.ok) { const d = await check.json(); sha = d.sha; }
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(hands))));
     const body = { message: `Update tracker data – ${new Date().toISOString().slice(0,10)}`, content };
     if (sha) body.sha = sha;
