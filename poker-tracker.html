@@ -11,7 +11,7 @@
 *,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 :root{--bg:#1a2218;--bg2:#1f2e1c;--bg3:#162014;--border:#2e3d2b;--border2:#3a5035;--green:#6db87a;--green2:#a8d4b0;--green3:#4a9d5e;--red:#d96060;--amber:#d4a847;--blue:#70b4d4;--muted:#6b7d62;--text:#e8f0e4;--text2:#c8dbc4;--text3:#8fa882;--nav-h:56px;--safe-b:env(safe-area-inset-bottom,0px)}
 html,body{margin:0;padding:0;height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden}
-.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 16px)}
+.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 60px)}
 
 /* HEADER */
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -1738,14 +1738,19 @@ function renderAnalysis() {
       const ex=ISSUE_EXPLAIN[issue];
       const aff=hands.filter(h=>h.tagIssues.includes(issue));
       const affNet=aff.reduce((s,h)=>s+h.netBB,0);
-      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
-        <div>
-          <p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p>
-          <p style="font-size:11px;color:var(--muted);margin:1px 0 0">${ex?.type||''}</p>
+      return `<div onclick="showViolationHands('${issue}')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div>
+            <p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p>
+            <p style="font-size:11px;color:var(--muted);margin:1px 0 0">${ex?.type||''}</p>
+          </div>
         </div>
-        <div style="text-align:right">
-          <span class="badge err">${count}x</span>
-          <p style="font-size:11px;color:var(--red);margin:2px 0 0">${affNet.toFixed(1)} BB</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="text-align:right">
+            <span class="badge err">${count}x</span>
+            <p style="font-size:11px;color:var(--red);margin:2px 0 0">${affNet.toFixed(1)} BB</p>
+          </div>
+          <span style="color:var(--muted);font-size:18px">›</span>
         </div>
       </div>`;
     }).join('')}
@@ -1834,6 +1839,47 @@ function renderGrid() {
   }
 
   el.innerHTML = '<div style="display:flex;flex-direction:column;gap:1px">' + rows + '</div>';
+}
+
+function showViolationHands(issue) {
+  var tf = getEl('analysis-filter');
+  var hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date')
+    .filter(function(h){ return h.tagIssues.indexOf(issue) !== -1; });
+  if (!hands.length) { showToast('No hands'); return; }
+  var ex = ISSUE_EXPLAIN[issue] || {};
+  var net = hands.reduce(function(s,h){return s+h.netBB;},0);
+  var bbCol = net>=0?'var(--green)':'var(--red)';
+
+  hands.sort(function(a,b){return a.netBB-b.netBB;});
+
+  var body = '<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
+    + '<p style="font-size:13px;color:var(--red);font-weight:700;margin:0 0 4px">' + (ex.short||'') + '</p>'
+    + '<p style="font-size:12px;color:var(--text3);margin:0;line-height:1.6">' + (ex.explain||'') + '</p>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:space-between;margin-bottom:10px">'
+    + '<span style="font-size:12px;color:var(--muted)">' + hands.length + ' hands</span>'
+    + '<span style="font-size:13px;font-weight:700;color:' + bbCol + '">' + (net>=0?'+':'') + net.toFixed(1) + ' BB</span>'
+    + '</div>';
+
+  for (var i=0;i<hands.length;i++){
+    var h = hands[i];
+    var c = h.netBB>=0?'var(--green)':'var(--red)';
+    body += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:6px;align-items:center">'
+      + '<span style="font-size:14px;font-weight:700;color:var(--text)">' + formatCards(h.holeCards) + '</span>'
+      + '<span class="badge info">' + h.position + '</span>'
+      + '<span style="font-size:11px;color:var(--muted)">' + h.date.slice(5) + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span style="font-size:13px;font-weight:700;color:' + c + '">' + (h.netBB>=0?'+':'') + h.netBB.toFixed(1) + ' BB</span>'
+      + '<button onclick="closeModal();showHandDetail(\'' + h.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  document.getElementById('modal-title').textContent = (ex.label||issue) + ' — ' + hands.length + ' hands';
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
 }
 
 function showGridDetail(notation) {
@@ -1937,9 +1983,9 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-console.log('Poker Tracker v2.3');
+console.log('Poker Tracker v2.4');
 var vEl=document.createElement('div');
-vEl.textContent='v2.3';
+vEl.textContent='v2.4';
 vEl.style.cssText='position:fixed;bottom:64px;right:8px;font-size:9px;color:#4a5d47;z-index:5;pointer-events:none';
 document.body.appendChild(vEl);
 init();
