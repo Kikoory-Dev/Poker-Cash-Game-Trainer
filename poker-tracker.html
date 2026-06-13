@@ -1745,6 +1745,7 @@ function renderAnalysis() {
       const ex=ISSUE_EXPLAIN[issue];
       const aff=hands.filter(h=>h.tagIssues.includes(issue));
       const affNet=aff.reduce((s,h)=>s+h.netBB,0);
+      const affNetCol = affNet>=0 ? 'var(--green)' : 'var(--red)';
       return `<div onclick="showViolationHands('${issue}')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
         <div style="display:flex;align-items:center;gap:8px">
           <div>
@@ -1755,7 +1756,7 @@ function renderAnalysis() {
         <div style="display:flex;align-items:center;gap:10px">
           <div style="text-align:right">
             <span class="badge err">${count}x</span>
-            <p style="font-size:11px;color:var(--red);margin:2px 0 0">${affNet.toFixed(1)} BB</p>
+            <p style="font-size:11px;color:${affNetCol};margin:2px 0 0">${affNet>=0?'+':''}${affNet.toFixed(1)} BB</p>
           </div>
           <span style="color:var(--muted);font-size:18px">›</span>
         </div>
@@ -1863,17 +1864,33 @@ function showViolationHands(issue) {
   var ex = ISSUE_EXPLAIN[issue] || {};
   var net = hands.reduce(function(s,h){return s+h.netBB;},0);
   var bbCol = net>=0?'var(--green)':'var(--red)';
+  var winners = hands.filter(function(h){return h.netBB>0;});
+  var losers = hands.filter(function(h){return h.netBB<0;});
+  var wonBB = winners.reduce(function(s,h){return s+h.netBB;},0);
+  var lostBB = losers.reduce(function(s,h){return s+h.netBB;},0);
 
   hands.sort(function(a,b){return a.netBB-b.netBB;});
 
+  var netNote = net>=0
+    ? 'Net positive this sample — variance bailed you out. The flag still stands: by Hardin TAG rules these are -EV long-term.'
+    : 'Net negative — these cost you money this sample.';
+
   var body = '<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
-    + '<p style="font-size:13px;color:var(--red);font-weight:700;margin:0 0 4px">' + (ex.short||'') + '</p>'
+    + '<p style="font-size:13px;color:var(--text);font-weight:700;margin:0 0 4px">' + (ex.short||'') + '</p>'
     + '<p style="font-size:12px;color:var(--text3);margin:0;line-height:1.6">' + (ex.explain||'') + '</p>'
     + '</div>'
-    + '<div style="display:flex;justify-content:space-between;margin-bottom:10px">'
-    + '<span style="font-size:12px;color:var(--muted)">' + hands.length + ' hands</span>'
-    + '<span style="font-size:13px;font-weight:700;color:' + bbCol + '">' + (net>=0?'+':'') + net.toFixed(1) + ' BB</span>'
-    + '</div>';
+    + '<div style="display:flex;gap:8px;margin-bottom:10px">'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Net</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:' + bbCol + '">' + (net>=0?'+':'') + net.toFixed(1) + '</p></div>'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Won (' + winners.length + ')</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--green)">+' + wonBB.toFixed(1) + '</p></div>'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Lost (' + losers.length + ')</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--red)">' + lostBB.toFixed(1) + '</p></div>'
+    + '</div>'
+    + '<p style="font-size:11px;color:var(--text3);margin:0 0 12px;line-height:1.5;font-style:italic">' + netNote + '</p>';
 
   for (var i=0;i<hands.length;i++){
     var h = hands[i];
@@ -2004,9 +2021,9 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-console.log('Poker Tracker v2.7');
+console.log('Poker Tracker v2.8');
 var vEl=document.createElement('div');
-vEl.textContent='v2.7';
+vEl.textContent='v2.8';
 vEl.style.cssText='position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);right:6px;font-size:10px;color:#6db87a;background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:6px;z-index:9999;pointer-events:none';
 document.body.appendChild(vEl);
 init();
