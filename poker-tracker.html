@@ -13,7 +13,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 :root{--bg:#1a2218;--bg2:#1f2e1c;--bg3:#162014;--border:#2e3d2b;--border2:#3a5035;--green:#6db87a;--green2:#a8d4b0;--green3:#4a9d5e;--red:#d96060;--amber:#d4a847;--blue:#70b4d4;--muted:#6b7d62;--text:#e8f0e4;--text2:#c8dbc4;--text3:#8fa882;--nav-h:56px;--safe-b:env(safe-area-inset-bottom,0px)}
-html{height:100%}body{margin:0;padding:0;min-height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+html{height:100%;overscroll-behavior:none}body{margin:0;padding:0;min-height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden;overscroll-behavior-y:none}
 .app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 60px)}
 
 /* HEADER */
@@ -2021,9 +2021,9 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-console.log('Poker Tracker v2.8');
+console.log('Poker Tracker v2.9');
 var vEl=document.createElement('div');
-vEl.textContent='v2.8';
+vEl.textContent='v2.9';
 vEl.style.cssText='position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);right:6px;font-size:10px;color:#6db87a;background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:6px;z-index:9999;pointer-events:none';
 document.body.appendChild(vEl);
 init();
