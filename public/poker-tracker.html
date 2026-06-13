@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -10,8 +13,8 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
 :root{--bg:#1a2218;--bg2:#1f2e1c;--bg3:#162014;--border:#2e3d2b;--border2:#3a5035;--green:#6db87a;--green2:#a8d4b0;--green3:#4a9d5e;--red:#d96060;--amber:#d4a847;--blue:#70b4d4;--muted:#6b7d62;--text:#e8f0e4;--text2:#c8dbc4;--text3:#8fa882;--nav-h:56px;--safe-b:env(safe-area-inset-bottom,0px)}
-html,body{margin:0;padding:0;height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden}
-.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 16px)}
+html{height:100%;overscroll-behavior:none}body{margin:0;padding:0;min-height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden;overscroll-behavior-y:none}
+.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 60px)}
 
 /* HEADER */
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
@@ -153,7 +156,14 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
       </select>
+      <input type="date" id="dash-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()"><input type="date" id="dash-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
       <select id="dash-stakes" onchange="renderDashboard()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -209,7 +219,14 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
       </select>
+      <input type="date" id="hands-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()"><input type="date" id="hands-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
       <select id="hands-stakes" onchange="renderHands()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -242,7 +259,14 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
       </select>
+      <input type="date" id="pos-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()"><input type="date" id="pos-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
       <select id="pos-stakes" onchange="renderPositions()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -259,7 +283,14 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
       </select>
+      <input type="date" id="mistakes-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()"><input type="date" id="mistakes-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
       <select id="mistakes-stakes" onchange="renderMistakes()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -306,6 +337,10 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
     <span>Hands</span>
   </button>
+  <button class="bnav-btn" onclick="switchTab('grid',this)" id="bnav-grid">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="4" height="4" rx="0.5"/><rect x="10" y="3" width="4" height="4" rx="0.5"/><rect x="17" y="3" width="4" height="4" rx="0.5"/><rect x="3" y="10" width="4" height="4" rx="0.5"/><rect x="10" y="10" width="4" height="4" rx="0.5"/><rect x="17" y="10" width="4" height="4" rx="0.5"/><rect x="3" y="17" width="4" height="4" rx="0.5"/><rect x="10" y="17" width="4" height="4" rx="0.5"/><rect x="17" y="17" width="4" height="4" rx="0.5"/></svg>
+    <span>Grid</span>
+  </button>
 </nav>
 
   <!-- ANALYSIS -->
@@ -315,7 +350,14 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
       </select>
+      <input type="date" id="analysis-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()"><input type="date" id="analysis-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
       <select id="analysis-stakes" onchange="renderAnalysis()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -325,6 +367,40 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <div id="analysis-body"></div>
   </div>
 
+  <!-- HAND COMBO GRID -->
+  <div class="section" id="tab-grid">
+    <div class="filter-row">
+      <select id="grid-filter" onchange="renderGrid()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="grid-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()"><input type="date" id="grid-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
+      <select id="grid-stakes" onchange="renderGrid()">
+        <option value="all">All stakes</option>
+        <option value="NL25">NL25</option>
+        <option value="NL10">NL10</option>
+      </select>
+      <select id="grid-metric" onchange="renderGrid()">
+        <option value="net">Net $</option>
+        <option value="bb100">BB/100</option>
+        <option value="hands">Hands</option>
+      </select>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);cursor:pointer;white-space:nowrap">
+        <input type="checkbox" id="grid-exclude-blindfolds" onchange="renderGrid()" style="accent-color:var(--green)">
+        Exclude folded blinds
+      </label>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Tap any combo to review · Green = won · Red = lost</div>
+    <div id="grid-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
+  </div>
+
   <!-- STARTING HANDS -->
   <div class="section" id="tab-starting">
     <div class="filter-row">
@@ -332,7 +408,14 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
       </select>
+      <input type="date" id="starting-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()"><input type="date" id="starting-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
       <select id="starting-stakes" onchange="renderStartingHands()">
         <option value="all">All stakes</option>
         <option value="NL25">NL25</option>
@@ -387,9 +470,40 @@ let filteredHandsCache = [];
 // ─── GITHUB STORAGE ───────────────────────────────────────────
 async function loadFromGitHub() {
   try {
-    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
-    if (r.status === 404) return [];
-    const content = await r.json();
+    // Step 1: get the latest tree SHA (not CDN-cached, always fresh)
+    const refR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/refs/heads/main`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const refData = await refR.json();
+    const commitSha = refData.object.sha;
+
+    // Step 2: get blob SHA for our file from the commit tree
+    const commitR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/commits/${commitSha}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const commitData = await commitR.json();
+    const treeSha = commitData.tree.sha;
+
+    // Step 3: fetch blob directly — bypasses CDN entirely
+    const treeR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/trees/${treeSha}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const treeData = await treeR.json();
+    const blob = treeData.tree.find(f => f.path === GITHUB_FILE);
+    if (!blob) return [];
+
+    // Step 4: fetch the actual blob content
+    const blobR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/blobs/${blob.sha}`, {
+      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    const blobData = await blobR.json();
+    // Large files use truncated=true — use raw URL with blob SHA as cache key
+    if (blobData.truncated || !blobData.content) {
+      const rawR = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?blob=${blob.sha}`);
+      const content = await rawR.json();
+      return Array.isArray(content) ? content : [];
+    }
+    const content = JSON.parse(atob(blobData.content.replace(/\n/g, '')));
     return Array.isArray(content) ? content : [];
   } catch(e) { console.error('Load error:', e); return []; }
 }
@@ -446,6 +560,7 @@ function classifyHand(cards) {
     notation=`${rn(hi)}${rn(lo)}${suited?'s':'o'}`;
     if (hi===14&&lo>=10) cat='Premium';
     else if (hi===14&&lo>=7) cat='Strong Ace';
+    else if (hi===14&&suited) cat='Strong Ace';  // suited aces (A2s-A6s) always playable
     else if (hi===14) cat='Weak Ace';
     else if (hi>=12&&lo>=10) cat='Broadway';
     else if (hi===13&&lo>=10) cat='Broadway';
@@ -454,10 +569,29 @@ function classifyHand(cards) {
     else if (suited) cat='Suited Trash';
     else cat='Trash';
   }
-  const A=['Premium Pair','Mid Pair','Premium','Broadway','Suited Broadway','Strong Ace'];
-  const B=['Low Pair','Suited Connector'];
-  const quality=A.includes(cat)?'A-Range':B.includes(cat)?'B-Range':'Outside';
+  // Quality based on actual Hardin ranges
+  const earlyMust = new Set([...(HARDIN_RANGES.UTG?.must||[]),...(HARDIN_RANGES.HJ?.must||[])]);
+  const anyMust = new Set(Object.values(HARDIN_RANGES).flatMap(r=>r.must||[]));
+  const anyAll = new Set(Object.values(HARDIN_RANGES).flatMap(r=>r.all||[]));
+  const quality = earlyMust.has(notation) ? 'A-Range' : anyAll.has(notation) ? 'B-Range' : 'Outside';
   return {cat, notation, quality};
+}
+
+function extractStreetActions(raw) {
+  const streets = {};
+  const parts = raw.split(/\*\*\* (?:FIRST )?(?:FLOP|TURN|RIVER) \*\*\*[^\n]*\n/);
+  const headers = [...raw.matchAll(/\*\*\* ((?:FIRST )?FLOP|TURN|RIVER) \*\*\* (\[[^\]]+\])?/g)];
+  const pfStart = raw.indexOf('*** HOLE CARDS ***');
+  const pfEnd = raw.search(/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/);
+  const pfBlock = pfStart >= 0 ? raw.slice(pfStart, pfEnd > 0 ? pfEnd : undefined) : '';
+  streets.preflop = {board:'', actions:[...pfBlock.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}))};
+  headers.forEach((hdr,i) => {
+    const sname = hdr[1].replace('FIRST ','').toLowerCase();
+    const board = hdr[2]||'';
+    const block = parts[i+1]||'';
+    streets[sname] = {board, actions:[...block.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}))};
+  });
+  return streets;
 }
 
 function parseHands(text, filename) {
@@ -487,6 +621,10 @@ function parseHands(text, filename) {
     const heroSeat = seatNums.find(n=>seatMap[n]==='Hero'); if (!heroSeat) continue;
     h.position = getPosition(heroSeat, btnSeat, seatNums);
     h.numPlayers = seatNums.length;
+    // Build seat→position map for villain labeling in review
+    const seatPosMap = {};
+    seatNums.forEach(sn => { seatPosMap[seatMap[sn]] = getPosition(sn, btnSeat, seatNums); });
+    h.seatPositions = seatPosMap;
     const sm = raw.match(new RegExp(`Seat ${heroSeat}: Hero \\(\\$([\\.\\d]+) in chips\\)`));
     h.stackStart = sm ? parseFloat(sm[1]) : 25;
     const hcm = raw.match(/Dealt to Hero \[([^\]]+)\]/); h.holeCards = hcm ? hcm[1] : '';
@@ -502,47 +640,123 @@ function parseHands(text, filename) {
     h.vpip = heroPF.some(a=>['calls','raises'].includes(a)) ? 1 : 0;
     h.pfr = heroPF.includes('raises') ? 1 : 0;
     // Did someone else raise before Hero acted preflop?
-    const otherRaises = [...pfText.matchAll(/(?!Hero)\w+: raises/g)];
-    h.facedRaise = otherRaises.length > 0 ? 1 : 0;
-    if (h.pfr) h.pfAction='RAISE';
-    else if (heroPF.includes('calls')) h.pfAction='CALL';
+    const otherRaisers = [...pfText.matchAll(/^(\w+): raises/gm)].filter(m=>m[1]!=='Hero');
+    h.facedRaise = otherRaisers.length > 0 ? 1 : 0;
+    // pfAction = last voluntary action (calls overrides raises for 3bet-then-call-4bet spots)
+    if (heroPF.includes('calls')) h.pfAction='CALL';
+    else if (h.pfr) h.pfAction='RAISE';
     else if (h.inBB && heroPF.includes('checks')) h.pfAction='CHECK_BB';
     else h.pfAction='FOLD';
-    if (/\*\*\* RIVER \*\*\*/.test(raw)) h.streetReached='River';
-    else if (/\*\*\* TURN \*\*\*/.test(raw)) h.streetReached='Turn';
-    else if (/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/.test(raw)) h.streetReached='Flop';
-    else h.streetReached='Preflop';
-    h.sawFlop = h.streetReached!=='Preflop' && h.pfAction!=='FOLD' ? 1 : 0;
+    // streetReached = last street where Hero was still active (folded hands = Preflop)
+    if (h.pfAction === 'FOLD') {
+      h.streetReached = 'Preflop';
+    } else {
+      // Check if Hero has actions on each street
+      const rawAfterPF = raw.slice(raw.search(/\*\*\* (?:FLOP|FIRST FLOP|TURN|RIVER) \*\*\*/));
+      const riverSection = raw.match(/\*\*\* RIVER \*\*\*[\s\S]*?(?=\*\*\*|$)/);
+      const turnSection  = raw.match(/\*\*\* TURN \*\*\*[\s\S]*?(?=\*\*\* RIVER|\*\*\* SHOW|\*\*\* SUM|$)/);
+      const flopSection  = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\*[\s\S]*?(?=\*\*\* TURN|\*\*\* SHOW|\*\*\* SUM|$)/);
+      if (riverSection && /Hero:/.test(riverSection[0])) h.streetReached = 'River';
+      else if (turnSection && /Hero:/.test(turnSection[0])) h.streetReached = 'Turn';
+      else if (flopSection && /Hero:/.test(flopSection[0])) h.streetReached = 'Flop';
+      else if (/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/.test(raw)) h.streetReached = 'Flop';
+      else h.streetReached = 'Preflop';
+    }
+    h.sawFlop = h.streetReached !== 'Preflop' && h.pfAction !== 'FOLD' ? 1 : 0;
     h.showdown = /Hero: shows/.test(raw) ? 1 : 0;
+    // Store villain showdown cards
+    const villainShows = [...raw.matchAll(/(\w+): shows \[([^\]]+)\]/g)]
+      .filter(m => m[1] !== 'Hero')
+      .map(m => ({
+        player: m[1],
+        cards: m[2],
+        pos: ''  // filled below
+      }));
+    h.villainShown = villainShows;
     // Collect winnings — GGPoker uses both "collected" and "won"
     const heroSummLine = summText.match(new RegExp(`Seat ${heroSeat}: Hero[^\n]*`))?.[0]||'';
     const collM = heroSummLine.match(/(?:collected|won) \(\$([\d.]+)\)/);
     const collected = collM ? parseFloat(collM[1]) : 0;
-    // Actual blind posts
+    // Contribution: raise "to Y" = total, subtract uncalled returns, blinds only if no raise
+    const heroRaisesY = [...raw.matchAll(/Hero: raises \$[\d.]+ to \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
+    const heroCalls   = [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
+    const heroBetsArr = [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
+    const uncalledArr = [...raw.matchAll(/Uncalled bet \(\$([\d.]+)\) returned to Hero/g)].map(m=>parseFloat(m[1]));
     const sbPost = raw.match(/Hero: posts small blind \$([\d.]+)/);
     const bbPost = raw.match(/Hero: posts big blind \$([\d.]+)/);
-    let contrib = (h.inSB&&sbPost ? parseFloat(sbPost[1]) : 0) + (h.inBB&&bbPost ? parseFloat(bbPost[1]) : 0);
-    [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
-    [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].forEach(m=>contrib+=parseFloat(m[1]));
-    [...raw.matchAll(/Hero: raises \$([\d.]+) to /g)].forEach(m=>contrib+=parseFloat(m[1]));
+    let contrib = heroRaisesY.reduce((s,v)=>s+v,0)
+                + heroCalls.reduce((s,v)=>s+v,0)
+                + heroBetsArr.reduce((s,v)=>s+v,0)
+                - uncalledArr.reduce((s,v)=>s+v,0);
+    if (!heroRaisesY.length) {
+      if (h.inSB && sbPost) contrib += parseFloat(sbPost[1]);
+      if (h.inBB && bbPost) contrib += parseFloat(bbPost[1]);
+    }
+    contrib = Math.max(0, Math.round(contrib*100)/100);
     h.netUSD = Math.round((collected-contrib)*100)/100;
     h.netBB = Math.round(h.netUSD/fileBB*100)/100;
     const fm = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\* \[([^\]]+)\]/);
     h.boardFlop = fm ? fm[1] : '';
+    const tm2 = raw.match(/\*\*\* TURN \*\*\* \[[^\]]+\] \[([^\]]+)\]/);
+    h.boardTurn = tm2 ? tm2[1] : '';
+    const rm2 = raw.match(/\*\*\* RIVER \*\*\* \[[^\]]+\] \[([^\]]+)\]/);
+    h.boardRiver = rm2 ? rm2[1] : '';
+    // Street-by-street actions for review
+    h.streetActions = extractStreetActions(raw);
+    const pfRaiserM = pfText.match(/(?!Hero)(\w+): raises \$[\d.]+ to \$([\d.]+)/);
+    h.pfRaiser = pfRaiserM ? pfRaiserM[1] : '';
+    h.pfRaiseAmt = pfRaiserM ? pfRaiserM[2] : '';
     h.cbetOpp=0; h.cbetMade=0;
     if (h.pfr && h.sawFlop) {
       const fp = raw.split(/\*\*\* (?:FIRST )?FLOP \*\*\*[^\n]*\n/);
       if (fp.length>1) {
         const flopOnly = fp[1].split(/\*\*\* TURN \*\*\*/)[0];
-        if (/Hero:/.test(flopOnly)) { h.cbetOpp=1; if (/Hero: bets/.test(flopOnly)) h.cbetMade=1; }
+        if (/Hero:/.test(flopOnly)) {
+          // Only a c-bet opportunity if Hero acts FIRST on flop (not facing a bet already)
+          // Check if first action in flop block is Hero's
+          const firstActor = flopOnly.match(/(\w+):/);
+          const heroActsFirst = firstActor && firstActor[1] === 'Hero';
+          // Also exclude 3-bet pots where Hero called (villain is aggressor, not Hero)
+          const calledThreeBet = h.facedRaise && /Hero: calls/.test(raw.split(/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/)[0]);
+          if (heroActsFirst && !calledThreeBet) {
+            h.cbetOpp=1;
+            if (/Hero: bets/.test(flopOnly)) h.cbetMade=1;
+          }
+        }
       }
     }
     const issues = [];
-    if (h.vpip && h.tagQuality==='Outside') issues.push('VPIP_TRASH');
-    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise) issues.push('LIMP_OOP');
-    if (h.pfAction==='CALL' && !h.pfr && ['Trash','Weak Ace','Suited Trash'].includes(h.handCat) && !h.inBB) issues.push('CALL_WEAK');
+    // VPIP_TRASH: played a hand not in any Hardin range for this position
+    const posRangeCheck = HARDIN_RANGES[h.position];
+    if (h.vpip && posRangeCheck && !posRangeCheck.all.includes(h.handNotation)) issues.push('VPIP_TRASH');
+    // LIMP_OOP: called from SB facing a raise with a hand that should 3-bet or fold
+    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr) issues.push('LIMP_OOP');
+    // LIMP: limped from non-blind position with a raiseable hand
+    if (h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise) {
+      const limpRange = HARDIN_RANGES[h.position];
+      if (limpRange && limpRange.all.includes(h.handNotation)) issues.push('LIMP');
+    }
+    // CALL_WEAK: cold-called a raise with a hand outside Hardin's range (not already flagged as VPIP_TRASH)
+    if (h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise && !issues.includes('VPIP_TRASH')) {
+      const callRange = HARDIN_RANGES[h.position];
+      if (!callRange || !callRange.all.includes(h.handNotation)) issues.push('CALL_WEAK');
+    }
     if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
-    if (h.pfAction==='FOLD' && h.tagQuality==='A-Range' && ['BTN','CO','HJ'].includes(h.position)) issues.push('FOLD_STRONG_LP');
+    // CALL_4BET: Hero 3-bet, faced a 4-bet, called with hand outside continue range
+    if (h.pfr && h.facedRaise && h.pfAction==='CALL') {
+      // Check if there were 2 raises before Hero's call (Hero raised, villain re-raised = 4-bet)
+      const preFlopRaises = (h.streetActions?.preflop?.actions||[]).filter(a=>a.action&&a.action.startsWith('raises'));
+      const heroRaiseIdx = preFlopRaises.findIndex(a=>a.player==='Hero');
+      const villainRaisedAfterHero = heroRaiseIdx>=0 && preFlopRaises.slice(heroRaiseIdx+1).some(a=>a.player!=='Hero');
+      if (villainRaisedAfterHero) {
+        const continueRange = CONTINUE_VS_4BET[h.position] || [];
+        if (!continueRange.includes(h.handNotation)) issues.push('CALL_4BET');
+      }
+    }
+    // FOLD_STRONG_LP: folded a must-raise hand in a true RFI spot (no prior raise)
+    // If someone already raised, folding is often correct — different range applies
+    const foldPosRange = HARDIN_RANGES[h.position];
+    if (h.pfAction==='FOLD' && !h.facedRaise && foldPosRange && foldPosRange.must.includes(h.handNotation)) issues.push('FOLD_STRONG_LP');
     h.tagIssues = issues;
     h.tagCompliant = issues.length===0 ? 1 : 0;
     const reviews = [];
@@ -584,10 +798,22 @@ const ISSUE_EXPLAIN = {
     explain:`Hardin emphasizes the c-bet as a core profit tool. When you raise preflop, you represent a strong range. On most flops, your opponent misses (they miss ~2/3 of the time). A c-bet of 50-75% pot here takes down the pot immediately. Checking gives your opponent a free card and signals weakness. Against one opponent on a dry board, Hardin recommends c-betting almost always.`
   },
   FOLD_STRONG_LP: {
-    label:'Folded strong hand in late position',
+    label:'Folded a must-raise hand',
     type:'preflop',
-    short:'Folded an A-range hand (KQo, KJo, ATo+) from BTN/CO/HJ — missed a steal or value spot.',
-    explain:`Late position is your biggest edge in poker. Hardin's TAG ranges have wide opens from BTN/CO/HJ precisely because you act last post-flop. Folding A-range hands here forfeits fold equity (nobody else in the pot = free steal), and gives up value against wider calling ranges. From BTN especially, Hardin opens very wide. These hands should be raises, not folds.`
+    short:'Folded a hand that Hardin says must be raised from this position.',
+    explain:'Late position is your biggest edge. Hardin defines must-raise hands per position — these are not optional. Folding them gives up fold equity (free steal when everyone folds), position advantage postflop, and value against wider calling ranges. These hands should always be opened.'
+  },
+  CALL_4BET: {
+    label:'Called a 4-bet out of range',
+    type:'preflop',
+    short:'You 3-bet, faced a 4-bet, called with hand outside Hardin continue range.',
+    explain:"Hardin's vs 3-bet section defines exactly which hands are worth continuing when facing a 4-bet. From most positions this is QQ+, AKs only. Everything else should fold. Calling a 4-bet with hands like AJs, KQs, JJ (from UTG/HJ) costs significant equity — you're likely up against AA/KK and will rarely be able to continue profitably post-flop. Fold and preserve your stack."
+  },
+  LIMP: {
+    label:'Limped with a raiseable hand',
+    type:'preflop',
+    short:'Called the BB instead of raising — limping is almost never correct in TAG poker.',
+    explain:"Hardin's TAG strategy has no limp range. If a hand is worth playing, it's worth raising. Limping gives up fold equity, lets the BB see a cheap flop with any two cards, and signals weakness. Raise or fold — there is no in-between in TAG preflop play."
   }
 };
 
@@ -607,15 +833,52 @@ function formatCards(cards) {
 }
 
 // ─── FILTER UTILITY ───────────────────────────────────────────
-function filterByTime(hands, tf) {
+function filterByTime(hands, tf, dateInputId) {
   if (tf==='all') return hands;
-  if (tf==='may') return hands.filter(h=>h.date.startsWith('2026/05'));
-  if (tf==='june') return hands.filter(h=>h.date.startsWith('2026/06'));
+  if (tf==='may') return hands.filter(function(h){return h.date.startsWith('2026/05');});
+  if (tf==='june') return hands.filter(function(h){return h.date.startsWith('2026/06');});
+  if (tf==='last7') {
+    var d=new Date(); d.setDate(d.getDate()-7);
+    return hands.filter(function(h){return new Date(h.date.split('/').join('-'))>=d;});
+  }
+  if (tf==='last30') {
+    var d=new Date(); d.setDate(d.getDate()-30);
+    return hands.filter(function(h){return new Date(h.date.split('/').join('-'))>=d;});
+  }
+  if (tf==='last3s'||tf==='last5s'||tf==='last10s') {
+    var n = tf==='last3s'?3:tf==='last5s'?5:10;
+    var sessions = buildSessions(allHands);
+    sessions.sort(function(a,b){return b.start-a.start;});
+    var lastN = sessions.slice(0,n);
+    var fileSet = {};
+    lastN.forEach(function(s){s.fileList.forEach(function(f){fileSet[f]=true;});});
+    return hands.filter(function(h){return fileSet[h.filename];});
+  }
+  if (tf==='date' && dateInputId) {
+    var elF=document.getElementById(dateInputId+'-from');
+    var elT=document.getElementById(dateInputId+'-to');
+    if (elF) elF.style.display='inline-block';
+    if (elT) elT.style.display='inline-block';
+    var from=elF&&elF.value?elF.value.split('-').join('/'):'';
+    var to=elT&&elT.value?elT.value.split('-').join('/'):'';
+    if (!from && !to) return hands;
+    return hands.filter(function(h){
+      if (from && h.date < from) return false;
+      if (to && h.date > to) return false;
+      return true;
+    });
+  }
+  if (dateInputId) {
+    var eF=document.getElementById(dateInputId+'-from');
+    var eT=document.getElementById(dateInputId+'-to');
+    if (eF) eF.style.display='none';
+    if (eT) eT.style.display='none';
+  }
   return hands;
 }
 
-function filterHands(hands, tf, stakes, gameType) {
-  let h = filterByTime(hands, tf);
+function filterHands(hands, tf, stakes, gameType, dateInputId) {
+  let h = filterByTime(hands, tf, dateInputId);
   if (stakes && stakes!=='all') h = h.filter(x=>x.stakes===stakes);
   if (gameType && gameType!=='all') h = h.filter(x=>x.gameType===gameType);
   return h;
@@ -636,12 +899,13 @@ function switchTab(tab, btn) {
   if (tab==='upload') renderStoredSessions();
   if (tab==='starting') renderStartingHands();
   if (tab==='analysis') renderAnalysis();
+  if (tab==='grid') renderGrid();
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────
 function renderDashboard() {
   const tf = getEl('dash-filter');
-  const hands = filterHands(allHands, tf, getEl('dash-stakes'), getEl('dash-type'));
+  const hands = filterHands(allHands, tf, getEl('dash-stakes'), getEl('dash-type'), 'dash-date');
   const netBB = hands.reduce((s,h)=>s+h.netBB,0);
   const bb100 = hands.length ? (netBB/hands.length*100) : 0;
   const mistakes = hands.filter(h=>h.tagIssues.length>0);
@@ -650,12 +914,27 @@ function renderDashboard() {
   const wonHands = hands.filter(h=>h.netBB > 0 && h.vpip).length;
   const playedHands = hands.filter(h=>h.vpip).length;
   const winRate = playedHands ? Math.round(wonHands/playedHands*100) : 0;
+  // Net USD and duration
+  const stakesBBval = {'NL25':0.25,'NL10':0.10};
+  const netUSDval = hands.reduce((s,h)=>s+(h.netBB*(stakesBBval[h.stakes]||0.25)),0);
+  // Duration using filtered hands for current view
+  const filtSessions = buildSessions(hands);
+  let durHours = filtSessions.reduce((s,x)=>s+x.durMin/60, 0);
+  const usdPerHour = durHours > 0 ? netUSDval/durHours : 0;
+  const durH = Math.floor(durHours);
+  const durM = Math.round((durHours%1)*60);
+  const durStr = durHours > 0 ? (durH > 0 ? durH+'h '+durM+'m' : durM+'m') : '—';
+  const netUSDabs = Math.abs(netUSDval).toFixed(2);
+  const usdHrAbs = Math.abs(usdPerHour).toFixed(2);
+
   document.getElementById('dash-stats').innerHTML = `
     <div class="stat"><p class="stat-label">Total hands</p><p class="stat-value blue">${hands.length}</p></div>
     <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value ${netBB>=0?'green':'red'}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
+    <div class="stat"><p class="stat-label">Net $</p><p class="stat-value ${netUSDval>=0?'green':'red'}">${netUSDval>=0?'+':'-'}$${netUSDabs}</p></div>
     <div class="stat"><p class="stat-label">BB / 100</p><p class="stat-value ${bb100>=0?'green':'red'}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
+    <div class="stat"><p class="stat-label">$ / hour</p><p class="stat-value ${usdPerHour>=0?'green':'red'}">${usdPerHour>=0?'+':'-'}$${usdHrAbs}</p></div>
+    <div class="stat"><p class="stat-label">Duration</p><p class="stat-value blue" style="font-size:16px">${durStr}</p></div>
     <div class="stat"><p class="stat-label">TAG compliance</p><p class="stat-value ${compliance>=80?'green':compliance>=60?'amber':'red'}">${compliance}%</p></div>
-    <div class="stat"><p class="stat-label">Win rate (played)</p><p class="stat-value amber">${winRate}%</p></div>
     <div class="stat"><p class="stat-label">Big losses (&gt;10bb)</p><p class="stat-value ${bigLosses?'red':''}">${bigLosses}</p></div>
   `;
   // Positions
@@ -683,7 +962,7 @@ function renderDashboard() {
       </div>`).join('')
     : '<p style="color:#6b7d62;font-size:13px;margin:8px 0">No violations found</p>';
   // Sessions
-  const sessions = [...new Set(allHands.map(h=>h.filename))];
+  const sessions = buildSessions(allHands);
   const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
   const nl25h=hands.filter(x=>x.stakes==='NL25');
   const nl10h=hands.filter(x=>x.stakes==='NL10');
@@ -696,7 +975,7 @@ function renderDashboard() {
   const sbd=document.getElementById('dash-stakes-breakdown');
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:var(--text3);margin:0 0 10px">${sessions.length} session${sessions.length!==1?'s':''} · ${hands.length} hands shown · ${allHands.length} total in DB</p>`
-    : '<p style="font-size:13px;color:var(--muted);margin:0">No sessions uploaded yet — tap Upload</p>';
+    : '<p style="font-size:13px;color:var(--muted);margin:0">No sessions uploaded yet</p>';
   if(sbd) sbd.innerHTML=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div class="stat"><p class="stat-label">NL25 · ${nl25h.length} hands</p><p class="stat-value ${nl25bb100>=0?'green':'red'}" style="font-size:15px">${nl25bb100>=0?'+':''}${nl25bb100.toFixed(1)}<span style="font-size:11px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>
@@ -723,30 +1002,61 @@ async function handleFiles(files) {
   status.innerHTML = `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ Added ${added} new hands · Saving to GitHub...</p>`;
   const saved = await saveToGitHub(allHands);
   status.innerHTML = saved
-    ? `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ ${added} hands added · Saved to GitHub successfully</p>`
+    ? `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ ${added} hands added · Saved to GitHub successfully</p>
+       <p style="color:#d4a847;font-size:12px;margin:6px 0 0">📊 Reminder: log your Fish Buffet balance in your G-Sheet — our net figures exclude rakeback (~$7 per 500 hands).</p>`
     : `<p style="color:#d4a847;font-size:13px;margin:8px 0">⚠ ${added} hands added locally but GitHub save failed — check token</p>`;
   renderStoredSessions();
   renderDashboard();
 }
 
-function renderStoredSessions() {
-  const sessions = {};
-  allHands.forEach(h=>{
-    if (!sessions[h.filename]) sessions[h.filename]={hands:0,dates:new Set(),net:0};
-    sessions[h.filename].hands++;
-    sessions[h.filename].dates.add(h.date);
-    sessions[h.filename].net+=h.netBB;
+function buildSessions(handsArr) {
+  const fileSpans = {};
+  handsArr.forEach(h => {
+    if (!h.filename||!h.date||!h.time) return;
+    const ts = new Date((h.date+' '+h.time).split('/').join('-')).getTime();
+    if (!fileSpans[h.filename]) fileSpans[h.filename]=[ts,ts];
+    else { fileSpans[h.filename][0]=Math.min(fileSpans[h.filename][0],ts); fileSpans[h.filename][1]=Math.max(fileSpans[h.filename][1],ts); }
   });
+  const sorted = Object.entries(fileSpans).sort((a,b)=>a[1][0]-b[1][0]);
+  const merged = [];
+  for (const [fn,[s,e]] of sorted) {
+    if (merged.length && s <= merged[merged.length-1].end + 300000) {
+      merged[merged.length-1].end = Math.max(merged[merged.length-1].end, e);
+      merged[merged.length-1].files.push(fn);
+    } else { merged.push({start:s,end:e,files:[fn]}); }
+  }
+  return merged.map(sess => {
+    const fset = new Set(sess.files);
+    const sh = handsArr.filter(h=>fset.has(h.filename));
+    const netBB = sh.reduce((s,h)=>s+h.netBB,0);
+    const netUSD = sh.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
+    const durMin = (sess.end-sess.start)/60000;
+    const d = new Date(sess.start);
+    const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
+    return {date, durMin, hands:sh.length, netBB, netUSD, files:sess.files.length, start:sess.start, fileList:sess.files};
+  });
+}
+
+function renderStoredSessions() {
   const el = document.getElementById('stored-sessions');
-  if (!Object.keys(sessions).length) { el.innerHTML='<p style="color:#6b7d62;font-size:13px">No sessions stored</p>'; return; }
-  el.innerHTML = Object.entries(sessions).map(([name,d])=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2e3d2b">
-      <div>
-        <span style="font-size:13px;color:#a8d4b0;font-weight:500">${name}</span>
-        <span style="font-size:11px;color:#6b7d62;margin-left:8px">${d.hands} hands</span>
-      </div>
-      <span class="badge ${d.net>=0?'ok':'err'}">${d.net>=0?'+':''}${d.net.toFixed(1)} BB</span>
-    </div>`).join('');
+  if (!allHands.length) { el.innerHTML='<p style="color:var(--muted);font-size:13px">No sessions stored</p>'; return; }
+  const sessions = buildSessions(allHands);
+  const totalMin = sessions.reduce((s,x)=>s+x.durMin,0);
+  const totalH = Math.floor(totalMin/60); const totalM = Math.round(totalMin%60);
+  el.innerHTML = '<p style="font-size:12px;color:var(--muted);margin:0 0 10px">'+sessions.length+' sessions \u00b7 '+totalH+'h '+totalM+'m total \u00b7 '+allHands.length+' hands</p>' +
+  sessions.map(s=>{
+    const col = s.netBB>=0?'var(--green)':'var(--red)';
+    const h = Math.floor(s.durMin/60); const m = Math.round(s.durMin%60);
+    const durStr = h>0 ? h+'h '+m+'m' : m+'m';
+    const usdStr = (s.netUSD>=0?'+':'-')+'$'+Math.abs(s.netUSD).toFixed(2);
+    const bbStr = (s.netBB>=0?'+':'')+s.netBB.toFixed(1)+' BB';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">'
+      +'<div><span style="font-size:13px;color:var(--text2);font-weight:600">'+s.date+'</span>'
+      +'<span style="font-size:11px;color:var(--muted);margin-left:8px">'+durStr+' \u00b7 '+s.hands+' hands \u00b7 '+s.files+' file'+(s.files>1?'s':'')+'</span></div>'
+      +'<div style="text-align:right"><span style="font-size:13px;font-weight:700;color:'+col+'">'+bbStr+'</span>'
+      +'<span style="font-size:11px;color:'+col+';margin-left:6px">'+usdStr+'</span></div>'
+      +'</div>';
+  }).join('');
 }
 
 async function clearAllData() {
@@ -764,7 +1074,7 @@ function renderHands() {
   const tf = getEl('hands-filter');
   const show = getEl('hands-show');
   const pos = getEl('hands-pos');
-  let hands = filterHands(allHands, tf, getEl('hands-stakes'), 'all');
+  let hands = filterHands(allHands, tf, getEl('hands-stakes'), 'all', 'hands-date');
   if (pos!=='all') hands = hands.filter(h=>h.position===pos);
   if (show==='mistakes') hands = hands.filter(h=>h.tagIssues.length>0);
   if (show==='losses') hands = hands.filter(h=>h.netBB<0).sort((a,b)=>a.netBB-b.netBB);
@@ -786,7 +1096,7 @@ function renderHandsPage() {
     const issueBadge = issues.length ? `<span class="badge err">${issues.length} issue${issues.length>1?'s':''}</span>` : `<span class="badge ok">OK</span>`;
     return `<div class="hand-card" onclick="showHandDetail('${h.id}')">
       <div class="hand-card-top">
-        <span class="hand-cards-display">${formatCards(h.holeCards)}</span>
+        <span class="hand-cards-display">${formatCards(h.holeCards)}</span> <span class="badge info" style="font-size:12px">${h.position}</span>
         <span class="hand-net" style="color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span>
       </div>
       <div class="hand-card-mid">
@@ -817,48 +1127,149 @@ function changePage(dir) {
   renderHandsPage();
 }
 
+function renderAction(player, action, seatPositions) {
+  const isHero = player==='Hero';
+  const col = isHero?'var(--green)':'var(--text3)';
+  const pos = seatPositions && seatPositions[player] ? seatPositions[player] : null;
+  const name = isHero ? 'Hero' : (pos ? `Villain (${pos})` : 'Villain');
+  let verb = action;
+  if (action==='folds') verb='<span style="color:var(--muted)">folds</span>';
+  else if (action==='checks') verb='<span style="color:var(--blue)">checks</span>';
+  else if (action.startsWith('calls')) verb=`<span style="color:var(--amber)">${action}</span>`;
+  else if (action.startsWith('bets')||action.startsWith('raises')) verb=`<span style="color:var(--green)">${action}</span>`;
+  return `<div style="display:flex;gap:8px;padding:4px 0;font-size:13px">
+    <span style="font-weight:600;color:${col};min-width:80px">${name}</span>
+    <span>${verb}</span>
+  </div>`;
+}
+
 function showHandDetail(id) {
   const h = allHands.find(x=>x.id===id);
   if (!h) return;
-  document.getElementById('modal-title').textContent = `Hand review: ${h.holeCards} · ${h.position} · ${h.date}`;
   const issues = h.tagIssues;
-  let body = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">
-      <div class="stat"><p class="stat-label">Position</p><p class="stat-value blue" style="font-size:18px">${h.position}</p></div>
-      <div class="stat"><p class="stat-label">Net result</p><p class="stat-value ${h.netBB>=0?'green':'red'}" style="font-size:18px">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</p></div>
-      <div class="stat"><p class="stat-label">Hole cards</p><p class="stat-value" style="font-size:18px">${formatCards(h.holeCards)}</p></div>
-      <div class="stat"><p class="stat-label">Hand category</p><p class="stat-value amber" style="font-size:14px">${h.handCat}</p></div>
-    </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-      <span class="badge info">PF: ${h.pfAction}</span>
-      <span class="badge info">Street: ${h.streetReached}</span>
-      ${h.boardFlop?`<span class="badge" style="background:#1a2e1a;color:#8fa882">Board: ${h.boardFlop}</span>`:''}
-      <span class="badge ${h.tagQuality==='A-Range'?'ok':h.tagQuality==='B-Range'?'warn':'err'}">${h.tagQuality}</span>
+  const bbCol = h.netBB>=0?'var(--green)':'var(--red)';
+
+  // ── Header ──
+  let body = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+    <div class="stat"><p class="stat-label">Cards</p><p class="stat-value" style="font-size:20px">${formatCards(h.holeCards)}</p></div>
+    <div class="stat"><p class="stat-label">Result</p><p class="stat-value" style="font-size:20px;color:${bbCol}">${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</p></div>
+    <div class="stat"><p class="stat-label">Position</p><p class="stat-value blue" style="font-size:16px">${h.position}</p></div>
+    <div class="stat"><p class="stat-label">Hand type</p><p class="stat-value amber" style="font-size:13px">${h.handCat}<br/><span class="badge ${h.tagQuality==='A-Range'?'ok':h.tagQuality==='B-Range'?'warn':'err'}" style="margin-top:3px">${h.tagQuality}</span></p></div>
+  </div>`;
+
+  // ── Hand story — street by street ──
+  const sa = h.streetActions || {};
+  const streets = [
+    {key:'preflop', label:'Preflop', board:''},
+    {key:'flop', label:'Flop', board:h.boardFlop},
+    {key:'turn', label:'Turn', board:h.boardTurn},
+    {key:'river', label:'River', board:h.boardRiver},
+  ];
+
+  body += `<div class="card" style="margin-bottom:12px">`;
+  body += `<div class="card-title">Hand story</div>`;
+
+  // Show context: who raised preflop
+  if (h.pfRaiser && h.pfRaiser!=='Hero') {
+    body += `<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Villain opened to $${h.pfRaiseAmt}</p>`;
+  } else if (h.pfRaiser==='Hero') {
+    body += `<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Hero opened to $${h.pfRaiseAmt}</p>`;
+  }
+
+  // Only show streets up to and including the one where Hero was active
+  const streetOrder = ['preflop','flop','turn','river'];
+  const heroStreetIdx = streetOrder.indexOf((h.streetReached||'Preflop').toLowerCase());
+  streets.forEach(({key,label,board}) => {
+    const st = sa[key];
+    if (!st && !board) return;
+    const actions = st ? st.actions : [];
+    // Stop at Hero's last active street
+    if (streetOrder.indexOf(key) > heroStreetIdx) return;
+    if (key!=='preflop' && !board) return;
+    if (key==='preflop' && !actions.length) return;
+
+    body += `<div style="margin-bottom:10px">`;
+    body += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${label}</span>
+      ${board?`<span style="font-size:13px;font-weight:600;color:var(--text2)">${formatCards(board)}</span>`:''}
     </div>`;
+    if (actions.length) {
+      body += `<div style="background:var(--bg3);border-radius:6px;padding:6px 10px">`;
+      actions.forEach(a => { body += renderAction(a.player||a[0], a.action||a[1], h.seatPositions); });
+      body += `</div>`;
+    }
+    body += `</div>`;
+  });
+  body += `</div>`;
+
+  // ── TAG verdict ──
+  // Determine verdict tier
+  const isShowdown = h.showdown;
+  const bigLoss = h.netBB < -10;
+  const sawPostflop = h.sawFlop && ['Turn','River'].includes(h.streetReached);
+  let verdictTier, verdictColor, verdictText, verdictSub;
   if (!issues.length) {
-    body += `<div style="background:#1a3320;border:1px solid #2e5030;border-radius:8px;padding:12px 16px">
-      <p style="color:#6db87a;font-size:13px;margin:0;font-weight:600">✓ No TAG violations detected</p>
-      <p style="color:#8fa882;font-size:13px;margin:6px 0 0">This hand appears to follow Hardin's framework correctly. ${h.netBB<0?'The loss is variance — you made the right decisions.':''}</p>
+    if (!sawPostflop && !isShowdown) {
+      verdictTier='✓ Played correctly'; verdictColor='var(--green)';
+      verdictText='Clean preflop decision per Hardin framework.';
+      verdictSub='';
+    } else if (isShowdown && bigLoss) {
+      verdictTier='✓ No TAG violations — statistical variance'; verdictColor='var(--green)';
+      verdictText='All decisions correct per Hardin. The loss is variance, not a mistake.';
+      verdictSub='Big losses with no violations are coolers or bad beats — unavoidable in the long run.';
+    } else if (sawPostflop) {
+      verdictTier='✓ Correct — review postflop sizing'; verdictColor='var(--amber)';
+      verdictText='No framework violations detected. Postflop sizing and line choices may still have room for improvement.';
+      verdictSub='Consider: was your bet sizing appropriate? Did you take the most profitable line?';
+    } else {
+      verdictTier='✓ Played correctly'; verdictColor='var(--green)';
+      verdictText=h.netBB<0?'Loss is variance — correct decisions.':'Well played.';
+      verdictSub='';
+    }
+  }
+  if (!issues.length) {
+    body += `<div style="background:var(--bg3);border:1px solid ${verdictColor}40;border-radius:10px;padding:12px 14px;margin-bottom:12px">
+      <p style="color:${verdictColor};font-size:14px;margin:0;font-weight:700">${verdictTier}</p>
+      <p style="color:var(--text3);font-size:12px;margin:5px 0 0">${verdictText}</p>
+      ${verdictSub?`<p style="color:var(--muted);font-size:11px;margin:4px 0 0;line-height:1.5">${verdictSub}</p>`:''}
     </div>`;
   } else {
-    body += `<ul class="issue-list">`;
-    issues.forEach(issue=>{
+    body += `<div class="card" style="border-color:#d96060;margin-bottom:12px"><div class="card-title" style="color:var(--red)">TAG violations</div>`;
+    issues.forEach(issue => {
       const ex = ISSUE_EXPLAIN[issue];
       if (!ex) return;
-      body += `<li>
-        <strong>${ex.label}</strong>
-        <span class="badge ${ex.type==='preflop'?'warn':'err'}" style="margin-left:6px">${ex.type}</span>
-        <br/>${ex.explain}
-      </li>`;
+      body += `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          <span style="font-size:14px;font-weight:700;color:var(--text)">${ex.label}</span>
+          <span class="badge ${ex.type==='preflop'?'warn':'err'}">${ex.type}</span>
+        </div>
+        <p style="font-size:12px;color:var(--red);margin:0 0 6px;font-weight:600">${ex.short}</p>
+        <p style="font-size:12px;color:var(--text3);margin:0;line-height:1.65">${ex.explain}</p>
+      </div>`;
     });
-    body += `</ul>`;
+    body += `</div>`;
   }
+
+  // Villain showdown cards
+  if (h.villainShown && h.villainShown.length) {
+    body += `<div class="card" style="margin-bottom:12px"><div class="card-title">Showdown</div>`;
+    h.villainShown.forEach(v => {
+      const label = v.pos ? `Villain (${v.pos})` : 'Villain';
+      body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+        <span style="font-size:13px;color:var(--text3);font-weight:600">${label}</span>
+        <span style="font-size:16px;font-weight:700">${formatCards(v.cards)}</span>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
   if (h.reviewFlags.includes('BIG_LOSS')) {
-    body += `<div style="background:#3d1e1e;border:1px solid #d96060;border-radius:8px;padding:10px 14px;margin-top:12px">
-      <p style="color:#d96060;font-size:13px;margin:0;font-weight:600">⚠ Big loss flag (>${2} BB)</p>
-      <p style="color:#a8a0a0;font-size:13px;margin:4px 0 0">Review this hand carefully. Was the loss due to a mistake or pure variance (cooler, bad beat)?</p>
+    body += `<div style="background:#3d1e1e;border-radius:8px;padding:10px 12px">
+      <p style="color:var(--red);font-size:13px;margin:0;font-weight:600">⚠ Big loss — was this a cooler or a mistake?</p>
     </div>`;
   }
+
+  document.getElementById('modal-title').textContent = `${formatCards(h.holeCards).replace(/<[^>]+>/g,'')} · ${h.position} · ${h.date.slice(5)}`;
   document.getElementById('modal-body').innerHTML = body;
   document.getElementById('modal').style.display = 'flex';
 }
@@ -868,7 +1279,7 @@ function closeModal() { document.getElementById('modal').style.display = 'none';
 // ─── POSITIONS ────────────────────────────────────────────────
 function renderPositions() {
   const tf = getEl('pos-filter');
-  const hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all', 'pos-date');
   const positions = ['BTN','CO','HJ','UTG','SB','BB'];
   const grid = document.getElementById('pos-detail-grid');
   grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
@@ -902,7 +1313,7 @@ function renderPositions() {
 function renderMistakes() {
   const tf = getEl('mistakes-filter');
   const type = getEl('mistakes-type');
-  const hands = filterHands(allHands, tf, getEl('mistakes-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('mistakes-stakes'), 'all', 'mistakes-date');
   const mistakeHands = hands.filter(h=>h.tagIssues.length>0);
   const pfMistakes = mistakeHands.filter(h=>h.isPreflop);
   const pfMistakes2 = mistakeHands.filter(h=>h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i)));
@@ -969,78 +1380,64 @@ function renderMistakes() {
 }
 
 // ─── STARTING HANDS ──────────────────────────────────────────
-const HARDIN_ACTION = {
-  // Pairs
-  'AA':{rfi:'ALL',note:'Always raise. Never limp.'},
-  'KK':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet.'},
-  'QQ':{rfi:'ALL',note:'Always raise. Call or 4-bet vs 3-bet.'},
-  'JJ':{rfi:'ALL',note:'Raise all positions. Call 3-bet IP, fold OOP vs tight players.'},
-  'TT':{rfi:'ALL',note:'Raise all positions. Set-mine vs 3-bets.'},
-  '99':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold to 3-bet unless good odds.'},
-  '88':{rfi:'CO/BTN',note:'Raise CO+. Fold UTG/HJ to 3-bets.'},
-  '77':{rfi:'CO/BTN',note:'Raise CO/BTN primarily. Set-mine in multiway.'},
-  '66':{rfi:'BTN',note:'BTN steal. Fold most 3-bets.'},
-  '55':{rfi:'BTN',note:'BTN/SB steal only. Set value only.'},
-  '44':{rfi:'BTN',note:'BTN only. Mostly fold to 3-bets.'},
-  '33':{rfi:'BTN',note:'BTN only.'},
-  '22':{rfi:'BTN',note:'BTN only. Pure set-mine.'},
-  // Premium
-  'AKs':{rfi:'ALL',note:'Always raise. 4-bet vs 3-bet standard.'},
-  'AKo':{rfi:'ALL',note:'Always raise. 4-bet or call 3-bet.'},
-  'AQs':{rfi:'ALL',note:'Raise all positions.'},
-  'AQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Fold UTG to 3-bets.'},
-  'AJs':{rfi:'ALL',note:'Raise all positions.'},
-  'AJo':{rfi:'CO/BTN',note:'Raise CO/BTN. Fold to 3-bets usually.'},
-  'ATs':{rfi:'ALL',note:'Raise all positions.'},
-  'ATo':{rfi:'CO/BTN',note:'Raise CO+. Marginal UTG/HJ.'},
-  // Broadway
-  'KQs':{rfi:'ALL',note:'Raise all positions.'},
-  'KQo':{rfi:'CO/BTN/SB',note:'Raise CO+. Marginal UTG.'},
-  'KJs':{rfi:'ALL',note:'Raise all positions.'},
-  'KJo':{rfi:'CO/BTN',note:'Raise CO/BTN.'},
-  'KTs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
-  'KTo':{rfi:'BTN',note:'BTN raise only.'},
-  'QJs':{rfi:'CO/BTN/SB',note:'Raise CO+.'},
-  'QJo':{rfi:'BTN',note:'BTN only.'},
-  'QTs':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'JTs':{rfi:'CO/BTN/SB',note:'Raise CO+. Good hand.'},
-  // Suited connectors
-  'T9s':{rfi:'BTN/CO',note:'Late position only.'},
-  '98s':{rfi:'BTN/CO',note:'Late position only.'},
-  '87s':{rfi:'BTN',note:'BTN steal / multiway value.'},
-  '76s':{rfi:'BTN',note:'BTN only.'},
-  // Suited aces
-  'A9s':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'A8s':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'A7s':{rfi:'CO/BTN',note:'Raise CO+.'},
-  'A5s':{rfi:'BTN/CO',note:'Nut-flush + straight draws.'},
-  'A4s':{rfi:'BTN',note:'BTN only.'},
-  'A3s':{rfi:'BTN',note:'BTN only.'},
-  'A2s':{rfi:'BTN',note:'BTN only.'},
+const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"]};
+
+const HARDIN_RANGES = {
+  'UTG': {
+    must: ["66", "77", "88", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "QQ", "TT"],
+    optional: ["55", "87s", "98s", "KTs", "QTs", "T9s"],
+    all: ["55", "66", "77", "87s", "88", "98s", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QQ", "QTs", "T9s", "TT"],
+  },
+  'HJ': {
+    must: ["55", "66", "77", "88", "99", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QQ", "QTs", "T9s", "TT"],
+    optional: ["44", "76s", "87s", "97s", "98s", "A4s", "A5s", "J9s", "T8s"],
+    all: ["44", "55", "66", "76s", "77", "87s", "88", "97s", "98s", "99", "A4s", "A5s", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QQ", "QTs", "T8s", "T9s", "TT"],
+  },
+  'CO': {
+    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+    optional: ["65s", "75s", "A8o", "J8s", "JTo", "K8s", "K9o", "Q9s", "QTo"],
+    all: ["22", "33", "44", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J8s", "J9s", "JJ", "JTo", "JTs", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9s", "TT"],
+  },
+  'BTN': {
+    must: ["22", "33", "44", "54s", "55", "64s", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J8s", "J9s", "JJ", "JTo", "JTs", "K7s", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T7s", "T8s", "T9o", "T9s", "TT"],
+    optional: ["43s", "53s", "87o", "J7s", "J9o", "K5s", "K6s", "K7o", "K8o", "Q6s", "Q7s", "Q8s", "Q9o", "T8o"],
+    all: ["22", "33", "43s", "44", "53s", "54s", "55", "64s", "65s", "66", "75s", "76s", "77", "86s", "87o", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J7s", "J8s", "J9o", "J9s", "JJ", "JTo", "JTs", "K5s", "K6s", "K7o", "K7s", "K8o", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q6s", "Q7s", "Q8s", "Q9o", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T7s", "T8o", "T8s", "T9o", "T9s", "TT"],
+  },
+  'SB': {
+    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+    optional: [],
+    all: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+  },
 };
 
 function getHardinVerdict(notation, position, pfAction) {
-  const rule = HARDIN_ACTION[notation];
-  if (!rule) return {verdict:'no-data', note:'Hand not in Hardin primary ranges — should generally fold.'};
-  const rfiPos = rule.rfi;
-  const shouldRaise = rfiPos==='ALL' ||
-    (rfiPos.includes('BTN') && position==='BTN') ||
-    (rfiPos.includes('CO') && position==='CO') ||
-    (rfiPos.includes('HJ') && ['HJ','CO','BTN'].includes(position)) ||
-    (rfiPos.includes('SB') && position==='SB') ||
-    (rfiPos.includes('UTG') && position==='UTG');
-  if (pfAction==='FOLD' && shouldRaise) return {verdict:'should-raise', note:rule.note};
-  if (pfAction==='CALL' && shouldRaise) return {verdict:'should-raise-not-call', note:rule.note};
-  if (pfAction==='RAISE' && !shouldRaise) return {verdict:'too-loose', note:rule.note};
-  if (pfAction==='RAISE' && shouldRaise) return {verdict:'correct', note:rule.note};
-  return {verdict:'ok', note:rule.note};
+  const posRange = HARDIN_RANGES[position];
+  if (!posRange) return {verdict:'no-data', note:'Position not tracked.'};
+  const inMust = posRange.must.includes(notation);
+  const inOptional = posRange.optional.includes(notation);
+  const inAll = posRange.all.includes(notation);
+
+  if (pfAction === 'RAISE') {
+    if (inAll) return {verdict:'correct', note:`${notation} is a raise from ${position} per Hardin.`};
+    return {verdict:'too-loose', note:`${notation} is outside Hardin's opening range from ${position}.`};
+  }
+  if (pfAction === 'FOLD') {
+    if (inMust) return {verdict:'should-raise', note:`${notation} is a must-raise from ${position}. Folding gives up steal equity and value.`};
+    if (inOptional) return {verdict:'fold-ok-optional', note:`${notation} is optional from ${position}. Folding is acceptable but raising is also correct.`};
+    return {verdict:'correct-fold', note:`${notation} is outside Hardin's range from ${position}. Fold is correct.`};
+  }
+  if (pfAction === 'CALL') {
+    if (inMust || inOptional) return {verdict:'should-raise-not-call', note:`${notation} from ${position} should be raised, not called. Calling gives up fold equity and initiative.`};
+    return {verdict:'ok', note:`Calling with ${notation} from ${position}.`};
+  }
+  return {verdict:'ok', note:''};
 }
 
 function renderStartingHands() {
   const tf = getEl('starting-filter');
   const sort = getEl('starting-sort');
   const catFilter = getEl('starting-cat');
-  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all', 'starting-date');
 
   // Group by hand notation
   const groups = {};
@@ -1214,7 +1611,7 @@ function showStartingDetail(notation) {
 // ─── ANALYSIS ─────────────────────────────────────────────────
 function renderAnalysis() {
   const tf = getEl('analysis-filter');
-  const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all');
+  const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date');
   const el = document.getElementById('analysis-body');
   if (!hands.length) { el.innerHTML='<div class="empty"><div class="empty-icon">📊</div><p>No data yet</p></div>'; return; }
 
@@ -1248,9 +1645,14 @@ function renderAnalysis() {
   const cbetPct=cbetOpp.length?Math.round(cbetMade.length/cbetOpp.length*100):0;
 
   // Non-blind net
+  const epHands=hands.filter(h=>h.position==='UTG');
+  const mpHands=hands.filter(h=>h.position==='HJ');
+  const lpHands=hands.filter(h=>['CO','BTN'].includes(h.position));
   const nonBlind=hands.filter(h=>!['SB','BB'].includes(h.position));
-  const nonBlindNet=nonBlind.reduce((s,h)=>s+h.netBB,0);
+  const nonBlindNet=lpHands.reduce((s,h)=>s+h.netBB,0);
   const blindNet=hands.filter(h=>['SB','BB'].includes(h.position)).reduce((s,h)=>s+h.netBB,0);
+  const epNet=epHands.reduce((s,h)=>s+h.netBB,0);
+  const mpNet=mpHands.reduce((s,h)=>s+h.netBB,0);
 
   // Issues summary
   const issueCounts={};
@@ -1270,12 +1672,20 @@ function renderAnalysis() {
     </div>
     <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
       <div>
-        <p class="stat-label" style="margin:0 0 2px">Late pos (BTN/CO/HJ/UTG)</p>
-        <p style="margin:0;font-size:15px;font-weight:700;color:${nonBlindNet>=0?'var(--green)':'var(--red)'}">${nonBlindNet>=0?'+':''}${nonBlindNet.toFixed(1)} BB</p>
+        <p class="stat-label" style="margin:0 0 2px">EP · UTG</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${epNet>=0?'var(--green)':'var(--red)'}">${epNet>=0?'+':''}${epNet.toFixed(1)} BB</p>
       </div>
       <div>
-        <p class="stat-label" style="margin:0 0 2px">Blinds (SB+BB)</p>
-        <p style="margin:0;font-size:15px;font-weight:700;color:${blindNet>=0?'var(--green)':'var(--red)'}">${blindNet>=0?'+':''}${blindNet.toFixed(1)} BB</p>
+        <p class="stat-label" style="margin:0 0 2px">MP · HJ</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${mpNet>=0?'var(--green)':'var(--red)'}">${mpNet>=0?'+':''}${mpNet.toFixed(1)} BB</p>
+      </div>
+      <div>
+        <p class="stat-label" style="margin:0 0 2px">LP · CO + BTN</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${nonBlindNet>=0?'var(--green)':'var(--red)'}">${nonBlindNet>=0?'+':''}${nonBlindNet.toFixed(1)} BB</p>
+      </div>
+      <div>
+        <p class="stat-label" style="margin:0 0 2px">Blinds · SB + BB</p>
+        <p style="margin:0;font-size:14px;font-weight:700;color:${blindNet>=0?'var(--green)':'var(--red)'}">${blindNet>=0?'+':''}${blindNet.toFixed(1)} BB</p>
       </div>
     </div>
   </div>
@@ -1287,8 +1697,8 @@ function renderAnalysis() {
       const isBlind=['SB','BB'].includes(d.p);
       return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
         <div style="display:flex;gap:8px;align-items:center">
-          <span class="badge ${isBlind?'err':'info'}" style="width:36px;text-align:center">${d.p}</span>
-          <span style="font-size:12px;color:var(--muted)">${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
+          <span class="badge ${d.p==='UTG'?'warn':['CO','BTN'].includes(d.p)?'ok':['SB','BB'].includes(d.p)?'err':'info'}" style="width:36px;text-align:center">${d.p}</span>
+          <span style="font-size:12px;color:var(--muted)">${({'UTG':'EP','HJ':'MP','CO':'LP','BTN':'LP','SB':'Blind','BB':'Blind'}[d.p]||'')} · ${d.n} hands · VPIP ${d.vpip.toFixed(0)}%</span>
         </div>
         <div style="text-align:right">
           <span style="font-size:14px;font-weight:700;color:${col}">${d.bb100>=0?'+':''}${d.bb100.toFixed(1)}</span>
@@ -1335,19 +1745,253 @@ function renderAnalysis() {
       const ex=ISSUE_EXPLAIN[issue];
       const aff=hands.filter(h=>h.tagIssues.includes(issue));
       const affNet=aff.reduce((s,h)=>s+h.netBB,0);
-      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)">
-        <div>
-          <p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p>
-          <p style="font-size:11px;color:var(--muted);margin:1px 0 0">${ex?.type||''}</p>
+      const affNetCol = affNet>=0 ? 'var(--green)' : 'var(--red)';
+      return `<div onclick="showViolationHands('${issue}')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div>
+            <p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p>
+            <p style="font-size:11px;color:var(--muted);margin:1px 0 0">${ex?.type||''}</p>
+          </div>
         </div>
-        <div style="text-align:right">
-          <span class="badge err">${count}x</span>
-          <p style="font-size:11px;color:var(--red);margin:2px 0 0">${affNet.toFixed(1)} BB</p>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="text-align:right">
+            <span class="badge err">${count}x</span>
+            <p style="font-size:11px;color:${affNetCol};margin:2px 0 0">${affNet>=0?'+':''}${affNet.toFixed(1)} BB</p>
+          </div>
+          <span style="color:var(--muted);font-size:18px">›</span>
         </div>
       </div>`;
     }).join('')}
   </div>`;
 }
+// ─── HAND COMBO GRID ─────────────────────────────────────────
+// ─── HAND COMBO GRID ─────────────────────────────────────────
+function renderGrid() {
+  const tf = getEl('grid-filter');
+  const skEl = getEl('grid-stakes');
+  const mtEl = getEl('grid-metric');
+  let hands = filterHands(allHands, tf, skEl, 'all', 'grid-date');
+  const metric = (mtEl && mtEl !== 'all') ? mtEl : 'net';
+  const exBlindEl = document.getElementById('grid-exclude-blindfolds');
+  if (exBlindEl && exBlindEl.checked) {
+    hands = hands.filter(function(h){
+      var blindFold = (h.position==='SB'||h.position==='BB') && (h.pfAction==='FOLD'||h.pfAction==='CHECK_BB');
+      return !blindFold;
+    });
+  }
+  const el = document.getElementById('grid-container');
+  if (!hands.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🃏</div><p>No data yet</p></div>';
+    return;
+  }
+
+  var RANKS = ['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+
+  // Build lookup per notation
+  var lookup = {};
+  for (var hi = 0; hi < hands.length; hi++) {
+    var h = hands[hi];
+    var n = h.handNotation;
+    if (!n) continue;
+    if (!lookup[n]) lookup[n] = {net:0, netBB:0, count:0};
+    var bbVal = h.stakes === 'NL10' ? 0.10 : 0.25;
+    lookup[n].net += h.netBB * bbVal;
+    lookup[n].netBB += h.netBB;
+    lookup[n].count++;
+  }
+
+  var cellSize = Math.max(28, Math.min(42, Math.floor((Math.min(window.innerWidth, 560) - 20) / 14)));
+  var fSize = Math.max(7, cellSize - 16);
+  var vSize = Math.max(6, cellSize - 20);
+
+  var rows = '';
+  for (var i = 0; i < 13; i++) {
+    var r1 = RANKS[i];
+    var cols = '';
+    for (var j = 0; j < 13; j++) {
+      var r2 = RANKS[j];
+      var notation;
+      if (i === j) {
+        notation = r1 + r1;
+      } else if (i < j) {
+        notation = r1 + r2 + 's';
+      } else {
+        notation = r2 + r1 + 'o';
+      }
+      var d = lookup[notation];
+      var count = d ? d.count : 0;
+      var bg, valStr;
+      if (!count) {
+        bg = '#1e2a1e';
+        valStr = '';
+      } else {
+        var val = metric === 'bb100' ? d.netBB / count * 100 : metric === 'hands' ? count : d.net;
+        var intensity;
+        if (metric === 'hands') {
+          bg = '#1a3a2a';
+          valStr = count + 'x';
+        } else if (val > 0) {
+          intensity = Math.min(val / (metric === 'bb100' ? 80 : 3), 1);
+          var g = Math.round(60 + intensity * 80);
+          bg = 'rgb(20,' + g + ',20)';
+          valStr = (metric === 'bb100' ? (val >= 0 ? '+' : '') + val.toFixed(0) : (val >= 0 ? '+' : '') + '$' + Math.abs(val).toFixed(2));
+        } else if (val < 0) {
+          intensity = Math.min(Math.abs(val) / (metric === 'bb100' ? 80 : 3), 1);
+          var rr = Math.round(60 + intensity * 80);
+          bg = 'rgb(' + rr + ',20,20)';
+          valStr = (metric === 'bb100' ? val.toFixed(0) : '-$' + Math.abs(val).toFixed(2));
+        } else {
+          bg = '#2a2a2a';
+          valStr = '0';
+        }
+      }
+      cols += '<div onclick="showGridDetail(\'' + notation + '\')" style="width:' + cellSize + 'px;height:' + cellSize + 'px;background:' + bg + ';display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border-radius:2px;box-sizing:border-box">'
+        + '<span style="font-size:' + fSize + 'px;font-weight:700;color:#e0ead8;line-height:1">' + notation + '</span>'
+        + (valStr ? '<span style="font-size:' + vSize + 'px;color:#b0c8a8;line-height:1.2">' + valStr + '</span>' : '')
+        + '</div>';
+    }
+    rows += '<div style="display:flex;gap:1px">' + cols + '</div>';
+  }
+
+  el.innerHTML = '<div style="display:flex;flex-direction:column;gap:1px">' + rows + '</div>';
+}
+
+function showViolationHands(issue) {
+  var tf = getEl('analysis-filter');
+  var hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date')
+    .filter(function(h){ return h.tagIssues.indexOf(issue) !== -1; });
+  if (!hands.length) { showToast('No hands'); return; }
+  var ex = ISSUE_EXPLAIN[issue] || {};
+  var net = hands.reduce(function(s,h){return s+h.netBB;},0);
+  var bbCol = net>=0?'var(--green)':'var(--red)';
+  var winners = hands.filter(function(h){return h.netBB>0;});
+  var losers = hands.filter(function(h){return h.netBB<0;});
+  var wonBB = winners.reduce(function(s,h){return s+h.netBB;},0);
+  var lostBB = losers.reduce(function(s,h){return s+h.netBB;},0);
+
+  hands.sort(function(a,b){return a.netBB-b.netBB;});
+
+  var netNote = net>=0
+    ? 'Net positive this sample — variance bailed you out. The flag still stands: by Hardin TAG rules these are -EV long-term.'
+    : 'Net negative — these cost you money this sample.';
+
+  var body = '<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
+    + '<p style="font-size:13px;color:var(--text);font-weight:700;margin:0 0 4px">' + (ex.short||'') + '</p>'
+    + '<p style="font-size:12px;color:var(--text3);margin:0;line-height:1.6">' + (ex.explain||'') + '</p>'
+    + '</div>'
+    + '<div style="display:flex;gap:8px;margin-bottom:10px">'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Net</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:' + bbCol + '">' + (net>=0?'+':'') + net.toFixed(1) + '</p></div>'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Won (' + winners.length + ')</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--green)">+' + wonBB.toFixed(1) + '</p></div>'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Lost (' + losers.length + ')</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--red)">' + lostBB.toFixed(1) + '</p></div>'
+    + '</div>'
+    + '<p style="font-size:11px;color:var(--text3);margin:0 0 12px;line-height:1.5;font-style:italic">' + netNote + '</p>';
+
+  for (var i=0;i<hands.length;i++){
+    var h = hands[i];
+    var c = h.netBB>=0?'var(--green)':'var(--red)';
+    body += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:6px;align-items:center">'
+      + '<span style="font-size:14px;font-weight:700;color:var(--text)">' + formatCards(h.holeCards) + '</span>'
+      + '<span class="badge info">' + h.position + '</span>'
+      + '<span style="font-size:11px;color:var(--muted)">' + h.date.slice(5) + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span style="font-size:13px;font-weight:700;color:' + c + '">' + (h.netBB>=0?'+':'') + h.netBB.toFixed(1) + ' BB</span>'
+      + '<button onclick="closeModal();showHandDetail(\'' + h.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  document.getElementById('modal-title').textContent = (ex.label||issue) + ' — ' + hands.length + ' hands';
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function showGridDetail(notation) {
+  var tf = getEl('grid-filter');
+  var skEl = getEl('grid-stakes');
+  var allFiltered = filterHands(allHands, tf, skEl, 'all', 'grid-date');
+  var exB = document.getElementById('grid-exclude-blindfolds');
+  if (exB && exB.checked) {
+    allFiltered = allFiltered.filter(function(h){
+      var bf = (h.position==='SB'||h.position==='BB') && (h.pfAction==='FOLD'||h.pfAction==='CHECK_BB');
+      return !bf;
+    });
+  }
+  var hands = [];
+  for (var i = 0; i < allFiltered.length; i++) {
+    if (allFiltered[i].handNotation === notation) hands.push(allFiltered[i]);
+  }
+  if (!hands.length) { showToast('No hands with ' + notation); return; }
+
+  var net = 0; var netUSD = 0;
+  for (var i = 0; i < hands.length; i++) {
+    net += hands[i].netBB;
+    netUSD += hands[i].netBB * (hands[i].stakes === 'NL10' ? 0.10 : 0.25);
+  }
+  var bb100v = net / hands.length * 100;
+  var bbCol = net >= 0 ? 'var(--green)' : 'var(--red)';
+
+  var positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  var posRows = '';
+  for (var pi = 0; pi < positions.length; pi++) {
+    var p = positions[pi];
+    var ph = []; var pnet = 0;
+    for (var i = 0; i < hands.length; i++) {
+      if (hands[i].position === p) { ph.push(hands[i]); pnet += hands[i].netBB; }
+    }
+    if (!ph.length) continue;
+    var pc = pnet >= 0 ? 'var(--green)' : 'var(--red)';
+    var pbb = pnet / ph.length * 100;
+    posRows += '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span class="badge info">' + p + '</span>'
+      + '<span style="font-size:12px;color:var(--muted)">' + ph.length + ' hand' + (ph.length > 1 ? 's' : '') + '</span>'
+      + '</div>'
+      + '<span style="font-size:13px;font-weight:700;color:' + pc + '">' + (pbb >= 0 ? '+' : '') + pbb.toFixed(0) + ' bb/100</span>'
+      + '</div>';
+  }
+
+  var sorted = hands.slice().sort(function(a,b){return a.netBB-b.netBB;});
+  var worst = sorted.slice(0, Math.min(5, sorted.length));
+  var worstRows = '';
+  for (var i = 0; i < worst.length; i++) {
+    var wh = worst[i];
+    var wc = wh.netBB >= 0 ? 'var(--green)' : 'var(--red)';
+    worstRows += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:6px;align-items:center">'
+      + '<span class="badge info">' + wh.position + '</span>'
+      + '<span style="font-size:12px;color:var(--muted)">' + wh.date.slice(5) + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span style="font-size:13px;font-weight:700;color:' + wc + '">' + (wh.netBB >= 0 ? '+' : '') + wh.netBB.toFixed(1) + ' BB</span>'
+      + '<button onclick="closeModal();showHandDetail(\'' + wh.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  var body = '<div class="stat-grid" style="margin-bottom:14px">'
+    + '<div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">' + hands.length + '</p></div>'
+    + '<div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:' + bbCol + '">' + (net >= 0 ? '+' : '') + net.toFixed(1) + '</p></div>'
+    + '<div class="stat"><p class="stat-label">Net $</p><p class="stat-value" style="color:' + bbCol + '">' + (netUSD >= 0 ? '+' : '-') + '$' + Math.abs(netUSD).toFixed(2) + '</p></div>'
+    + '<div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:' + bbCol + '">' + (bb100v >= 0 ? '+' : '') + bb100v.toFixed(0) + '</p></div>'
+    + '</div>'
+    + '<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>'
+    + posRows
+    + '<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 8px">Worst hands</p>'
+    + worstRows;
+
+  document.getElementById('modal-title').textContent = notation + ' — ' + hands.length + ' hands';
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
 
 // ─── DRAG DROP ────────────────────────────────────────────────
 const dz = document.getElementById('drop-zone');
@@ -1366,11 +2010,39 @@ function showToast(msg) {
 async function init() {
   showToast('Loading data from GitHub...');
   allHands = await loadFromGitHub();
+  // Patch legacy DB: fix streetReached for hands where Hero folded preflop
+  allHands = allHands.map(h => {
+    if (h.pfAction === 'FOLD' && h.streetReached !== 'Preflop') {
+      return Object.assign({}, h, {streetReached: 'Preflop', sawFlop: 0});
+    }
+    return h;
+  });
   renderDashboard();
   renderStoredSessions();
-  // pre-render analysis so it's ready when tab opens
   setTimeout(()=>renderAnalysis(), 200);
 }
+const APP_VERSION = '2.10';
+console.log('Poker Tracker v' + APP_VERSION);
+// Auto-update: check server version, hard-reload once if newer
+(function(){
+  var reloadGuard = 'pt_reloaded_' + APP_VERSION;
+  fetch('version.json?cb=' + Date.now(), {cache:'no-store'})
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if (d && d.version && d.version !== APP_VERSION) {
+        if (!sessionStorage.getItem(reloadGuard)) {
+          sessionStorage.setItem(reloadGuard, '1');
+          var u = location.href.split('?')[0] + '?v=' + d.version;
+          location.replace(u);
+        }
+      }
+    })
+    .catch(function(){});
+})();
+var vEl=document.createElement('div');
+vEl.textContent='v'+APP_VERSION;
+vEl.style.cssText='position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);right:6px;font-size:10px;color:#6db87a;background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:6px;z-index:9999;pointer-events:none';
+document.body.appendChild(vEl);
 init();
 
 </script>
