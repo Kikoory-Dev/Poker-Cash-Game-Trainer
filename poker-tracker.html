@@ -389,6 +389,10 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="bb100">BB/100</option>
         <option value="hands">Hands</option>
       </select>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);cursor:pointer;white-space:nowrap">
+        <input type="checkbox" id="grid-exclude-blindfolds" onchange="renderGrid()" style="accent-color:var(--green)">
+        Exclude folded blinds
+      </label>
     </div>
     <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Tap any combo to review · Green = won · Red = lost</div>
     <div id="grid-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
@@ -1762,8 +1766,15 @@ function renderGrid() {
   const tf = getEl('grid-filter');
   const skEl = getEl('grid-stakes');
   const mtEl = getEl('grid-metric');
-  const hands = filterHands(allHands, tf, skEl, 'all', 'grid-date');
-  const metric = mtEl ? mtEl.value : 'net';
+  let hands = filterHands(allHands, tf, skEl, 'all', 'grid-date');
+  const metric = (mtEl && mtEl !== 'all') ? mtEl : 'net';
+  const exBlindEl = document.getElementById('grid-exclude-blindfolds');
+  if (exBlindEl && exBlindEl.checked) {
+    hands = hands.filter(function(h){
+      var blindFold = (h.position==='SB'||h.position==='BB') && (h.pfAction==='FOLD'||h.pfAction==='CHECK_BB');
+      return !blindFold;
+    });
+  }
   const el = document.getElementById('grid-container');
   if (!hands.length) {
     el.innerHTML = '<div class="empty"><div class="empty-icon">🃏</div><p>No data yet</p></div>';
@@ -1886,6 +1897,13 @@ function showGridDetail(notation) {
   var tf = getEl('grid-filter');
   var skEl = getEl('grid-stakes');
   var allFiltered = filterHands(allHands, tf, skEl, 'all', 'grid-date');
+  var exB = document.getElementById('grid-exclude-blindfolds');
+  if (exB && exB.checked) {
+    allFiltered = allFiltered.filter(function(h){
+      var bf = (h.position==='SB'||h.position==='BB') && (h.pfAction==='FOLD'||h.pfAction==='CHECK_BB');
+      return !bf;
+    });
+  }
   var hands = [];
   for (var i = 0; i < allFiltered.length; i++) {
     if (allFiltered[i].handNotation === notation) hands.push(allFiltered[i]);
@@ -1983,9 +2001,9 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-console.log('Poker Tracker v2.5');
+console.log('Poker Tracker v2.6');
 var vEl=document.createElement('div');
-vEl.textContent='v2.5';
+vEl.textContent='v2.6';
 vEl.style.cssText='position:fixed;bottom:64px;right:8px;font-size:9px;color:#4a5d47;z-index:5;pointer-events:none';
 document.body.appendChild(vEl);
 init();
