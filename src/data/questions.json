@@ -9271,7 +9271,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "AA always 4-bets. OOP 4-bet sizing: 2-2.2x the 3-bet = ~22 BB. Build the pot heads-up with the best hand.",
+    "explanation": "AA always 4-bets. OOP 4-bet sizing: 2-2.2x the 3-bet = ~22 BB. Build the pot heads-up with the best hand. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling AA OOP vs BB 3-bet misses massive value.",
       "2": "Never fold AA.",
@@ -9301,7 +9301,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "KK always 4-bets. OOP 4-bet sizing: 2-2.2x the 3-bet = ~22 BB. You are OOP vs BB — build the pot now rather than face difficult decisions every street.",
+    "explanation": "KK always 4-bets. OOP 4-bet sizing: 2-2.2x the 3-bet = ~22 BB. You are OOP vs BB — build the pot now rather than face difficult decisions every street. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling KK OOP in a 3-bet pot is second-best.",
       "2": "Never fold KK.",
@@ -9331,7 +9331,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "JJ is in the default SB 4-bet range vs BB (AA-JJ). BB's 3-bet range vs SB includes AA-TT, AJ+ — JJ has equity advantage vs the lower portion. OOP 4-bet: 2.2x = ~22 BB.",
+    "explanation": "JJ is in the default SB 4-bet range vs BB (AA-JJ). BB's 3-bet range vs SB includes AA-TT, AJ+ — JJ has equity advantage vs the lower portion. OOP 4-bet: 2.2x = ~22 BB. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling JJ OOP in a 3-bet pot vs BB is the alternative — both defensible but 4-betting is the default.",
       "2": "Folding JJ vs BB 3-bet is too tight.",
@@ -9361,7 +9361,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "TT vs BB 3-bet from SB = fold. TT is not in the SB 4-bet range (starts at JJ). BB's 3-bet range includes JJ+, AK. TT is behind JJ+ and flipping with AK OOP. Fold.",
+    "explanation": "TT vs BB 3-bet from SB = fold. TT is not in the SB 4-bet range (starts at JJ). BB's 3-bet range includes JJ+, AK. TT is behind JJ+ and flipping with AK OOP. Fold. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling TT OOP in a 3-bet pot leads to expensive spots on every overcard board.",
       "2": "4-betting TT into JJ+/AK — almost always behind or flipping.",
@@ -9391,7 +9391,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "AKs is in the default SB 4-bet range. OOP 4-bet: 2.2x = ~22 BB. Data: 4-betting AK is 2.4x more profitable than calling.",
+    "explanation": "AKs is in the default SB 4-bet range. OOP 4-bet: 2.2x = ~22 BB. Data: 4-betting AK is 2.4x more profitable than calling. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling AKs OOP in a 3-bet pot is 2.4x less profitable than 4-betting.",
       "2": "AKs is ahead of most 3-bet ranges. Fold is wrong.",
@@ -9421,7 +9421,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "AQ+ is in the default SB 4-bet range. OOP 4-bet: 2.2x = ~22 BB. AQs dominates a large portion of BB's 3-bet range.",
+    "explanation": "AQ+ is in the default SB 4-bet range. OOP 4-bet: 2.2x = ~22 BB. AQs dominates a large portion of BB's 3-bet range. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling AQs OOP in a 3-bet pot is second-best when it is in the default 4-bet range.",
       "2": "AQs dominates much of BB's 3-bet range. Fold is wrong.",
@@ -9454,7 +9454,7 @@
       0,
       1
     ],
-    "explanation": "KQs SB vs BB 3-bet: 4-betting is a semi-bluff using the king blocker and nut flush potential. Folding is also correct — KQs is not a value 4-bet. Calling OOP is the worst option. 4-bet bluff or fold; both are standard.",
+    "explanation": "KQs SB vs BB 3-bet: 4-betting is a semi-bluff using the king blocker and nut flush potential. Folding is also correct — KQs is not a value 4-bet. Calling OOP is the worst option. 4-bet bluff or fold; both are standard. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "2": "Also correct — 4-Bet bluff or Fold — both correct. See explanation.",
       "3": "Shoving folds out hands you want calls from."
@@ -9483,7 +9483,7 @@
       "Shove"
     ],
     "correct": 0,
-    "explanation": "99 from SB vs BB 3-bet = fold. 99 is not in the SB 4-bet range (starts at JJ). BB's 3-bet range includes JJ+, AK. 99 is behind JJ+ and flipping with AK OOP. Fold.",
+    "explanation": "99 from SB vs BB 3-bet = fold. 99 is not in the SB 4-bet range (starts at JJ). BB's 3-bet range includes JJ+, AK. 99 is behind JJ+ and flipping with AK OOP. Fold. WHY NOT CALL: Calling a 3-bet from the SB is almost never correct in Hardin's TAG framework — and this is the spot to unlearn the instinct to flat. Three reasons: (1) You'll be OUT OF POSITION on every street, acting first with no information. (2) Your flatting range is CAPPED — you'd 4-bet your strong hands, so calling advertises a mediocre range the BB can barrel relentlessly. (3) You build a bloated OOP pot with a hand that's behind the value 3-bets and only flipping at best. Note the key distinction: SB has a CALLING range vs an OPEN RAISE (a steal), because the opener's range is wide and you close the action getting a price. But vs a 3-BET, the dynamic flips — the 3-bettor has a strong, narrow range and you're OOP. So: vs an open = 3-bet/call/fold; vs a 3-bet = 4-bet or fold.",
     "why_wrong": {
       "1": "Calling 99 OOP in a 3-bet pot — can't realize equity out of position on most boards.",
       "2": "4-betting 99 into JJ+/AK — almost always behind or flipping.",
