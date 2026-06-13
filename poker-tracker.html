@@ -723,7 +723,7 @@ function parseHands(text, filename) {
     const posRangeCheck = HARDIN_RANGES[h.position];
     if (h.vpip && posRangeCheck && !posRangeCheck.all.includes(h.handNotation)) issues.push('VPIP_TRASH');
     // LIMP_OOP: called from SB facing a raise with a hand that should 3-bet or fold
-    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise) issues.push('LIMP_OOP');
+    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr) issues.push('LIMP_OOP');
     // LIMP: limped from non-blind position with a raiseable hand
     if (h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise) {
       const limpRange = HARDIN_RANGES[h.position];
@@ -1937,9 +1937,9 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-console.log('Poker Tracker v2.2');
+console.log('Poker Tracker v2.3');
 var vEl=document.createElement('div');
-vEl.textContent='v2.2';
+vEl.textContent='v2.3';
 vEl.style.cssText='position:fixed;bottom:64px;right:8px;font-size:9px;color:#4a5d47;z-index:5;pointer-events:none';
 document.body.appendChild(vEl);
 init();
