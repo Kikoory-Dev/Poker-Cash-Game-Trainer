@@ -1735,7 +1735,7 @@ function renderPositions() {
   var positions = ['BTN','CO','HJ','UTG','SB','BB'];
   var grid = document.getElementById('pos-detail-grid');
   grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
-  var ILABELS = {VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
+  var ILABELS = {VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',CALL_3BET:'Call 3-bet (out of range)',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
   grid.innerHTML = positions.map(function(pos) {
     var ph = hands.filter(function(h){return h.position===pos;});
     if (!ph.length) return '<div class="card"><div class="card-title">'+pos+'</div><p style="color:#6b7d62;font-size:13px;margin:0">No hands</p></div>';
@@ -1820,11 +1820,11 @@ function showPositionIssueHands(pos, issue) {
   var hands=filterHands(allHands,tf,st,'all','pos-date')
     .filter(function(h){return h.position===pos&&h.tagIssues.indexOf(issue)>=0;});
   hands.sort(function(a,b){return a.netBB-b.netBB;});
-  var ILABELS={VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
+  var ILABELS={VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',CALL_3BET:'Call 3-bet (out of range)',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
   var IEXPLAIN={
     VPIP_TRASH:'Played a hand outside Hardin opening range. Over a large sample these lose money even when variance makes them positive short-term.',
     LIMP_OOP:'Called from SB without raising. SB is raise or fold — limping caps your range and plays OOP every street.',
-    CALL_4BET:'Called a 4-bet with a hand outside the continue range (QQ+/AKs). Largest EV leak.',
+    CALL_4BET:'Called a 4-bet with a hand outside the continue range (QQ+/AKs almost exclusively). Hardin: once you 3-bet and face a 4-bet, fold anything outside AA/KK/QQ/AKs.',CALL_3BET:'Called a 3-bet (villain re-raised your open) with a hand outside your continue range. Hardin: vs a 3-bet your range is tight — AA/KK/QQ/AKs from early positions, a few more from BTN/SB. Everything else is fold (or 4-bet bluff). Flatting in-between hands OOP is a common micro-stakes leak.',
     MISSED_CBET:'Had the opportunity to c-bet as PFR but checked. Hardin target: 60-70% c-bet frequency.',
     FOLD_STRONG_LP:'Folded a hand Hardin says must raise from this position.',
     LIMP:'Limped with a hand in range instead of raising.',
@@ -2100,7 +2100,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.16';
+const APP_VERSION = '2.17';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
