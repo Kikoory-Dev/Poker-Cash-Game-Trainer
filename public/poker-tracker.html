@@ -253,7 +253,7 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
   </div>
 
   <!-- POSITIONS -->
-  <div class="section" id="tab-positions">
+  <div class="section" id="tab-positions" style="padding-bottom:80px">
     <div class="filter-row">
       <select id="pos-filter" onchange="renderPositions()">
         <option value="all">All time</option>
@@ -338,7 +338,7 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
 </nav>
 
   <!-- ANALYSIS -->
-  <div class="section" id="tab-analysis">
+  <div class="section" id="tab-analysis" style="padding-bottom:80px">
     <div class="filter-row">
       <select id="analysis-filter" onchange="renderAnalysis()">
         <option value="all">All time</option>
@@ -1177,8 +1177,7 @@ function showHandDetail(id) {
     const st = sa[key];
     if (!st && !board) return;
     const actions = st ? st.actions : [];
-    // Stop at Hero's last active street
-    if (streetOrder.indexOf(key) > heroStreetIdx) return;
+    // Show all streets with board cards (incl. turn/river when Hero is all-in)
     if (key!=='preflop' && !board) return;
     if (key==='preflop' && !actions.length) return;
 
@@ -1801,6 +1800,12 @@ function wireRevBtns() {
   });
 }
 
+function showModal(title, body) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
 function showPositionHands(pos) {
   var tf=getEl('pos-filter');var st=getEl('pos-stakes');
   var hands=filterHands(allHands,tf,st,'all','pos-date').filter(function(h){return h.position===pos;});
@@ -2100,7 +2105,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.17';
+const APP_VERSION = '2.18';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
