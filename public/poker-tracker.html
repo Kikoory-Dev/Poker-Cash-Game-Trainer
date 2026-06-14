@@ -915,6 +915,7 @@ function renderDashboard() {
   const filtSessions = buildSessions(hands);
   let durHours = filtSessions.reduce((s,x)=>s+x.durMin/60, 0);
   const usdPerHour = durHours > 0 ? netUSDval/durHours : 0;
+  const handsPerHour = durHours > 0 ? Math.round(hands.length/durHours) : 0;
   const durH = Math.floor(durHours);
   const durM = Math.round((durHours%1)*60);
   const durStr = durHours > 0 ? (durH > 0 ? durH+'h '+durM+'m' : durM+'m') : '—';
@@ -928,6 +929,7 @@ function renderDashboard() {
     <div class="stat"><p class="stat-label">BB / 100</p><p class="stat-value ${bb100>=0?'green':'red'}">${bb100>=0?'+':''}${bb100.toFixed(2)}</p></div>
     <div class="stat"><p class="stat-label">$ / hour</p><p class="stat-value ${usdPerHour>=0?'green':'red'}">${usdPerHour>=0?'+':'-'}$${usdHrAbs}</p></div>
     <div class="stat"><p class="stat-label">Duration</p><p class="stat-value blue" style="font-size:16px">${durStr}</p></div>
+    <div class="stat"><p class="stat-label">Hands / hour</p><p class="stat-value blue">${handsPerHour > 0 ? handsPerHour : '—'}</p></div>
     <div class="stat"><p class="stat-label">TAG compliance</p><p class="stat-value ${compliance>=80?'green':compliance>=60?'amber':'red'}">${compliance}%</p></div>
     <div class="stat"><p class="stat-label">Big losses (&gt;10bb)</p><p class="stat-value ${bigLosses?'red':''}">${bigLosses}</p></div>
   `;
@@ -2171,7 +2173,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.20';
+const APP_VERSION = '2.21';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
