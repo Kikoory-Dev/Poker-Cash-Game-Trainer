@@ -1121,20 +1121,36 @@ function changePage(dir) {
   renderHandsPage();
 }
 
-function renderAction(player, action, seatPositions) {
-  const isHero = player==='Hero';
-  const col = isHero?'var(--green)':'var(--text3)';
-  const pos = seatPositions && seatPositions[player] ? seatPositions[player] : null;
-  const name = isHero ? 'Hero' : (pos ? `Villain (${pos})` : 'Villain');
-  let verb = action;
-  if (action==='folds') verb='<span style="color:var(--muted)">folds</span>';
-  else if (action==='checks') verb='<span style="color:var(--blue)">checks</span>';
-  else if (action.startsWith('calls')) verb=`<span style="color:var(--amber)">${action}</span>`;
-  else if (action.startsWith('bets')||action.startsWith('raises')) verb=`<span style="color:var(--green)">${action}</span>`;
-  return `<div style="display:flex;gap:8px;padding:4px 0;font-size:13px">
-    <span style="font-weight:600;color:${col};min-width:80px">${name}</span>
-    <span>${verb}</span>
-  </div>`;
+function renderAction(player, action, seatPositions, raisesBefore) {
+  var isHero = player==='Hero';
+  var col = isHero?'var(--green)':'var(--text3)';
+  var pos = seatPositions && seatPositions[player] ? seatPositions[player] : null;
+  var name = isHero ? 'Hero' : (pos ? 'Villain ('+pos+')' : 'Villain');
+  var verb;
+  if (action==='folds') {
+    verb='<span style="color:var(--muted)">folds</span>';
+  } else if (action==='checks') {
+    verb='<span style="color:var(--blue)">checks</span>';
+  } else if (action.startsWith('calls')) {
+    // "calls $X" — X is the amount to match
+    verb='<span style="color:var(--amber)">'+action+'</span>';
+  } else if (action.startsWith('bets')) {
+    var bm=action.match(/bets \$([\d.]+)/);
+    verb=bm?'<span style="color:var(--green)">bets <b>$'+bm[1]+'</b></span>':'<span style="color:var(--green)">'+action+'</span>';
+  } else if (action.startsWith('raises')) {
+    // "raises $X to $Y" → X = increment, Y = total commitment on this street
+    var rm=action.match(/raises \$[\d.]+ to \$([\d.]+)/);
+    var totalTo=rm?rm[1]:'?';
+    var rb=raisesBefore||0;
+    var label=rb===0?'opens to':rb===1?'3-bets to':'4-bets to';
+    verb='<span style="color:var(--green)">'+label+' <b>$'+totalTo+'</b></span>';
+  } else {
+    verb=action;
+  }
+  return '<div style="display:flex;gap:8px;padding:4px 0;font-size:13px;border-bottom:1px solid var(--bg);align-items:center">'
+    +'<span style="font-weight:600;color:'+col+';min-width:90px;font-size:12px">'+name+'</span>'
+    +'<span>'+verb+'</span>'
+    +'</div>';
 }
 
 function showHandDetail(id) {
@@ -1173,25 +1189,75 @@ function showHandDetail(id) {
   // Only show streets up to and including the one where Hero was active
   const streetOrder = ['preflop','flop','turn','river'];
   const heroStreetIdx = streetOrder.indexOf((h.streetReached||'Preflop').toLowerCase());
-  streets.forEach(({key,label,board}) => {
-    const st = sa[key];
+  // Calculate pot after preflop for display
+  var preflopActions = (sa.preflop||{}).actions||[];
+  var potAfterPreflop = 0;
+  var playerTotals = {};
+  preflopActions.forEach(function(a){
+    var act=a.action||a[1]; var pl=a.player||a[0];
+    var rm=act.match(/raises \$[\d.]+ to \$([\d.]+)/);
+    var cm=act.match(/calls \$([\d.]+)/);
+    var bm=act.match(/bets \$([\d.]+)/);
+    if(rm){playerTotals[pl]=(parseFloat(rm[1]));}
+    else if(cm){playerTotals[pl]=(playerTotals[pl]||0)+parseFloat(cm[1]);}
+    else if(bm){playerTotals[pl]=(playerTotals[pl]||0)+parseFloat(bm[1]);}
+  });
+  // Add blind posts not covered by raises
+  Object.keys(h.seatPositions||{}).forEach(function(pl){
+    if(!playerTotals[pl]){
+      if(h.seatPositions[pl]==='SB') playerTotals[pl]=0.05;
+      if(h.seatPositions[pl]==='BB') playerTotals[pl]=0.10;
+    }
+  });
+  Object.values(playerTotals).forEach(function(v){potAfterPreflop+=v;});
+  potAfterPreflop=Math.round(potAfterPreflop*100)/100;
+  var runningPot=potAfterPreflop;
+
+  streets.forEach(function({key,label,board}) {
+    var st = sa[key];
     if (!st && !board) return;
-    const actions = st ? st.actions : [];
+    var actions = st ? st.actions : [];
     // Show all streets with board cards (incl. turn/river when Hero is all-in)
     if (key!=='preflop' && !board) return;
     if (key==='preflop' && !actions.length) return;
 
-    body += `<div style="margin-bottom:10px">`;
-    body += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-      <span style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${label}</span>
-      ${board?`<span style="font-size:13px;font-weight:600;color:var(--text2)">${formatCards(board)}</span>`:''}
-    </div>`;
-    if (actions.length) {
-      body += `<div style="background:var(--bg3);border-radius:6px;padding:6px 10px">`;
-      actions.forEach(a => { body += renderAction(a.player||a[0], a.action||a[1], h.seatPositions); });
-      body += `</div>`;
+    // Pot label
+    var potLabel = '';
+    if (key==='preflop' && potAfterPreflop>0) {
+      potLabel = ' <span style="font-size:10px;color:var(--muted);margin-left:auto">pot after: $'+potAfterPreflop.toFixed(2)+'</span>';
+    } else if (key!=='preflop' && runningPot>0) {
+      potLabel = ' <span style="font-size:10px;color:var(--muted);margin-left:auto">pot: $'+runningPot.toFixed(2)+'</span>';
     }
-    body += `</div>`;
+
+    body += '<div style="margin-bottom:12px">';
+    body += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">'
+      +'<span style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;background:var(--bg3);padding:2px 6px;border-radius:3px">'+label+'</span>'
+      +(board?'<span style="font-size:14px;font-weight:600;color:var(--text)">'+formatCards(board)+'</span>':'')
+      +potLabel
+      +'</div>';
+
+    if (actions.length) {
+      body += '<div style="background:var(--bg3);border-radius:7px;padding:4px 10px;border:1px solid var(--border)">';
+      var raisesBefore=0;
+      var streetContribs={};
+      actions.forEach(function(a) {
+        var act=a.action||a[1]; var pl=a.player||a[0];
+        body += renderAction(pl, act, h.seatPositions, raisesBefore);
+        if(act.startsWith('raises'))raisesBefore++;
+        // Track street pot additions
+        var rm2=act.match(/raises \$[\d.]+ to \$([\d.]+)/);
+        var cm2=act.match(/calls \$([\d.]+)/);
+        var bm2=act.match(/bets \$([\d.]+)/);
+        if(rm2){streetContribs[pl]=parseFloat(rm2[1]);}
+        else if(cm2){streetContribs[pl]=(streetContribs[pl]||0)+parseFloat(cm2[1]);}
+        else if(bm2){streetContribs[pl]=(streetContribs[pl]||0)+parseFloat(bm2[1]);}
+      });
+      Object.values(streetContribs).forEach(function(v){runningPot=Math.round((runningPot+v)*100)/100;});
+      body += '</div>';
+    } else if (key !== 'preflop' && board) {
+      body += '<div style="background:var(--bg3);border-radius:7px;padding:6px 10px;font-size:12px;color:var(--muted);font-style:italic;border:1px solid var(--border)">Checked through — no recorded actions</div>';
+    }
+    body += '</div>';
   });
   body += `</div>`;
 
@@ -2105,7 +2171,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.18';
+const APP_VERSION = '2.19';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
