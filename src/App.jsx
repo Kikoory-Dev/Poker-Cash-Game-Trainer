@@ -182,6 +182,8 @@ export default function App(){
   const[revealed,setRevealed]=useState(false);
   const[session,setSession]=useState({correct:0,wrong:0});
   const[streak,setStreak]=useState(0);
+  const[gridSel,setGridSel]=useState(()=>new Set());
+  const[gridScore,setGridScore]=useState(null);
   const scrollRef=useRef(null);
   // Chart lookup state
   const [chartCat, setChartCat] = useState(Object.keys(rangesData)[0]);
@@ -264,7 +266,7 @@ export default function App(){
 
   function next(){
     if(idx+1>=queue.length){setScreen("result");return;}
-    setIdx(i=>i+1);setSelected(null);setRevealed(false);
+    setIdx(i=>i+1);setSelected(null);setRevealed(false);setGridSel(new Set());setGridScore(null);
     scrollRef.current?.scrollTo({top:0,behavior:"instant"});
   }
 
@@ -503,8 +505,8 @@ export default function App(){
   );
 
   if(screen==="quiz"&&q){
-    const cards=q.hand.map(c=>({rank:c.slice(0,-1),suit:c.slice(-1)}));
-    const ok=isCorrect(selected, q.correct);
+    const cards=(q.hand||[]).map(c=>({rank:c.slice(0,-1),suit:c.slice(-1)}));
+    const ok=q.question_type==='grid'?(gridScore?gridScore.missed===0&&gridScore.tooLoose===0:false):isCorrect(selected, q.correct);
     const qScore=getScore(progress[q.id]);
     return(
       <div style={{position:"fixed",inset:0,background:C.bg,color:C.text,fontFamily:"'Inter',-apple-system,sans-serif",display:"flex",flexDirection:"column",paddingTop:"env(safe-area-inset-top,0px)",paddingBottom:"env(safe-area-inset-bottom,0px)"}}>
@@ -550,6 +552,82 @@ export default function App(){
               <p style={{margin:0,fontSize:17,fontWeight:700,color:C.cream,lineHeight:1.55,letterSpacing:"-0.01em"}}>{q.question}</p>
             </div>
 
+            {q.question_type==='grid'?(()=>{
+              const RANKS=['A','K','Q','J','T','9','8','7','6','5','4','3','2'];
+              const cellHand=(ri,ci)=>ri===ci?RANKS[ri]+RANKS[ri]:ri<ci?RANKS[ri]+RANKS[ci]+'s':RANKS[ci]+RANKS[ri]+'o';
+              const required=new Set(q.correct_hands||[]);
+              const optional=new Set(q.optional_hands||[]);
+              const all=new Set([...required,...optional]);
+              const toggleCell=(hand)=>{if(revealed)return;setGridSel(prev=>{const n=new Set(prev);n.has(hand)?n.delete(hand):n.add(hand);return n;});};
+              const submitGrid=()=>{
+                let hit=0,missed=0,tooLoose=0;
+                required.forEach(h=>{gridSel.has(h)?hit++:missed++;});
+                optional.forEach(h=>{if(gridSel.has(h))hit++;});
+                gridSel.forEach(h=>{if(!all.has(h))tooLoose++;});
+                const score={hit,missed,tooLoose,total:required.size};
+                setGridScore(score);
+                const ok2=missed===0&&tooLoose===0;
+                setRevealed(true);
+                const prev=progress[q.id]||{seen:0,correct:0,stage:0};
+                const ns=nextStage(prev.stage||0,ok2);
+                const due=Date.now()+SRS_INTERVALS_MS[ns];
+                setProgress(p=>({...p,[q.id]:{seen:prev.seen+1,correct:prev.correct+(ok2?1:0),stage:ns,due}}));
+                setStreak(s=>ok2?s+1:0);
+                setSession(s=>({correct:s.correct+(ok2?1:0),wrong:s.wrong+(ok2?0:1)}));
+                setTimeout(()=>scrollRef.current?.scrollTo({top:0,behavior:'smooth'}),80);
+              };
+              return(
+                <div>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(13,1fr)',gap:2,marginBottom:10,userSelect:'none'}}>
+                    {RANKS.map((_,ri)=>RANKS.map((_,ci)=>{
+                      const hand=cellHand(ri,ci);
+                      const inReq=required.has(hand);const inOpt=optional.has(hand);const inAll=all.has(hand);const sel=gridSel.has(hand);
+                      let bg,bc,tc;
+                      if(revealed){
+                        if(inReq&&sel){bg='rgba(109,184,122,0.3)';bc='#6db87a';tc='#afd9b7';}
+                        else if(inOpt&&sel){bg='rgba(109,184,122,0.15)';bc='#6db87a66';tc='#6db87a';}
+                        else if(inReq&&!sel){bg='rgba(217,150,60,0.3)';bc='#d9963c';tc='#e0b870';}
+                        else if(!inAll&&sel){bg='rgba(217,96,96,0.3)';bc='#d96060';tc='#e08080';}
+                        else{bg='transparent';bc='transparent';tc='#33442a';}
+                      }else{
+                        if(sel){bg=`${C.accent}40`;bc=C.accent;tc=C.cream;}
+                        else{bg:'transparent';bc=C.border+'44';tc='#3d5033';}
+                      }
+                      return(
+                        <button key={ri*13+ci} onClick={()=>toggleCell(hand)}
+                          style={{padding:'2px 0',borderRadius:3,border:`1px solid ${bc}`,background:bg,
+                            color:tc,fontSize:7,fontWeight:700,cursor:revealed?'default':'pointer',
+                            lineHeight:1.4,minHeight:19,width:'100%',fontFamily:"'Inter',-apple-system,sans-serif"}}>
+                          {hand}
+                        </button>
+                      );
+                    }))}
+                  </div>
+                  {!revealed&&<button onClick={submitGrid} style={{width:'100%',height:50,borderRadius:12,background:C.accent,color:'#1a2218',fontSize:15,fontWeight:800,border:'none',cursor:'pointer',marginBottom:10,fontFamily:"'Inter',-apple-system,sans-serif"}}>Submit Range</button>}
+                  {revealed&&gridScore&&(
+                    <div style={{display:'flex',gap:8,marginBottom:10}}>
+                      {[['✓ Hit',gridScore.hit,'#6db87a'],['○ Missed',gridScore.missed,'#d9963c'],['✗ Too loose',gridScore.tooLoose,'#d96060']].map(([l,v,col])=>(
+                        <div key={l} style={{flex:1,background:C.bg3,borderRadius:8,padding:'8px',textAlign:'center',border:`1px solid ${C.border}`}}>
+                          <div style={{fontSize:10,color:C.muted,marginBottom:2}}>{l}</div>
+                          <div style={{fontSize:18,fontWeight:900,color:col}}>{v}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div style={{fontSize:11,color:C.muted,textAlign:'center',marginBottom:8}}>
+                    {revealed
+                      ?(gridScore&&gridScore.missed===0&&gridScore.tooLoose===0
+                          ?<span style={{color:'#6db87a',fontWeight:700}}>Perfect range ✓</span>
+                          :<span style={{color:'#d96060',fontWeight:700}}>
+                            {gridScore&&gridScore.missed>0?`Missed ${gridScore.missed} hand${gridScore.missed>1?'s':''}.`:''}{' '}
+                            {gridScore&&gridScore.tooLoose>0?`${gridScore.tooLoose} too loose.`:''}
+                          </span>)
+                      :<span>Tap to select · Green=hit · Orange=missed · Red=too loose</span>
+                    }
+                  </div>
+                </div>
+              );
+            })():(
             <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
               {q.options.map((opt,i)=>{
                 let bg=C.bg2,bc=C.border,tc="#8fa882",icon=null;
@@ -569,6 +647,7 @@ export default function App(){
                 );
               })}
             </div>
+            )}
 
             {revealed&&(
               <div style={{background:ok?"rgba(109,184,122,0.08)":"rgba(217,96,96,0.08)",borderRadius:14,border:`1px solid ${ok?"rgba(109,184,122,0.22)":"rgba(217,96,96,0.22)"}`,padding:"16px",marginBottom:12}}>
