@@ -912,8 +912,8 @@
       "A♦"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♠A♦ in UTG. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♠A♦ in UTG. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -942,8 +942,8 @@
       "K♦"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (CO, TAG) 3-bets to 9 BB.",
-    "question": "You have K♣K♦ in UTG. You raised 3 BB, Villain (CO, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB.",
+    "question": "You have K♣K♦ in UTG. You raised 3 BB, CO 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -972,8 +972,8 @@
       "K♣"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have A♥K♣ in UTG. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have A♥K♣ in UTG. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -1002,8 +1002,8 @@
       "T♦"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (MP, TAG) 3-bets to 10.5 BB.",
-    "question": "You have T♠T♦ in UTG. You raised 3 BB, Villain (MP, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. MP 3-bets to 10.5 BB.",
+    "question": "You have T♠T♦ in UTG. You raised 3 BB, MP 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -1032,8 +1032,8 @@
       "J♦"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have J♣J♦ in UTG. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have J♣J♦ in UTG. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -1062,8 +1062,8 @@
       "Q♥"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have Q♠Q♥ in UTG. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have Q♠Q♥ in UTG. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to 24 BB",
       "Call",
@@ -1094,8 +1094,8 @@
       "Q♠"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (CO, TAG) 3-bets to 9 BB.",
-    "question": "You have A♦Q♠ in UTG. You raised 3 BB, Villain (CO, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB.",
+    "question": "You have A♦Q♠ in UTG. You raised 3 BB, CO 3-bets to 9 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -1124,8 +1124,8 @@
       "9♦"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have 9♣9♦ in UTG. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have 9♣9♦ in UTG. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -1154,8 +1154,8 @@
       "K♣"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♣K♣ in UTG. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have A♣K♣ in UTG. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -1184,8 +1184,8 @@
       "J♠"
     ],
     "position": "UTG",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (MP, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♠J♠ in UTG. You raised 3 BB, Villain (MP, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. MP 3-bets to 10.5 BB.",
+    "question": "You have K♠J♠ in UTG. You raised 3 BB, MP 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -1874,8 +1874,8 @@
       "J♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Action on you.",
-    "question": "You have J♠J♦ in MP. Villain (UTG, TAG) raises 3 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Action on you.",
+    "question": "You have J♠J♦ in MP. UTG raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -1904,8 +1904,8 @@
       "Q♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Action on you.",
-    "question": "You have A♦Q♦ in MP. Villain (UTG, TAG) raises 3 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Action on you.",
+    "question": "You have A♦Q♦ in MP. UTG raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -1934,8 +1934,8 @@
       "J♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Action on you.",
-    "question": "You have A♠J♦ in MP. Villain (UTG, TAG) raises 3 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Action on you.",
+    "question": "You have A♠J♦ in MP. UTG raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -1964,8 +1964,8 @@
       "Q♥"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Action on you.",
-    "question": "You have K♥Q♥ in MP. Villain (UTG, TAG) raises 3 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Action on you.",
+    "question": "You have K♥Q♥ in MP. UTG raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -1994,8 +1994,8 @@
       "J♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Action on you.",
-    "question": "You have K♦J♦ in MP. Villain (UTG, TAG) raises 3 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Action on you.",
+    "question": "You have K♦J♦ in MP. UTG raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2024,8 +2024,8 @@
       "4♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Effective stacks 100 BB.",
-    "question": "You have 4♠4♦ in MP. Villain (UTG, TAG) raises 3 BB. Effective stacks 100 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Effective stacks 100 BB.",
+    "question": "You have 4♠4♦ in MP. UTG raises 3 BB. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -2054,8 +2054,8 @@
       "3♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Effective stacks 40 BB.",
-    "question": "You have 3♣3♦ in MP. Villain (UTG, TAG) raises 3 BB. Effective stacks are 40 BB. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Effective stacks 40 BB.",
+    "question": "You have 3♣3♦ in MP. UTG raises 3 BB. Effective stacks are 40 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2084,8 +2084,8 @@
       "T♣"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG, TAG) raises 3 BB. Aggressive player on BTN.",
-    "question": "You have A♣T♣ in MP. Villain (UTG, TAG) raises 3 BB. There is an aggressive 3-bettor on the BTN. What do you do?",
+    "situation": "Conservative ranges. UTG raises 3 BB. Aggressive player on BTN.",
+    "question": "You have A♣T♣ in MP. UTG raises 3 BB. There is an aggressive 3-bettor on the BTN. What do you do?",
     "options": [
       "Fold",
       "3-Bet bluff",
@@ -2116,8 +2116,8 @@
       "A♠"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have A♥A♠ in MP. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have A♥A♠ in MP. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -2146,8 +2146,8 @@
       "K♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♣K♦ in MP. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♣K♦ in MP. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -2176,8 +2176,8 @@
       "J♣"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (CO, TAG) 3-bets to 9 BB. CO has been playing very tight.",
-    "question": "You have J♦J♣ in MP. You raised 3 BB, Villain (CO, TAG) 3-bets to 9 BB. CO has been playing only premium hands. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB. CO has been playing very tight.",
+    "question": "You have J♦J♣ in MP. You raised 3 BB, CO 3-bets to 9 BB. CO has been playing only premium hands. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2206,8 +2206,8 @@
       "K♣"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♠K♣ in MP. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have A♠K♣ in MP. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -2236,8 +2236,8 @@
       "T♥"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have T♠T♥ in MP. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have T♠T♥ in MP. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2266,8 +2266,8 @@
       "Q♣"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (CO, TAG) 3-bets to 9 BB.",
-    "question": "You have Q♥Q♣ in MP. You raised 3 BB, Villain (CO, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB.",
+    "question": "You have Q♥Q♣ in MP. You raised 3 BB, CO 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet",
       "Call",
@@ -2298,8 +2298,8 @@
       "Q♠"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have A♦Q♠ in MP. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have A♦Q♠ in MP. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2328,8 +2328,8 @@
       "Q♠"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♠Q♠ in MP. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have K♠Q♠ in MP. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2358,8 +2358,8 @@
       "K♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♣K♦ in MP. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♣K♦ in MP. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet",
       "Call",
@@ -2390,8 +2390,8 @@
       "9♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (CO, TAG) 3-bets to 9 BB.",
-    "question": "You have 9♥9♦ in MP. You raised 3 BB, Villain (CO, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. CO 3-bets to 9 BB.",
+    "question": "You have 9♥9♦ in MP. You raised 3 BB, CO 3-bets to 9 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -2420,8 +2420,8 @@
       "K♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have A♠K♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♠K♦ in MP. UTG limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -2450,8 +2450,8 @@
       "Q♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have Q♠Q♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have Q♠Q♦ in MP. UTG limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -2480,8 +2480,8 @@
       "8♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have 8♥8♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have 8♥8♦ in MP. UTG limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -2510,8 +2510,8 @@
       "7♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have 7♣7♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have 7♣7♦ in MP. UTG limps. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 4 BB",
@@ -2540,8 +2540,8 @@
       "J♣"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have A♣J♣ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♣J♣ in MP. UTG limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -2570,8 +2570,8 @@
       "9♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have A♦9♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♦9♦ in MP. UTG limps. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 4 BB",
@@ -2602,8 +2602,8 @@
       "J♠"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have K♠J♠ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have K♠J♠ in MP. UTG limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -2632,8 +2632,8 @@
       "T♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have K♦T♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have K♦T♦ in MP. UTG limps. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 3 BB",
@@ -2664,8 +2664,8 @@
       "J♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have A♥J♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♥J♦ in MP. UTG limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -2694,8 +2694,8 @@
       "T♦"
     ],
     "position": "MP",
-    "situation": "Conservative ranges. Villain (UTG) limps. Action on you.",
-    "question": "You have A♠T♦ in MP. Villain (UTG) limps. What do you do?",
+    "situation": "Conservative ranges. UTG limps. Action on you.",
+    "question": "You have A♠T♦ in MP. UTG limps. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 3 BB",
@@ -3386,8 +3386,8 @@
       "T♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO.",
-    "question": "You have T♠T♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO.",
+    "question": "You have T♠T♦ in CO. UTG raises 3 BB, MP folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -3416,8 +3416,8 @@
       "T♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO.",
-    "question": "You have A♦T♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO.",
+    "question": "You have A♦T♦ in CO. UTG raises 3 BB, MP folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -3446,8 +3446,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO.",
-    "question": "You have A♣J♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO.",
+    "question": "You have A♣J♦ in CO. UTG raises 3 BB, MP folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -3476,8 +3476,8 @@
       "T♣"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO.",
-    "question": "You have A♥T♣ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO.",
+    "question": "You have A♥T♣ in CO. UTG raises 3 BB, MP folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -3506,8 +3506,8 @@
       "5♠"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO. Effective stacks 100 BB.",
-    "question": "You have 5♥5♠ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. Effective stacks 100 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO. Effective stacks 100 BB.",
+    "question": "You have 5♥5♠ in CO. UTG raises 3 BB, MP folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3536,8 +3536,8 @@
       "T♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO. No aggressive player behind.",
-    "question": "You have K♦T♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. No aggressive player behind. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO. No aggressive player behind.",
+    "question": "You have K♦T♦ in CO. UTG raises 3 BB, MP folds. No aggressive player behind. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3566,8 +3566,8 @@
       "T♠"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Aggressive player on BTN.",
-    "question": "You have A♠T♠ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. The BTN is an aggressive 3-bettor. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Aggressive player on BTN.",
+    "question": "You have A♠T♠ in CO. UTG raises 3 BB, MP folds. The BTN is an aggressive 3-bettor. What do you do?",
     "options": [
       "Fold",
       "3-Bet bluff",
@@ -3598,8 +3598,8 @@
       "9♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO.",
-    "question": "You have J♦9♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO.",
+    "question": "You have J♦9♦ in CO. UTG raises 3 BB, MP folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3628,8 +3628,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Action on you in CO.",
-    "question": "You have K♠J♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Action on you in CO.",
+    "question": "You have K♠J♦ in CO. UTG raises 3 BB, MP folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3658,8 +3658,8 @@
       "3♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP folds. Effective stacks 40 BB.",
-    "question": "You have 3♣3♦ in CO. Villain (UTG, TAG) raises 3 BB, MP folds. Effective stacks are 40 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP folds. Effective stacks 40 BB.",
+    "question": "You have 3♣3♦ in CO. UTG raises 3 BB, MP folds. Effective stacks are 40 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -3688,8 +3688,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have J♠J♦ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have J♠J♦ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -3718,8 +3718,8 @@
       "Q♣"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have A♣Q♣ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have A♣Q♣ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -3748,8 +3748,8 @@
       "Q♥"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have A♦Q♥ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have A♦Q♥ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -3778,8 +3778,8 @@
       "J♣"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have A♠J♣ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have A♠J♣ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -3808,8 +3808,8 @@
       "6♥"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have 7♥6♥ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have 7♥6♥ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3838,8 +3838,8 @@
       "5♦"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have 6♦5♦ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have 6♦5♦ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -3868,8 +3868,8 @@
       "4♦"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Effective stacks 100 BB.",
-    "question": "You have 4♠4♦ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. Effective stacks 100 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Effective stacks 100 BB.",
+    "question": "You have 4♠4♦ in CO. UTG folds, MP raises 3 BB. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3898,8 +3898,8 @@
       "J♣"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Action on you in CO.",
-    "question": "You have K♣J♣ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Action on you in CO.",
+    "question": "You have K♣J♣ in CO. UTG folds, MP raises 3 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3928,8 +3928,8 @@
       "T♦"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Aggressive player on BTN.",
-    "question": "You have K♦T♦ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. Aggressive player on BTN. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. Aggressive player on BTN.",
+    "question": "You have K♦T♦ in CO. UTG folds, MP raises 3 BB. Aggressive player on BTN. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -3958,8 +3958,8 @@
       "T♥"
     ],
     "position": "CO",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. No aggressive player behind.",
-    "question": "You have A♥T♥ in CO. UTG folds, Villain (MP, TAG) raises 3 BB. No aggressive player behind. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. No aggressive player behind.",
+    "question": "You have A♥T♥ in CO. UTG folds, MP raises 3 BB. No aggressive player behind. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -3988,8 +3988,8 @@
       "A♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have A♠A♦ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have A♠A♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Squeeze to ~12 BB",
       "Call",
@@ -4018,8 +4018,8 @@
       "K♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have K♥K♦ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have K♥K♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Squeeze to ~12 BB",
       "Call",
@@ -4048,8 +4048,8 @@
       "Q♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have Q♠Q♦ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have Q♠Q♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Squeeze to ~12 BB",
       "Call",
@@ -4078,8 +4078,8 @@
       "K♣"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have A♣K♣ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have A♣K♣ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Squeeze to ~12 BB",
       "Call",
@@ -4108,8 +4108,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have J♥J♦ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have J♥J♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Call",
       "Squeeze to 12 BB",
@@ -4138,8 +4138,8 @@
       "T♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have T♥T♦ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have T♥T♦ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Call",
       "Squeeze to 12 BB",
@@ -4168,8 +4168,8 @@
       "7♣"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. Action on you in CO.",
-    "question": "You have 8♣7♣ in CO. Villain (UTG, TAG) raises 3 BB, MP calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. Action on you in CO.",
+    "question": "You have 8♣7♣ in CO. UTG raises 3 BB, MP calls. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4198,8 +4198,8 @@
       "Q♦"
     ],
     "position": "SB",
-    "situation": "Villain (MP, TAG) raises 3 BB. BTN calls. Action on you in SB.",
-    "question": "You have A♦Q♦ in SB. Villain (MP, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "MP raises 3 BB. BTN calls. Action on you in SB.",
+    "question": "You have A♦Q♦ in SB. MP raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~12 BB",
       "Call",
@@ -4228,8 +4228,8 @@
       "T♠"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. Villain (MP, TAG) 3-bets to 10.5 BB. Action on you in CO.",
-    "question": "You have J♠T♠ in CO. Villain (UTG, TAG) raises 3 BB, Villain (MP, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP 3-bets to 10.5 BB. Action on you in CO.",
+    "question": "You have J♠T♠ in CO. UTG raises 3 BB, MP 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4258,8 +4258,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. Villain (MP, TAG) 3-bets to 10.5 BB. Action on you in CO.",
-    "question": "You have A♥J♦ in CO. Villain (UTG, TAG) raises 3 BB, Villain (MP, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP 3-bets to 10.5 BB. Action on you in CO.",
+    "question": "You have A♥J♦ in CO. UTG raises 3 BB, MP 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4288,8 +4288,8 @@
       "T♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG, TAG) raises 3 BB. Villain (MP, TAG) 3-bets to 10.5 BB. Action on you in CO.",
-    "question": "You have T♣T♦ in CO. Villain (UTG, TAG) raises 3 BB, Villain (MP, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP 3-bets to 10.5 BB. Action on you in CO.",
+    "question": "You have T♣T♦ in CO. UTG raises 3 BB, MP 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4318,8 +4318,8 @@
       "Q♠"
     ],
     "position": "BB",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. Villain (BTN, TAG) 3-bets to 9 BB. SB folds. Action on you in BB.",
-    "question": "You have K♠Q♠ in BB. Villain (MP, TAG) raises 3 BB, Villain (BTN, TAG) 3-bets to 9 BB, SB folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. BTN 3-bets to 9 BB. SB folds. Action on you in BB.",
+    "question": "You have K♠Q♠ in BB. MP raises 3 BB, BTN 3-bets to 9 BB, SB folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4348,8 +4348,8 @@
       "K♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. MP folds. Action on you in CO.",
-    "question": "You have A♠K♦ in CO. Villain (UTG) limps, MP folds. What do you do?",
+    "situation": "UTG limps. MP folds. Action on you in CO.",
+    "question": "You have A♠K♦ in CO. UTG limps, MP folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -4378,8 +4378,8 @@
       "J♣"
     ],
     "position": "CO",
-    "situation": "Villain (MP) limps. UTG folds. Action on you in CO.",
-    "question": "You have Q♣J♣ in CO. UTG folds, Villain (MP) limps. What do you do?",
+    "situation": "MP limps. UTG folds. Action on you in CO.",
+    "question": "You have Q♣J♣ in CO. UTG folds, MP limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -4408,8 +4408,8 @@
       "8♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. MP folds. Action on you in CO.",
-    "question": "You have 8♥8♦ in CO. Villain (UTG) limps, MP folds. What do you do?",
+    "situation": "UTG limps. MP folds. Action on you in CO.",
+    "question": "You have 8♥8♦ in CO. UTG limps, MP folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -4438,8 +4438,8 @@
       "7♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. MP folds. Action on you in CO.",
-    "question": "You have 7♠7♦ in CO. Villain (UTG) limps, MP folds. What do you do?",
+    "situation": "UTG limps. MP folds. Action on you in CO.",
+    "question": "You have 7♠7♦ in CO. UTG limps, MP folds. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 4 BB",
@@ -4468,7 +4468,7 @@
       "9♦"
     ],
     "position": "CO",
-    "situation": "Villain (MP) limps. UTG folds. Action on you in CO.",
+    "situation": "MP limps. UTG folds. Action on you in CO.",
     "question": "You have A♦9♦ in CO. UTG fold. MP limpss. What do you do?",
     "options": [
       "Over-limp",
@@ -4500,8 +4500,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. MP folds. Action on you in CO.",
-    "question": "You have K♦J♦ in CO. Villain (UTG) limps, MP folds. What do you do?",
+    "situation": "UTG limps. MP folds. Action on you in CO.",
+    "question": "You have K♦J♦ in CO. UTG limps, MP folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Over-limp",
@@ -4530,8 +4530,8 @@
       "T♣"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. MP folds. Action on you in CO.",
-    "question": "You have K♣T♣ in CO. Villain (UTG) limps, MP folds. What do you do?",
+    "situation": "UTG limps. MP folds. Action on you in CO.",
+    "question": "You have K♣T♣ in CO. UTG limps, MP folds. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 3 BB",
@@ -4562,7 +4562,7 @@
       "J♣"
     ],
     "position": "CO",
-    "situation": "Villain (MP) limps. UTG folds. Action on you in CO.",
+    "situation": "MP limps. UTG folds. Action on you in CO.",
     "question": "You have A♥J♣ in CO. UTG fold. MP limpss. What do you do?",
     "options": [
       "Raise to 4 BB",
@@ -4592,8 +4592,8 @@
       "Q♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Action on you in CO.",
-    "question": "You have Q♠Q♦ in CO. Villain (UTG) and Villain (MP) both limp. What do you do?",
+    "situation": "UTG limps. MP limps. Action on you in CO.",
+    "question": "You have Q♠Q♦ in CO. UTG and MP both limp. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Limp behind",
@@ -4622,8 +4622,8 @@
       "J♣"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Action on you in CO.",
-    "question": "You have A♣J♣ in CO. Villain (UTG) and Villain (MP) both limp. What do you do?",
+    "situation": "UTG limps. MP limps. Action on you in CO.",
+    "question": "You have A♣J♣ in CO. UTG and MP both limp. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Limp behind",
@@ -4652,8 +4652,8 @@
       "6♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Action on you in CO.",
-    "question": "You have 6♥6♦ in CO. Villain (UTG) and Villain (MP) both limp. What do you do?",
+    "situation": "UTG limps. MP limps. Action on you in CO.",
+    "question": "You have 6♥6♦ in CO. UTG and MP both limp. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 5 BB",
@@ -4682,8 +4682,8 @@
       "J♠"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Action on you in CO.",
-    "question": "You have K♠J♠ in CO. Villain (UTG) and Villain (MP) both limp. What do you do?",
+    "situation": "UTG limps. MP limps. Action on you in CO.",
+    "question": "You have K♠J♠ in CO. UTG and MP both limp. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Over-limp",
@@ -4712,8 +4712,8 @@
       "7♦"
     ],
     "position": "CO",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Action on you in CO.",
-    "question": "You have 8♦7♦ in CO. Villain (UTG) and Villain (MP) both limp. What do you do?",
+    "situation": "UTG limps. MP limps. Action on you in CO.",
+    "question": "You have 8♦7♦ in CO. UTG and MP both limp. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 5 BB",
@@ -4742,8 +4742,8 @@
       "A♠"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have A♥A♠ in CO. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have A♥A♠ in CO. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -4772,8 +4772,8 @@
       "K♦"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♣K♦ in CO. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♣K♦ in CO. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -4802,8 +4802,8 @@
       "J♣"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have J♦J♣ in CO. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have J♦J♣ in CO. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -4832,8 +4832,8 @@
       "T♥"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have T♠T♥ in CO. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have T♠T♥ in CO. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4862,8 +4862,8 @@
       "K♣"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have A♣K♣ in CO. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have A♣K♣ in CO. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -4892,8 +4892,8 @@
       "Q♦"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♦Q♦ in CO. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♦Q♦ in CO. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -4922,8 +4922,8 @@
       "J♦"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB. SB is playing very tight.",
-    "question": "You have A♠J♦ in CO. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. SB has been very tight. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB. SB is playing very tight.",
+    "question": "You have A♠J♦ in CO. You raised 3 BB, SB 3-bets to 10.5 BB. SB has been very tight. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4952,8 +4952,8 @@
       "Q♦"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB. BB is playing tight.",
-    "question": "You have K♦Q♦ in CO. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. BB has been playing tight. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB. BB is playing tight.",
+    "question": "You have K♦Q♦ in CO. You raised 3 BB, BB 3-bets to 10.5 BB. BB has been playing tight. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -4982,8 +4982,8 @@
       "9♦"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have 9♥9♦ in CO. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have 9♥9♦ in CO. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -5012,8 +5012,8 @@
       "Q♦"
     ],
     "position": "CO",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BTN, TAG) 3-bets to 9 BB.",
-    "question": "You have Q♣Q♦ in CO. You raised 3 BB, Villain (BTN, TAG) 3-bets to 9 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BTN 3-bets to 9 BB.",
+    "question": "You have Q♣Q♦ in CO. You raised 3 BB, BTN 3-bets to 9 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -5822,8 +5822,8 @@
       "T♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Action on you.",
-    "question": "You have T♠T♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Action on you.",
+    "question": "You have T♠T♦ on the BTN. UTG raises 3 BB, MP and CO fold. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -5852,8 +5852,8 @@
       "T♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Action on you.",
-    "question": "You have J♦T♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Action on you.",
+    "question": "You have J♦T♦ on the BTN. UTG raises 3 BB, MP and CO fold. What do you do?",
     "options": [
       "Call",
       "3-Bet bluff",
@@ -5882,8 +5882,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Action on you.",
-    "question": "You have A♣J♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Action on you.",
+    "question": "You have A♣J♦ on the BTN. UTG raises 3 BB, MP and CO fold. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -5912,8 +5912,8 @@
       "T♣"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Action on you.",
-    "question": "You have A♥T♣ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Action on you.",
+    "question": "You have A♥T♣ on the BTN. UTG raises 3 BB, MP and CO fold. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -5942,8 +5942,8 @@
       "5♠"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Effective stacks 100 BB.",
-    "question": "You have 5♥5♠ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. Effective stacks 100 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Effective stacks 100 BB.",
+    "question": "You have 5♥5♠ on the BTN. UTG raises 3 BB, MP and CO fold. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -5972,8 +5972,8 @@
       "3♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Effective stacks 40 BB.",
-    "question": "You have 3♣3♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. Effective stacks 40 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Effective stacks 40 BB.",
+    "question": "You have 3♣3♦ on the BTN. UTG raises 3 BB, MP and CO fold. Effective stacks 40 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -6002,8 +6002,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Action on you.",
-    "question": "You have K♠J♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Action on you.",
+    "question": "You have K♠J♦ on the BTN. UTG raises 3 BB, MP and CO fold. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6032,8 +6032,8 @@
       "4♣"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP and CO fold. Action on you.",
-    "question": "You have 5♣4♣ on the BTN. Villain (UTG, TAG) raises 3 BB, MP and CO fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP and CO fold. Action on you.",
+    "question": "You have 5♣4♣ on the BTN. UTG raises 3 BB, MP and CO fold. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6064,8 +6064,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have J♠J♦ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have J♠J♦ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -6094,8 +6094,8 @@
       "Q♣"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have A♣Q♣ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have A♣Q♣ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "3-Bet",
       "Call",
@@ -6126,8 +6126,8 @@
       "6♥"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have 7♥6♥ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have 7♥6♥ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6156,8 +6156,8 @@
       "5♦"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have 6♦5♦ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have 6♦5♦ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -6186,8 +6186,8 @@
       "4♦"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Effective stacks 100 BB.",
-    "question": "You have 4♠4♦ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. Effective stacks 100 BB. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Effective stacks 100 BB.",
+    "question": "You have 4♠4♦ on the BTN. UTG folds, MP raises 3 BB, CO folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6216,8 +6216,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have A♠J♣ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have A♠J♣ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -6246,8 +6246,8 @@
       "T♥"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have A♥T♥ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have A♥T♥ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6276,8 +6276,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "UTG folds. Villain (MP, TAG) raises 3 BB. CO folds. Action on you.",
-    "question": "You have K♣J♣ on the BTN. UTG folds, Villain (MP, TAG) raises 3 BB, CO folds. What do you do?",
+    "situation": "UTG folds. MP raises 3 BB. CO folds. Action on you.",
+    "question": "You have K♣J♣ on the BTN. UTG folds, MP raises 3 BB, CO folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6306,8 +6306,8 @@
       "J♥"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have Q♥J♥ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have Q♥J♥ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet for value",
@@ -6336,8 +6336,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have A♦J♣ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have A♦J♣ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "3-Bet",
       "Call",
@@ -6368,8 +6368,8 @@
       "Q♥"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have A♠Q♥ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have A♠Q♥ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 9 BB",
       "Call",
@@ -6398,8 +6398,8 @@
       "5♣"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have 6♣5♣ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have 6♣5♣ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6428,8 +6428,8 @@
       "T♦"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have T♠T♦ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have T♠T♦ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -6458,8 +6458,8 @@
       "T♣"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have A♥T♣ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have A♥T♣ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -6488,8 +6488,8 @@
       "T♦"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have K♦T♦ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have K♦T♦ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6518,8 +6518,8 @@
       "2♦"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Effective stacks 100 BB.",
-    "question": "You have 2♣2♦ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. Effective stacks 100 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Effective stacks 100 BB.",
+    "question": "You have 2♣2♦ on the BTN. UTG and MP fold, CO raises 3 BB. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6548,8 +6548,8 @@
       "9♦"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have J♦9♦ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have J♦9♦ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6578,8 +6578,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "UTG and MP fold. Villain (CO, TAG) raises 3 BB. Action on you.",
-    "question": "You have K♠J♦ on the BTN. UTG and MP fold, Villain (CO, TAG) raises 3 BB. What do you do?",
+    "situation": "UTG and MP fold. CO raises 3 BB. Action on you.",
+    "question": "You have K♠J♦ on the BTN. UTG and MP fold, CO raises 3 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6608,8 +6608,8 @@
       "A♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. CO folds. Action on you.",
-    "question": "You have A♠A♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP calls, CO folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. CO folds. Action on you.",
+    "question": "You have A♠A♦ on the BTN. UTG raises 3 BB, MP calls, CO folds. What do you do?",
     "options": [
       "Squeeze to 12 BB",
       "Call",
@@ -6638,8 +6638,8 @@
       "Q♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. CO calls. Action on you.",
-    "question": "You have Q♠Q♦ on the BTN. Villain (UTG, TAG) raises 3 BB, CO calls. What do you do?",
+    "situation": "UTG raises 3 BB. CO calls. Action on you.",
+    "question": "You have Q♠Q♦ on the BTN. UTG raises 3 BB, CO calls. What do you do?",
     "options": [
       "Squeeze to 12 BB",
       "Call",
@@ -6668,8 +6668,8 @@
       "K♣"
     ],
     "position": "BTN",
-    "situation": "Villain (MP, TAG) raises 3 BB. CO calls. Action on you.",
-    "question": "You have A♣K♣ on the BTN. Villain (MP, TAG) raises 3 BB, CO calls. What do you do?",
+    "situation": "MP raises 3 BB. CO calls. Action on you.",
+    "question": "You have A♣K♣ on the BTN. MP raises 3 BB, CO calls. What do you do?",
     "options": [
       "Squeeze to 12 BB",
       "Call",
@@ -6698,8 +6698,8 @@
       "K♦"
     ],
     "position": "BTN",
-    "situation": "Villain (CO, TAG) raises 3 BB. SB calls. Action on you.",
-    "question": "You have K♥K♦ on the BTN. Villain (CO, TAG) raises 3 BB, SB calls. What do you do?",
+    "situation": "CO raises 3 BB. SB calls. Action on you.",
+    "question": "You have K♥K♦ on the BTN. CO raises 3 BB, SB calls. What do you do?",
     "options": [
       "Squeeze to 12 BB",
       "Call",
@@ -6728,8 +6728,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. CO calls. Action on you.",
-    "question": "You have J♥J♦ on the BTN. Villain (UTG, TAG) raises 3 BB, CO calls. What do you do?",
+    "situation": "UTG raises 3 BB. CO calls. Action on you.",
+    "question": "You have J♥J♦ on the BTN. UTG raises 3 BB, CO calls. What do you do?",
     "options": [
       "Call",
       "Squeeze to 12 BB",
@@ -6758,8 +6758,8 @@
       "Q♦"
     ],
     "position": "BTN",
-    "situation": "Villain (MP, TAG) raises 3 BB. CO calls. Action on you.",
-    "question": "You have A♦Q♦ on the BTN. Villain (MP, TAG) raises 3 BB, CO calls. What do you do?",
+    "situation": "MP raises 3 BB. CO calls. Action on you.",
+    "question": "You have A♦Q♦ on the BTN. MP raises 3 BB, CO calls. What do you do?",
     "options": [
       "Squeeze to 12 BB",
       "Call",
@@ -6788,8 +6788,8 @@
       "7♣"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. CO folds. Action on you.",
-    "question": "You have 8♣7♣ on the BTN. Villain (UTG, TAG) raises 3 BB, MP calls. CO folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. CO folds. Action on you.",
+    "question": "You have 8♣7♣ on the BTN. UTG raises 3 BB, MP calls. CO folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -6818,8 +6818,8 @@
       "T♦"
     ],
     "position": "BTN",
-    "situation": "Villain (MP, TAG) raises 3 BB. CO calls. Action on you.",
-    "question": "You have T♥T♦ on the BTN. Villain (MP, TAG) raises 3 BB, CO calls. What do you do?",
+    "situation": "MP raises 3 BB. CO calls. Action on you.",
+    "question": "You have T♥T♦ on the BTN. MP raises 3 BB, CO calls. What do you do?",
     "options": [
       "Call",
       "Squeeze to 12 BB",
@@ -6848,8 +6848,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. CO calls. Action on you.",
-    "question": "You have J♠J♦ on the BTN. Villain (UTG, TAG) raises 3 BB, MP calls, CO calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. CO calls. Action on you.",
+    "question": "You have J♠J♦ on the BTN. UTG raises 3 BB, MP calls, CO calls. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6878,8 +6878,8 @@
       "Q♣"
     ],
     "position": "BTN",
-    "situation": "Villain (MP, TAG) raises 3 BB. CO calls. SB calls. Action on you.",
-    "question": "You have A♣Q♣ on the BTN. Villain (MP, TAG) raises 3 BB, CO calls, SB calls. What do you do?",
+    "situation": "MP raises 3 BB. CO calls. SB calls. Action on you.",
+    "question": "You have A♣Q♣ on the BTN. MP raises 3 BB, CO calls, SB calls. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6908,8 +6908,8 @@
       "7♣"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. CO calls. Action on you.",
-    "question": "You have 8♦7♣ off-suit on the BTN. Villain (UTG, TAG) raises 3 BB, MP calls, CO calls. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. CO calls. Action on you.",
+    "question": "You have 8♦7♣ off-suit on the BTN. UTG raises 3 BB, MP calls, CO calls. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -6938,8 +6938,8 @@
       "Q♥"
     ],
     "position": "BTN",
-    "situation": "Villain (CO, TAG) raises 3 BB. SB calls. BB calls. Action on you.",
-    "question": "You have K♥Q♥ on the BTN. Villain (CO, TAG) raises 3 BB, SB calls, BB calls. What do you do?",
+    "situation": "CO raises 3 BB. SB calls. BB calls. Action on you.",
+    "question": "You have K♥Q♥ on the BTN. CO raises 3 BB, SB calls, BB calls. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -6968,8 +6968,8 @@
       "K♦"
     ],
     "position": "BTN",
-    "situation": "Villain (CO) limps. UTG and MP fold. Action on you.",
-    "question": "You have A♠K♦ on the BTN. UTG and MP fold. Villain (CO) limps. What do you do?",
+    "situation": "CO limps. UTG and MP fold. Action on you.",
+    "question": "You have A♠K♦ on the BTN. UTG and MP fold. CO limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -6998,8 +6998,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. UTG folds, Villain (MP) limps, CO folds. Action on you.",
-    "question": "You have Q♣J♣ on the BTN. UTG folds, Villain (MP) limps, CO folds. What do you do?",
+    "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
+    "question": "You have Q♣J♣ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -7028,8 +7028,8 @@
       "9♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. MP and CO fold. Action on you.",
-    "question": "You have 9♥9♦ on the BTN. Villain (UTG) limps, MP and CO fold. What do you do?",
+    "situation": "UTG limps. MP and CO fold. Action on you.",
+    "question": "You have 9♥9♦ on the BTN. UTG limps, MP and CO fold. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -7058,8 +7058,8 @@
       "7♦"
     ],
     "position": "BTN",
-    "situation": "Villain (CO) limps. UTG and MP fold. Action on you.",
-    "question": "You have 7♠7♦ on the BTN. UTG and MP fold. Villain (CO) limps. What do you do?",
+    "situation": "CO limps. UTG and MP fold. Action on you.",
+    "question": "You have 7♠7♦ on the BTN. UTG and MP fold. CO limps. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 4 BB",
@@ -7088,8 +7088,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. UTG folds, Villain (MP) limps, CO folds. Action on you.",
-    "question": "You have K♦J♦ on the BTN. UTG folds, Villain (MP) limps, CO folds. What do you do?",
+    "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
+    "question": "You have K♦J♦ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Over-limp",
@@ -7118,8 +7118,8 @@
       "9♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. MP and CO fold. Action on you.",
-    "question": "You have A♦9♦ on the BTN. Villain (UTG) limps, MP and CO fold. What do you do?",
+    "situation": "UTG limps. MP and CO fold. Action on you.",
+    "question": "You have A♦9♦ on the BTN. UTG limps, MP and CO fold. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 3 BB",
@@ -7150,8 +7150,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "Villain (CO) limps. UTG and MP fold. Action on you.",
-    "question": "You have A♥J♣ on the BTN. UTG and MP fold. Villain (CO) limps. What do you do?",
+    "situation": "CO limps. UTG and MP fold. Action on you.",
+    "question": "You have A♥J♣ on the BTN. UTG and MP fold. CO limps. What do you do?",
     "options": [
       "Raise to 4 BB",
       "Limp behind",
@@ -7180,8 +7180,8 @@
       "T♣"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. UTG folds, Villain (MP) limps, CO folds. Action on you.",
-    "question": "You have A♠T♣ on the BTN. UTG folds, Villain (MP) limps, CO folds. What do you do?",
+    "situation": "Conservative ranges. UTG folds, MP limps, CO folds. Action on you.",
+    "question": "You have A♠T♣ on the BTN. UTG folds, MP limps, CO folds. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 3 BB",
@@ -7212,8 +7212,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. CO folds. Action on you.",
-    "question": "You have J♠J♦ on the BTN. Villain (UTG) and Villain (MP) both limp, CO folds. What do you do?",
+    "situation": "UTG limps. MP limps. CO folds. Action on you.",
+    "question": "You have J♠J♦ on the BTN. UTG and MP both limp, CO folds. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Limp behind",
@@ -7242,8 +7242,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "Villain (MP) limps. Villain (CO) limps. UTG folds. Action on you.",
-    "question": "You have A♣J♣ on the BTN. UTG folds. Villain (MP) and Villain (CO) both limp. What do you do?",
+    "situation": "MP limps. CO limps. UTG folds. Action on you.",
+    "question": "You have A♣J♣ on the BTN. UTG folds. MP and CO both limp. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Limp behind",
@@ -7272,8 +7272,8 @@
       "5♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (CO) limps. MP folds. Action on you.",
-    "question": "You have 5♥5♦ on the BTN. Villain (UTG) and Villain (CO) both limp, MP folds. What do you do?",
+    "situation": "UTG limps. CO limps. MP folds. Action on you.",
+    "question": "You have 5♥5♦ on the BTN. UTG and CO both limp, MP folds. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 5 BB",
@@ -7302,8 +7302,8 @@
       "K♣"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. CO folds. Action on you.",
-    "question": "You have A♦K♣ on the BTN. Villain (UTG) and Villain (MP) both limp, CO folds. What do you do?",
+    "situation": "UTG limps. MP limps. CO folds. Action on you.",
+    "question": "You have A♦K♣ on the BTN. UTG and MP both limp, CO folds. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Limp behind",
@@ -7332,8 +7332,8 @@
       "6♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. CO folds. Action on you.",
-    "question": "You have 7♦6♦ on the BTN. Villain (UTG) and Villain (MP) both limp, CO folds. What do you do?",
+    "situation": "UTG limps. MP limps. CO folds. Action on you.",
+    "question": "You have 7♦6♦ on the BTN. UTG and MP both limp, CO folds. What do you do?",
     "options": [
       "Over-limp",
       "Raise to 5 BB",
@@ -7362,7 +7362,7 @@
       "K♣"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Villain (CO) limps. Action on you.",
+    "situation": "UTG limps. MP limps. CO limps. Action on you.",
     "question": "You have A♥K♣ on the BTN. UTG, MP, CO all limp. What do you do?",
     "options": [
       "Raise to 6 BB",
@@ -7392,7 +7392,7 @@
       "T♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Villain (CO) limps. Action on you.",
+    "situation": "UTG limps. MP limps. CO limps. Action on you.",
     "question": "You have T♠T♦ on the BTN. UTG, MP, CO all limp. What do you do?",
     "options": [
       "Raise to 6 BB",
@@ -7422,7 +7422,7 @@
       "4♦"
     ],
     "position": "BTN",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Villain (CO) limps. Action on you.",
+    "situation": "UTG limps. MP limps. CO limps. Action on you.",
     "question": "You have 4♣4♦ on the BTN. UTG, MP, CO all limp. What do you do?",
     "options": [
       "Over-limp",
@@ -7452,8 +7452,8 @@
       "A♠"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♥A♠ on the BTN. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♥A♠ on the BTN. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -7482,8 +7482,8 @@
       "K♦"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♣K♦ on the BTN. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have K♣K♦ on the BTN. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -7512,8 +7512,8 @@
       "J♣"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have J♦J♣ on the BTN. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have J♦J♣ on the BTN. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -7542,8 +7542,8 @@
       "T♥"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have T♠T♥ on the BTN. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have T♠T♥ on the BTN. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -7572,8 +7572,8 @@
       "K♣"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♣K♣ on the BTN. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♣K♣ on the BTN. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -7602,8 +7602,8 @@
       "Q♦"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have Q♣Q♦ on the BTN. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have Q♣Q♦ on the BTN. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -7632,8 +7632,8 @@
       "Q♦"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♦Q♦ on the BTN. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♦Q♦ on the BTN. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~20 BB",
       "Call",
@@ -7662,8 +7662,8 @@
       "9♦"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have 9♥9♦ on the BTN. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have 9♥9♦ on the BTN. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -7692,8 +7692,8 @@
       "T♠"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (SB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♠T♠ on the BTN. You raised 3 BB, Villain (SB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. SB 3-bets to 10.5 BB.",
+    "question": "You have A♠T♠ on the BTN. You raised 3 BB, SB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet bluff",
       "Fold",
@@ -7724,8 +7724,8 @@
       "J♦"
     ],
     "position": "BTN",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♦J♦ on the BTN. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♦J♦ on the BTN. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -8326,8 +8326,8 @@
       "A♣"
     ],
     "position": "SB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN all fold. Action on you.",
-    "question": "You have A♦A♣ in SB. Villain (UTG, TAG) raises 3 BB, MP, CO, BTN fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♦A♣ in SB. UTG raises 3 BB, MP, CO, BTN fold. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8356,8 +8356,8 @@
       "J♣"
     ],
     "position": "SB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN all fold. Action on you.",
-    "question": "You have J♦J♣ in SB. Villain (UTG, TAG) raises 3 BB, MP, CO, BTN fold. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♦J♣ in SB. UTG raises 3 BB, MP, CO, BTN fold. What do you do?",
     "options": [
       "Fold",
       "3-Bet to 10.5 BB",
@@ -8386,8 +8386,8 @@
       "K♦"
     ],
     "position": "SB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN all fold. Action on you.",
-    "question": "You have K♥K♦ in SB. Villain (MP, TAG) raises 3 BB, UTG, CO, BTN fold. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN all fold. Action on you.",
+    "question": "You have K♥K♦ in SB. MP raises 3 BB, UTG, CO, BTN fold. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8416,8 +8416,8 @@
       "T♦"
     ],
     "position": "SB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN all fold. Action on you.",
-    "question": "You have T♠T♦ in SB. Villain (MP, TAG) raises 3 BB, UTG, CO, BTN fold. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN all fold. Action on you.",
+    "question": "You have T♠T♦ in SB. MP raises 3 BB, UTG, CO, BTN fold. What do you do?",
     "options": [
       "Fold",
       "3-Bet to 10.5 BB",
@@ -8446,8 +8446,8 @@
       "T♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN all fold. Action on you.",
-    "question": "You have T♥T♦ in SB. Villain (CO, TAG) raises 3 BB, UTG, MP, BTN fold. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN all fold. Action on you.",
+    "question": "You have T♥T♦ in SB. CO raises 3 BB, UTG, MP, BTN fold. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8476,8 +8476,8 @@
       "J♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN all fold. Action on you.",
-    "question": "You have A♣J♦ in SB. Villain (CO, TAG) raises 3 BB, UTG, MP, BTN fold. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN all fold. Action on you.",
+    "question": "You have A♣J♦ in SB. CO raises 3 BB, UTG, MP, BTN fold. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8506,8 +8506,8 @@
       "9♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN all fold. Action on you.",
-    "question": "You have 9♥9♦ in SB. Villain (CO, TAG) raises 3 BB, UTG, MP, BTN fold. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN all fold. Action on you.",
+    "question": "You have 9♥9♦ in SB. CO raises 3 BB, UTG, MP, BTN fold. What do you do?",
     "options": [
       "Fold",
       "3-Bet to 10.5 BB",
@@ -8536,8 +8536,8 @@
       "A♠"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♥A♠ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♥A♠ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8566,8 +8566,8 @@
       "T♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have T♣T♦ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have T♣T♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8596,8 +8596,8 @@
       "J♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♦J♦ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♦J♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8626,8 +8626,8 @@
       "J♣"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♠J♣ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♠J♣ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -8656,8 +8656,8 @@
       "8♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have 8♥8♦ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have 8♥8♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet to 10.5 BB",
@@ -8686,8 +8686,8 @@
       "6♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have 6♠6♦ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have 6♠6♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -8716,8 +8716,8 @@
       "Q♠"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have K♠Q♠ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have K♠Q♠ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet",
       "Fold",
@@ -8748,8 +8748,8 @@
       "J♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have Q♦J♦ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have Q♦J♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Call",
       "3-Bet to 10.5 BB",
@@ -8778,8 +8778,8 @@
       "J♣"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have K♥J♣ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have K♥J♣ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -8808,8 +8808,8 @@
       "5♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO all fold. Action on you.",
-    "question": "You have A♦5♦ in SB. UTG, MP, CO fold. Villain (BTN, TAG) raises 3 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO all fold. Action on you.",
+    "question": "You have A♦5♦ in SB. UTG, MP, CO fold. BTN raises 3 BB. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Fold",
@@ -8840,8 +8840,8 @@
       "A♦"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. UTG and MP fold. Villain (CO, TAG) raises 3 BB, BTN calls. Action on you in SB.",
-    "question": "You have A♠A♦ in SB. Villain (CO, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "Conservative ranges. UTG and MP fold. CO raises 3 BB, BTN calls. Action on you in SB.",
+    "question": "You have A♠A♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8870,8 +8870,8 @@
       "Q♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO, TAG) raises 3 BB. BTN calls. Action on you.",
-    "question": "You have Q♠Q♦ in SB. Villain (CO, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "CO raises 3 BB. BTN calls. Action on you.",
+    "question": "You have Q♠Q♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8900,8 +8900,8 @@
       "K♣"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. UTG and MP fold. Villain (CO, TAG) raises 3 BB, BTN calls. Action on you in SB.",
-    "question": "You have A♣K♣ in SB. Villain (CO, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "Conservative ranges. UTG and MP fold. CO raises 3 BB, BTN calls. Action on you in SB.",
+    "question": "You have A♣K♣ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8930,8 +8930,8 @@
       "7♣"
     ],
     "position": "SB",
-    "situation": "Villain (CO, TAG) raises 3 BB. BTN calls. Action on you.",
-    "question": "You have 8♣7♣ in SB. Villain (CO, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "CO raises 3 BB. BTN calls. Action on you.",
+    "question": "You have 8♣7♣ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Fold",
       "Squeeze to 13.5 BB",
@@ -8960,8 +8960,8 @@
       "T♦"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. UTG and MP fold. Villain (CO, TAG) raises 3 BB, BTN calls. Action on you in SB.",
-    "question": "You have T♥T♦ in SB. Villain (CO, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "Conservative ranges. UTG and MP fold. CO raises 3 BB, BTN calls. Action on you in SB.",
+    "question": "You have T♥T♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Squeeze to ~13.5 BB",
       "Call",
@@ -8990,8 +8990,8 @@
       "9♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO, TAG) raises 3 BB. BTN calls. Action on you.",
-    "question": "You have 9♥9♦ in SB. Villain (CO, TAG) raises 3 BB, BTN calls. What do you do?",
+    "situation": "CO raises 3 BB. BTN calls. Action on you.",
+    "question": "You have 9♥9♦ in SB. CO raises 3 BB, BTN calls. What do you do?",
     "options": [
       "Fold",
       "Squeeze to 13.5 BB",
@@ -9022,8 +9022,8 @@
       "K♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO) limps. UTG, MP, BTN fold. Action on you in SB.",
-    "question": "You have A♠K♦ in SB. Villain (CO) limps, UTG, MP, BTN fold. What do you do and what is the sizing?",
+    "situation": "CO limps. UTG, MP, BTN fold. Action on you in SB.",
+    "question": "You have A♠K♦ in SB. CO limps, UTG, MP, BTN fold. What do you do and what is the sizing?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -9052,8 +9052,8 @@
       "J♠"
     ],
     "position": "SB",
-    "situation": "Villain (BTN) limps. UTG, MP, CO fold. Action on you in SB.",
-    "question": "You have Q♠J♠ in SB. UTG, MP, CO fold. Villain (BTN) limps. What do you do?",
+    "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
+    "question": "You have Q♠J♠ in SB. UTG, MP, CO fold. BTN limps. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -9082,8 +9082,8 @@
       "9♦"
     ],
     "position": "SB",
-    "situation": "Villain (MP) limps. UTG, CO, BTN fold. Action on you in SB.",
-    "question": "You have 9♥9♦ in SB. Villain (MP) limps, UTG, CO, BTN fold. What do you do?",
+    "situation": "MP limps. UTG, CO, BTN fold. Action on you in SB.",
+    "question": "You have 9♥9♦ in SB. MP limps, UTG, CO, BTN fold. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -9112,8 +9112,8 @@
       "7♦"
     ],
     "position": "SB",
-    "situation": "Villain (CO) limps. UTG, MP, BTN fold. Action on you in SB.",
-    "question": "You have 7♠7♦ in SB. Villain (CO) limps, UTG, MP, BTN fold. What do you do?",
+    "situation": "CO limps. UTG, MP, BTN fold. Action on you in SB.",
+    "question": "You have 7♠7♦ in SB. CO limps, UTG, MP, BTN fold. What do you do?",
     "options": [
       "Complete (call 1 BB)",
       "Raise to 5 BB",
@@ -9142,8 +9142,8 @@
       "J♣"
     ],
     "position": "SB",
-    "situation": "Villain (BTN) limps. UTG, MP, CO fold. Action on you in SB.",
-    "question": "You have A♥J♣ in SB. UTG, MP, CO fold. Villain (BTN) limps. What do you do?",
+    "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
+    "question": "You have A♥J♣ in SB. UTG, MP, CO fold. BTN limps. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -9172,7 +9172,7 @@
       "J♦"
     ],
     "position": "SB",
-    "situation": "Villain (UTG) limps. Villain (CO) limps. MP and BTN fold. Action on you in SB.",
+    "situation": "UTG limps. CO limps. MP and BTN fold. Action on you in SB.",
     "question": "You have K♦J♦ in SB. UTG and CO limp, MP and BTN fold. What do you do?",
     "options": [
       "Raise to 6 BB",
@@ -9202,8 +9202,8 @@
       "9♦"
     ],
     "position": "SB",
-    "situation": "Villain (BTN) limps. UTG, MP, CO fold. Action on you in SB.",
-    "question": "You have A♦9♦ in SB. UTG, MP, CO fold. Villain (BTN) limps. What do you do?",
+    "situation": "BTN limps. UTG, MP, CO fold. Action on you in SB.",
+    "question": "You have A♦9♦ in SB. UTG, MP, CO fold. BTN limps. What do you do?",
     "options": [
       "Complete (call 1 BB)",
       "Raise to 5 BB",
@@ -9232,7 +9232,7 @@
       "J♦"
     ],
     "position": "SB",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Villain (CO) limps. BTN folds. Action on you in SB.",
+    "situation": "UTG limps. MP limps. CO limps. BTN folds. Action on you in SB.",
     "question": "You have J♠J♦ in SB. UTG, MP, CO all limp, BTN folds. What do you do?",
     "options": [
       "Raise to 7 BB",
@@ -9262,8 +9262,8 @@
       "A♠"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♥A♠ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♥A♠ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -9292,8 +9292,8 @@
       "K♦"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♣K♦ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♣K♦ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -9322,8 +9322,8 @@
       "J♣"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have J♦J♣ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have J♦J♣ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -9352,8 +9352,8 @@
       "T♥"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have T♠T♥ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have T♠T♥ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -9382,8 +9382,8 @@
       "K♣"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♣K♣ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♣K♣ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -9412,8 +9412,8 @@
       "Q♦"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have A♦Q♦ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have A♦Q♦ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet to ~22 BB",
       "Call",
@@ -9442,8 +9442,8 @@
       "Q♠"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have K♠Q♠ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have K♠Q♠ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "4-Bet bluff",
       "Fold",
@@ -9474,8 +9474,8 @@
       "9♦"
     ],
     "position": "SB",
-    "situation": "Conservative ranges. You raised 3 BB. Villain (BB, TAG) 3-bets to 10.5 BB.",
-    "question": "You have 9♥9♦ in SB. You raised 3 BB, Villain (BB, TAG) 3-bets to 10.5 BB. What do you do?",
+    "situation": "Conservative ranges. You raised 3 BB. BB 3-bets to 10.5 BB.",
+    "question": "You have 9♥9♦ in SB. You raised 3 BB, BB 3-bets to 10.5 BB. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -9504,8 +9504,8 @@
       "A♣"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♠A♣ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♠A♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -9534,8 +9534,8 @@
       "Q♣"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have Q♦Q♣ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have Q♦Q♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -9564,8 +9564,8 @@
       "Q♥"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♦Q♥ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♦Q♥ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -9594,8 +9594,8 @@
       "J♣"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♠J♣ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♠J♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -9624,8 +9624,8 @@
       "5♠"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Effective stacks 100 BB.",
-    "question": "You have 5♥5♠ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 5♥5♠ in BB. UTG raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -9654,8 +9654,8 @@
       "8♠"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have 9♠8♠ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have 9♠8♠ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -9684,8 +9684,8 @@
       "J♣"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♣J♣ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♣J♣ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -9714,8 +9714,8 @@
       "K♦"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♥K♦ in BB. Villain (UTG, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♥K♦ in BB. UTG raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -9744,8 +9744,8 @@
       "K♦"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have K♥K♦ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have K♥K♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -9774,8 +9774,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have J♠J♦ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have J♠J♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet",
       "Call",
@@ -9806,8 +9806,8 @@
       "T♣"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have T♦T♣ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have T♦T♣ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -9836,8 +9836,8 @@
       "6♥"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have 7♥6♥ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have 7♥6♥ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -9866,8 +9866,8 @@
       "5♦"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have 6♦5♦ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have 6♦5♦ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -9896,8 +9896,8 @@
       "T♥"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♥T♥ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♥T♥ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -9926,8 +9926,8 @@
       "4♦"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Effective stacks 100 BB.",
-    "question": "You have 4♠4♦ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 4♠4♦ in BB. MP raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -9956,8 +9956,8 @@
       "J♣"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
-    "question": "You have A♦J♣ in BB. Villain (MP, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "MP raises 3 BB. UTG, CO, BTN, SB all fold. Action on you.",
+    "question": "You have A♦J♣ in BB. MP raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -9986,8 +9986,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have J♠J♦ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have J♠J♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10016,8 +10016,8 @@
       "T♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have T♥T♦ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have T♥T♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -10046,8 +10046,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have A♣J♦ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have A♣J♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "3-Bet",
@@ -10076,8 +10076,8 @@
       "5♣"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have 6♣5♣ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have 6♣5♣ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10106,8 +10106,8 @@
       "T♣"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have A♥T♣ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have A♥T♣ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -10136,8 +10136,8 @@
       "J♣"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have K♦J♣ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have K♦J♣ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10166,8 +10166,8 @@
       "2♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Effective stacks 100 BB.",
-    "question": "You have 2♣2♦ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 2♣2♦ in BB. CO raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10196,8 +10196,8 @@
       "Q♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
-    "question": "You have A♦Q♦ in BB. Villain (CO, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "CO raises 3 BB. UTG, MP, BTN, SB all fold. Action on you.",
+    "question": "You have A♦Q♦ in BB. CO raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10226,8 +10226,8 @@
       "A♠"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have A♥A♠ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♥A♠ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10256,8 +10256,8 @@
       "T♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have T♣T♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have T♣T♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10286,8 +10286,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have A♠J♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♠J♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet",
       "Call",
@@ -10318,8 +10318,8 @@
       "8♥"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have T♥8♥ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have T♥8♥ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10348,8 +10348,8 @@
       "5♠"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have 6♠5♠ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have 6♠5♠ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10378,8 +10378,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have K♥J♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have K♥J♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10408,8 +10408,8 @@
       "7♠"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have Q♦7♠ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have Q♦7♠ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -10438,8 +10438,8 @@
       "5♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have A♦5♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♦5♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10468,8 +10468,8 @@
       "2♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Effective stacks 100 BB.",
-    "question": "You have 2♣2♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Effective stacks 100 BB.",
+    "question": "You have 2♣2♦ in BB. BTN raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10498,8 +10498,8 @@
       "Q♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have Q♠Q♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have Q♠Q♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10528,8 +10528,8 @@
       "T♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have A♣T♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have A♣T♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10558,8 +10558,8 @@
       "9♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
-    "question": "You have J♦9♦ in BB. Villain (BTN, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "BTN raises 3 BB. UTG, MP, CO, SB all fold. Action on you.",
+    "question": "You have J♦9♦ in BB. BTN raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10588,8 +10588,8 @@
       "A♣"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have A♦A♣ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♦A♣ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet to 10.5 BB",
       "Call",
@@ -10618,8 +10618,8 @@
       "T♦"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have T♠T♦ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What is the correct action and sizing?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have T♠T♦ in BB. SB raises 3 BB, everyone else folds. What is the correct action and sizing?",
     "options": [
       "3-Bet to 9 BB",
       "3-Bet to 10.5 BB",
@@ -10648,8 +10648,8 @@
       "9♣"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have J♣9♣ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have J♣9♣ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10678,8 +10678,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have K♠J♦ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♠J♦ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10708,8 +10708,8 @@
       "7♠"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have Q♦7♠ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have Q♦7♠ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -10738,8 +10738,8 @@
       "Q♣"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have A♣Q♣ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What is the correct action and sizing?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have A♣Q♣ in BB. SB raises 3 BB, everyone else folds. What is the correct action and sizing?",
     "options": [
       "3-Bet to 9 BB",
       "3-Bet to 10.5 BB",
@@ -10768,8 +10768,8 @@
       "3♦"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Effective stacks 100 BB.",
-    "question": "You have 3♣3♦ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Effective stacks 100 BB.",
+    "question": "You have 3♣3♦ in BB. SB raises 3 BB, everyone else folds. Effective stacks 100 BB. What do you do?",
     "options": [
       "Call",
       "Fold",
@@ -10798,8 +10798,8 @@
       "Q♦"
     ],
     "position": "BB",
-    "situation": "Villain (SB, TAG) raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
-    "question": "You have K♦Q♦ in BB. Villain (SB, TAG) raises 3 BB, everyone else folds. What do you do?",
+    "situation": "SB raises 3 BB. UTG, MP, CO, BTN all fold. Action on you.",
+    "question": "You have K♦Q♦ in BB. SB raises 3 BB, everyone else folds. What do you do?",
     "options": [
       "3-Bet",
       "Call",
@@ -10830,8 +10830,8 @@
       "A♦"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. CO, BTN, SB fold. Action on you.",
-    "question": "You have A♠A♦ in BB. Villain (UTG, TAG) raises 3 BB, MP calls, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. CO, BTN, SB fold. Action on you.",
+    "question": "You have A♠A♦ in BB. UTG raises 3 BB, MP calls, everyone else folds. What do you do?",
     "options": [
       "Squeeze to ~14 BB",
       "Call",
@@ -10860,8 +10860,8 @@
       "Q♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. BTN calls. SB folds. Action on you.",
-    "question": "You have Q♠Q♦ in BB. Villain (CO, TAG) raises 3 BB, BTN calls, SB folds. What do you do?",
+    "situation": "CO raises 3 BB. BTN calls. SB folds. Action on you.",
+    "question": "You have Q♠Q♦ in BB. CO raises 3 BB, BTN calls, SB folds. What do you do?",
     "options": [
       "Squeeze to ~14 BB",
       "Call",
@@ -10890,8 +10890,8 @@
       "9♠"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. SB calls. Action on you.",
-    "question": "You have 9♦9♠ in BB. Villain (BTN, TAG) raises 3 BB, SB calls. What do you do?",
+    "situation": "BTN raises 3 BB. SB calls. Action on you.",
+    "question": "You have 9♦9♠ in BB. BTN raises 3 BB, SB calls. What do you do?",
     "options": [
       "Squeeze to ~14 BB",
       "Call",
@@ -10920,8 +10920,8 @@
       "J♦"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. CO calls. BTN, SB fold. Action on you.",
-    "question": "You have J♥J♦ in BB. Villain (UTG, TAG) raises 3 BB, CO calls, BTN and SB fold. What do you do?",
+    "situation": "UTG raises 3 BB. CO calls. BTN, SB fold. Action on you.",
+    "question": "You have J♥J♦ in BB. UTG raises 3 BB, CO calls, BTN and SB fold. What do you do?",
     "options": [
       "Call",
       "Squeeze to 14 BB",
@@ -10950,8 +10950,8 @@
       "7♣"
     ],
     "position": "BB",
-    "situation": "Villain (UTG, TAG) raises 3 BB. MP calls. CO, BTN, SB fold. Action on you.",
-    "question": "You have 8♣7♣ in BB. Villain (UTG, TAG) raises 3 BB, MP calls, everyone else folds. What do you do?",
+    "situation": "UTG raises 3 BB. MP calls. CO, BTN, SB fold. Action on you.",
+    "question": "You have 8♣7♣ in BB. UTG raises 3 BB, MP calls, everyone else folds. What do you do?",
     "options": [
       "Fold",
       "Call",
@@ -10980,8 +10980,8 @@
       "K♣"
     ],
     "position": "BB",
-    "situation": "Villain (MP, TAG) raises 3 BB. BTN calls. SB folds. Action on you.",
-    "question": "You have A♣K♣ in BB. Villain (MP, TAG) raises 3 BB, BTN calls, SB folds. What do you do?",
+    "situation": "MP raises 3 BB. BTN calls. SB folds. Action on you.",
+    "question": "You have A♣K♣ in BB. MP raises 3 BB, BTN calls, SB folds. What do you do?",
     "options": [
       "Squeeze to ~14 BB",
       "Call",
@@ -11010,8 +11010,8 @@
       "K♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) raises 3 BB. SB calls. Action on you.",
-    "question": "You have K♥K♦ in BB. Villain (BTN, TAG) raises 3 BB, SB calls. What do you do?",
+    "situation": "BTN raises 3 BB. SB calls. Action on you.",
+    "question": "You have K♥K♦ in BB. BTN raises 3 BB, SB calls. What do you do?",
     "options": [
       "Squeeze to ~14 BB",
       "Call",
@@ -11040,8 +11040,8 @@
       "T♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO, TAG) raises 3 BB. BTN calls. SB folds. Action on you.",
-    "question": "You have T♥T♦ in BB. Villain (CO, TAG) raises 3 BB, BTN calls, SB folds. What do you do?",
+    "situation": "CO raises 3 BB. BTN calls. SB folds. Action on you.",
+    "question": "You have T♥T♦ in BB. CO raises 3 BB, BTN calls, SB folds. What do you do?",
     "options": [
       "Call",
       "Squeeze to 14 BB",
@@ -11250,8 +11250,8 @@
       "K♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO) limps. UTG, MP, BTN, SB all fold. Action on you in BB.",
-    "question": "You have A♠K♦ in BB. Villain (CO) limps, everyone else folds. What do you do?",
+    "situation": "CO limps. UTG, MP, BTN, SB all fold. Action on you in BB.",
+    "question": "You have A♠K♦ in BB. CO limps, everyone else folds. What do you do?",
     "options": [
       "Raise to 5 BB",
       "Raise to 4 BB",
@@ -11280,8 +11280,8 @@
       "7♦"
     ],
     "position": "BB",
-    "situation": "Villain (BTN) limps. UTG, MP, CO, SB all fold. Action on you in BB.",
-    "question": "You have 7♠7♦ in BB. Villain (BTN) limps, everyone else folds. What do you do?",
+    "situation": "BTN limps. UTG, MP, CO, SB all fold. Action on you in BB.",
+    "question": "You have 7♠7♦ in BB. BTN limps, everyone else folds. What do you do?",
     "options": [
       "Check",
       "Raise to 5 BB",
@@ -11310,7 +11310,7 @@
       "J♠"
     ],
     "position": "BB",
-    "situation": "Villain (UTG) limps. Villain (CO) limps. MP, BTN, SB all fold. Action on you in BB.",
+    "situation": "UTG limps. CO limps. MP, BTN, SB all fold. Action on you in BB.",
     "question": "You have Q♠J♠ in BB. UTG and CO limp, everyone else folds. What do you do?",
     "options": [
       "Raise to 6 BB",
@@ -11340,8 +11340,8 @@
       "9♣"
     ],
     "position": "BB",
-    "situation": "Villain (BTN) limps. UTG, MP, CO, SB all fold. Action on you in BB.",
-    "question": "You have A♣9♣ in BB. Villain (BTN) limps, everyone else folds. What do you do?",
+    "situation": "BTN limps. UTG, MP, CO, SB all fold. Action on you in BB.",
+    "question": "You have A♣9♣ in BB. BTN limps, everyone else folds. What do you do?",
     "options": [
       "Check",
       "Raise to 5 BB",
@@ -11370,7 +11370,7 @@
       "K♣"
     ],
     "position": "BB",
-    "situation": "Villain (UTG) limps. Villain (MP) limps. Villain (BTN) limps. CO, SB fold. Action on you in BB.",
+    "situation": "UTG limps. MP limps. BTN limps. CO, SB fold. Action on you in BB.",
     "question": "You have A♥K♣ in BB. UTG, MP, BTN all limp, CO and SB fold. What do you do?",
     "options": [
       "Raise to 7 BB",
@@ -11400,8 +11400,8 @@
       "5♦"
     ],
     "position": "BB",
-    "situation": "Villain (CO) limps. UTG, MP, BTN, SB all fold. Action on you in BB.",
-    "question": "You have 5♥5♦ in BB. Villain (CO) limps, everyone else folds. What do you do?",
+    "situation": "CO limps. UTG, MP, BTN, SB all fold. Action on you in BB.",
+    "question": "You have 5♥5♦ in BB. CO limps, everyone else folds. What do you do?",
     "options": [
       "Check",
       "Raise to 5 BB",
@@ -12168,7 +12168,7 @@
     "hand": [],
     "position": "SB",
     "situation": "You opened SB.",
-    "question": "You opened SB. Villain (BB) 3-bets. Select hands to continue.",
+    "question": "You opened SB. BB 3-bets. Select hands to continue.",
     "correct_hands": [
       "AA",
       "AJo",
@@ -12203,8 +12203,8 @@
     "action_type": "3-Bet / Continue vs 3-Bet",
     "hand": [],
     "position": "BB",
-    "situation": "Villain (BTN, TAG) steals.",
-    "question": "Villain (BTN, TAG) steals. You're Hero (BB). Select hands you 3-bet (squeeze).",
+    "situation": "BTN steals.",
+    "question": "BTN steals. You're Hero (BB). Select hands you 3-bet (squeeze).",
     "correct_hands": [
       "AA",
       "AKo",
