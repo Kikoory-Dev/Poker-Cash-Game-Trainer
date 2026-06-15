@@ -800,12 +800,12 @@ const ISSUE_EXPLAIN = {
     rangeNote:'Only continue with hands inside your position\'s defend range vs a raise.'
   },
   MISSED_CBET: {
-    label:'Missed continuation bet',
+    label:'Checked flop as aggressor (gave up)',
     type:'postflop',
-    better:'C-bet 50-75% pot as the preflop raiser on most flops.',
-    principle:'Hardin: the c-bet is a core profit tool — you represent the strong range, so keep betting.',
-    explain:'When you raise preflop and get one caller, they miss the flop about two-thirds of the time. A continuation bet folds out their air immediately. Checking surrenders initiative and gives a free card. This is your most consistent recurring leak across sessions.',
-    rangeNote:'Target 60-70% c-bet frequency. Dry boards: c-bet almost always. Very wet multiway boards: check more.'
+    better:'C-bet 50-75% pot on most flops when you raised preflop and reached the flop heads-up.',
+    principle:'Hardin: c-bet is a core profit tool, but 60-70% is a frequency — not every flop. Checking is correct sometimes.',
+    explain:'This flag fires only when you checked the flop as the preflop raiser AND never bet again that hand. Checking to pot-control or to barrel a later street is fine and is NOT flagged. But checking and then giving up surrenders the pot you set up preflop. On dry, ace-high, or paired boards your range is strong — bet it. Reserve the give-up check for spots where you genuinely have nothing and the board smashes the caller.',
+    rangeNote:'C-bet ~65% overall. Always-bet: dry boards (K-7-2), paired boards. Check more: wet multiway boards, or middle pair OOP for pot control (then bet later if it improves).'
   },
   FOLD_STRONG_LP: {
     label:'Folded a must-raise hand',
@@ -2199,7 +2199,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.24';
+const APP_VERSION = '2.25';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
