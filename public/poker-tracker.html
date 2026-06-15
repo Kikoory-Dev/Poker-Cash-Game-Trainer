@@ -2054,7 +2054,7 @@ function showViolationHands(issue) {
     : 'Net negative — these cost you money this sample.';
 
   var body = '<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
-    + '<p style="font-size:13px;color:var(--text);font-weight:700;margin:0 0 4px">' + (ex.short||'') + '</p>'
+    + '<p style="font-size:13px;color:var(--text);font-weight:700;margin:0 0 4px">' + (ex.better? '\u2192 '+ex.better : '') + '</p>'
     + '<p style="font-size:12px;color:var(--text3);margin:0;line-height:1.6">' + (ex.explain||'') + '</p>'
     + '</div>'
     + '<div style="display:flex;gap:8px;margin-bottom:10px">'
@@ -2199,7 +2199,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.22';
+const APP_VERSION = '2.23';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
