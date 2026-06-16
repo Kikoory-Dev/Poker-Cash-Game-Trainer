@@ -165,9 +165,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="dash-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()"><input type="date" id="dash-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
       <select id="dash-stakes" onchange="renderDashboard()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
       <select id="dash-type" onchange="renderDashboard()">
         <option value="all">All formats</option>
@@ -228,9 +232,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="hands-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()"><input type="date" id="hands-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
       <select id="hands-stakes" onchange="renderHands()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
       <select id="hands-show" onchange="renderHands()">
         <option value="all">All hands</option>
@@ -268,9 +276,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="pos-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()"><input type="date" id="pos-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
       <select id="pos-stakes" onchange="renderPositions()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
     </div>
     <div id="pos-detail-grid"></div>
@@ -292,9 +304,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="mistakes-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()"><input type="date" id="mistakes-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
       <select id="mistakes-stakes" onchange="renderMistakes()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
       <select id="mistakes-type" onchange="renderMistakes()">
         <option value="all">All mistakes</option>
@@ -353,9 +369,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="analysis-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()"><input type="date" id="analysis-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
       <select id="analysis-stakes" onchange="renderAnalysis()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
     </div>
     <div id="analysis-body"></div>
@@ -377,9 +397,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="grid-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()"><input type="date" id="grid-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
       <select id="grid-stakes" onchange="renderGrid()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
       <select id="grid-metric" onchange="renderGrid()">
         <option value="net">Net $</option>
@@ -411,9 +435,13 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       </select>
       <input type="date" id="starting-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()"><input type="date" id="starting-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
       <select id="starting-stakes" onchange="renderStartingHands()">
-        <option value="all">All stakes</option>
-        <option value="NL25">NL25</option>
-        <option value="NL10">NL10</option>
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
       </select>
       <select id="starting-sort" onchange="renderStartingHands()">
         <option value="hands">Most played</option>
@@ -895,8 +923,17 @@ function filterByTime(hands, tf, dateInputId) {
 
 function filterHands(hands, tf, stakes, gameType, dateInputId) {
   let h = filterByTime(hands, tf, dateInputId);
-  if (stakes && stakes!=='all') h = h.filter(x=>x.stakes===stakes);
-  if (gameType && gameType!=='all') h = h.filter(x=>x.gameType===gameType);
+  if (stakes && stakes!=='all') {
+    if (stakes.indexOf('|') >= 0) {
+      // Combined format|stake value e.g. "Rush&Cash|NL10"
+      var parts = stakes.split('|');
+      var fmt = parts[0], stk = parts[1];
+      h = h.filter(function(x){ return x.gameType===fmt && x.stakes===stk; });
+    } else {
+      h = h.filter(function(x){ return x.stakes===stakes; });
+    }
+  }
+  if (gameType && gameType!=='all') h = h.filter(function(x){ return x.gameType===gameType; });
   return h;
 }
 
@@ -2199,7 +2236,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.26';
+const APP_VERSION = '2.27';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
