@@ -796,20 +796,20 @@ function parseHands(text, filename) {
 // ─── HARDIN EXPLANATIONS ──────────────────────────────────────
 const ISSUE_EXPLAIN = {
   VPIP_TRASH: {
-    label:'VPIP with trash hand',
+    label:'Played a hand outside opening range',
     type:'preflop',
-    better:'Fold preflop.',
-    principle:'If the hand is not in your position\'s opening range, it is a fold — not a call, not a raise.',
-    explain:'Trash hands (weak offsuit cards, dominated kickers) play badly because when they connect you are usually outkicked, and when they miss you have no equity to fall back on. The discipline of folding these is where most of a TAG player\'s edge comes from.',
-    rangeNote:'Open only the hands in your position chart. Everything else folds.'
+    better:'Fold preflop — this hand is outside your position\'s chart.',
+    principle:'Hardin: play only hands in your position\'s opening range. Outside it is a fold, even for borderline hands.',
+    explain:'This hand is outside your position chart. Some flagged hands are genuinely weak (dominated offsuit kickers); others are borderline (a suited ace like A8s from the HJ, just past the cutoff). Either way, sticking to the chart is where most of a TAG player\'s discipline edge comes from — the marginal opens look harmless individually but leak over volume, especially when they get 3-bet and you fold anyway.',
+    rangeNote:'Open only the hands in your position chart. Borderline-but-outside (A8s/A7s from HJ) still folds.'
   },
   LIMP_OOP: {
-    label:'Limp/call out of position',
+    label:'SB flat-called a raise (no 3-bet)',
     type:'preflop',
-    better:'From the SB: 3-bet your strong hands, fold the rest. Never flat-call.',
-    principle:'Hardin: the SB is raise-or-fold. Flat-calling there is the single worst preflop habit.',
-    explain:'Calling from the SB commits money out of position with a capped range, meaning you act first on every street and can never represent the strongest hands. That positional disadvantage compounds pot by pot.',
-    rangeNote:'SB vs an open: 3-bet TT+/AJs+/AQo+, fold everything else.'
+    better:'From the SB facing an open: 3-bet your continue hands, fold the rest. Never just call.',
+    principle:'Hardin: the SB is 3-bet-or-fold vs an open. Flat-calling out of position is a core leak.',
+    explain:'This is not a limp — you cold-called a raise from the small blind. The problem is the same: calling commits money out of position with a capped range, so you act first on every street and can never represent the strongest hands. Either 3-bet (taking the betting lead and fold equity) or fold. Flatting is the worst of the three options.',
+    rangeNote:'SB vs an open: 3-bet TT+/AJs+/AQo+/AKo, fold everything else. No flat-calling range.'
   },
   CALL_3BET: {
     label:'Called a 3-bet out of range',
@@ -2233,7 +2233,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.28';
+const APP_VERSION = '2.29';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
