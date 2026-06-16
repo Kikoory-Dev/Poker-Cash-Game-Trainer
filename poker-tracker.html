@@ -852,12 +852,12 @@ const ISSUE_EXPLAIN = {
     rangeNote:'Vs 4-bet continue: QQ+/AKs (most seats). SB slightly wider. Fold the rest.'
   },
   LIMP: {
-    label:'Limped with a raiseable hand',
+    label:'Entered the pot by calling, not raising',
     type:'preflop',
-    better:'Raise it. If a hand is worth playing, it is worth raising.',
-    principle:'Hardin: TAG has no limp range — raise or fold, never call the BB.',
-    explain:'Limping surrenders fold equity, lets the BB see a cheap flop with any two cards, and signals a weak, uncapped-but-passive range. Raising keeps initiative and isolates.',
-    rangeNote:'No limping. Open-raise your range, fold everything else.'
+    better:'Raise instead. First in → open-raise. Limper ahead of you → raise to isolate (~3-4 BB + 1 BB per limper).',
+    principle:'Hardin: TAG has no limping range. Raise or fold, never just call the big blind.',
+    explain:'Two cases trigger this. (1) Open-limping a premium like AA/KK surrenders the value and fold equity of raising — you want chips in with the best hand, not a cheap multiway flop. (2) Over-limping behind another limper (e.g. T8s on the BTN after the HJ limps) should instead be an isolation raise: punish the limper, build a pot in position, play heads-up rather than letting the blinds in free. Either way, calling forfeits initiative.',
+    rangeNote:'No limp range exists in TAG. First in: open-raise your position chart. Limper ahead: isolation-raise your playable hands, fold the rest.'
   }
 };
 
@@ -2233,7 +2233,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.29';
+const APP_VERSION = '2.30';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
