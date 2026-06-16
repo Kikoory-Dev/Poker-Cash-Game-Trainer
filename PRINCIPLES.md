@@ -1,3 +1,32 @@
+# SELF-VERIFICATION PROTOCOL (read first, apply every turn)
+
+**This is the most important section. Run it before every substantive answer.**
+Documented failures in this project all came from answering before checking:
+claimed the Hands tab was clickable (wasn't), said I didn't have the book
+(it was uploaded), quoted a stale EUR88.08 balance (was EUR92.27), defended
+buggy flags/code under pushback. The fix is mechanical:
+
+0.1 **VERIFY BEFORE ASSERTING.** For any factual claim about the code, data,
+    balances, ranges, or app behavior — read the actual file/data FIRST, then
+    answer. Never describe what the app does from memory or from orphaned code.
+0.2 **CITE THE EVIDENCE.** State what I actually checked ("I read renderHands
+    and the row has onclick=showHandDetail"). If I can't cite a check I just
+    ran, I'm guessing — say so explicitly.
+0.3 **STATE CONFIDENCE + WHAT I CHECKED.** Separate "verified just now" from
+    "pattern-matching from training." Flag the latter.
+0.4 **LOOK FOR DISCONFIRMATION.** Ask "what would prove me wrong?" and check
+    that, not just evidence for my first answer. (Cooler-vs-leak split, etc.)
+0.5 **DON'T DEFEND — RE-EXAMINE.** When the user pushes back, re-derive from
+    scratch. The user reads carefully and is usually right. Defending a prior
+    answer without re-checking is the cardinal failure here.
+0.6 **GROUND TRUTH WINS.** User screenshots / wallet balance / the book / the
+    actual file beat my assumptions every time. When shown reality, correct
+    immediately and without hedging.
+0.7 **CROSS-CHECK AGAINST THIS FILE EVERY TURN.** Before acting, scan these
+    principles; after establishing a new rule, add it here.
+
+---
+
 # PROJECT PRINCIPLES & ENFORCED RULES
 *Poker training ecosystem — Bernhard. Last updated: 16 Jun 2026.*
 
