@@ -923,16 +923,13 @@ function filterByTime(hands, tf, dateInputId) {
 
 function filterHands(hands, tf, stakes, gameType, dateInputId) {
   let h = filterByTime(hands, tf, dateInputId);
-  if (stakes && stakes!=='all') {
-    if (stakes.indexOf('|') >= 0) {
-      // Combined format|stake value e.g. "Rush&Cash|NL10"
-      var parts = stakes.split('|');
-      var fmt = parts[0], stk = parts[1];
-      h = h.filter(function(x){ return x.gameType===fmt && x.stakes===stk; });
-    } else {
-      h = h.filter(function(x){ return x.stakes===stakes; });
-    }
+  if (stakes && stakes.indexOf('|') >= 0) {
+    // Combined format|stake value e.g. "Rush&Cash|NL10" — takes precedence, ignore gameType
+    var parts = stakes.split('|');
+    h = h.filter(function(x){ return x.gameType===parts[0] && x.stakes===parts[1]; });
+    return h;
   }
+  if (stakes && stakes!=='all') h = h.filter(function(x){ return x.stakes===stakes; });
   if (gameType && gameType!=='all') h = h.filter(function(x){ return x.gameType===gameType; });
   return h;
 }
@@ -2236,7 +2233,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.27';
+const APP_VERSION = '2.28';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
