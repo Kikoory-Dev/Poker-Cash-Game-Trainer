@@ -1360,12 +1360,29 @@ function showHandDetail(id) {
           <span style="font-size:14px;font-weight:700;color:var(--text)">${ex.label}</span>
           <span class="badge ${ex.type==='preflop'?'warn':'err'}">${ex.type}</span>
         </div>
+        ${(function(){
+          if(ex.type!=='preflop') return '';
+          var pos = h.position;
+          var rng = HARDIN_RANGES[pos];
+          if(!rng) return '';
+          var hn = h.handNotation;
+          var inRange = rng.all.indexOf(hn) >= 0;
+          var rangeStr = rng.all.join(', ');
+          var verdict = inRange
+            ? '<b style="color:var(--amber)">'+hn+'</b> IS in your '+pos+' opening range — the flag is about HOW you played it (action), not whether the hand qualifies.'
+            : '<b style="color:var(--red)">'+hn+'</b> is NOT in your '+pos+' opening range. That is why it is flagged.';
+          return '<div style="background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;margin:0 0 8px">'
+            +'<p style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 4px">'+pos+' opening range ('+rng.all.length+' hands)</p>'
+            +'<p style="font-size:10px;color:var(--text3);margin:0 0 5px;line-height:1.5;font-family:monospace">'+rangeStr+'</p>'
+            +'<p style="font-size:11px;color:var(--text2);margin:0;line-height:1.5">'+verdict+'</p>'
+            +'</div>';
+        })()}
         <div style="background:rgba(109,184,122,0.08);border-left:2px solid var(--green);border-radius:4px;padding:7px 10px;margin:0 0 7px">
           <p style="font-size:12px;color:var(--green);margin:0 0 3px;font-weight:700">→ ${ex.better}</p>
           <p style="font-size:11px;color:var(--text3);margin:0;line-height:1.5">${ex.principle}</p>
         </div>
         <p style="font-size:12px;color:var(--text3);margin:0 0 6px;line-height:1.6">${ex.explain}</p>
-        ${ex.rangeNote?`<p style="font-size:11px;color:var(--muted);margin:0;line-height:1.5;font-style:italic">Range: ${ex.rangeNote}</p>`:''}
+        ${ex.rangeNote?`<p style="font-size:11px;color:var(--muted);margin:0;line-height:1.5;font-style:italic">Range note: ${ex.rangeNote}</p>`:''}
       </div>`;
     });
     body += `</div>`;
@@ -2233,7 +2250,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.30';
+const APP_VERSION = '2.31';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
