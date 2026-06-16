@@ -343,7 +343,7 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
     <span>Analysis</span>
   </button>
-  <button class="bnav-btn" onclick="switchTab('starting',this)" id="bnav-starting">
+  <button class="bnav-btn" onclick="switchTab('hands',this)" id="bnav-hands">
     <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
     <span>Hands</span>
   </button>
@@ -2252,7 +2252,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.33';
+const APP_VERSION = '2.34';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
