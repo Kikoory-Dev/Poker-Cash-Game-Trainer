@@ -193,6 +193,10 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       <div id="dash-sessions"></div>
       <div id="dash-stakes-breakdown" style="margin-top:10px"></div>
     </div>
+    <div class="card">
+      <div class="card-title">Postflop scorecard <span style="font-size:10px;color:var(--muted);font-weight:400">(Hardin criteria)</span></div>
+      <div id="dash-postflop"></div>
+    </div>
   </div>
 
   <!-- UPLOAD -->
@@ -1037,6 +1041,56 @@ function renderDashboard() {
       +'<div class="stat" style="flex:1;text-align:center"><p class="stat-label">Win rate</p><p class="stat-value" style="font-size:18px;color:'+col+'">'+(bb>=0?'+':'')+bb.toFixed(1)+'<span style="font-size:10px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>'
       +'</div>';
   }).join('') || '<p style="font-size:12px;color:var(--muted)">No hands in this filter</p>';
+
+  // ─── POSTFLOP SCORECARD ───
+  (function(){
+    var pf = document.getElementById('dash-postflop');
+    if(!pf) return;
+    var sawFlop = hands.filter(function(h){ return h.sawFlop; });
+    if(sawFlop.length < 20){ pf.innerHTML = '<p style="font-size:12px;color:var(--muted)">Need 20+ flops in this filter for a scorecard ('+sawFlop.length+' so far)</p>'; return; }
+    // C-bet %
+    var cbOpp = hands.filter(function(h){ return h.cbetOpp; });
+    var cbMade = cbOpp.filter(function(h){ return h.cbetMade; });
+    var cbetPct = cbOpp.length ? Math.round(cbMade.length/cbOpp.length*100) : null;
+    // WTSD
+    var wtsd = sawFlop.filter(function(h){ return h.showdown; });
+    var wtsdPct = Math.round(wtsd.length/sawFlop.length*100);
+    // W$SD
+    var wsdWon = wtsd.filter(function(h){ return h.netBB>0; });
+    var wsdPct = wtsd.length ? Math.round(wsdWon.length/wtsd.length*100) : null;
+    // Aggression factor
+    var br=0, ca=0;
+    sawFlop.forEach(function(h){
+      var sa=h.streetActions||{};
+      ['flop','turn','river'].forEach(function(st){
+        ((sa[st]||{}).actions||[]).forEach(function(a){
+          if(a.player!=='Hero') return;
+          if(a.action.indexOf('bets')>=0||a.action.indexOf('raises')>=0) br++;
+          else if(a.action.indexOf('calls')>=0) ca++;
+        });
+      });
+    });
+    var af = ca ? (br/ca) : null;
+    // Big showdown losses (the leak)
+    var bigLoss = wtsd.filter(function(h){ return h.netBB < -25; });
+    var bigLossPct = wtsd.length ? Math.round(bigLoss.length/wtsd.length*100) : 0;
+
+    function row(label, val, target, ok){
+      var col = ok===null ? 'var(--text)' : (ok ? 'var(--green)' : 'var(--amber)');
+      var mark = ok===null ? '' : (ok ? ' \u2713' : ' \u26a0');
+      return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border)">'
+        +'<span style="font-size:12px;color:var(--text2)">'+label+'</span>'
+        +'<span style="font-size:13px;font-weight:700;color:'+col+'">'+val+mark+'<span style="font-size:10px;color:var(--muted);font-weight:400"> '+target+'</span></span></div>';
+    }
+    var html2 = '';
+    html2 += row('C-bet frequency', cbetPct!==null?cbetPct+'%':'\u2014', 'target 60-70%', cbetPct===null?null:(cbetPct>=55&&cbetPct<=75));
+    html2 += row('Went to showdown', wtsdPct+'%', 'healthy 24-28%', wtsdPct>=22&&wtsdPct<=30);
+    html2 += row('Won at showdown', wsdPct!==null?wsdPct+'%':'\u2014', 'healthy 48-54%', wsdPct===null?null:(wsdPct>=46));
+    html2 += row('Aggression factor', af!==null?af.toFixed(2):'\u2014', 'TAG 2.0-3.0', af===null?null:(af>=1.8&&af<=3.5));
+    html2 += row('Big SD losses (>25bb)', bigLossPct+'% of showdowns', 'leak watch', bigLossPct<=12);
+    html2 += '<p style="font-size:10px;color:var(--muted);margin:8px 0 0;line-height:1.5">Behavioral metrics, not decision-quality. Big-SD-loss = the overvaluing-one-pair leak to watch. Small samples = noisy.</p>';
+    pf.innerHTML = html2;
+  })();
 }
 
 // ─── UPLOAD ───────────────────────────────────────────────────
@@ -2252,7 +2306,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.34';
+const APP_VERSION = '2.35';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
