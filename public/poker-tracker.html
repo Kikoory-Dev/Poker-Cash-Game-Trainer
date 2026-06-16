@@ -865,6 +865,126 @@ const ISSUE_EXPLAIN = {
   }
 };
 
+// ═══ HARDIN POSTFLOP ANALYZER (var + string-concat, no template literals) ═══
+var PF_RANKS='23456789TJQKA';
+function pfRk(c){return PF_RANKS.indexOf(c.charAt(0));}
+function pfCards(s){return s?s.split(' '):[];}
+
+function pfDetectDraws(hole,board){
+  var allc=pfCards(hole).concat(pfCards(board));var draws={};
+  var suits='shdc';
+  for(var i=0;i<4;i++){var s=suits.charAt(i);var n=0;
+    for(var j=0;j<allc.length;j++){if(allc[j].charAt(1)===s)n++;}
+    if(n===4)draws['flush']=1;}
+  var vals=[];for(var k=0;k<allc.length;k++){var v=pfRk(allc[k]);if(vals.indexOf(v)<0)vals.push(v);}
+  vals.sort(function(a,b){return a-b;});
+  if(vals.indexOf(12)>=0)vals=[-1].concat(vals);
+  for(var m=0;m<vals.length-3;m++){var w=vals.slice(m,m+4);
+    if(w[3]-w[0]===3)draws['straight']=1;}
+  return draws;
+}
+
+function pfMadeHand(hole,board){
+  var h=pfCards(hole),b=pfCards(board);
+  if(b.length<3)return['preflop','na'];
+  var allc=h.concat(b);var rc={};
+  for(var i=0;i<allc.length;i++){var r=allc[i].charAt(0);rc[r]=(rc[r]||0)+1;}
+  var counts=[];for(var key in rc)counts.push(rc[key]);
+  counts.sort(function(a,b){return b-a;});
+  var suits=[];for(var s2=0;s2<allc.length;s2++)suits.push(allc[s2].charAt(1));
+  var flush=false;var su='shdc';
+  for(var f=0;f<4;f++){var cnt=0;for(var g=0;g<suits.length;g++)if(suits[g]===su.charAt(f))cnt++;if(cnt>=5)flush=true;}
+  var vals=[];for(var vi=0;vi<allc.length;vi++){var vv=pfRk(allc[vi]);if(vals.indexOf(vv)<0)vals.push(vv);}
+  vals.sort(function(a,b){return a-b;});
+  var vlow=vals.indexOf(12)>=0?[-1].concat(vals):vals;
+  function straight(vs){var run=1;for(var i=1;i<vs.length;i++){if(vs[i]===vs[i-1]+1){run++;if(run>=5)return true;}else if(vs[i]!==vs[i-1])run=1;}return false;}
+  var isStraight=straight(vlow);
+  var boardVals=[];for(var bi=0;bi<b.length;bi++)boardVals.push(pfRk(b[bi]));
+  boardVals.sort(function(a,b){return b-a;});
+  var topBoard=boardVals[0];
+  var holeRanks=[];for(var hi=0;hi<h.length;hi++)holeRanks.push(h[hi].charAt(0));
+  var holePair=h.length===2&&h[0].charAt(0)===h[1].charAt(0);
+
+  if(counts[0]>=4)return['quads','strong'];
+  if(counts[0]===3&&counts.length>1&&counts[1]>=2)return['full house','strong'];
+  if(flush)return['flush','strong'];
+  if(isStraight)return['straight','strong'];
+  if(counts[0]===3)return['set/trips','strong'];
+  var pairCount=0;for(var pc=0;pc<counts.length;pc++)if(counts[pc]===2)pairCount++;
+  if(counts[0]===2&&pairCount>=2)return['two pair','strong'];
+
+  if(counts[0]===2){
+    var paired='';for(var pk in rc)if(rc[pk]===2){paired=pk;break;}
+    var pv=PF_RANKS.indexOf(paired);
+    if(holeRanks.indexOf(paired)<0&&!holePair)return['no pair (board paired)','weak'];
+    if(holePair){var pp=PF_RANKS.indexOf(holeRanks[0]);
+      if(pp>topBoard)return['overpair','strong'];
+      if(boardVals.length>1&&pp>boardVals[1])return['underpair (2nd)','medium'];
+      return['underpair',pp>=PF_RANKS.indexOf('8')?'medium':'weak'];}
+    if(pv===topBoard){var kick=0;for(var ki=0;ki<holeRanks.length;ki++){if(holeRanks[ki]!==paired){var kv=PF_RANKS.indexOf(holeRanks[ki]);if(kv>kick)kick=kv;}}
+      if(kick>=PF_RANKS.indexOf('Q'))return['top pair, top kicker','strong'];
+      return['top pair, weak kicker','medium'];}
+    if(boardVals.length>1&&pv===boardVals[1])return['middle pair','medium'];
+    return['bottom pair','weak'];
+  }
+  var draws=pfDetectDraws(hole,board);
+  if(draws['flush']||draws['straight']){
+    var dn=[];if(draws['flush'])dn.push('flush draw');if(draws['straight'])dn.push('straight draw');
+    return[dn.join('+'),'draw'];}
+  return['no pair / whiff','weak'];
+}
+
+function pfTierByStreet(h){
+  var out={};var flop=h.boardFlop||'';
+  var turn=h.boardTurn?(flop+' '+h.boardTurn):'';
+  var river=h.boardRiver?(turn+' '+h.boardRiver):'';
+  if(flop)out.flop=pfMadeHand(h.holeCards,flop);
+  if(turn)out.turn=pfMadeHand(h.holeCards,turn);
+  if(river)out.river=pfMadeHand(h.holeCards,river);
+  return out;
+}
+function pfFinalTier(h){var ts=pfTierByStreet(h);return ts.river||ts.turn||ts.flop||['','weak'];}
+
+function pfIsMonster(desc){var ks=['set','trips','straight','flush','full house','quads','two pair'];for(var i=0;i<ks.length;i++)if(desc.indexOf(ks[i])>=0)return true;return false;}
+function pfBoardDry(h){var b=(h.boardFlop||'').split(' ');if(b.length<3)return false;
+  var suits=[],ranks=[];for(var i=0;i<b.length;i++){suits.push(b[i].charAt(1));ranks.push(pfRk(b[i]));}
+  ranks.sort(function(a,b){return a-b;});
+  var twoFlush=false,su='shdc';for(var f=0;f<4;f++){var c=0;for(var g=0;g<suits.length;g++)if(suits[g]===su.charAt(f))c++;if(c>=2)twoFlush=true;}
+  var connected=(ranks[2]-ranks[0])<=4;return!twoFlush&&!connected;}
+
+function pfHeroStreets(h){var sa=h.streetActions||{};var out={};var sts=['flop','turn','river'];
+  for(var i=0;i<sts.length;i++){var acts=[];var sa2=sa[sts[i]]||{};var a=sa2.actions||[];
+    for(var j=0;j<a.length;j++)if(a[j].player==='Hero')acts.push(a[j].action);out[sts[i]]=acts;}return out;}
+
+function pfVerdict(h,tier,desc){
+  var aggressor=!!h.pfr;var acts=pfHeroStreets(h);
+  var flat=acts.flop.concat(acts.turn).concat(acts.river);
+  var nBet=0,nRaise=0,nCall=0;
+  for(var i=0;i<flat.length;i++){if(flat[i].indexOf('bets')>=0)nBet++;if(flat[i].indexOf('raises')>=0)nRaise++;if(flat[i].indexOf('calls')>=0)nCall++;}
+  var hasRaise=nRaise>0;
+  if(tier==='strong'){
+    if(nBet===0&&nRaise===0&&h.showdown){
+      if(pfIsMonster(desc)&&pfBoardDry(h))return['OK','Slowplayed a monster on a dry board \\u2014 legit (induce / let them improve)'];
+      return['MISSED','Strong value checked down \\u2014 extract value (bet/raise)'];}
+    return['OK','Bet/raised strong value \\u2014 correct'];}
+  if(tier==='medium'){
+    if(hasRaise)return['WRONG','Medium hand raised \\u2014 Hardin: pot-control, do not build the pot'];
+    if(nCall>=2)return['WRONG','Medium called 2+ barrels vs TAG \\u2014 fold to multiple bets'];
+    if(aggressor&&nBet>=2)return['QUESTIONABLE','Medium barreled multiple streets \\u2014 vs TAG only better calls'];
+    return['OK','Pot-controlled / checked for showdown \\u2014 correct'];}
+  if(tier==='draw'){
+    if(nCall>=3)return['QUESTIONABLE','Draw called 3 streets \\u2014 verify pot/implied odds justified it'];
+    return['OK','Draw played reasonably'];}
+  if(tier==='weak'){
+    if(aggressor){
+      if(nBet>=3)return['WRONG','3rd-barrel bluff into a caller \\u2014 Hardin: give up, micro players call a third'];
+      if(nCall>=1&&h.showdown&&h.netBB<0)return['WRONG','Called a bet/raise with a whiff \\u2014 give up as aggressor'];
+      return['OK','C-bet 1-2 barrels / gave up \\u2014 fine for aggressor air'];}
+    if(nCall>=1&&h.showdown&&h.netBB<0)return['WRONG','Weak hand called to showdown & lost \\u2014 check/fold weak hands'];
+    return['OK','Check/folded weak hand \\u2014 correct'];}
+  return['OK',''];
+}
+
 // ─── CARD FORMATTER ──────────────────────────────────────────
 function formatCards(cards) {
   if (!cards) return '??';
@@ -1042,54 +1162,42 @@ function renderDashboard() {
       +'</div>';
   }).join('') || '<p style="font-size:12px;color:var(--muted)">No hands in this filter</p>';
 
-  // ─── POSTFLOP SCORECARD ───
+  // ─── POSTFLOP TIER SCORECARD (Hardin action-correctness) ───
   (function(){
     var pf = document.getElementById('dash-postflop');
     if(!pf) return;
-    var sawFlop = hands.filter(function(h){ return h.sawFlop; });
-    if(sawFlop.length < 20){ pf.innerHTML = '<p style="font-size:12px;color:var(--muted)">Need 20+ flops in this filter for a scorecard ('+sawFlop.length+' so far)</p>'; return; }
-    // C-bet %
-    var cbOpp = hands.filter(function(h){ return h.cbetOpp; });
-    var cbMade = cbOpp.filter(function(h){ return h.cbetMade; });
-    var cbetPct = cbOpp.length ? Math.round(cbMade.length/cbOpp.length*100) : null;
-    // WTSD
-    var wtsd = sawFlop.filter(function(h){ return h.showdown; });
-    var wtsdPct = Math.round(wtsd.length/sawFlop.length*100);
-    // W$SD
-    var wsdWon = wtsd.filter(function(h){ return h.netBB>0; });
-    var wsdPct = wtsd.length ? Math.round(wsdWon.length/wtsd.length*100) : null;
-    // Aggression factor
-    var br=0, ca=0;
-    sawFlop.forEach(function(h){
-      var sa=h.streetActions||{};
-      ['flop','turn','river'].forEach(function(st){
-        ((sa[st]||{}).actions||[]).forEach(function(a){
-          if(a.player!=='Hero') return;
-          if(a.action.indexOf('bets')>=0||a.action.indexOf('raises')>=0) br++;
-          else if(a.action.indexOf('calls')>=0) ca++;
-        });
-      });
-    });
-    var af = ca ? (br/ca) : null;
-    // Big showdown losses (the leak)
-    var bigLoss = wtsd.filter(function(h){ return h.netBB < -25; });
-    var bigLossPct = wtsd.length ? Math.round(bigLoss.length/wtsd.length*100) : 0;
-
-    function row(label, val, target, ok){
-      var col = ok===null ? 'var(--text)' : (ok ? 'var(--green)' : 'var(--amber)');
-      var mark = ok===null ? '' : (ok ? ' \u2713' : ' \u26a0');
-      return '<div style="display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border)">'
-        +'<span style="font-size:12px;color:var(--text2)">'+label+'</span>'
-        +'<span style="font-size:13px;font-weight:700;color:'+col+'">'+val+mark+'<span style="font-size:10px;color:var(--muted);font-weight:400"> '+target+'</span></span></div>';
+    var flopped = hands.filter(function(h){ return h.sawFlop && h.holeCards && h.boardFlop; });
+    if(flopped.length < 20){ pf.innerHTML = '<p style="font-size:12px;color:var(--muted)">Need 20+ flops in this filter ('+flopped.length+' so far)</p>'; return; }
+    var tiers = {strong:[], medium:[], draw:[], weak:[]};
+    for(var i=0;i<flopped.length;i++){
+      var h=flopped[i]; var ft=pfFinalTier(h); var tier=ft[1]; if(!tiers[tier]) continue;
+      var v=pfVerdict(h,tier,ft[0]); h._tier=tier; h._verdict=v[0]; h._vreason=v[1]; h._desc=ft[0];
+      tiers[tier].push(h);
     }
-    var html2 = '';
-    html2 += row('C-bet frequency', cbetPct!==null?cbetPct+'%':'\u2014', 'target 60-70%', cbetPct===null?null:(cbetPct>=55&&cbetPct<=75));
-    html2 += row('Went to showdown', wtsdPct+'%', 'healthy 24-28%', wtsdPct>=22&&wtsdPct<=30);
-    html2 += row('Won at showdown', wsdPct!==null?wsdPct+'%':'\u2014', 'healthy 48-54%', wsdPct===null?null:(wsdPct>=46));
-    html2 += row('Aggression factor', af!==null?af.toFixed(2):'\u2014', 'TAG 2.0-3.0', af===null?null:(af>=1.8&&af<=3.5));
-    html2 += row('Big SD losses (>25bb)', bigLossPct+'% of showdowns', 'leak watch', bigLossPct<=12);
-    html2 += '<p style="font-size:10px;color:var(--muted);margin:8px 0 0;line-height:1.5">Behavioral metrics, not decision-quality. Big-SD-loss = the overvaluing-one-pair leak to watch. Small samples = noisy.</p>';
-    pf.innerHTML = html2;
+    window._pfTiers = tiers;
+    var order=[['strong','Strong value'],['medium','Medium'],['draw','Draws'],['weak','Weak']];
+    var out='';
+    for(var t=0;t<order.length;t++){
+      var key=order[t][0], label=order[t][1], arr=tiers[key];
+      if(!arr.length) continue;
+      var ok=0, wrong=0;
+      for(var a=0;a<arr.length;a++){ var vd=arr[a]._verdict; if(vd==='OK')ok++; else wrong++; }
+      var pct=Math.round(ok/arr.length*100);
+      var nbb=0; for(var b=0;b<arr.length;b++) nbb+=arr[b].netBB;
+      var pctCol = pct>=85?'var(--green)':(pct>=70?'var(--amber)':'var(--red)');
+      var bbCol = nbb>=0?'var(--green)':'var(--red)';
+      out += '<div style="display:flex;align-items:stretch;gap:8px;margin-bottom:8px">'
+        + '<div onclick="showTierHands(\''+key+'\')" style="flex:1;cursor:pointer;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px">'
+        + '<p style="font-size:11px;color:var(--text2);margin:0 0 2px;font-weight:700">'+label+' <span style="color:var(--muted);font-weight:400">'+arr.length+'h</span></p>'
+        + '<p style="margin:0;font-size:15px;font-weight:700;color:'+pctCol+'">'+pct+'%<span style="font-size:10px;color:var(--muted);font-weight:400"> correct</span></p>'
+        + '</div>'
+        + '<div onclick="showTierHands(\''+key+'\')" style="flex:0 0 88px;cursor:pointer;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;text-align:right">'
+        + '<p style="font-size:11px;color:var(--text2);margin:0 0 2px">Net</p>'
+        + '<p style="margin:0;font-size:15px;font-weight:700;color:'+bbCol+'">'+(nbb>=0?'+':'')+nbb.toFixed(0)+'<span style="font-size:9px;color:var(--muted);font-weight:400"> BB</span></p>'
+        + '</div></div>';
+    }
+    out += '<p style="font-size:10px;color:var(--muted);margin:8px 0 0;line-height:1.5">Action-correctness vs a TAG villain (Hardin rules). Strong=bet for value; Medium=pot-control/fold to multiple bets; Weak=check/fold or c-bet 1-2 as aggressor. Tap a tier to review hands. Heuristic \u2014 some flags are \u201creview,\u201d not certain errors.</p>';
+    pf.innerHTML = out;
   })();
 }
 
@@ -1265,6 +1373,28 @@ function renderAction(player, action, seatPositions, raisesBefore) {
     +'<span style="font-weight:600;color:'+col+';min-width:90px;font-size:12px">'+name+'</span>'
     +'<span>'+verb+'</span>'
     +'</div>';
+}
+
+function showTierHands(tier){
+  var arr = (window._pfTiers && window._pfTiers[tier]) ? window._pfTiers[tier].slice() : [];
+  arr.sort(function(a,b){ return a.netBB-b.netBB; });
+  var labels={strong:'Strong value',medium:'Medium',draw:'Draws',weak:'Weak'};
+  var rows='';
+  for(var i=0;i<arr.length;i++){
+    var h=arr[i];
+    var vCol = h._verdict==='OK'?'var(--green)':(h._verdict==='WRONG'?'var(--red)':'var(--amber)');
+    var board=(h.boardFlop||'')+(h.boardTurn?' '+h.boardTurn:'')+(h.boardRiver?' '+h.boardRiver:'');
+    rows += '<div onclick="showHandDetail(\''+h.id+'\')" style="cursor:pointer;padding:9px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">'
+      + '<div style="min-width:0;flex:1">'
+      + '<p style="margin:0;font-size:13px;font-weight:700;color:var(--text)">'+h.handNotation+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+(h._desc||'')+'</span></p>'
+      + '<p style="margin:2px 0 0;font-size:10px;color:'+vCol+'">'+h._verdict+' \u00b7 <span style="color:var(--text3)">'+(h._vreason||'')+'</span></p>'
+      + '<p style="margin:2px 0 0;font-size:9px;color:var(--muted)">'+board+'</p>'
+      + '</div>'
+      + '<span style="font-size:13px;font-weight:700;color:'+(h.netBB>=0?'var(--green)':'var(--red)')+'">'+(h.netBB>=0?'+':'')+h.netBB.toFixed(0)+'</span>'
+      + '</div>';
+  }
+  var html2='<div style="padding:4px 0"><p style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 8px">'+labels[tier]+' \u2014 '+arr.length+' hands</p>'+rows+'</div>';
+  showModal(html2);
 }
 
 function showHandDetail(id) {
@@ -2306,7 +2436,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.35';
+const APP_VERSION = '2.36';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
