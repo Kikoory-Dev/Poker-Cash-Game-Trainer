@@ -1016,25 +1016,27 @@ function renderDashboard() {
   // Sessions
   const sessions = buildSessions(allHands);
   const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
-  const nl25h=hands.filter(x=>x.stakes==='NL25');
-  const nl10h=hands.filter(x=>x.stakes==='NL10');
-  const nl25bb=nl25h.reduce((s,x)=>s+x.netBB,0);
-  const nl10bb=nl10h.reduce((s,x)=>s+x.netBB,0);
-  const nl25bb100=nl25h.length?nl25bb/nl25h.length*100:0;
-  const nl10bb100=nl10h.length?nl10bb/nl10h.length*100:0;
-  const rushH=hands.filter(x=>x.gameType==='Rush&Cash');
-  const regH=hands.filter(x=>x.gameType==='Regular');
+  function bb100of(arr){ return arr.length? arr.reduce(function(s,x){return s+x.netBB;},0)/arr.length*100 : 0; }
+  var stakeRows = [
+    {label:'R&C NL10', hs:hands.filter(function(x){return x.gameType==='Rush&Cash'&&x.stakes==='NL10';})},
+    {label:'R&C NL25', hs:hands.filter(function(x){return x.gameType==='Rush&Cash'&&x.stakes==='NL25';})},
+    {label:'Reg NL10', hs:hands.filter(function(x){return x.gameType==='Regular'&&x.stakes==='NL10';})},
+    {label:'Reg NL25', hs:hands.filter(function(x){return x.gameType==='Regular'&&x.stakes==='NL25';})}
+  ];
   const sbd=document.getElementById('dash-stakes-breakdown');
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:var(--text3);margin:0 0 10px">${sessions.length} session${sessions.length!==1?'s':''} · ${hands.length} hands shown · ${allHands.length} total in DB</p>`
     : '<p style="font-size:13px;color:var(--muted);margin:0">No sessions uploaded yet</p>';
-  if(sbd) sbd.innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      <div class="stat"><p class="stat-label">NL25 · ${nl25h.length} hands</p><p class="stat-value ${nl25bb100>=0?'green':'red'}" style="font-size:15px">${nl25bb100>=0?'+':''}${nl25bb100.toFixed(1)}<span style="font-size:11px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>
-      <div class="stat"><p class="stat-label">NL10 · ${nl10h.length} hands</p><p class="stat-value ${nl10bb100>=0?'green':'red'}" style="font-size:15px">${nl10bb100>=0?'+':''}${nl10bb100.toFixed(1)}<span style="font-size:11px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>
-      <div class="stat"><p class="stat-label">Regular NLH</p><p class="stat-value blue" style="font-size:15px">${regH.length}</p></div>
-      <div class="stat"><p class="stat-label">Rush &amp; Cash</p><p class="stat-value blue" style="font-size:15px">${rushH.length}</p></div>
-    </div>`;
+  if(sbd) sbd.innerHTML = stakeRows.map(function(row){
+    if(row.hs.length===0) return '';
+    var bb = bb100of(row.hs);
+    var col = bb>=0?'var(--green)':'var(--red)';
+    return '<div style="display:flex;align-items:stretch;gap:8px;margin-bottom:8px">'
+      +'<div style="flex:0 0 90px;display:flex;align-items:center;font-size:13px;font-weight:700;color:var(--text)">'+row.label+'</div>'
+      +'<div class="stat" style="flex:1;text-align:center"><p class="stat-label">Hands</p><p class="stat-value blue" style="font-size:18px">'+row.hs.length+'</p></div>'
+      +'<div class="stat" style="flex:1;text-align:center"><p class="stat-label">Win rate</p><p class="stat-value" style="font-size:18px;color:'+col+'">'+(bb>=0?'+':'')+bb.toFixed(1)+'<span style="font-size:10px;font-weight:400;color:var(--muted)"> bb/100</span></p></div>'
+      +'</div>';
+  }).join('') || '<p style="font-size:12px;color:var(--muted)">No hands in this filter</p>';
 }
 
 // ─── UPLOAD ───────────────────────────────────────────────────
@@ -2250,7 +2252,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.31';
+const APP_VERSION = '2.32';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
