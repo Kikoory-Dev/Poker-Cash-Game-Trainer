@@ -119,3 +119,32 @@ new request against this file. Update it when a new rule is established.**
 *Strategy: R&C is the faster path to a meaningful sample (3x hands/hour) and better
 hourly $. Plan: R&C NL10 sprint to 15-20k → prove win rate → R&C NL25 → up. Drop
 Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND proven win rate.*
+
+
+---
+
+# SMARTER-METRIC STANDARD (apply when building any stat or analysis)
+
+**The prompt to enforce (user-authored):**
+> Before building any metric, separate signal from noise: distinguish what I can
+> control (decision quality) from what I can't (card-driven variance). Never present
+> a number that conflates the two. For any stat, ask: "could someone misread this as
+> implying causation that isn't there?" — if yes, redesign it. Ground every
+> classification in Hardin's exact rules (cite the page), assume a TAG villain unless
+> I say otherwise, and split every result by the factors that change the correct play
+> (aggressor vs caller, street, board texture). Show me the fixable leak as its own
+> number, isolated from unavoidable losses. State your confidence and what's a
+> "review" vs a "certain error." Ask me before assuming scope.
+
+**Worked application (postflop tier scorecard, established 16 Jun):**
+- Net BB by tier CONFLATES decision quality with card variance. Do not show it alone.
+- Correct split: bb/100 for CORRECT-action hands vs INCORRECT-action hands per tier.
+  Incorrect plays bleed 7-11x faster per hand — THAT is the fixable leak.
+- Established facts from the data (cite, don't re-derive):
+  - Overall postflop is WINNING: +402 BB / +31.6 bb/100 over 1,273 flopped hands.
+  - 90% of correctly-played weak-hand losses are <=12bb = missed flop, lost only the
+    preflop investment. NOT a postflop leak — it's the entry fee for seeing flops.
+  - The real leak = medium hands played wrong (raised / called 2+ barrels) and the
+    handful of weak hands called down. Isolate these, ignore the variance noise.
+- ~12% of hands reaching turn/river (1,273 / ~10.6k) is NORMAL, especially in R&C
+  (heavy preflop folding; ~70% fold preflop, UTG ~90%). Not a bug.
