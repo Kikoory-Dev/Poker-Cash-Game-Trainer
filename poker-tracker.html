@@ -1541,6 +1541,19 @@ function showHandDetail(id) {
   });
   body += `</div>`;
 
+  // Villain showdown cards
+  if (h.villainShown && h.villainShown.length) {
+    body += `<div class="card" style="margin-bottom:12px"><div class="card-title">Showdown</div>`;
+    h.villainShown.forEach(v => {
+      const label = v.pos ? `Villain (${v.pos})` : 'Villain';
+      body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
+        <span style="font-size:13px;color:var(--text3);font-weight:600">${label}</span>
+        <span style="font-size:16px;font-weight:700">${formatCards(v.cards)}</span>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
   // ── TAG verdict ──
   // Determine verdict tier
   const isShowdown = h.showdown;
@@ -1605,19 +1618,6 @@ function showHandDetail(id) {
         </div>
         <p style="font-size:12px;color:var(--text3);margin:0 0 6px;line-height:1.6">${ex.explain}</p>
         ${ex.rangeNote?`<p style="font-size:11px;color:var(--muted);margin:0;line-height:1.5;font-style:italic">Range note: ${ex.rangeNote}</p>`:''}
-      </div>`;
-    });
-    body += `</div>`;
-  }
-
-  // Villain showdown cards
-  if (h.villainShown && h.villainShown.length) {
-    body += `<div class="card" style="margin-bottom:12px"><div class="card-title">Showdown</div>`;
-    h.villainShown.forEach(v => {
-      const label = v.pos ? `Villain (${v.pos})` : 'Villain';
-      body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
-        <span style="font-size:13px;color:var(--text3);font-weight:600">${label}</span>
-        <span style="font-size:16px;font-weight:700">${formatCards(v.cards)}</span>
       </div>`;
     });
     body += `</div>`;
@@ -2472,7 +2472,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.38';
+const APP_VERSION = '2.39';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
