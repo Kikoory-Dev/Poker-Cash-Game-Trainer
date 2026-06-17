@@ -185,7 +185,7 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       <div class="pos-bar" id="dash-positions"></div>
     </div>
     <div class="card">
-      <div class="card-title">Top TAG violations</div>
+      <div class="card-title">Top preflop violations</div>
       <div id="dash-violations"></div>
     </div>
     <div class="card">
@@ -249,6 +249,15 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="mistakes">Mistakes only</option>
         <option value="losses">Biggest losses</option>
         <option value="played">Played (VPIP)</option>
+      </select>
+      <select id="hands-street" onchange="renderHands()">
+        <option value="all">All streets</option>
+        <option value="preflop">Preflop only</option>
+        <option value="flop">Saw flop</option>
+        <option value="turn">Saw turn</option>
+        <option value="river">Saw river</option>
+        <option value="pf_mistake">Preflop mistakes</option>
+        <option value="postf_mistake">Postflop mistakes</option>
       </select>
       <select id="hands-pos" onchange="renderHands()">
         <option value="all">All positions</option>
@@ -1126,9 +1135,10 @@ function renderDashboard() {
       <span class="pos-bb" style="color:${col}">${d.net>=0?'+':''}${d.net.toFixed(1)}</span>
     </div>`;
   }).join('');
-  // Violations
+  // Violations (PREFLOP only on dashboard)
+  var PREFLOP_FLAGS = {VPIP_TRASH:1, LIMP:1, LIMP_OOP:1, CALL_3BET:1, CALL_4BET:1, FOLD_STRONG_LP:1};
   const counts = {};
-  hands.forEach(h=>h.tagIssues.forEach(i=>{counts[i]=(counts[i]||0)+1}));
+  hands.forEach(h=>h.tagIssues.forEach(i=>{ if(PREFLOP_FLAGS[i]){counts[i]=(counts[i]||0)+1} }));
   const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   document.getElementById('dash-violations').innerHTML = sorted.length
     ? sorted.map(([k,v])=>`
@@ -1269,7 +1279,7 @@ function buildSessions(handsArr) {
 function renderStoredSessions() {
   const el = document.getElementById('stored-sessions');
   if (!allHands.length) { el.innerHTML='<p style="color:var(--muted);font-size:13px">No sessions stored</p>'; return; }
-  const sessions = buildSessions(allHands);
+  const sessions = buildSessions(allHands).slice().reverse();
   const totalMin = sessions.reduce((s,x)=>s+x.durMin,0);
   const totalH = Math.floor(totalMin/60); const totalM = Math.round(totalMin%60);
   el.innerHTML = '<p style="font-size:12px;color:var(--muted);margin:0 0 10px">'+sessions.length+' sessions \u00b7 '+totalH+'h '+totalM+'m total \u00b7 '+allHands.length+' hands</p>' +
@@ -1308,6 +1318,15 @@ function renderHands() {
   if (show==='mistakes') hands = hands.filter(h=>h.tagIssues.length>0);
   if (show==='losses') hands = hands.filter(h=>h.netBB<0).sort((a,b)=>a.netBB-b.netBB);
   if (show==='played') hands = hands.filter(h=>h.vpip);
+  var street = getEl('hands-street');
+  var PF_FLAGS = {VPIP_TRASH:1, LIMP:1, LIMP_OOP:1, CALL_3BET:1, CALL_4BET:1, FOLD_STRONG_LP:1};
+  var POSTF_FLAGS = {MISSED_CBET:1, CALL_WEAK:1};
+  if (street==='preflop') hands = hands.filter(function(h){ return !h.sawFlop; });
+  else if (street==='flop') hands = hands.filter(function(h){ return h.sawFlop; });
+  else if (street==='turn') hands = hands.filter(function(h){ return h.streetReached==='Turn'||h.streetReached==='River'; });
+  else if (street==='river') hands = hands.filter(function(h){ return h.streetReached==='River'; });
+  else if (street==='pf_mistake') hands = hands.filter(function(h){ for(var i=0;i<h.tagIssues.length;i++){ if(PF_FLAGS[h.tagIssues[i]]) return true; } return false; });
+  else if (street==='postf_mistake') hands = hands.filter(function(h){ for(var i=0;i<h.tagIssues.length;i++){ if(POSTF_FLAGS[h.tagIssues[i]]) return true; } return false; });
   filteredHandsCache = hands;
   renderHandsPage();
 }
@@ -2453,7 +2472,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.37';
+const APP_VERSION = '2.38';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
