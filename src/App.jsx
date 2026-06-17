@@ -279,28 +279,35 @@ export default function App(){
     const groups = Object.keys(rangesData[chartCat] || {});
     const groupData = rangesData[chartCat]?.[chartGroup] || {};
     let variants = Object.keys(groupData).filter(k => Array.isArray(groupData[k]));
-    // RFI: show ONE chart — conservative in green, moderate-only hands in blue (no toggle)
-    const isRfiOverlay = groupData.conservative && groupData.moderate;
+    // Unified overlay: any base+wider pair shows ONE chart — base in green, wider-only in blue (no toggle)
+    // Supported pairings: conservative+moderate, default+optional
+    const baseKey = groupData.conservative ? "conservative" : (groupData.default ? "default" : null);
+    const wideKey = groupData.moderate ? "moderate" : (groupData.optional ? "optional" : null);
+    const isOverlay = baseKey && wideKey;
     let activeVariant, handsArr, highlightSet, optionalSet, pct;
-    if (isRfiOverlay) {
+    if (isOverlay) {
       variants = []; // hide the toggle
-      const cons = groupData.conservative || [];
-      const mod = groupData.moderate || [];
-      const consSet = new Set(cons);
-      const modOnly = mod.filter(h => !consSet.has(h));
-      activeVariant = "conservative";
-      handsArr = mod; // full range for stats/hand-list
-      highlightSet = consSet;            // green = conservative core
-      optionalSet = new Set(modOnly);    // blue = moderate-only additions
-      pct = rangePct(mod);
+      const base = groupData[baseKey] || [];
+      const wide = groupData[wideKey] || [];
+      const baseSet = new Set(base);
+      // wider set may be either a superset (conservative/moderate) or an additive list (default/optional)
+      const wideOnly = wide.filter(h => !baseSet.has(h));
+      const fullRange = base.concat(wideOnly);
+      activeVariant = baseKey;
+      handsArr = fullRange;               // full range for stats / hand list
+      highlightSet = baseSet;             // green = base/core
+      optionalSet = new Set(wideOnly);    // blue = wider additions
+      pct = rangePct(fullRange);
     } else {
       activeVariant = variants.includes(chartVariant) ? chartVariant : variants[0];
       handsArr = groupData[activeVariant] || [];
       highlightSet = new Set(handsArr);
-      optionalSet = groupData.optional && activeVariant !== "optional" ? new Set(groupData.optional) : null;
+      optionalSet = null;
       pct = rangePct(handsArr);
     }
     const noteText = groupData.note || null;
+    const overlayBaseLabel = baseKey === "conservative" ? "Conservative" : "Core";
+    const overlayWideLabel = wideKey === "moderate" ? "Moderate (wider)" : "Optional (wider)";
 
     return (
       <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Inter',-apple-system,sans-serif",color:C.text,paddingTop:"env(safe-area-inset-top,0px)"}}>
@@ -351,12 +358,12 @@ export default function App(){
           <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:14,flexWrap:"wrap"}}>
             <div style={{display:"flex",alignItems:"center",gap:6}}>
               <div style={{width:12,height:12,borderRadius:3,background:`${C.accent}40`,border:`1px solid ${C.accent}`}}/>
-              <span style={{fontSize:12,color:C.muted}}>{isRfiOverlay ? "Conservative" : "In range"}</span>
+              <span style={{fontSize:12,color:C.muted}}>{isOverlay ? overlayBaseLabel : "In range"}</span>
             </div>
             {optionalSet && (
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <div style={{width:12,height:12,borderRadius:3,background:"rgba(112,180,212,0.22)",border:"1px solid #70b4d4"}}/>
-                <span style={{fontSize:12,color:C.muted}}>{isRfiOverlay ? "Moderate (wider)" : "Optional"}</span>
+                <span style={{fontSize:12,color:C.muted}}>{isOverlay ? overlayWideLabel : "Optional"}</span>
               </div>
             )}
           </div>
