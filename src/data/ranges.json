@@ -499,87 +499,6 @@
       ]
     }
   },
-  "vs 3-Bet (Value 4-Bet / Call)": {
-    "UTG vs 3-bet": {
-      "default": [
-        "QQ",
-        "KK",
-        "AA",
-        "AKs"
-      ],
-      "optional": [
-        "JJ",
-        "AKo",
-        "AQs"
-      ]
-    },
-    "MP vs 3-bet": {
-      "default": [
-        "QQ",
-        "KK",
-        "AA",
-        "AKs"
-      ],
-      "optional": [
-        "JJ",
-        "AKo",
-        "AQs"
-      ]
-    },
-    "CO vs 3-bet": {
-      "default": [
-        "JJ",
-        "QQ",
-        "KK",
-        "AA",
-        "AQs",
-        "AKs"
-      ],
-      "optional": [
-        "AJs",
-        "ATs",
-        "KQs",
-        "AJo",
-        "AKo"
-      ]
-    },
-    "BTN vs 3-bet": {
-      "default": [
-        "JJ",
-        "QQ",
-        "KK",
-        "AA",
-        "AQs",
-        "AKs"
-      ],
-      "optional": [
-        "AJs",
-        "ATs",
-        "KQs",
-        "AJo",
-        "AKo"
-      ]
-    },
-    "SB vs BTN 3-bet": {
-      "default": [
-        "TT",
-        "JJ",
-        "QQ",
-        "KK",
-        "AA",
-        "AJs",
-        "AQs",
-        "AKs",
-        "AJo",
-        "AQo",
-        "AKo"
-      ],
-      "optional": [
-        "KQs",
-        "ATs"
-      ]
-    }
-  },
   "3-Bet Bluff": {
     "All positions (semi-bluff 3-bets)": {
       "default": [
@@ -839,8 +758,7 @@
         "76s",
         "65s",
         "54s",
-        "AQs",
-        "AJs"
+        "AQs"
       ],
       "optional": [
         "97s",
@@ -1000,6 +918,87 @@
         "88"
       ],
       "note": "Over-calling from the blinds is a TRAP \u2014 you are OUT OF POSITION all hand and close no action. Even great multiway hands like suited connectors bleed money OOP. Only consider tiny pairs for set value with deep stacks; default is FOLD. The same hands are profitable on the BTN, not from the blinds."
+    }
+  },
+  "Facing a 3-Bet (Hero opened) \u2014 4-bet/call": {
+    "UTG vs 3-bet": {
+      "default": [
+        "QQ",
+        "KK",
+        "AA",
+        "AKs"
+      ],
+      "optional": [
+        "JJ",
+        "AKo",
+        "AQs"
+      ]
+    },
+    "MP vs 3-bet": {
+      "default": [
+        "QQ",
+        "KK",
+        "AA",
+        "AKs"
+      ],
+      "optional": [
+        "JJ",
+        "AKo",
+        "AQs"
+      ]
+    },
+    "CO vs 3-bet": {
+      "default": [
+        "JJ",
+        "QQ",
+        "KK",
+        "AA",
+        "AQs",
+        "AKs"
+      ],
+      "optional": [
+        "AJs",
+        "ATs",
+        "KQs",
+        "AJo",
+        "AKo"
+      ]
+    },
+    "BTN vs 3-bet": {
+      "default": [
+        "JJ",
+        "QQ",
+        "KK",
+        "AA",
+        "AQs",
+        "AKs"
+      ],
+      "optional": [
+        "AJs",
+        "ATs",
+        "KQs",
+        "AJo",
+        "AKo"
+      ]
+    },
+    "SB vs BTN 3-bet": {
+      "default": [
+        "TT",
+        "JJ",
+        "QQ",
+        "KK",
+        "AA",
+        "AJs",
+        "AQs",
+        "AKs",
+        "AJo",
+        "AQo",
+        "AKo"
+      ],
+      "optional": [
+        "KQs",
+        "ATs"
+      ]
     }
   }
 }
