@@ -278,14 +278,29 @@ export default function App(){
     const categories = Object.keys(rangesData);
     const groups = Object.keys(rangesData[chartCat] || {});
     const groupData = rangesData[chartCat]?.[chartGroup] || {};
-    const variants = Object.keys(groupData).filter(k => Array.isArray(groupData[k]));
-    const activeVariant = variants.includes(chartVariant) ? chartVariant : variants[0];
-    const handsArr = groupData[activeVariant] || [];
-    const highlightSet = new Set(handsArr);
-    // optional set (for vs 3-bet etc.)
-    const optionalSet = groupData.optional && activeVariant !== "optional" ? new Set(groupData.optional) : null;
+    let variants = Object.keys(groupData).filter(k => Array.isArray(groupData[k]));
+    // RFI: show ONE chart — conservative in green, moderate-only hands in blue (no toggle)
+    const isRfiOverlay = groupData.conservative && groupData.moderate;
+    let activeVariant, handsArr, highlightSet, optionalSet, pct;
+    if (isRfiOverlay) {
+      variants = []; // hide the toggle
+      const cons = groupData.conservative || [];
+      const mod = groupData.moderate || [];
+      const consSet = new Set(cons);
+      const modOnly = mod.filter(h => !consSet.has(h));
+      activeVariant = "conservative";
+      handsArr = mod; // full range for stats/hand-list
+      highlightSet = consSet;            // green = conservative core
+      optionalSet = new Set(modOnly);    // blue = moderate-only additions
+      pct = rangePct(mod);
+    } else {
+      activeVariant = variants.includes(chartVariant) ? chartVariant : variants[0];
+      handsArr = groupData[activeVariant] || [];
+      highlightSet = new Set(handsArr);
+      optionalSet = groupData.optional && activeVariant !== "optional" ? new Set(groupData.optional) : null;
+      pct = rangePct(handsArr);
+    }
     const noteText = groupData.note || null;
-    const pct = rangePct(handsArr);
 
     return (
       <div style={{minHeight:"100vh",background:C.bg,fontFamily:"'Inter',-apple-system,sans-serif",color:C.text,paddingTop:"env(safe-area-inset-top,0px)"}}>
@@ -336,12 +351,12 @@ export default function App(){
           <div style={{display:"flex",gap:16,justifyContent:"center",marginTop:14,flexWrap:"wrap"}}>
             <div style={{display:"flex",alignItems:"center",gap:6}}>
               <div style={{width:12,height:12,borderRadius:3,background:`${C.accent}40`,border:`1px solid ${C.accent}`}}/>
-              <span style={{fontSize:12,color:C.muted}}>In range</span>
+              <span style={{fontSize:12,color:C.muted}}>{isRfiOverlay ? "Conservative" : "In range"}</span>
             </div>
             {optionalSet && (
               <div style={{display:"flex",alignItems:"center",gap:6}}>
                 <div style={{width:12,height:12,borderRadius:3,background:"rgba(112,180,212,0.22)",border:"1px solid #70b4d4"}}/>
-                <span style={{fontSize:12,color:C.muted}}>Optional</span>
+                <span style={{fontSize:12,color:C.muted}}>{isRfiOverlay ? "Moderate (wider)" : "Optional"}</span>
               </div>
             )}
           </div>
