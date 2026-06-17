@@ -1169,34 +1169,47 @@ function renderDashboard() {
     var flopped = hands.filter(function(h){ return h.sawFlop && h.holeCards && h.boardFlop; });
     if(flopped.length < 20){ pf.innerHTML = '<p style="font-size:12px;color:var(--muted)">Need 20+ flops in this filter ('+flopped.length+' so far)</p>'; return; }
     var tiers = {strong:[], medium:[], draw:[], weak:[]};
+    var totBB=0;
     for(var i=0;i<flopped.length;i++){
       var h=flopped[i]; var ft=pfFinalTier(h); var tier=ft[1]; if(!tiers[tier]) continue;
       var v=pfVerdict(h,tier,ft[0]); h._tier=tier; h._verdict=v[0]; h._vreason=v[1]; h._desc=ft[0];
-      tiers[tier].push(h);
+      tiers[tier].push(h); totBB+=h.netBB;
     }
     window._pfTiers = tiers;
+    var overall100 = (totBB/flopped.length*100);
+    var ovCol = overall100>=0?'var(--green)':'var(--red)';
+    var out = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:10px">'
+      + '<p style="margin:0;font-size:11px;color:var(--text2)">Overall postflop ('+flopped.length+' hands that saw a flop)</p>'
+      + '<p style="margin:2px 0 0;font-size:16px;font-weight:700;color:'+ovCol+'">'+(overall100>=0?'+':'')+overall100.toFixed(1)+'<span style="font-size:10px;color:var(--muted);font-weight:400"> bb/100  \u00b7  '+(totBB>=0?'+':'')+totBB.toFixed(0)+' BB</span></p></div>';
+
     var order=[['strong','Strong value'],['medium','Medium'],['draw','Draws'],['weak','Weak']];
-    var out='';
     for(var t=0;t<order.length;t++){
       var key=order[t][0], label=order[t][1], arr=tiers[key];
       if(!arr.length) continue;
-      var ok=0, wrong=0;
-      for(var a=0;a<arr.length;a++){ var vd=arr[a]._verdict; if(vd==='OK')ok++; else wrong++; }
-      var pct=Math.round(ok/arr.length*100);
-      var nbb=0; for(var b=0;b<arr.length;b++) nbb+=arr[b].netBB;
+      var okH=[], wrH=[];
+      for(var a=0;a<arr.length;a++){ if(arr[a]._verdict==='OK') okH.push(arr[a]); else wrH.push(arr[a]); }
+      var pct=Math.round(okH.length/arr.length*100);
+      var okBB=0; for(var o=0;o<okH.length;o++) okBB+=okH[o].netBB;
+      var wrBB=0; for(var w=0;w<wrH.length;w++) wrBB+=wrH[w].netBB;
+      var ok100 = okH.length? okBB/okH.length*100 : 0;
+      var wr100 = wrH.length? wrBB/wrH.length*100 : 0;
       var pctCol = pct>=85?'var(--green)':(pct>=70?'var(--amber)':'var(--red)');
-      var bbCol = nbb>=0?'var(--green)':'var(--red)';
-      out += '<div style="display:flex;align-items:stretch;gap:8px;margin-bottom:8px">'
-        + '<div onclick="showTierHands(\''+key+'\')" style="flex:1;cursor:pointer;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px">'
-        + '<p style="font-size:11px;color:var(--text2);margin:0 0 2px;font-weight:700">'+label+' <span style="color:var(--muted);font-weight:400">'+arr.length+'h</span></p>'
-        + '<p style="margin:0;font-size:15px;font-weight:700;color:'+pctCol+'">'+pct+'%<span style="font-size:10px;color:var(--muted);font-weight:400"> correct</span></p>'
+      function bbcol(x){ return x>=0?'var(--green)':'var(--red)'; }
+      out += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:8px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">'
+        + '<span onclick="showTierHands(\''+key+'\')" style="cursor:pointer;font-size:12px;font-weight:700;color:var(--text)">'+label+' <span style="color:var(--muted);font-weight:400">'+arr.length+' hands</span></span>'
+        + '<span style="font-size:14px;font-weight:700;color:'+pctCol+'">'+pct+'%<span style="font-size:9px;color:var(--muted);font-weight:400"> correct</span></span>'
         + '</div>'
-        + '<div onclick="showTierHands(\''+key+'\')" style="flex:0 0 88px;cursor:pointer;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;text-align:right">'
-        + '<p style="font-size:11px;color:var(--text2);margin:0 0 2px">Net</p>'
-        + '<p style="margin:0;font-size:15px;font-weight:700;color:'+bbCol+'">'+(nbb>=0?'+':'')+nbb.toFixed(0)+'<span style="font-size:9px;color:var(--muted);font-weight:400"> BB</span></p>'
+        + '<div style="display:flex;gap:8px">'
+        + '<div onclick="showTierHands(\''+key+'\',\'ok\')" style="flex:1;cursor:pointer;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 8px">'
+        + '<p style="margin:0;font-size:9px;color:var(--muted)">Correct play ('+okH.length+')</p>'
+        + '<p style="margin:1px 0 0;font-size:13px;font-weight:700;color:'+bbcol(ok100)+'">'+(ok100>=0?'+':'')+ok100.toFixed(0)+'<span style="font-size:8px;color:var(--muted);font-weight:400"> bb/100</span></p></div>'
+        + '<div onclick="showTierHands(\''+key+'\',\'wrong\')" style="flex:1;cursor:pointer;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:6px 8px">'
+        + '<p style="margin:0;font-size:9px;color:var(--muted)">Mistakes ('+wrH.length+')</p>'
+        + '<p style="margin:1px 0 0;font-size:13px;font-weight:700;color:'+(wrH.length?bbcol(wr100):'var(--muted)')+'">'+(wrH.length?((wr100>=0?'+':'')+wr100.toFixed(0)):'\u2014')+'<span style="font-size:8px;color:var(--muted);font-weight:400"> bb/100</span></p></div>'
         + '</div></div>';
     }
-    out += '<p style="font-size:10px;color:var(--muted);margin:8px 0 0;line-height:1.5">Action-correctness vs a TAG villain (Hardin rules). Strong=bet for value; Medium=pot-control/fold to multiple bets; Weak=check/fold or c-bet 1-2 as aggressor. Tap a tier to review hands. Heuristic \u2014 some flags are \u201creview,\u201d not certain errors.</p>';
+    out += '<p style="font-size:10px;color:var(--muted);margin:8px 0 0;line-height:1.5">vs a TAG villain (Hardin rules). The <b>Mistakes</b> bb/100 is your fixable leak \u2014 it bleeds far faster than correct play. Correct-play losses on weak hands are mostly just the preflop money on missed flops (unavoidable). Tap any box to review those hands. Heuristic \u2014 some flags are \u201creview,\u201d not certain errors.</p>';
     pf.innerHTML = out;
   })();
 }
@@ -1375,10 +1388,13 @@ function renderAction(player, action, seatPositions, raisesBefore) {
     +'</div>';
 }
 
-function showTierHands(tier){
+function showTierHands(tier, filter){
   var arr = (window._pfTiers && window._pfTiers[tier]) ? window._pfTiers[tier].slice() : [];
+  if(filter==='ok') arr = arr.filter(function(h){ return h._verdict==='OK'; });
+  else if(filter==='wrong') arr = arr.filter(function(h){ return h._verdict!=='OK'; });
   arr.sort(function(a,b){ return a.netBB-b.netBB; });
   var labels={strong:'Strong value',medium:'Medium',draw:'Draws',weak:'Weak'};
+  var sub = filter==='ok'?' \u00b7 correct plays':(filter==='wrong'?' \u00b7 mistakes':'');
   var rows='';
   for(var i=0;i<arr.length;i++){
     var h=arr[i];
@@ -1393,7 +1409,8 @@ function showTierHands(tier){
       + '<span style="font-size:13px;font-weight:700;color:'+(h.netBB>=0?'var(--green)':'var(--red)')+'">'+(h.netBB>=0?'+':'')+h.netBB.toFixed(0)+'</span>'
       + '</div>';
   }
-  var html2='<div style="padding:4px 0"><p style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 8px">'+labels[tier]+' \u2014 '+arr.length+' hands</p>'+rows+'</div>';
+  if(!rows) rows='<p style="font-size:12px;color:var(--muted);padding:10px">No hands</p>';
+  var html2='<div style="padding:4px 0"><p style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 8px">'+labels[tier]+sub+' \u2014 '+arr.length+' hands</p>'+rows+'</div>';
   showModal(html2);
 }
 
@@ -2436,7 +2453,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.36';
+const APP_VERSION = '2.37';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
