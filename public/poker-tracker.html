@@ -1413,7 +1413,42 @@ function showTierHands(tier, filter){
   else if(filter==='wrong') arr = arr.filter(function(h){ return h._verdict!=='OK'; });
   arr.sort(function(a,b){ return a.netBB-b.netBB; });
   var labels={strong:'Strong value',medium:'Medium',draw:'Draws',weak:'Weak'};
-  var sub = filter==='ok'?' \u00b7 correct plays':(filter==='wrong'?' \u00b7 mistakes':'');
+  var titleStr = labels[tier] + (filter==='ok'?' \u00b7 correct plays':(filter==='wrong'?' \u00b7 mistakes':'')) + ' (' + arr.length + ' hands)';
+
+  // ── Synthesis header: group mistakes by pattern with the Hardin fix ──
+  var synth='';
+  if(filter==='wrong' && arr.length){
+    var patterns={};
+    for(var p=0;p<arr.length;p++){
+      var rsn = arr[p]._vreason || 'other';
+      if(!patterns[rsn]) patterns[rsn]={count:0, bb:0};
+      patterns[rsn].count++; patterns[rsn].bb+=arr[p].netBB;
+    }
+    var FIX = {
+      'Medium hand raised \u2014 Hardin: pot-control, do not build the pot':'FIX: With a medium hand, check and pot-control. Do not raise \u2014 you only get called by better and fold out worse.',
+      'Medium called 2+ barrels vs TAG \u2014 fold to multiple bets':'FIX: When a tight player fires 2+ streets, your medium hand is beaten. Get to showdown cheap or fold \u2014 do not call multiple barrels.',
+      'Medium barreled multiple streets \u2014 vs TAG only better calls':'FIX: Stop barreling medium hands vs a TAG \u2014 only better hands continue. Check for showdown value instead.',
+      'Weak hand called to showdown & lost \u2014 check/fold weak hands':'FIX: Weak hands check/fold to aggression. No showdown value = no call.',
+      'Called a bet/raise with a whiff \u2014 give up as aggressor':'FIX: As the aggressor with air, give up when raised/called. Do not pay off with no pair, no draw.',
+      '3rd-barrel bluff into a caller \u2014 Hardin: give up, micro players call a third':'FIX: At micro, if they called two streets they call a third. Give up rather than fire a 3rd-barrel bluff.',
+      'Strong value checked down \u2014 extract value (bet/raise)':'FIX: Bet your strong hands. Checking down strong value leaves money on the table.'
+    };
+    var pkeys = Object.keys(patterns).sort(function(a,b){ return patterns[b].count-patterns[a].count; });
+    synth = '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
+      + '<p style="margin:0 0 8px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Your leak patterns here</p>';
+    for(var k=0;k<pkeys.length;k++){
+      var rk=pkeys[k]; var pd=patterns[rk]; var fix=FIX[rk]||'';
+      synth += '<div style="margin-bottom:'+(k<pkeys.length-1?'10px':'0')+';padding-bottom:'+(k<pkeys.length-1?'10px':'0')+';'+(k<pkeys.length-1?'border-bottom:1px solid var(--border)':'')+'">'
+        + '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">'
+        + '<span style="font-size:12px;font-weight:700;color:var(--text)">'+rk+'</span>'
+        + '<span style="font-size:11px;font-weight:700;color:var(--red);white-space:nowrap">'+pd.count+'x \u00b7 '+pd.bb.toFixed(0)+' BB</span>'
+        + '</div>'
+        + (fix?'<p style="margin:4px 0 0;font-size:11px;color:var(--green);line-height:1.5">'+fix+'</p>':'')
+        + '</div>';
+    }
+    synth += '</div>';
+  }
+
   var rows='';
   for(var i=0;i<arr.length;i++){
     var h=arr[i];
@@ -1429,8 +1464,8 @@ function showTierHands(tier, filter){
       + '</div>';
   }
   if(!rows) rows='<p style="font-size:12px;color:var(--muted);padding:10px">No hands</p>';
-  var html2='<div style="padding:4px 0"><p style="font-size:14px;font-weight:700;color:var(--text);margin:0 0 8px">'+labels[tier]+sub+' \u2014 '+arr.length+' hands</p>'+rows+'</div>';
-  showModal(html2);
+  var bodyHtml = synth + rows;
+  showModal(titleStr, bodyHtml);
 }
 
 function showHandDetail(id) {
@@ -2472,7 +2507,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.39';
+const APP_VERSION = '2.40';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
