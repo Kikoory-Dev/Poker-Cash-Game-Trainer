@@ -728,5 +728,278 @@
         "98o"
       ]
     }
+  },
+  "Hero 3-Bet (vs an open)": {
+    "vs EP/MP open": {
+      "default": [
+        "QQ",
+        "KK",
+        "AA",
+        "AKs",
+        "AKo"
+      ],
+      "optional": [
+        "JJ",
+        "AQs"
+      ],
+      "note": "Vs a tight early/middle-position open, 3-bet a tight value range (QQ+/AK). Add a few suited bluffs (A5s-A4s) only vs opponents who fold too much. Tighter opener = tighter 3-bet."
+    },
+    "vs CO open": {
+      "default": [
+        "JJ",
+        "QQ",
+        "KK",
+        "AA",
+        "AKs",
+        "AKo",
+        "AQs"
+      ],
+      "optional": [
+        "TT",
+        "A5s",
+        "A4s",
+        "KQs"
+      ],
+      "note": "Vs a wider CO steal, widen your value 3-bets (JJ+/AQs+/AK) and add suited-ace bluffs (A5s-A4s). The wider they open, the more you 3-bet for value and as a bluff."
+    },
+    "vs BTN open": {
+      "default": [
+        "TT",
+        "JJ",
+        "QQ",
+        "KK",
+        "AA",
+        "AKs",
+        "AKo",
+        "AQs",
+        "AQo"
+      ],
+      "optional": [
+        "A5s",
+        "A4s",
+        "A3s",
+        "A2s",
+        "KQs",
+        "KJs",
+        "99"
+      ],
+      "note": "Vs a wide BTN steal, 3-bet a wide value range (TT+/AQ+/AK) plus suited-ace and suited-broadway bluffs. From the blinds especially, prefer 3-bet-or-fold over flatting OOP."
+    },
+    "BB vs BTN steal": {
+      "default": [
+        "TT",
+        "JJ",
+        "QQ",
+        "KK",
+        "AA",
+        "AKs",
+        "AKo",
+        "AQs",
+        "AQo"
+      ],
+      "optional": [
+        "A5s",
+        "A4s",
+        "A3s",
+        "A2s",
+        "KJs",
+        "KQs",
+        "99",
+        "T9s",
+        "98s",
+        "76s"
+      ],
+      "note": "BB squeeze/3-bet vs a BTN steal: value (TT+/AQ+/AK) plus suited bluffs. Note you ALSO have a large flat-call range here (suited broadways, connectors, small pairs) \u2014 this chart shows only the 3-bet portion."
+    }
+  },
+  "Cold Call (vs an open, IP)": {
+    "BTN vs CO open": {
+      "default": [
+        "22",
+        "33",
+        "44",
+        "55",
+        "66",
+        "77",
+        "88",
+        "99",
+        "TT",
+        "JJ",
+        "AJs",
+        "ATs",
+        "KQs",
+        "KJs",
+        "KTs",
+        "QJs",
+        "QTs",
+        "JTs",
+        "T9s",
+        "98s",
+        "87s",
+        "76s",
+        "65s",
+        "54s",
+        "AQs",
+        "AJs"
+      ],
+      "optional": [
+        "97s",
+        "86s",
+        "T8s",
+        "J9s",
+        "A9s",
+        "A8s",
+        "A5s",
+        "A4s",
+        "KQo",
+        "AQo"
+      ],
+      "note": "On the BTN vs a CO steal, cold-call a wide range of suited/connected hands and pairs in position (gap concept). 3-bet your premiums instead of calling; flat the speculative hands that play well postflop with position."
+    },
+    "BTN vs MP open": {
+      "default": [
+        "22",
+        "33",
+        "44",
+        "55",
+        "66",
+        "77",
+        "88",
+        "99",
+        "TT",
+        "JJ",
+        "ATs",
+        "AJs",
+        "AQs",
+        "KJs",
+        "KQs",
+        "KTs",
+        "QJs",
+        "QTs",
+        "JTs",
+        "T9s",
+        "98s",
+        "87s"
+      ],
+      "optional": [
+        "76s",
+        "65s",
+        "J9s",
+        "A9s",
+        "KJo"
+      ],
+      "note": "Vs a tighter MP open, cold-call a tighter range in position \u2014 pairs for set-mining and the better suited broadways/connectors. The gap concept: call hands that flop well rather than 3-betting non-premiums."
+    },
+    "CO vs MP open": {
+      "default": [
+        "22",
+        "33",
+        "44",
+        "55",
+        "66",
+        "77",
+        "88",
+        "99",
+        "TT",
+        "ATs",
+        "AJs",
+        "KJs",
+        "KQs",
+        "QJs",
+        "JTs",
+        "T9s",
+        "98s",
+        "87s"
+      ],
+      "optional": [
+        "76s",
+        "KTs",
+        "QTs",
+        "A9s"
+      ],
+      "note": "In the CO vs an MP open, cold-call pairs and strong suited hands. You have position on the blinds but players remain behind, so keep it disciplined \u2014 fold the weakest speculative hands, 3-bet your value."
+    }
+  },
+  "Over Call (multiway)": {
+    "BTN behind raise + caller": {
+      "default": [
+        "22",
+        "33",
+        "44",
+        "55",
+        "66",
+        "77",
+        "88",
+        "99",
+        "TT",
+        "JJ",
+        "ATs",
+        "AJs",
+        "AQs",
+        "KQs",
+        "KJs",
+        "QJs",
+        "JTs",
+        "T9s",
+        "98s",
+        "87s",
+        "76s",
+        "65s",
+        "54s"
+      ],
+      "optional": [
+        "97s",
+        "86s",
+        "64s",
+        "A5s",
+        "A4s",
+        "KTs",
+        "QTs"
+      ],
+      "note": "Over-calling in a multiway pot on the BTN: small pairs (set-mining with great implied odds) and suited connectors/one-gappers (which thrive multiway). Position + dead money make these very profitable. Do NOT 3-bet these \u2014 it kills the multiway implied odds."
+    },
+    "IP behind raise + caller": {
+      "default": [
+        "22",
+        "33",
+        "44",
+        "55",
+        "66",
+        "77",
+        "88",
+        "99",
+        "TT",
+        "ATs",
+        "AJs",
+        "AQs",
+        "KQs",
+        "QJs",
+        "JTs",
+        "T9s",
+        "98s",
+        "87s",
+        "76s"
+      ],
+      "optional": [
+        "65s",
+        "54s",
+        "KJs",
+        "QTs"
+      ],
+      "note": "In position over-calling a multiway pot: pairs and suited connectors are ideal \u2014 they make disguised, strong hands that get paid by multiple opponents. Avoid offsuit and dominated hands; you want suited/connected equity."
+    },
+    "Blinds (caution!)": {
+      "default": [],
+      "optional": [
+        "22",
+        "33",
+        "44",
+        "55",
+        "66",
+        "77",
+        "88"
+      ],
+      "note": "Over-calling from the blinds is a TRAP \u2014 you are OUT OF POSITION all hand and close no action. Even great multiway hands like suited connectors bleed money OOP. Only consider tiny pairs for set value with deep stacks; default is FOLD. The same hands are profitable on the BTN, not from the blinds."
+    }
   }
 }
