@@ -133,6 +133,11 @@ const SCORE_COLOR=["#6b7d62","#d96060","#d4a847","#a8d4b0","#6db87a"];
 
 function weightedSample(questions,progress,n){
   const pool=questions.map(q=>({q,w:getWeight(progress[q.id])}));
+  // Pre-shuffle (Fisher-Yates) so equal-weight cards don't get drawn in source order.
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    const tmp=pool[i];pool[i]=pool[j];pool[j]=tmp;
+  }
   const target=Math.min(n,pool.length);
   const result=[];
   for(let i=0;i<target;i++){
