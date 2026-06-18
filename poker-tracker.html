@@ -1991,6 +1991,29 @@ function showStartingDetail(notation) {
 }
 
 // ─── ANALYSIS ─────────────────────────────────────────────────
+
+function pfFlagMeaning(){ return {VPIP_TRASH:'Played a hand outside your opening range',LIMP:'Open-limped instead of raising or folding',LIMP_OOP:'Limped out of position',CALL_3BET:'Flat-called a 3-bet (should 4-bet or fold)',CALL_4BET:'Called a 4-bet too light',FOLD_STRONG_LP:'Folded a strong hand in late position'}; }
+function postfFlagMeaning(){ return {MISSED_CBET:'Checked when a c-bet was the right play',CALL_WEAK:'Called postflop with a weak hand (should fold)'}; }
+function buildFlagCardHtml(flagMap, title, counts, bbMap){
+  var keys=[]; for(var k in flagMap){ if(counts[k]) keys.push(k); }
+  keys.sort(function(a,b){ return counts[b]-counts[a]; });
+  if(!keys.length) return '<div class="card"><div class="card-title">'+title+'</div><p style="font-size:12px;color:var(--muted);margin:0">No flags in this filter — clean.</p></div>';
+  var rows=''; var total=0; var totbb=0;
+  for(var i=0;i<keys.length;i++){
+    var key=keys[i]; var c=counts[key]; var bb=bbMap[key]||0; total+=c; totbb+=bb;
+    var bbcol=bb>=0?'var(--green)':'var(--red)';
+    var sign=bb>=0?'+':'';
+    rows+='<div style="padding:9px 0;border-bottom:1px solid var(--border)">'
+      +'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">'
+      +'<span style="font-size:12px;font-weight:700;color:var(--text)">'+key.split('_').join(' ')+'</span>'
+      +'<span style="font-size:12px;font-weight:700;white-space:nowrap"><span style="color:var(--amber)">'+c+'x</span> <span style="color:'+bbcol+'">'+sign+bb.toFixed(0)+' BB</span></span>'
+      +'</div>'
+      +'<p style="margin:3px 0 0;font-size:11px;color:var(--text3);line-height:1.5">'+flagMap[key]+'</p>'
+      +'</div>';
+  }
+  var tsign=totbb>=0?'+':'';
+  return '<div class="card"><div class="card-title">'+title+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+total+' flags · '+tsign+totbb.toFixed(0)+' BB</span></div>'+rows+'</div>';
+}
 function renderAnalysis() {
   const tf = getEl('analysis-filter');
   const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date');
@@ -2036,9 +2059,12 @@ function renderAnalysis() {
   const epNet=epHands.reduce((s,h)=>s+h.netBB,0);
   const mpNet=mpHands.reduce((s,h)=>s+h.netBB,0);
 
-  // Issues summary
+  // Issues summary (count + net BB per flag)
   const issueCounts={};
-  hands.forEach(h=>h.tagIssues.forEach(i=>{issueCounts[i]=(issueCounts[i]||0)+1}));
+  const issueBB={};
+  hands.forEach(h=>h.tagIssues.forEach(i=>{issueCounts[i]=(issueCounts[i]||0)+1; issueBB[i]=(issueBB[i]||0)+h.netBB;}));
+  const preflopCard=buildFlagCardHtml(pfFlagMeaning(),'Preflop violations',issueCounts,issueBB);
+  const postflopCard=buildFlagCardHtml(postfFlagMeaning(),'Postflop mistakes',issueCounts,issueBB);
 
   const colNet = net>=0?'var(--green)':'var(--red)';
   const colBB100 = bb100>=0?'var(--green)':'var(--red)';
@@ -2071,6 +2097,9 @@ function renderAnalysis() {
       </div>
     </div>
   </div>
+
+  ${preflopCard}
+  ${postflopCard}
 
   <div class="card">
     <div class="card-title">Position breakdown</div>
@@ -2525,7 +2554,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.42';
+const APP_VERSION = '2.43';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
