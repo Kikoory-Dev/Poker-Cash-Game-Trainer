@@ -243,9 +243,14 @@ export default function App(){
   function startReviews(){
     if(!reviewDue.length)return;
     setReviewMode(true);
-    // review ALL due cards (WaniKani does the full due pile), ordered weakest-stage first
-    const ordered=[...reviewDue].sort((a,b)=>getStage(progress[a.id])-getStage(progress[b.id]));
-    setQueue(ordered);
+    // review ALL due cards (WaniKani does the full due pile), in RANDOM order
+    // (Fisher-Yates shuffle so reviews aren't grouped by position/category/stage)
+    const shuffled=[...reviewDue];
+    for(let i=shuffled.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      const tmp=shuffled[i]; shuffled[i]=shuffled[j]; shuffled[j]=tmp;
+    }
+    setQueue(shuffled);
     setIdx(0);setSelected(null);setRevealed(false);
     setSession({correct:0,wrong:0});setStreak(0);
     setScreen("quiz");
