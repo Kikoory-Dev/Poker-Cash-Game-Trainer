@@ -198,6 +198,10 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
       <div id="dash-postflop"></div>
     </div>
     <div class="card">
+      <div class="card-title">\u26a0\ufe0f Commitment leak \u2014 stacking off behind</div>
+      <div id="dash-commit"></div>
+    </div>
+    <div class="card">
       <div class="card-title" style="cursor:pointer" onclick="var b=document.getElementById('label-body');b.style.display=(b.style.display==='none'?'block':'none');">GGPoker color labels <span style="font-size:10px;color:var(--muted);font-weight:400">(tap to expand)</span></div>
       <div id="label-body" style="display:none">
         <p style="font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.5">Framework for labelling opponents via GG color tags. <b>Currently using the 4 ACTIVE colors</b>; the rest are reserve for when you scale up. Mnemonic: warm = wary, green = money/go, p-colors = pending/premium. Labels are hypotheses &mdash; keep using Pink until you have a real sample, and re-color when players surprise you.</p>
@@ -1231,6 +1235,26 @@ function renderDashboard() {
     out += '<p style="font-size:10px;color:var(--muted);margin:8px 0 0;line-height:1.5">vs a TAG villain (Hardin rules). The <b>Mistakes</b> bb/100 is your fixable leak \u2014 it bleeds far faster than correct play. Correct-play losses on weak hands are mostly just the preflop money on missed flops (unavoidable). Tap any box to review those hands. Heuristic \u2014 some flags are \u201creview,\u201d not certain errors.</p>';
     pf.innerHTML = out;
   })();
+
+  // ─── COMMITMENT LEAK (stacking off behind) ───
+  (function(){
+    var el = document.getElementById('dash-commit');
+    if(!el) return;
+    // Big committed losses that reached showdown with villain shown a beating hand
+    var leaks = hands.filter(function(h){
+      return h.showdown && h.netBB <= -40 && h.villainShown && h.villainShown.length;
+    });
+    if(!leaks.length){ el.innerHTML='<p style="font-size:12px;color:var(--muted);margin:0">No big committed losses in this filter.</p>'; return; }
+    leaks.sort(function(a,b){ return a.netBB-b.netBB; });
+    var totalBB=0; for(var i=0;i<leaks.length;i++) totalBB+=leaks[i].netBB;
+    window._commitLeaks = leaks;
+    var out = '<p style="font-size:11px;color:var(--text2);margin:0 0 8px;line-height:1.5">'
+      + leaks.length + ' big pots where you committed 40+ BB and lost at showdown. <b style="color:var(--red)">' + totalBB.toFixed(0) + ' BB</b>. '
+      + 'These are your most expensive leak: getting strong-but-second-best hands all-in vs a range that beats you. '
+      + 'Before stacking off, ask: <i>does my hand beat their VALUE range, or just look strong?</i></p>';
+    out += '<div onclick="showCommitLeaks()" style="cursor:pointer;text-align:center;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:9px;font-size:12px;font-weight:700;color:var(--text)">Review all ' + leaks.length + ' \u2192</div>';
+    el.innerHTML = out;
+  })();
 }
 
 // ─── UPLOAD ───────────────────────────────────────────────────
@@ -1414,6 +1438,26 @@ function renderAction(player, action, seatPositions, raisesBefore) {
     +'<span style="font-weight:600;color:'+col+';min-width:90px;font-size:12px">'+name+'</span>'
     +'<span>'+verb+'</span>'
     +'</div>';
+}
+
+function showCommitLeaks(){
+  var arr = (window._commitLeaks||[]).slice();
+  var rows='';
+  for(var i=0;i<arr.length;i++){
+    var h=arr[i];
+    var vill = h.villainShown && h.villainShown.length ? h.villainShown.map(function(v){return v.cards;}).join(', ') : '';
+    var board=(h.boardFlop||'')+(h.boardTurn?' '+h.boardTurn:'')+(h.boardRiver?' '+h.boardRiver:'');
+    rows += '<div onclick="showHandDetail(\''+h.id+'\')" style="cursor:pointer;padding:9px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">'
+      + '<div style="min-width:0;flex:1">'
+      + '<p style="margin:0;font-size:13px;font-weight:700;color:var(--text)">'+h.handNotation+' <span style="font-size:10px;color:var(--muted);font-weight:400">vs '+vill+'</span></p>'
+      + '<p style="margin:2px 0 0;font-size:9px;color:var(--muted)">'+board+'</p>'
+      + '</div>'
+      + '<span style="font-size:13px;font-weight:700;color:var(--red)">'+h.netBB.toFixed(0)+'</span>'
+      + '</div>';
+  }
+  window._modalReturn = null;
+  var bodyHtml='<div style="padding:4px 0"><p style="font-size:13px;color:var(--text2);margin:0 0 10px;line-height:1.5">Each of these is a big pot you committed and lost at showdown. Tap any hand to study the line. The question to internalize: <i>before getting it in, did my hand beat their value range?</i></p>'+rows+'</div>';
+  showModal('Commitment leak \u2014 '+arr.length+' hands', bodyHtml);
 }
 
 function showTierHands(tier, filter){
@@ -2554,7 +2598,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.43';
+const APP_VERSION = '2.44';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
