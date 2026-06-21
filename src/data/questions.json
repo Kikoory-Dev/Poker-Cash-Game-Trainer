@@ -13020,5 +13020,213 @@
       2
     ],
     "explanation": "AQo in the SB vs a CO open: 3-bet (or fold vs a nit) — do NOT flat out of position. From the SB you're OOP all hand and calling invites a BB squeeze. AQo is strong enough to 3-bet for value against a CO's wide range. This is the blind 3-bet-or-fold principle: from the blinds, prefer 3-betting strong hands over flatting them OOP."
+  },
+  {
+    "id": "commit_ak_vs_tight_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "CO",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "A♠",
+      "K♠"
+    ],
+    "position": "CO",
+    "situation": "100bb deep. You 4-bet, a TIGHT reg 5-bet jams all-in. Their jam range is ~QQ+/AK.",
+    "question": "You have A♠K♠ 100bb deep. You 4-bet, a tight player jams all-in. Call or fold?",
+    "options": [
+      "Call — AK is premium",
+      "Fold — behind a QQ+/AK jam",
+      "Call — you have the nut flush draw potential",
+      "Re-raise"
+    ],
+    "correct": 1,
+    "explanation": "Hardin's rule: 4-bet for value when AHEAD of their range, fold when BEHIND. Against a tight QQ+/AK jam, AK is behind/tied — crushed by AA/KK (~30%), flipping vs QQ-JJ, tied vs AK. AK is a premium 3-bet/4-bet PRESSURE hand, but it is NOT a value-jam hand like AA/KK. Vs a tight 100bb jam, fold. This is the AJo leak in a stronger form.",
+    "why_wrong": "Calling treats AK like AA/KK. It isn't — it's behind the only range that jams 100bb into a 4-bet. 'Premium' doesn't mean 'ahead of a jam.'"
+  },
+  {
+    "id": "commit_aa_vs_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "BTN",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "A♠",
+      "A♥"
+    ],
+    "position": "BTN",
+    "situation": "100bb deep. You 4-bet, villain 5-bet jams. Any range.",
+    "question": "You have A♠A♥, you 4-bet and villain jams 100bb. Call or fold?",
+    "options": [
+      "Fold — too risky",
+      "Call — AA crushes every jamming range",
+      "Just call to trap",
+      "Fold vs a tight player"
+    ],
+    "correct": 1,
+    "explanation": "AA is THE value-jam hand. You are ahead of every possible jamming range — even a tight QQ+/AK range, AA is ~80% or better. This is the contrast to AK: AA/KK are hands you commit for value; AK is not. Snap-call / get it in.",
+    "why_wrong": "Folding AA preflop is never right. AA is ahead of literally every range; this is the hand the commitment discipline is protecting your stack FOR."
+  },
+  {
+    "id": "commit_kk_vs_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "CO",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "K♠",
+      "K♥"
+    ],
+    "position": "CO",
+    "situation": "100bb deep. You 4-bet, villain 5-bet jams.",
+    "question": "You have K♠K♥, you 4-bet and villain jams 100bb. Call or fold?",
+    "options": [
+      "Fold — they might have AA",
+      "Call — only AA beats you, you're ahead of the rest",
+      "Call only vs a maniac",
+      "Limp next time"
+    ],
+    "correct": 1,
+    "explanation": "KK is a value-jam hand. You only fear AA; you crush QQ, AK, and everything else that jams. Against a QQ+/AK range you're a big favorite (only AA, a tiny slice, beats you). Commit. KK and AA are the hands you GET IT IN with — unlike AK, which folds to a tight jam.",
+    "why_wrong": "Folding KK to a single jam over-respects AA. You beat every other hand in a jamming range; you're committing for value here."
+  },
+  {
+    "id": "commit_aq_vs_tight_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "BTN",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "A♥",
+      "Q♥"
+    ],
+    "position": "BTN",
+    "situation": "100bb deep. You 4-bet AQs, a TIGHT player 5-bet jams (QQ+/AK).",
+    "question": "You have A♥Q♥ 100bb deep, you 4-bet, a tight player jams. Call or fold?",
+    "options": [
+      "Call — AQ suited is strong",
+      "Fold — dominated by the jam range",
+      "Call for the flush equity",
+      "Re-raise"
+    ],
+    "correct": 1,
+    "explanation": "AQs is even worse off than AK against a tight jam: AA/KK/AK all dominate or crush it, QQ has it crushed (set-over nothing, but QQ beats AQ), and it's only flipping vs JJ. Hardin: behind their range → fold. AQs is a strong 3-bet hand, NOT a 100bb stack-off hand vs a tight jam.",
+    "why_wrong": "The flush potential doesn't rescue ~30-35% equity all-in. AQs is dominated by most of a QQ+/AK jamming range."
+  },
+  {
+    "id": "commit_aj_vs_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "SB",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "A♠",
+      "J♦"
+    ],
+    "position": "SB",
+    "situation": "100bb deep. You 3-bet AJo from the SB, MP 4-bets, and you're deciding whether to 5-bet/stack off.",
+    "question": "You have A♠J♦ in the SB, 100bb deep. MP 4-bets your 3-bet. 5-bet jam, call, or fold?",
+    "options": [
+      "5-bet jam — he's aggressive",
+      "Fold — AJo is dominated by a 4-bet range",
+      "Call and see a flop",
+      "Min-raise"
+    ],
+    "correct": 1,
+    "explanation": "This is YOUR hand (the −105bb AJo vs AK). AJo is dominated by a 4-bet/5-bet range: AK, AQ, AA, KK all beat or dominate it. AJo wants to 3-bet and FOLD to the 4-bet — never build a stack-off pot. Even vs an aggressive player, his 4-bet-then-stack-off range is far stronger than his open. Fold.",
+    "why_wrong": "5-betting AJo turns a dominated hand into a stack-off. 'He's aggressive' justifies widening vs his OPEN, not vs his 4-bet/jam, which is a much tighter, stronger range."
+  },
+  {
+    "id": "commit_jj_vs_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "CO",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "J♠",
+      "J♥"
+    ],
+    "position": "CO",
+    "situation": "100bb deep. You 4-bet JJ, a tight player 5-bet jams.",
+    "question": "You have J♠J♥ 100bb deep, you 4-bet, a tight player jams. Call or fold?",
+    "options": [
+      "Call — an overpair to most boards",
+      "Fold/lean fold — behind a QQ+/AK jam",
+      "Snap call, JJ is huge",
+      "Always commit pairs"
+    ],
+    "correct": 1,
+    "explanation": "JJ vs a tight QQ+/AK jam is behind: it loses to QQ+ (a big chunk) and only flips vs AK. You're roughly a coinflip-or-worse against the whole range. Hardin: not clearly ahead → don't stack off 100bb. JJ is a great 3-bet hand and often a 4-bet, but calling a TIGHT 100bb jam with it is marginal-to-losing. Vs a loose jam it's fine; vs a tight one, fold.",
+    "why_wrong": "JJ feels like a premium overpair, but vs a tight jamming range it's behind QQ+ and only flipping AK. Read the range, not the raw hand strength."
+  },
+  {
+    "id": "commit_ak_vs_loose_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "BTN",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "A♠",
+      "K♦"
+    ],
+    "position": "BTN",
+    "situation": "100bb deep. A LOOSE/aggressive maniac (3-bets and jams wide, bluffs a lot) 5-bet jams over your 4-bet.",
+    "question": "You have A♠K♦ vs a LOOSE maniac who jams wide and bluffs. Call or fold?",
+    "options": [
+      "Fold — AK always folds to a jam",
+      "Call — vs a wide/bluffy jam range, AK is now ahead",
+      "Fold — too risky",
+      "Min-raise"
+    ],
+    "correct": 1,
+    "explanation": "The flip side of the discipline: vs a TIGHT jam AK folds, but vs a LOOSE/bluffy jamming range AK is AHEAD (it beats the bluffs and flips/dominates his weaker value). Hardin: ahead of their range → commit for value. The skill isn't 'always fold AK' — it's reading whether THIS villain's jam range is tight (fold) or wide (call). Same hand, opposite answer based on the read.",
+    "why_wrong": "'AK always folds' is as wrong as 'AK always jams.' The correct rule is conditional on villain's range — wide/bluffy jam means AK is ahead and commits."
+  },
+  {
+    "id": "commit_qq_vs_jam",
+    "level": 3,
+    "category": "Commit or Fold",
+    "difficulty": "medium",
+    "my_position": "CO",
+    "scenario": "Facing a 4-Bet/5-Bet jam",
+    "action_type": "Commit or Fold",
+    "range_context": "Vs a TIGHT 100bb all-in range: QQ+/AK. Hardin: ahead of their range → 4-bet/commit for value; behind → fold.",
+    "hand": [
+      "Q♠",
+      "Q♥"
+    ],
+    "position": "CO",
+    "situation": "100bb deep. You 4-bet QQ, a tight player 5-bet jams (QQ+/AK).",
+    "question": "You have Q♠Q♥ 100bb deep, you 4-bet, a tight player jams. Call or fold?",
+    "options": [
+      "Fold — they have KK/AA",
+      "Call — vs QQ+/AK you're flipping AK and only behind KK+",
+      "Snap fold QQ",
+      "Limp"
+    ],
+    "correct": 1,
+    "explanation": "QQ vs a QQ+/AK jam: you beat AK (a flip, ~54%), tie QQ, and lose to KK/AA. Across the whole range you're roughly break-even to slightly behind — but QQ has enough equity (it's never dominated, only flipped or beaten by exactly KK+) that calling is standard at 100bb. QQ is close to the value-jam threshold; unlike AK, it's not dominated by the range. This is the borderline — lean call.",
+    "why_wrong": "Folding QQ to a 100bb jam is too tight — you flip AK and only lose to KK/AA. QQ sits right at the commit threshold, unlike AK which is dominated."
   }
 ]
