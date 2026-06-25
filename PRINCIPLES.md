@@ -165,5 +165,8 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     check-folded as leaks, just for landing in a leak-labeled cell. Always verify
     against the specific action sequence before asserting a violation.
 
-30. **Always include a leak/decision-quality breakdown after reconciling and pushing
-    any session** — not just on request. Bernhard wants this by default going forward.
+31. **Every session push gets, by default**: (1) reconciliation table, (2) P&L
+    in USD and bb/100 for that session (with the standard caveat that single-session
+    bb/100 is noise, not signal — sample too small to mean anything about true win
+    rate), (3) full leak/decision-quality breakdown, (4) a concise summary version
+    of that breakdown — not just the detailed one.
