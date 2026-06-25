@@ -626,17 +626,25 @@ function classifyHand(cards) {
 
 function extractStreetActions(raw) {
   const streets = {};
-  const parts = raw.split(/\*\*\* (?:FIRST )?(?:FLOP|TURN|RIVER) \*\*\*[^\n]*\n/);
-  const headers = [...raw.matchAll(/\*\*\* ((?:FIRST )?FLOP|TURN|RIVER) \*\*\* (\[[^\]]+\])?/g)];
+  const parts = raw.split(/\*\*\* (?:FIRST |SECOND )?(?:FLOP|TURN|RIVER) \*\*\*[^\n]*\n/);
+  const headers = [...raw.matchAll(/\*\*\* (?:FIRST |SECOND )?(FLOP|TURN|RIVER) \*\*\* (\[[^\]]+\])?/g)];
   const pfStart = raw.indexOf('*** HOLE CARDS ***');
-  const pfEnd = raw.search(/\*\*\* (?:FLOP|FIRST FLOP) \*\*\*/);
+  const pfEnd = raw.search(/\*\*\* (?:FIRST )?FLOP \*\*\*/);
   const pfBlock = pfStart >= 0 ? raw.slice(pfStart, pfEnd > 0 ? pfEnd : undefined) : '';
   streets.preflop = {board:'', actions:[...pfBlock.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}))};
   headers.forEach((hdr,i) => {
-    const sname = hdr[1].replace('FIRST ','').toLowerCase();
+    const sname = hdr[1].toLowerCase();
     const board = hdr[2]||'';
     const block = parts[i+1]||'';
-    streets[sname] = {board, actions:[...block.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}))};
+    const actions = [...block.matchAll(/(\w+): (raises \$[\d.]+ to \$[\d.]+|calls \$[\d.]+|folds|checks|bets \$[\d.]+)/g)].map(m=>({player:m[1],action:m[2]}));
+    if (!streets[sname]) {
+      streets[sname] = {board, actions};
+    } else {
+      // Run-it-twice: a later FIRST/SECOND duplicate of an already-seen street.
+      // Merge rather than overwrite so real actions are never silently dropped.
+      streets[sname].actions = streets[sname].actions.concat(actions);
+      if (board && board !== streets[sname].board) streets[sname].board2 = board;
+    }
   });
   return streets;
 }
@@ -646,7 +654,7 @@ function streetContrib(raw) {
   let preflopBlind = 0;
   const blindM = preHC.match(/Hero: posts (?:small|big) blind \$([\d.]+)/);
   if (blindM) preflopBlind = parseFloat(blindM[1]);
-  const streetRe = /\*\*\* (?:FIRST )?(HOLE CARDS|FLOP|TURN|RIVER) \*\*\*/g;
+  const streetRe = /\*\*\* (?:FIRST |SECOND )?(HOLE CARDS|FLOP|TURN|RIVER) \*\*\*/g;
   const parts = raw.split(streetRe);
   let total = 0;
   for (let i = 1; i < parts.length; i += 2) {
@@ -2680,7 +2688,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.46';
+const APP_VERSION = '2.47';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
