@@ -641,6 +641,36 @@ function extractStreetActions(raw) {
   return streets;
 }
 
+function streetContrib(raw) {
+  const preHC = raw.split('*** HOLE CARDS ***')[0];
+  let preflopBlind = 0;
+  const blindM = preHC.match(/Hero: posts (?:small|big) blind \$([\d.]+)/);
+  if (blindM) preflopBlind = parseFloat(blindM[1]);
+  const streetRe = /\*\*\* (?:FIRST )?(HOLE CARDS|FLOP|TURN|RIVER) \*\*\*/g;
+  const parts = raw.split(streetRe);
+  let total = 0;
+  for (let i = 1; i < parts.length; i += 2) {
+    const name = parts[i];
+    let block = parts[i+1] || '';
+    block = block.split('*** SUMMARY')[0].split('*** SHOWDOWN')[0];
+    let streetTotal = (name === 'HOLE CARDS') ? preflopBlind : 0;
+    const lines = block.split('\n');
+    for (const line of lines) {
+      if (!line.startsWith('Hero:')) continue;
+      const m1 = line.match(/raises \$[\d.]+ to \$([\d.]+)/);
+      const m2 = line.match(/calls \$([\d.]+)/);
+      const m3 = line.match(/bets \$([\d.]+)/);
+      if (m1) streetTotal = parseFloat(m1[1]);
+      else if (m2) streetTotal += parseFloat(m2[1]);
+      else if (m3) streetTotal += parseFloat(m3[1]);
+    }
+    const uncalled = [...block.matchAll(/Uncalled bet \(\$([\d.]+)\) returned to Hero/g)];
+    for (const um of uncalled) streetTotal -= parseFloat(um[1]);
+    total += streetTotal;
+  }
+  return Math.max(0, Math.round(total * 100) / 100);
+}
+
 function parseHands(text, filename) {
   const rawHands = text.split(/\n\n(?=Poker Hand #)/);
   const hands = [];
@@ -724,24 +754,18 @@ function parseHands(text, filename) {
     const heroSummLine = summText.match(new RegExp(`Seat ${heroSeat}: Hero[^\n]*`))?.[0]||'';
     const collM = heroSummLine.match(/(?:collected|won) \(\$([\d.]+)\)/);
     const collected = collM ? parseFloat(collM[1]) : 0;
-    // Contribution: raise "to Y" = total, subtract uncalled returns, blinds only if no raise
-    const heroRaisesY = [...raw.matchAll(/Hero: raises \$[\d.]+ to \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
-    const heroCalls   = [...raw.matchAll(/Hero: calls \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
-    const heroBetsArr = [...raw.matchAll(/Hero: bets \$([\d.]+)/g)].map(m=>parseFloat(m[1]));
-    const uncalledArr = [...raw.matchAll(/Uncalled bet \(\$([\d.]+)\) returned to Hero/g)].map(m=>parseFloat(m[1]));
-    const sbPost = raw.match(/Hero: posts small blind \$([\d.]+)/);
-    const bbPost = raw.match(/Hero: posts big blind \$([\d.]+)/);
-    let contrib = heroRaisesY.reduce((s,v)=>s+v,0)
-                + heroCalls.reduce((s,v)=>s+v,0)
-                + heroBetsArr.reduce((s,v)=>s+v,0)
-                - uncalledArr.reduce((s,v)=>s+v,0);
-    if (!heroRaisesY.length) {
-      if (h.inSB && sbPost) contrib += parseFloat(sbPost[1]);
-      if (h.inBB && bbPost) contrib += parseFloat(bbPost[1]);
-    }
-    contrib = Math.max(0, Math.round(contrib*100)/100);
+    // Contribution: walk each street, tracking cumulative committed amount per player.
+    // A raise's "to Y" is the new absolute total for that street, not additive — summing
+    // multiple raises-to amounts (e.g. open then re-raise over a 3-bet) double-counts.
+    // If Hero's final committed amount on a street exceeds everyone else's, the excess
+    // was never called and is returned — cap Hero's contribution at the max committed
+    // by any other player on that street.
+    let contrib = streetContrib(raw);
     h.netUSD = Math.round((collected-contrib)*100)/100;
     h.netBB = Math.round(h.netUSD/fileBB*100)/100;
+    h.collectedUSD = collected;
+    h.isCashout = 0;
+    h.cashoutCost = 0;
     const fm = raw.match(/\*\*\* (?:FIRST )?FLOP \*\*\* \[([^\]]+)\]/);
     h.boardFlop = fm ? fm[1] : '';
     const tm2 = raw.match(/\*\*\* TURN \*\*\* \[[^\]]+\] \[([^\]]+)\]/);
@@ -2656,7 +2680,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.45';
+const APP_VERSION = '2.46';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
