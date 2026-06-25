@@ -148,3 +148,19 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     handful of weak hands called down. Isolate these, ignore the variance noise.
 - ~12% of hands reaching turn/river (1,273 / ~10.6k) is NORMAL, especially in R&C
   (heavy preflop folding; ~70% fold preflop, UTG ~90%). Not a bug.
+
+## G. HU POSTFLOP GAME PLAN (added 25 Jun 2026)
+
+27. **Role x position x tier grid governs postflop play** (Hardin framework,
+    see reference/hu_postflop_gameplan_reference.md). Aggressor = pfAction==RAISE,
+    Caller = pfAction==CALL. IP/OOP from postflop acting order vs villains seen
+    in streetActions. Tiers: Strong/Medium/Draw/Weak from pfMadeHand, with a
+    combo-upgrade rule (medium/weak made hand + live draw plays as Draw).
+28. **Two explicit, auto-checked leak cells**: Caller+OOP+Weak (any call = leak,
+    rule is always fold) and Caller+OOP+Medium (2+ calls = leak, rule allows one
+    call then fold). All other 14 cells are descriptive guidance only — not
+    auto-graded, to avoid false positives from cells that merely look leak-prone.
+29. **Don't flag a cell as a leak just because it CAN be one** — check the actual
+    action taken. First implementation pass flagged 3 hands where Hero correctly
+    check-folded as leaks, just for landing in a leak-labeled cell. Always verify
+    against the specific action sequence before asserting a violation.
