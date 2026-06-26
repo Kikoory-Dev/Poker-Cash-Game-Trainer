@@ -219,3 +219,26 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     A preflop spot facing a raise has THREE actions: fold / call / 3-bet (raise).
     Verdict strings must not collapse this to two. (Caught 26 Jun: an SB-vs-steal
     message said "fold or 3-bet" and dropped calling — misrepresenting the standard.)
+
+## I. ARCHITECTURE (added 26 Jun 2026)
+
+39. **Tracker is authored as concatenated source modules** in `src/tracker/`
+    (01-config … 11-boot), built into `poker-tracker.html` by `build_tracker.py`.
+    Never edit the built HTML directly — edit modules and rebuild. The build runs
+    `node --check` and aborts on syntax error. See src/tracker/README.md.
+
+40. **All decision checks live in the CHECK_REGISTRY** (`02b-check-registry.js`).
+    Each check is one entry: {key, phase, kind, label, meaning, detect(h,fired)}.
+    The tagger calls `runChecks(h)`; render surfaces read labels/meanings from the
+    same registry via `flagsByPhase()`. To add a granular check, add ONE entry —
+    do not scatter logic across parse/render/maps (that drift caused the version mess).
+
+41. **Equivalence-test every refactor before shipping.** Run all checks/evals on all
+    hands in both old and new code paths; require identical output (normalizing any
+    intended behavior change explicitly). The modularization (62,570 evals) and the
+    registry migration (12,514 hands) were both verified at 0 unexplained differences.
+
+42. **CALL_3BET vs CALL_4BET are distinct checks.** Faced-a-3-bet = exactly one
+    villain re-raise after Hero's open, Hero did not 4-bet. Faced-a-4-bet = Hero
+    4-bet then faced a further raise (or 2+ villain raises after the open). A latent
+    bug had CALL_3BET defined but never produced; the registry fixed it.
