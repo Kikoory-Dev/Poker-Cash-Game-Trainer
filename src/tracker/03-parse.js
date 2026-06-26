@@ -13,7 +13,7 @@ function getPosition(heroSeat, btnSeat, seatList) {
     5:{0:'BTN',1:'SB',2:'BB',3:'UTG',4:'HJ'},
     4:{0:'BTN',1:'SB',2:'BB',3:'UTG'},
     3:{0:'BTN',1:'SB',2:'BB'},
-    2:{0:'BTN/SB',1:'BB'}
+    2:{0:'SB',1:'BB'}
   };
   return (maps[n]||{})[steps] || `P${steps}`;
 }
