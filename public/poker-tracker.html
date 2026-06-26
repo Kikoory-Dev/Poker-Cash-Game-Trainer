@@ -501,6 +501,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
 <div class="toast" id="toast"></div>
 
 <script>
+// ====================================================================
+// CONFIG & MODULE STATE
+// ====================================================================
 const GITHUB_TOKEN = 'ghp_Gxmu90bTP'+'05GN6UvknY9A'+'typn5t6Ep2TOci5';
 const GITHUB_REPO = 'Kikoory-Dev/Poker-Cash-Game-Trainer';
 const GITHUB_FILE = 'tracker-data.json';
@@ -508,7 +511,6 @@ const BIG_BLIND = 0.25;
 const PAGE_SIZE = 30;
 
 let allHands = [];
-let currentPage = 1;
 let filteredHandsCache = [];
 
 // ─── GITHUB STORAGE ───────────────────────────────────────────
@@ -571,6 +573,303 @@ async function saveToGitHub(hands) {
 }
 
 // ─── PARSER ───────────────────────────────────────────────────
+
+// ====================================================================
+// STATIC POKER REFERENCE DATA (ranges, grids, explanations)
+// ====================================================================
+const ISSUE_EXPLAIN = {
+  VPIP_TRASH: {
+    label:'Played a hand outside opening range',
+    type:'preflop',
+    better:'Fold preflop — this hand is outside your position\'s chart.',
+    principle:'Hardin: play only hands in your position\'s opening range. Outside it is a fold, even for borderline hands.',
+    explain:'This hand is outside your position chart. Some flagged hands are genuinely weak (dominated offsuit kickers); others are borderline (a suited ace like A8s from the HJ, just past the cutoff). Either way, sticking to the chart is where most of a TAG player\'s discipline edge comes from — the marginal opens look harmless individually but leak over volume, especially when they get 3-bet and you fold anyway.',
+    rangeNote:'Open only the hands in your position chart. Borderline-but-outside (A8s/A7s from HJ) still folds.'
+  },
+  LIMP_OOP: {
+    label:'SB called a raise outside the defense range',
+    type:'preflop',
+    better:'Facing a raise in the SB, you have three actions: fold, call, or 3-bet. Calling is only correct with a hand in the SB defense call range; otherwise fold or 3-bet.',
+    principle:'Hardin ch.22: vs a steal (first-in CO/BTN/SB open), SB call range = 77+/broadways; 3-bet = JJ+/AQo+/AJs; else fold. Vs a non-steal open, SB is 3-bet-or-fold (no flat range).',
+    explain:'This flags an SB call of a raise where calling was not the correct action. Three actions exist here: fold, call, or 3-bet. Calling is right only with hands in the SB blind-defense call range (TT-77, ATs, KQs/KJs/KTs, QJs/QTs, JTs, KQo/KJo/QJo, AJo/ATo/KTo). Stronger hands (JJ+/AQo+/AJs) should 3-bet for value; everything else folds. Set-mining small pairs like 66 out of position does not have the implied odds at these depths — 66 is a fold here, not a call.',
+    rangeNote:'Vs a steal: call 77+/broadway suited+offsuit as charted; 3-bet JJ+/AQo+/AJs; fold the rest. Vs a non-steal open: 3-bet-or-fold only.'
+  },
+  CALL_3BET: {
+    label:'Called a 3-bet out of range',
+    type:'preflop',
+    better:'4-bet your continue hands or fold. Do not flat-call a 3-bet, especially OOP.',
+    principle:'Hardin: facing a 3-bet it is 4-bet-or-fold. Flatting in-between hands bleeds money.',
+    explain:'Calling a 3-bet with hands like 88-JJ, AQ, or set-mining pairs puts you in a bloated pot with a capped range, usually out of position. The implied odds to set-mine are not there at these stack depths once the pot is already 3-bet. This is consistently the largest dollar leak in your data.',
+    rangeNote:'Continue range vs a 3-bet: UTG/HJ = QQ+/AKs · CO/BTN = JJ+/AQs/AKs · SB = TT+/AJs+/AQo+. Everything else folds.'
+  },
+  CALL_WEAK: {
+    label:'Calling raise with weak hand',
+    type:'preflop',
+    better:'Fold. If the hand is not strong enough to raise or continue, it is not strong enough to call.',
+    principle:'Hardin: when in doubt preflop, fold — saved chips count as much as won chips.',
+    explain:'Flat-calling a raise with a weak hand invites marginal postflop spots where you rarely hold an equity edge and often face tough decisions for stacks. The fold avoids all of it.',
+    rangeNote:'Only continue with hands inside your position\'s defend range vs a raise.'
+  },
+  MISSED_CBET: {
+    label:'Checked flop as aggressor (gave up)',
+    type:'postflop',
+    better:'C-bet 50-75% pot on most flops when you raised preflop and reached the flop heads-up.',
+    principle:'Hardin: c-bet is a core profit tool, but 60-70% is a frequency — not every flop. Checking is correct sometimes.',
+    explain:'This flag fires only when you checked the flop as the preflop raiser AND never bet again that hand. Checking to pot-control or to barrel a later street is fine and is NOT flagged. But checking and then giving up surrenders the pot you set up preflop. On dry, ace-high, or paired boards your range is strong — bet it. Reserve the give-up check for spots where you genuinely have nothing and the board smashes the caller.',
+    rangeNote:'C-bet ~65% overall. Always-bet: dry boards (K-7-2), paired boards. Check more: wet multiway boards, or middle pair OOP for pot control (then bet later if it improves).'
+  },
+  FOLD_STRONG_LP: {
+    label:'Folded a must-raise hand',
+    type:'preflop',
+    better:'Open-raise it. These hands are not optional from this seat.',
+    principle:'Hardin defines must-raise hands per position — late position is your biggest edge, use it.',
+    explain:'Folding a designated opening hand throws away three sources of value: the steal when everyone folds, your positional advantage postflop, and value against wider calling ranges. Always open these.',
+    rangeNote:'Check your position chart — must-raise hands are the green core, never folded.'
+  },
+  CALL_4BET: {
+    label:'Called a 4-bet out of range',
+    type:'preflop',
+    better:'Fold. Vs a 4-bet, continue only with the very top of your range.',
+    principle:'Hardin: facing a 4-bet, continue with QQ+/AKs only from most seats. Everything else folds.',
+    explain:'A 4-bet represents enormous strength. Calling with JJ, AJs, or KQ means you are usually crushed by AA/KK and cannot continue profitably postflop. Preserve your stack for a better spot.',
+    rangeNote:'Vs 4-bet continue: QQ+/AKs (most seats). SB slightly wider. Fold the rest.'
+  },
+  LIMP: {
+    label:'Entered the pot by calling, not raising',
+    type:'preflop',
+    better:'Raise instead. First in → open-raise. Limper ahead of you → raise to isolate (~3-4 BB + 1 BB per limper).',
+    principle:'Hardin: TAG has no limping range. Raise or fold, never just call the big blind.',
+    explain:'Two cases trigger this. (1) Open-limping a premium like AA/KK surrenders the value and fold equity of raising — you want chips in with the best hand, not a cheap multiway flop. (2) Over-limping behind another limper (e.g. T8s on the BTN after the HJ limps) should instead be an isolation raise: punish the limper, build a pot in position, play heads-up rather than letting the blinds in free. Either way, calling forfeits initiative.',
+    rangeNote:'No limp range exists in TAG. First in: open-raise your position chart. Limper ahead: isolation-raise your playable hands, fold the rest.'
+  }
+};
+
+// ═══ HARDIN POSTFLOP ANALYZER (var + string-concat, no template literals) ═══
+var PF_RANKS='23456789TJQKA';
+var PF_POSTFLOP_ORDER={SB:0,BB:1,UTG:2,HJ:3,CO:4,BTN:5};
+
+var PF_GAMEPLAN_GRID={
+  aggressor:{
+    ip:{
+      strong:{action:'Bet for value, 2-3 streets',explain:'Build the pot. This is where you make your money — strongest position, the lead, and the best hand. Get it in across multiple streets.',leak:false},
+      medium:{action:'C-bet once, then pot-control',explain:'You have range + position advantage, so one c-bet is fine. Then check back the turn — don\'t barrel. Showdown-bound; get there cheaply.',leak:false},
+      draw:{action:'Semi-bluff c-bet',explain:'Fold equity plus your own equity. Barrel the turn with a strong draw (combo draw, flush draw with overcards). Position lets you take a free card.',leak:false},
+      weak:{action:'One c-bet bluff, then give up',explain:'You have fold equity from initiative + position, so one bluff is fine. But no second or third barrel without equity — when called, give up.',leak:false}
+    },
+    oop:{
+      strong:{action:'Bet for value, size to protect',explain:'Still value-bet, but size up to protect — out of position you can\'t control the pot as well. Charge draws and deny equity while you\'re ahead.',leak:false},
+      medium:{action:'Check-call once, don\'t bloat',explain:'C-bet or check, but lean toward check-calling one street rather than barreling. OOP you can\'t realize equity well, so keep the pot small with a marginal hand.',leak:false},
+      draw:{action:'C-bet semi-bluff, be ready to fold',explain:'Semi-bluffing is fine, but OOP draws realize less of their equity — so be ready to give up when raised or when the price is wrong.',leak:false},
+      weak:{action:'One c-bet at most, then check-fold',explain:'OOP bluffs are expensive — you fire less than in position. One c-bet bluff maximum, then check-fold. Without the positional edge, bluffing bleeds money.',leak:false}
+    }
+  },
+  caller:{
+    ip:{
+      strong:{action:'Raise for value, or flat to trap',explain:'Raise their c-bet for value, or flat-call to let them keep barreling into you. Position lets you control the pot and choose the line that extracts most.',leak:false},
+      medium:{action:'Call one street, fold to 2nd barrel',explain:'Bluff-catch one street, then evaluate. Fold to multiple barrels vs a TAG. Position lets you take a free card and get to showdown cheaply.',leak:false},
+      draw:{action:'Call with odds, or raise semi',explain:'Call with correct odds — in position you\'ll see both cards cheaply — or raise as a semi-bluff to take the pot away with equity behind it.',leak:false},
+      weak:{action:'Fold to the c-bet',explain:'No initiative, no equity = no continue. Even in position, a weak hand against a c-bet just folds. Don\'t float without a plan.',leak:false}
+    },
+    oop:{
+      strong:{action:'Check-raise or check-call',explain:'Check-call or check-raise. Donk-betting is occasionally fine, but check-raising traps better — let them bet into you, then spring it.',leak:false},
+      medium:{action:'Check-call once, then check-fold',explain:'OOP + no initiative + medium hand = the most -EV combo in poker. Check-call once at most, then check-fold. This is where the leak lives — don\'t keep paying.',leak:true},
+      draw:{action:'Check-call with odds, fold marginal',explain:'Check-call with correct odds, but draws OOP are weak — you realize less and can\'t control the price. Fold the marginal ones.',leak:false},
+      weak:{action:'Check-fold, always',explain:'No initiative, no position, no equity. Check-fold every time. There is no version of this spot where calling is right.',leak:true}
+    }
+  }
+};
+
+const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"]};
+
+// ─── STEALING & BLIND DEFENSE (Hardin ch.22, pp.249-264; charts read cell-by-cell) ───
+// Steal = first-in (open) raise from a STEAL POSITION (CO, BTN, SB) only.
+var STEAL_POSITIONS = {CO:1, BTN:1, SB:1};
+// Shared value 3-bet range vs a steal (same for SB and BB): JJ+, AQo+, AJs
+var BLIND_DEF_3BET = ["AA","KK","QQ","JJ","AKs","AQs","AJs","AKo","AQo"];
+// SB blind-defense CALL range vs a steal (chart p.262, corrected cell-by-cell incl KQo):
+var SB_DEFENSE_CALL = ["TT","99","88","77","ATs","KQs","KJs","KTs","QJs","QTs","JTs","KQo","KJo","QJo","AJo","ATo","KTo"];
+// BB blind-defense CALL range vs a steal (chart p.263 — much wider):
+var BB_DEFENSE_CALL = ["TT","99","88","77","66","55","44","33","22",
+  "ATs","A9s","A8s","A7s","A6s","A5s","KJs","KTs","K9s","QJs","QTs","Q9s","JTs","J9s","T9s","98s","97s","87s","86s","76s","65s",
+  "ATo","A9o","A8o","A7o","KJo","KTo","K9o","QJo","QTo","Q9o","JTo","J9o","T9o"];
+
+// Determine whether Hero (in SB or BB) faced a steal: a first-in raise from CO/BTN/SB.
+// Returns {isSteal, raiserPos} or null if Hero isn't a defending blind facing a single raise.
+const HARDIN_RANGES = {
+  'UTG': {
+    must: ["66", "77", "88", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "QQ", "TT"],
+    optional: ["55", "87s", "98s", "KTs", "QJs", "QTs", "T9s"],
+    all: ["55", "66", "77", "87s", "88", "98s", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QJs", "QQ", "QTs", "T9s", "TT"],
+  },
+  'MP': {
+    must: ["55", "66", "77", "88", "99", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QJs", "QQ", "QTs", "T9s", "TT"],
+    optional: ["44", "76s", "87s", "97s", "98s", "A4s", "A5s", "J9s", "T8s"],
+    all: ["44", "55", "66", "76s", "77", "87s", "88", "97s", "98s", "99", "A4s", "A5s", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+  },
+  'CO': {
+    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+    optional: ["65s", "75s", "JTo", "K8s", "QTo"],
+    all: ["22", "33", "44", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTo", "JTs", "K8s", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9s", "TT"],
+  },
+  'BTN': {
+    must: ["22", "33", "44", "54s", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J8s", "J9s", "JJ", "JTo", "JTs", "K7s", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q8s", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9o", "T9s", "TT"],
+    optional: ["43s", "64s", "87o", "J7s", "J9o", "K5s", "K6s", "K7o", "K8o", "Q6s", "Q7s", "Q9o", "T7s", "T8o"],
+    all: ["22", "33", "43s", "44", "54s", "55", "64s", "65s", "66", "75s", "76s", "77", "86s", "87o", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J7s", "J8s", "J9o", "J9s", "JJ", "JTo", "JTs", "K5s", "K6s", "K7o", "K7s", "K8o", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q6s", "Q7s", "Q8s", "Q9o", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T7s", "T8o", "T8s", "T9o", "T9s", "TT"],
+  },
+  'SB': {
+    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
+    optional: ["65s", "75s", "JTo", "K8s", "QTo"],
+    all: ["22", "33", "44", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTo", "JTs", "K8s", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9s", "TT"],
+  },
+};
+
+
+// ====================================================================
+// CHECK REGISTRY
+// ====================================================================
+// Each check is one self-contained entry. To add a granular check, add an
+// entry here — the tagger (runChecks) iterates this list in order, and all
+// render surfaces pick it up via labelOf()/explainOf()/flagsByPhase().
+//
+// Entry shape:
+//   key      : flag string stored in h.tagIssues (e.g. 'VPIP_TRASH')
+//   phase    : 'preflop' | 'postflop'  (drives which box it renders in)
+//   kind     : 'hard' (rule violation) | 'soft' (review flag)
+//   label    : short human label (was ISSUE_EXPLAIN[k].label)
+//   meaning  : one-line description (was pfFlagMeaning/postfFlagMeaning value)
+//   detect(h, fired) -> true if the check fires for this hand.
+//             `fired` is a Set of keys already fired on this hand this pass,
+//             so order-dependent checks (e.g. CALL_WEAK skips if VPIP_TRASH)
+//             can consult it. Detectors may also set derived fields on h
+//             (e.g. h.blindDef) exactly as the original inline code did.
+//
+// Evaluation ORDER matters and must match the original tagging sequence.
+
+var CHECK_REGISTRY = [
+  {
+    key:'VPIP_TRASH', phase:'preflop', kind:'hard',
+    label:'Played a hand outside opening range',
+    meaning:'Played a hand outside your opening range',
+    detect:function(h){
+      var r = HARDIN_RANGES[h.position];
+      return !!(h.vpip && r && r.all.indexOf(h.handNotation)===-1);
+    }
+  },
+  {
+    key:'LIMP_OOP', phase:'preflop', kind:'hard',
+    label:'SB called a raise outside the defense range',
+    meaning:'SB called a raise that should be 3-bet or folded',
+    detect:function(h){
+      if (!(h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr)) return false;
+      var ctx = pfStealContext(h);
+      if (ctx && ctx.isSteal) {
+        var v = pfBlindDefenseVerdict(h, ctx);
+        h.blindDef = {pos:'SB', isSteal:true, raiserPos:ctx.raiserPos, correct:v.correct, called:true};
+        return v.correct !== 'call';
+      }
+      h.blindDef = {pos:'SB', isSteal:false, raiserPos:ctx?ctx.raiserPos:null, correct:'fold', called:true};
+      return true;
+    }
+  },
+  {
+    key:'LIMP', phase:'preflop', kind:'hard',
+    label:'Entered the pot by calling, not raising',
+    meaning:'Open-limped instead of raising or folding',
+    detect:function(h){
+      if (!(h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise)) return false;
+      var r = HARDIN_RANGES[h.position];
+      return !!(r && r.all.indexOf(h.handNotation)!==-1);
+    }
+  },
+  {
+    key:'CALL_WEAK', phase:'postflop', kind:'hard',
+    label:'Called a raise with a weak hand',
+    meaning:'Cold-called a raise with a hand outside the range',
+    detect:function(h, fired){
+      if (!(h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise && !fired.has('VPIP_TRASH'))) return false;
+      var r = HARDIN_RANGES[h.position];
+      return !r || r.all.indexOf(h.handNotation)===-1;
+    }
+  },
+  {
+    key:'MISSED_CBET', phase:'postflop', kind:'soft',
+    label:'Checked flop as aggressor (gave up)',
+    meaning:'Checked when a c-bet was the right play',
+    detect:function(h){ return !!(h.cbetOpp && !h.cbetMade); }
+  },
+  {
+    key:'CALL_3BET', phase:'preflop', kind:'hard',
+    label:'Called a 3-bet out of range',
+    meaning:'Flat-called a 3-bet (often should 4-bet or fold)',
+    detect:function(h){
+      // Hero opened, faced exactly ONE villain re-raise (the 3-bet), and called.
+      if (!(h.pfr && h.facedRaise && h.pfAction==='CALL')) return false;
+      var acts = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var raises = acts.filter(function(a){return a.action&&a.action.indexOf('raises')===0;});
+      var hi = -1; for (var i=0;i<raises.length;i++){ if(raises[i].player==='Hero'){hi=i;break;} }
+      if (hi<0) return false;
+      var villainRaisesAfter = raises.slice(hi+1).filter(function(a){return a.player!=='Hero';}).length;
+      var heroRaisedAgain = raises.slice(hi+1).some(function(a){return a.player==='Hero';});
+      // Faced a 3-bet = exactly one villain raise after Hero's open, and Hero did NOT 4-bet.
+      if (!(villainRaisesAfter===1 && !heroRaisedAgain)) return false;
+      var cont = CONTINUE_VS_4BET[h.position] || []; // proxy continue range (3-bet defense is read-dependent)
+      return cont.indexOf(h.handNotation)===-1;
+    }
+  },
+  {
+    key:'CALL_4BET', phase:'preflop', kind:'hard',
+    label:'Called a 4-bet out of range',
+    meaning:'Called a 4-bet too light',
+    detect:function(h){
+      // Hero opened, Hero 4-bet (raised again), then faced a further raise and called.
+      if (!(h.pfr && h.facedRaise && h.pfAction==='CALL')) return false;
+      var acts = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var raises = acts.filter(function(a){return a.action&&a.action.indexOf('raises')===0;});
+      var hi = -1; for (var i=0;i<raises.length;i++){ if(raises[i].player==='Hero'){hi=i;break;} }
+      if (hi<0) return false;
+      var heroRaisedAgain = raises.slice(hi+1).some(function(a){return a.player==='Hero';});
+      var villainRaisesAfter = raises.slice(hi+1).filter(function(a){return a.player!=='Hero';}).length;
+      // Faced a 4-bet = either Hero 4-bet then faced another raise, or 2+ villain raises after Hero's open.
+      if (!(heroRaisedAgain || villainRaisesAfter>=2)) return false;
+      var cont = CONTINUE_VS_4BET[h.position] || [];
+      return cont.indexOf(h.handNotation)===-1;
+    }
+  },
+  {
+    key:'FOLD_STRONG_LP', phase:'preflop', kind:'hard',
+    label:'Folded a must-raise hand',
+    meaning:'Folded a strong hand in late position',
+    detect:function(h){
+      var r = HARDIN_RANGES[h.position];
+      return !!(h.pfAction==='FOLD' && !h.facedRaise && r && r.must.indexOf(h.handNotation)!==-1);
+    }
+  }
+];
+
+// Run all checks against a hand in registry order; returns array of fired keys.
+function runChecks(h){
+  var fired = new Set();
+  for (var i=0;i<CHECK_REGISTRY.length;i++){
+    var chk = CHECK_REGISTRY[i];
+    if (chk.detect(h, fired)) fired.add(chk.key);
+  }
+  return Array.from(fired);
+}
+
+// Registry-derived lookups (replace pfFlagMeaning/postfFlagMeaning hardcoded maps)
+function flagsByPhase(phase){
+  var m = {};
+  for (var i=0;i<CHECK_REGISTRY.length;i++){ if(CHECK_REGISTRY[i].phase===phase) m[CHECK_REGISTRY[i].key]=CHECK_REGISTRY[i].meaning; }
+  return m;
+}
+function registryLabelOf(key){
+  for (var i=0;i<CHECK_REGISTRY.length;i++){ if(CHECK_REGISTRY[i].key===key) return CHECK_REGISTRY[i].label; }
+  return key;
+}
+
+// ====================================================================
+// HAND-HISTORY PARSING
+// ====================================================================
 function getPosition(heroSeat, btnSeat, seatList) {
   const sorted = [...seatList].sort((a,b)=>a-b);
   const n = sorted.length;
@@ -801,53 +1100,10 @@ function parseHands(text, filename) {
         }
       }
     }
-    const issues = [];
-    // VPIP_TRASH: played a hand not in any Hardin range for this position
-    const posRangeCheck = HARDIN_RANGES[h.position];
-    if (h.vpip && posRangeCheck && !posRangeCheck.all.includes(h.handNotation)) issues.push('VPIP_TRASH');
-    // SB/BB facing a raise: steal-aware blind-defense check (Hardin ch.22 + ch.18).
-    // Hardin (p.205) gives NO SB cold-calling range for non-steal opens — SB is
-    // 3-bet-or-fold there. The narrow blind-defense CALL range (TT-77/broadways)
-    // applies ONLY vs a steal (first-in CO/BTN/SB open).
-    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr) {
-      var sbCtx = pfStealContext(h);
-      if (sbCtx && sbCtx.isSteal) {
-        var sbV = pfBlindDefenseVerdict(h, sbCtx);
-        h.blindDef = {pos:'SB', isSteal:true, raiserPos:sbCtx.raiserPos, correct:sbV.correct, called:true};
-        if (sbV.correct !== 'call') issues.push('LIMP_OOP'); // called a steal with a fold/3-bet hand
-      } else {
-        // Non-steal open (UTG/MP/etc.) OR multiway/non-first-in: SB has no flat range → 3-bet-or-fold.
-        h.blindDef = {pos:'SB', isSteal:false, raiserPos:sbCtx?sbCtx.raiserPos:null, correct:'fold', called:true};
-        issues.push('LIMP_OOP');
-      }
-    }
-    // LIMP: limped from non-blind position with a raiseable hand
-    if (h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise) {
-      const limpRange = HARDIN_RANGES[h.position];
-      if (limpRange && limpRange.all.includes(h.handNotation)) issues.push('LIMP');
-    }
-    // CALL_WEAK: cold-called a raise with a hand outside Hardin's range (not already flagged as VPIP_TRASH)
-    if (h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise && !issues.includes('VPIP_TRASH')) {
-      const callRange = HARDIN_RANGES[h.position];
-      if (!callRange || !callRange.all.includes(h.handNotation)) issues.push('CALL_WEAK');
-    }
-    if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
-    // CALL_4BET: Hero 3-bet, faced a 4-bet, called with hand outside continue range
-    if (h.pfr && h.facedRaise && h.pfAction==='CALL') {
-      // Check if there were 2 raises before Hero's call (Hero raised, villain re-raised = 4-bet)
-      const preFlopRaises = (h.streetActions?.preflop?.actions||[]).filter(a=>a.action&&a.action.startsWith('raises'));
-      const heroRaiseIdx = preFlopRaises.findIndex(a=>a.player==='Hero');
-      const villainRaisedAfterHero = heroRaiseIdx>=0 && preFlopRaises.slice(heroRaiseIdx+1).some(a=>a.player!=='Hero');
-      if (villainRaisedAfterHero) {
-        const continueRange = CONTINUE_VS_4BET[h.position] || [];
-        if (!continueRange.includes(h.handNotation)) issues.push('CALL_4BET');
-      }
-    }
-    // FOLD_STRONG_LP: folded a must-raise hand in a true RFI spot (no prior raise)
-    // If someone already raised, folding is often correct — different range applies
-    const foldPosRange = HARDIN_RANGES[h.position];
-    if (h.pfAction==='FOLD' && !h.facedRaise && foldPosRange && foldPosRange.must.includes(h.handNotation)) issues.push('FOLD_STRONG_LP');
-    h.tagIssues = issues;
+    // Tagging is now driven by the CHECK_REGISTRY (see 02b-check-registry.js).
+    // To add/modify a check, edit the registry — the tagger picks it up here,
+    // and all render surfaces read labels/meanings from the same registry.
+    h.tagIssues = runChecks(h);
     h.tagCompliant = issues.length===0 ? 1 : 0;
     const reviews = [];
     if (h.netBB < -10) reviews.push('BIG_LOSS');
@@ -862,75 +1118,10 @@ function parseHands(text, filename) {
 }
 
 // ─── HARDIN EXPLANATIONS ──────────────────────────────────────
-const ISSUE_EXPLAIN = {
-  VPIP_TRASH: {
-    label:'Played a hand outside opening range',
-    type:'preflop',
-    better:'Fold preflop — this hand is outside your position\'s chart.',
-    principle:'Hardin: play only hands in your position\'s opening range. Outside it is a fold, even for borderline hands.',
-    explain:'This hand is outside your position chart. Some flagged hands are genuinely weak (dominated offsuit kickers); others are borderline (a suited ace like A8s from the HJ, just past the cutoff). Either way, sticking to the chart is where most of a TAG player\'s discipline edge comes from — the marginal opens look harmless individually but leak over volume, especially when they get 3-bet and you fold anyway.',
-    rangeNote:'Open only the hands in your position chart. Borderline-but-outside (A8s/A7s from HJ) still folds.'
-  },
-  LIMP_OOP: {
-    label:'SB called a raise outside the defense range',
-    type:'preflop',
-    better:'Facing a raise in the SB, you have three actions: fold, call, or 3-bet. Calling is only correct with a hand in the SB defense call range; otherwise fold or 3-bet.',
-    principle:'Hardin ch.22: vs a steal (first-in CO/BTN/SB open), SB call range = 77+/broadways; 3-bet = JJ+/AQo+/AJs; else fold. Vs a non-steal open, SB is 3-bet-or-fold (no flat range).',
-    explain:'This flags an SB call of a raise where calling was not the correct action. Three actions exist here: fold, call, or 3-bet. Calling is right only with hands in the SB blind-defense call range (TT-77, ATs, KQs/KJs/KTs, QJs/QTs, JTs, KQo/KJo/QJo, AJo/ATo/KTo). Stronger hands (JJ+/AQo+/AJs) should 3-bet for value; everything else folds. Set-mining small pairs like 66 out of position does not have the implied odds at these depths — 66 is a fold here, not a call.',
-    rangeNote:'Vs a steal: call 77+/broadway suited+offsuit as charted; 3-bet JJ+/AQo+/AJs; fold the rest. Vs a non-steal open: 3-bet-or-fold only.'
-  },
-  CALL_3BET: {
-    label:'Called a 3-bet out of range',
-    type:'preflop',
-    better:'4-bet your continue hands or fold. Do not flat-call a 3-bet, especially OOP.',
-    principle:'Hardin: facing a 3-bet it is 4-bet-or-fold. Flatting in-between hands bleeds money.',
-    explain:'Calling a 3-bet with hands like 88-JJ, AQ, or set-mining pairs puts you in a bloated pot with a capped range, usually out of position. The implied odds to set-mine are not there at these stack depths once the pot is already 3-bet. This is consistently the largest dollar leak in your data.',
-    rangeNote:'Continue range vs a 3-bet: UTG/HJ = QQ+/AKs · CO/BTN = JJ+/AQs/AKs · SB = TT+/AJs+/AQo+. Everything else folds.'
-  },
-  CALL_WEAK: {
-    label:'Calling raise with weak hand',
-    type:'preflop',
-    better:'Fold. If the hand is not strong enough to raise or continue, it is not strong enough to call.',
-    principle:'Hardin: when in doubt preflop, fold — saved chips count as much as won chips.',
-    explain:'Flat-calling a raise with a weak hand invites marginal postflop spots where you rarely hold an equity edge and often face tough decisions for stacks. The fold avoids all of it.',
-    rangeNote:'Only continue with hands inside your position\'s defend range vs a raise.'
-  },
-  MISSED_CBET: {
-    label:'Checked flop as aggressor (gave up)',
-    type:'postflop',
-    better:'C-bet 50-75% pot on most flops when you raised preflop and reached the flop heads-up.',
-    principle:'Hardin: c-bet is a core profit tool, but 60-70% is a frequency — not every flop. Checking is correct sometimes.',
-    explain:'This flag fires only when you checked the flop as the preflop raiser AND never bet again that hand. Checking to pot-control or to barrel a later street is fine and is NOT flagged. But checking and then giving up surrenders the pot you set up preflop. On dry, ace-high, or paired boards your range is strong — bet it. Reserve the give-up check for spots where you genuinely have nothing and the board smashes the caller.',
-    rangeNote:'C-bet ~65% overall. Always-bet: dry boards (K-7-2), paired boards. Check more: wet multiway boards, or middle pair OOP for pot control (then bet later if it improves).'
-  },
-  FOLD_STRONG_LP: {
-    label:'Folded a must-raise hand',
-    type:'preflop',
-    better:'Open-raise it. These hands are not optional from this seat.',
-    principle:'Hardin defines must-raise hands per position — late position is your biggest edge, use it.',
-    explain:'Folding a designated opening hand throws away three sources of value: the steal when everyone folds, your positional advantage postflop, and value against wider calling ranges. Always open these.',
-    rangeNote:'Check your position chart — must-raise hands are the green core, never folded.'
-  },
-  CALL_4BET: {
-    label:'Called a 4-bet out of range',
-    type:'preflop',
-    better:'Fold. Vs a 4-bet, continue only with the very top of your range.',
-    principle:'Hardin: facing a 4-bet, continue with QQ+/AKs only from most seats. Everything else folds.',
-    explain:'A 4-bet represents enormous strength. Calling with JJ, AJs, or KQ means you are usually crushed by AA/KK and cannot continue profitably postflop. Preserve your stack for a better spot.',
-    rangeNote:'Vs 4-bet continue: QQ+/AKs (most seats). SB slightly wider. Fold the rest.'
-  },
-  LIMP: {
-    label:'Entered the pot by calling, not raising',
-    type:'preflop',
-    better:'Raise instead. First in → open-raise. Limper ahead of you → raise to isolate (~3-4 BB + 1 BB per limper).',
-    principle:'Hardin: TAG has no limping range. Raise or fold, never just call the big blind.',
-    explain:'Two cases trigger this. (1) Open-limping a premium like AA/KK surrenders the value and fold equity of raising — you want chips in with the best hand, not a cheap multiway flop. (2) Over-limping behind another limper (e.g. T8s on the BTN after the HJ limps) should instead be an isolation raise: punish the limper, build a pot in position, play heads-up rather than letting the blinds in free. Either way, calling forfeits initiative.',
-    rangeNote:'No limp range exists in TAG. First in: open-raise your position chart. Limper ahead: isolation-raise your playable hands, fold the rest.'
-  }
-};
 
-// ═══ HARDIN POSTFLOP ANALYZER (var + string-concat, no template literals) ═══
-var PF_RANKS='23456789TJQKA';
+// ====================================================================
+// HAND EVALUATION (made hands, tiers, draws)
+// ====================================================================
 function pfRk(c){return PF_RANKS.indexOf(c.charAt(0));}
 function pfCards(s){return s?s.split(' '):[];}
 
@@ -1009,95 +1200,6 @@ function pfMadeHand(hole,board){
   return['no pair / whiff','weak'];
 }
 
-var PF_POSTFLOP_ORDER={SB:0,BB:1,UTG:2,HJ:3,CO:4,BTN:5};
-
-var PF_GAMEPLAN_GRID={
-  aggressor:{
-    ip:{
-      strong:{action:'Bet for value, 2-3 streets',explain:'Build the pot. This is where you make your money — strongest position, the lead, and the best hand. Get it in across multiple streets.',leak:false},
-      medium:{action:'C-bet once, then pot-control',explain:'You have range + position advantage, so one c-bet is fine. Then check back the turn — don\'t barrel. Showdown-bound; get there cheaply.',leak:false},
-      draw:{action:'Semi-bluff c-bet',explain:'Fold equity plus your own equity. Barrel the turn with a strong draw (combo draw, flush draw with overcards). Position lets you take a free card.',leak:false},
-      weak:{action:'One c-bet bluff, then give up',explain:'You have fold equity from initiative + position, so one bluff is fine. But no second or third barrel without equity — when called, give up.',leak:false}
-    },
-    oop:{
-      strong:{action:'Bet for value, size to protect',explain:'Still value-bet, but size up to protect — out of position you can\'t control the pot as well. Charge draws and deny equity while you\'re ahead.',leak:false},
-      medium:{action:'Check-call once, don\'t bloat',explain:'C-bet or check, but lean toward check-calling one street rather than barreling. OOP you can\'t realize equity well, so keep the pot small with a marginal hand.',leak:false},
-      draw:{action:'C-bet semi-bluff, be ready to fold',explain:'Semi-bluffing is fine, but OOP draws realize less of their equity — so be ready to give up when raised or when the price is wrong.',leak:false},
-      weak:{action:'One c-bet at most, then check-fold',explain:'OOP bluffs are expensive — you fire less than in position. One c-bet bluff maximum, then check-fold. Without the positional edge, bluffing bleeds money.',leak:false}
-    }
-  },
-  caller:{
-    ip:{
-      strong:{action:'Raise for value, or flat to trap',explain:'Raise their c-bet for value, or flat-call to let them keep barreling into you. Position lets you control the pot and choose the line that extracts most.',leak:false},
-      medium:{action:'Call one street, fold to 2nd barrel',explain:'Bluff-catch one street, then evaluate. Fold to multiple barrels vs a TAG. Position lets you take a free card and get to showdown cheaply.',leak:false},
-      draw:{action:'Call with odds, or raise semi',explain:'Call with correct odds — in position you\'ll see both cards cheaply — or raise as a semi-bluff to take the pot away with equity behind it.',leak:false},
-      weak:{action:'Fold to the c-bet',explain:'No initiative, no equity = no continue. Even in position, a weak hand against a c-bet just folds. Don\'t float without a plan.',leak:false}
-    },
-    oop:{
-      strong:{action:'Check-raise or check-call',explain:'Check-call or check-raise. Donk-betting is occasionally fine, but check-raising traps better — let them bet into you, then spring it.',leak:false},
-      medium:{action:'Check-call once, then check-fold',explain:'OOP + no initiative + medium hand = the most -EV combo in poker. Check-call once at most, then check-fold. This is where the leak lives — don\'t keep paying.',leak:true},
-      draw:{action:'Check-call with odds, fold marginal',explain:'Check-call with correct odds, but draws OOP are weak — you realize less and can\'t control the price. Fold the marginal ones.',leak:false},
-      weak:{action:'Check-fold, always',explain:'No initiative, no position, no equity. Check-fold every time. There is no version of this spot where calling is right.',leak:true}
-    }
-  }
-};
-
-function pfHeroPosition(h){
-  var villainRanks=[];
-  var sa=h.streetActions||{};
-  ['flop','turn','river'].forEach(function(st){
-    var acts=(sa[st]||{}).actions||[];
-    acts.forEach(function(a){
-      if(a.player!=='Hero'){
-        var pos=(h.seatPositions||{})[a.player];
-        if(pos!==undefined&&PF_POSTFLOP_ORDER[pos]!==undefined)villainRanks.push(PF_POSTFLOP_ORDER[pos]);
-      }
-    });
-  });
-  var heroRank=PF_POSTFLOP_ORDER[h.position];
-  if(heroRank===undefined||villainRanks.length===0)return null;
-  var maxVillain=Math.max.apply(null,villainRanks);
-  return heroRank>maxVillain?'ip':'oop';
-}
-
-function pfHeroRole(h){
-  if(h.pfAction==='RAISE')return 'aggressor';
-  if(h.pfAction==='CALL')return 'caller';
-  return null; // limped/checked pot — game plan doesn't apply
-}
-
-function pfHeroCallCount(h){
-  var sa=h.streetActions||{};var n=0;
-  ['flop','turn','river'].forEach(function(st){
-    var acts=(sa[st]||{}).actions||[];
-    acts.forEach(function(a){if(a.player==='Hero'&&a.action.indexOf('calls')===0)n++;});
-  });
-  return n;
-}
-
-function pfGameplanVerdict(h){
-  var role=pfHeroRole(h);
-  var pos=pfHeroPosition(h);
-  if(!role||!pos)return null;
-  var tier=pfFinalTier(h);
-  var tierName=tier[1];
-  if(!tierName||tierName==='na')return null;
-  var cell=(PF_GAMEPLAN_GRID[role]||{})[pos];
-  if(!cell)return null;
-  var entry=cell[tierName];
-  if(!entry)return null;
-  var callCount=pfHeroCallCount(h);
-  var verdict='INFO',leakNow=false;
-  // Only the two explicit leak cells (caller/oop/medium and caller/oop/weak) get an
-  // auto-checkable compliance rule; everything else is descriptive guidance only.
-  if(entry.leak&&role==='caller'&&pos==='oop'&&tierName==='weak'){
-    leakNow=callCount>=1; verdict=leakNow?'LEAK':'OK';
-  } else if(entry.leak&&role==='caller'&&pos==='oop'&&tierName==='medium'){
-    leakNow=callCount>=2; verdict=leakNow?'LEAK':'OK';
-  }
-  return {role:role,position:pos,tier:tierName,tierDesc:tier[0],action:entry.action,explain:entry.explain,leakCell:entry.leak,leak:leakNow,verdict:verdict,callCount:callCount};
-}
-
 function pfTierByStreet(h){
   var out={};var flop=h.boardFlop||'';
   var turn=h.boardTurn?(flop+' '+h.boardTurn):'';
@@ -1174,6 +1276,132 @@ function pfVerdict(h,tier,desc){
 }
 
 // ─── CARD FORMATTER ──────────────────────────────────────────
+
+// ====================================================================
+// DECISION CHECKS & VERDICTS (steal, gameplan, blind defense)
+// ====================================================================
+function pfHeroPosition(h){
+  var villainRanks=[];
+  var sa=h.streetActions||{};
+  ['flop','turn','river'].forEach(function(st){
+    var acts=(sa[st]||{}).actions||[];
+    acts.forEach(function(a){
+      if(a.player!=='Hero'){
+        var pos=(h.seatPositions||{})[a.player];
+        if(pos!==undefined&&PF_POSTFLOP_ORDER[pos]!==undefined)villainRanks.push(PF_POSTFLOP_ORDER[pos]);
+      }
+    });
+  });
+  var heroRank=PF_POSTFLOP_ORDER[h.position];
+  if(heroRank===undefined||villainRanks.length===0)return null;
+  var maxVillain=Math.max.apply(null,villainRanks);
+  return heroRank>maxVillain?'ip':'oop';
+}
+
+function pfHeroRole(h){
+  if(h.pfAction==='RAISE')return 'aggressor';
+  if(h.pfAction==='CALL')return 'caller';
+  return null; // limped/checked pot — game plan doesn't apply
+}
+
+function pfHeroCallCount(h){
+  var sa=h.streetActions||{};var n=0;
+  ['flop','turn','river'].forEach(function(st){
+    var acts=(sa[st]||{}).actions||[];
+    acts.forEach(function(a){if(a.player==='Hero'&&a.action.indexOf('calls')===0)n++;});
+  });
+  return n;
+}
+
+function pfGameplanVerdict(h){
+  var role=pfHeroRole(h);
+  var pos=pfHeroPosition(h);
+  if(!role||!pos)return null;
+  var tier=pfFinalTier(h);
+  var tierName=tier[1];
+  if(!tierName||tierName==='na')return null;
+  var cell=(PF_GAMEPLAN_GRID[role]||{})[pos];
+  if(!cell)return null;
+  var entry=cell[tierName];
+  if(!entry)return null;
+  var callCount=pfHeroCallCount(h);
+  var verdict='INFO',leakNow=false;
+  // Only the two explicit leak cells (caller/oop/medium and caller/oop/weak) get an
+  // auto-checkable compliance rule; everything else is descriptive guidance only.
+  if(entry.leak&&role==='caller'&&pos==='oop'&&tierName==='weak'){
+    leakNow=callCount>=1; verdict=leakNow?'LEAK':'OK';
+  } else if(entry.leak&&role==='caller'&&pos==='oop'&&tierName==='medium'){
+    leakNow=callCount>=2; verdict=leakNow?'LEAK':'OK';
+  }
+  return {role:role,position:pos,tier:tierName,tierDesc:tier[0],action:entry.action,explain:entry.explain,leakCell:entry.leak,leak:leakNow,verdict:verdict,callCount:callCount};
+}
+
+function pfStealContext(h){
+  if(!(h.inSB||h.inBB)) return null;
+  if(!h.facedRaise) return null;
+  var pfActs = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+  // find the FIRST raise in the hand and confirm nothing but folds preceded it (first-in)
+  var firstRaiseIdx=-1;
+  for(var i=0;i<pfActs.length;i++){ if(pfActs[i].action&&pfActs[i].action.indexOf('raises')===0){ firstRaiseIdx=i; break; } }
+  if(firstRaiseIdx<0) return null;
+  for(var j=0;j<firstRaiseIdx;j++){ if(pfActs[j].action&&pfActs[j].action.indexOf('calls')===0) return {isSteal:false, raiserPos:null}; }
+  // count total raises before Hero acted — if more than one, it's a 3bet+ spot, not a simple steal
+  var raisesBeforeHero=0, heroActed=false;
+  for(var k=0;k<pfActs.length;k++){
+    if(pfActs[k].player==='Hero'){ heroActed=true; break; }
+    if(pfActs[k].action&&pfActs[k].action.indexOf('raises')===0) raisesBeforeHero++;
+  }
+  if(raisesBeforeHero!==1) return {isSteal:false, raiserPos:null};
+  var raiser = pfActs[firstRaiseIdx].player;
+  var raiserPos = (h.seatPositions||{})[raiser] || null;
+  var isSteal = raiserPos && STEAL_POSITIONS[raiserPos] ? true : false;
+  return {isSteal:isSteal, raiserPos:raiserPos};
+}
+
+// Table-driven verdict for a blind defending vs a steal. Enumerates ALL THREE actions
+// (fold / call / 3-bet) every time — generated from the range tables, never hand-written.
+function pfBlindDefenseVerdict(h, ctx){
+  var hand = h.handNotation;
+  var callRange = h.inSB ? SB_DEFENSE_CALL : BB_DEFENSE_CALL;
+  var is3bet = BLIND_DEF_3BET.indexOf(hand)>=0;
+  var isCall = callRange.indexOf(hand)>=0;
+  var correct = is3bet ? '3-bet' : (isCall ? 'call' : 'fold');
+  var posLabel = h.inSB ? 'SB' : 'BB';
+  var rangeBlurb = h.inSB
+    ? 'Call: 77+/ATs/KQs-KJs-KTs/QJs-QTs/JTs/KQo-KJo-QJo/AJo-ATo-KTo. 3-bet: JJ+/AQo+/AJs. Else fold.'
+    : 'Call: 22+/A5s+/K9s+/Q9s+/J9s+/T9s/97s+/86s+/76s/65s + broadway offsuits. 3-bet: JJ+/AQo+/AJs. Else fold.';
+  return {correct:correct, is3bet:is3bet, isCall:isCall, posLabel:posLabel, rangeBlurb:rangeBlurb};
+}
+
+function getHardinVerdict(notation, position, pfAction) {
+  const posRange = HARDIN_RANGES[position];
+  if (!posRange) return {verdict:'no-data', note:'Position not tracked.'};
+  const inMust = posRange.must.includes(notation);
+  const inOptional = posRange.optional.includes(notation);
+  const inAll = posRange.all.includes(notation);
+
+  if (pfAction === 'RAISE') {
+    if (inAll) return {verdict:'correct', note:`${notation} is a raise from ${position} per Hardin.`};
+    return {verdict:'too-loose', note:`${notation} is outside Hardin's opening range from ${position}.`};
+  }
+  if (pfAction === 'FOLD') {
+    if (inMust) return {verdict:'should-raise', note:`${notation} is a must-raise from ${position}. Folding gives up steal equity and value.`};
+    if (inOptional) return {verdict:'fold-ok-optional', note:`${notation} is optional from ${position}. Folding is acceptable but raising is also correct.`};
+    return {verdict:'correct-fold', note:`${notation} is outside Hardin's range from ${position}. Fold is correct.`};
+  }
+  if (pfAction === 'CALL') {
+    if (inMust || inOptional) return {verdict:'should-raise-not-call', note:`${notation} from ${position} should be raised, not called. Calling gives up fold equity and initiative.`};
+    return {verdict:'ok', note:`Calling with ${notation} from ${position}.`};
+  }
+  return {verdict:'ok', note:''};
+}
+
+function pfFlagMeaning(){ return flagsByPhase('preflop'); }
+function postfFlagMeaning(){ return flagsByPhase('postflop'); }
+
+// ====================================================================
+// UTILITIES & FILTERING
+// ====================================================================
 function formatCards(cards) {
   if (!cards) return '??';
   const suitMap = {'s':'♠','h':'♥','d':'♦','c':'♣'};
@@ -1249,6 +1477,31 @@ function filterHands(hands, tf, stakes, gameType, dateInputId) {
 function getEl(id) { const e=document.getElementById(id); return e?e.value:'all'; }
 
 // ─── TAB SWITCHING ────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+async function init() {
+  showToast('Loading data from GitHub...');
+  allHands = await loadFromGitHub();
+  // Patch legacy DB: fix streetReached for hands where Hero folded preflop
+  allHands = allHands.map(h => {
+    if (h.pfAction === 'FOLD' && h.streetReached !== 'Preflop') {
+      return Object.assign({}, h, {streetReached: 'Preflop', sawFlop: 0});
+    }
+    return h;
+  });
+  renderDashboard();
+  renderStoredSessions();
+  setTimeout(()=>renderAnalysis(), 200);
+}
+
+// ====================================================================
+// RENDER: DASHBOARD & SESSIONS
+// ====================================================================
 function switchTab(tab, btn) {
   window._modalReturn = null;
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -1502,6 +1755,31 @@ async function clearAllData() {
 }
 
 // ─── HANDS TABLE ──────────────────────────────────────────────
+function buildFlagCardHtml(flagMap, title, counts, bbMap, source){
+  source = source || 'analysis';
+  var keys=[]; for(var k in flagMap){ if(counts[k]) keys.push(k); }
+  keys.sort(function(a,b){ return counts[b]-counts[a]; });
+  if(!keys.length) return '<div class="card"><div class="card-title">'+title+'</div><p style="font-size:12px;color:var(--muted);margin:0">No flags in this filter — clean.</p></div>';
+  var rows=''; var total=0; var totbb=0;
+  for(var i=0;i<keys.length;i++){
+    var key=keys[i]; var c=counts[key]; var bb=bbMap[key]||0; total+=c; totbb+=bb;
+    var bbcol=bb>=0?'var(--green)':'var(--red)';
+    var sign=bb>=0?'+':'';
+    rows+='<div onclick="showViolationHands(\''+key+'\',\''+source+'\')" style="padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer">'
+      +'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">'
+      +'<span style="font-size:12px;font-weight:700;color:var(--text)">'+key.split('_').join(' ')+'</span>'
+      +'<span style="font-size:12px;font-weight:700;white-space:nowrap"><span style="color:var(--amber)">'+c+'x</span> <span style="color:'+bbcol+'">'+sign+bb.toFixed(0)+' BB</span> <span style="color:var(--muted)">\u203a</span></span>'
+      +'</div>'
+      +'<p style="margin:3px 0 0;font-size:11px;color:var(--text3);line-height:1.5">'+flagMap[key]+'</p>'
+      +'</div>';
+  }
+  var tsign=totbb>=0?'+':'';
+  return '<div class="card"><div class="card-title">'+title+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+total+' flags · '+tsign+totbb.toFixed(0)+' BB</span></div>'+rows+'</div>';
+}
+
+// ====================================================================
+// RENDER: HANDS LIST & HAND DETAIL
+// ====================================================================
 function renderHands() {
   currentPage = 1;
   const tf = getEl('hands-filter');
@@ -1600,88 +1878,6 @@ function renderAction(player, action, seatPositions, raisesBefore, isAllIn) {
     +'<span style="font-weight:600;color:'+col+';min-width:90px;font-size:12px">'+name+'</span>'
     +'<span>'+verb+'</span>'
     +'</div>';
-}
-
-function showCommitLeaks(){
-  var arr = (window._commitLeaks||[]).slice();
-  var rows='';
-  for(var i=0;i<arr.length;i++){
-    var h=arr[i];
-    var vill = h.villainShown && h.villainShown.length ? h.villainShown.map(function(v){return v.cards;}).join(', ') : '';
-    var board=(h.boardFlop||'')+(h.boardTurn?' '+h.boardTurn:'')+(h.boardRiver?' '+h.boardRiver:'');
-    rows += '<div onclick="showHandDetail(\''+h.id+'\')" style="cursor:pointer;padding:9px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">'
-      + '<div style="min-width:0;flex:1">'
-      + '<p style="margin:0;font-size:13px;font-weight:700;color:var(--text)">'+h.handNotation+' <span style="font-size:10px;color:var(--muted);font-weight:400">vs '+vill+'</span></p>'
-      + '<p style="margin:2px 0 0;font-size:9px;color:var(--muted)">'+board+'</p>'
-      + '</div>'
-      + '<span style="font-size:13px;font-weight:700;color:var(--red)">'+h.netBB.toFixed(0)+'</span>'
-      + '</div>';
-  }
-  window._modalReturn = null;
-  var bodyHtml='<div style="padding:4px 0"><p style="font-size:13px;color:var(--text2);margin:0 0 10px;line-height:1.5">Each of these is a big pot you committed and lost at showdown. Tap any hand to study the line. The question to internalize: <i>before getting it in, did my hand beat their value range?</i></p>'+rows+'</div>';
-  showModal('Commitment leak \u2014 '+arr.length+' hands', bodyHtml);
-}
-
-function showTierHands(tier, filter){
-  var arr = (window._pfTiers && window._pfTiers[tier]) ? window._pfTiers[tier].slice() : [];
-  if(filter==='ok') arr = arr.filter(function(h){ return h._verdict==='OK'; });
-  else if(filter==='wrong') arr = arr.filter(function(h){ return h._verdict!=='OK'; });
-  arr.sort(function(a,b){ return a.netBB-b.netBB; });
-  var labels={strong:'Strong value',medium:'Medium',draw:'Draws',weak:'Weak'};
-  var titleStr = labels[tier] + (filter==='ok'?' \u00b7 correct plays':(filter==='wrong'?' \u00b7 mistakes':'')) + ' (' + arr.length + ' hands)';
-
-  // ── Synthesis header: group mistakes by pattern with the Hardin fix ──
-  var synth='';
-  if(filter==='wrong' && arr.length){
-    var patterns={};
-    for(var p=0;p<arr.length;p++){
-      var rsn = arr[p]._vreason || 'other';
-      if(!patterns[rsn]) patterns[rsn]={count:0, bb:0};
-      patterns[rsn].count++; patterns[rsn].bb+=arr[p].netBB;
-    }
-    var FIX = {
-      'Medium hand raised \u2014 Hardin: pot-control, do not build the pot':'FIX: With a medium hand, check and pot-control. Do not raise \u2014 you only get called by better and fold out worse.',
-      'Medium called 2+ barrels vs TAG \u2014 fold to multiple bets':'FIX: When a tight player fires 2+ streets, your medium hand is beaten. Get to showdown cheap or fold \u2014 do not call multiple barrels.',
-      'Medium barreled multiple streets \u2014 vs TAG only better calls':'FIX: Stop barreling medium hands vs a TAG \u2014 only better hands continue. Check for showdown value instead.',
-      'Weak hand called to showdown & lost \u2014 check/fold weak hands':'FIX: Weak hands check/fold to aggression. No showdown value = no call.',
-      'Called a bet/raise with a whiff \u2014 give up as aggressor':'FIX: As the aggressor with air, give up when raised/called. Do not pay off with no pair, no draw.',
-      '3rd-barrel bluff into a caller \u2014 Hardin: give up, micro players call a third':'FIX: At micro, if they called two streets they call a third. Give up rather than fire a 3rd-barrel bluff.',
-      'Strong value checked down \u2014 extract value (bet/raise)':'FIX: Bet your strong hands. Checking down strong value leaves money on the table.'
-    };
-    var pkeys = Object.keys(patterns).sort(function(a,b){ return patterns[b].count-patterns[a].count; });
-    synth = '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
-      + '<p style="margin:0 0 8px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Your leak patterns here</p>';
-    for(var k=0;k<pkeys.length;k++){
-      var rk=pkeys[k]; var pd=patterns[rk]; var fix=FIX[rk]||'';
-      synth += '<div style="margin-bottom:'+(k<pkeys.length-1?'10px':'0')+';padding-bottom:'+(k<pkeys.length-1?'10px':'0')+';'+(k<pkeys.length-1?'border-bottom:1px solid var(--border)':'')+'">'
-        + '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">'
-        + '<span style="font-size:12px;font-weight:700;color:var(--text)">'+rk+'</span>'
-        + '<span style="font-size:11px;font-weight:700;color:var(--red);white-space:nowrap">'+pd.count+'x \u00b7 '+pd.bb.toFixed(0)+' BB</span>'
-        + '</div>'
-        + (fix?'<p style="margin:4px 0 0;font-size:11px;color:var(--green);line-height:1.5">'+fix+'</p>':'')
-        + '</div>';
-    }
-    synth += '</div>';
-  }
-
-  var rows='';
-  for(var i=0;i<arr.length;i++){
-    var h=arr[i];
-    var vCol = h._verdict==='OK'?'var(--green)':(h._verdict==='WRONG'?'var(--red)':'var(--amber)');
-    var board=(h.boardFlop||'')+(h.boardTurn?' '+h.boardTurn:'')+(h.boardRiver?' '+h.boardRiver:'');
-    rows += '<div onclick="showHandDetail(\''+h.id+'\')" style="cursor:pointer;padding:9px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">'
-      + '<div style="min-width:0;flex:1">'
-      + '<p style="margin:0;font-size:13px;font-weight:700;color:var(--text)">'+h.handNotation+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+(h._desc||'')+'</span></p>'
-      + '<p style="margin:2px 0 0;font-size:10px;color:'+vCol+'">'+h._verdict+' \u00b7 <span style="color:var(--text3)">'+(h._vreason||'')+'</span></p>'
-      + '<p style="margin:2px 0 0;font-size:9px;color:var(--muted)">'+board+'</p>'
-      + '</div>'
-      + '<span style="font-size:13px;font-weight:700;color:'+(h.netBB>=0?'var(--green)':'var(--red)')+'">'+(h.netBB>=0?'+':'')+h.netBB.toFixed(0)+'</span>'
-      + '</div>';
-  }
-  if(!rows) rows='<p style="font-size:12px;color:var(--muted);padding:10px">No hands</p>';
-  var bodyHtml = synth + rows;
-  window._modalReturn = {tier:tier, filter:filter};
-  showModal(titleStr, bodyHtml);
 }
 
 function showHandDetail(id) {
@@ -1963,6 +2159,104 @@ function closeModal() { document.getElementById('modal').style.display = 'none';
 // ─── POSITIONS ────────────────────────────────────────────────
 
 // ─── MISTAKES ─────────────────────────────────────────────────
+function showModal(title, body) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+function wireRevBtns() {
+  document.querySelectorAll('.rev-btn').forEach(function(b){
+    b.addEventListener('click',function(e){e.stopPropagation();showHandDetail(b.dataset.id);});
+  });
+}
+
+
+// ====================================================================
+// RENDER: ANALYSIS, POSITIONS, VIOLATION DRILL-DOWNS
+// ====================================================================
+function showCommitLeaks(){
+  var arr = (window._commitLeaks||[]).slice();
+  var rows='';
+  for(var i=0;i<arr.length;i++){
+    var h=arr[i];
+    var vill = h.villainShown && h.villainShown.length ? h.villainShown.map(function(v){return v.cards;}).join(', ') : '';
+    var board=(h.boardFlop||'')+(h.boardTurn?' '+h.boardTurn:'')+(h.boardRiver?' '+h.boardRiver:'');
+    rows += '<div onclick="showHandDetail(\''+h.id+'\')" style="cursor:pointer;padding:9px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">'
+      + '<div style="min-width:0;flex:1">'
+      + '<p style="margin:0;font-size:13px;font-weight:700;color:var(--text)">'+h.handNotation+' <span style="font-size:10px;color:var(--muted);font-weight:400">vs '+vill+'</span></p>'
+      + '<p style="margin:2px 0 0;font-size:9px;color:var(--muted)">'+board+'</p>'
+      + '</div>'
+      + '<span style="font-size:13px;font-weight:700;color:var(--red)">'+h.netBB.toFixed(0)+'</span>'
+      + '</div>';
+  }
+  window._modalReturn = null;
+  var bodyHtml='<div style="padding:4px 0"><p style="font-size:13px;color:var(--text2);margin:0 0 10px;line-height:1.5">Each of these is a big pot you committed and lost at showdown. Tap any hand to study the line. The question to internalize: <i>before getting it in, did my hand beat their value range?</i></p>'+rows+'</div>';
+  showModal('Commitment leak \u2014 '+arr.length+' hands', bodyHtml);
+}
+
+function showTierHands(tier, filter){
+  var arr = (window._pfTiers && window._pfTiers[tier]) ? window._pfTiers[tier].slice() : [];
+  if(filter==='ok') arr = arr.filter(function(h){ return h._verdict==='OK'; });
+  else if(filter==='wrong') arr = arr.filter(function(h){ return h._verdict!=='OK'; });
+  arr.sort(function(a,b){ return a.netBB-b.netBB; });
+  var labels={strong:'Strong value',medium:'Medium',draw:'Draws',weak:'Weak'};
+  var titleStr = labels[tier] + (filter==='ok'?' \u00b7 correct plays':(filter==='wrong'?' \u00b7 mistakes':'')) + ' (' + arr.length + ' hands)';
+
+  // ── Synthesis header: group mistakes by pattern with the Hardin fix ──
+  var synth='';
+  if(filter==='wrong' && arr.length){
+    var patterns={};
+    for(var p=0;p<arr.length;p++){
+      var rsn = arr[p]._vreason || 'other';
+      if(!patterns[rsn]) patterns[rsn]={count:0, bb:0};
+      patterns[rsn].count++; patterns[rsn].bb+=arr[p].netBB;
+    }
+    var FIX = {
+      'Medium hand raised \u2014 Hardin: pot-control, do not build the pot':'FIX: With a medium hand, check and pot-control. Do not raise \u2014 you only get called by better and fold out worse.',
+      'Medium called 2+ barrels vs TAG \u2014 fold to multiple bets':'FIX: When a tight player fires 2+ streets, your medium hand is beaten. Get to showdown cheap or fold \u2014 do not call multiple barrels.',
+      'Medium barreled multiple streets \u2014 vs TAG only better calls':'FIX: Stop barreling medium hands vs a TAG \u2014 only better hands continue. Check for showdown value instead.',
+      'Weak hand called to showdown & lost \u2014 check/fold weak hands':'FIX: Weak hands check/fold to aggression. No showdown value = no call.',
+      'Called a bet/raise with a whiff \u2014 give up as aggressor':'FIX: As the aggressor with air, give up when raised/called. Do not pay off with no pair, no draw.',
+      '3rd-barrel bluff into a caller \u2014 Hardin: give up, micro players call a third':'FIX: At micro, if they called two streets they call a third. Give up rather than fire a 3rd-barrel bluff.',
+      'Strong value checked down \u2014 extract value (bet/raise)':'FIX: Bet your strong hands. Checking down strong value leaves money on the table.'
+    };
+    var pkeys = Object.keys(patterns).sort(function(a,b){ return patterns[b].count-patterns[a].count; });
+    synth = '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
+      + '<p style="margin:0 0 8px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Your leak patterns here</p>';
+    for(var k=0;k<pkeys.length;k++){
+      var rk=pkeys[k]; var pd=patterns[rk]; var fix=FIX[rk]||'';
+      synth += '<div style="margin-bottom:'+(k<pkeys.length-1?'10px':'0')+';padding-bottom:'+(k<pkeys.length-1?'10px':'0')+';'+(k<pkeys.length-1?'border-bottom:1px solid var(--border)':'')+'">'
+        + '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">'
+        + '<span style="font-size:12px;font-weight:700;color:var(--text)">'+rk+'</span>'
+        + '<span style="font-size:11px;font-weight:700;color:var(--red);white-space:nowrap">'+pd.count+'x \u00b7 '+pd.bb.toFixed(0)+' BB</span>'
+        + '</div>'
+        + (fix?'<p style="margin:4px 0 0;font-size:11px;color:var(--green);line-height:1.5">'+fix+'</p>':'')
+        + '</div>';
+    }
+    synth += '</div>';
+  }
+
+  var rows='';
+  for(var i=0;i<arr.length;i++){
+    var h=arr[i];
+    var vCol = h._verdict==='OK'?'var(--green)':(h._verdict==='WRONG'?'var(--red)':'var(--amber)');
+    var board=(h.boardFlop||'')+(h.boardTurn?' '+h.boardTurn:'')+(h.boardRiver?' '+h.boardRiver:'');
+    rows += '<div onclick="showHandDetail(\''+h.id+'\')" style="cursor:pointer;padding:9px 10px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px">'
+      + '<div style="min-width:0;flex:1">'
+      + '<p style="margin:0;font-size:13px;font-weight:700;color:var(--text)">'+h.handNotation+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+(h._desc||'')+'</span></p>'
+      + '<p style="margin:2px 0 0;font-size:10px;color:'+vCol+'">'+h._verdict+' \u00b7 <span style="color:var(--text3)">'+(h._vreason||'')+'</span></p>'
+      + '<p style="margin:2px 0 0;font-size:9px;color:var(--muted)">'+board+'</p>'
+      + '</div>'
+      + '<span style="font-size:13px;font-weight:700;color:'+(h.netBB>=0?'var(--green)':'var(--red)')+'">'+(h.netBB>=0?'+':'')+h.netBB.toFixed(0)+'</span>'
+      + '</div>';
+  }
+  if(!rows) rows='<p style="font-size:12px;color:var(--muted);padding:10px">No hands</p>';
+  var bodyHtml = synth + rows;
+  window._modalReturn = {tier:tier, filter:filter};
+  showModal(titleStr, bodyHtml);
+}
+
 function renderMistakes() {
   const tf = getEl('mistakes-filter');
   const type = getEl('mistakes-type');
@@ -2033,310 +2327,6 @@ function renderMistakes() {
 }
 
 // ─── STARTING HANDS ──────────────────────────────────────────
-const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"]};
-
-// ─── STEALING & BLIND DEFENSE (Hardin ch.22, pp.249-264; charts read cell-by-cell) ───
-// Steal = first-in (open) raise from a STEAL POSITION (CO, BTN, SB) only.
-var STEAL_POSITIONS = {CO:1, BTN:1, SB:1};
-// Shared value 3-bet range vs a steal (same for SB and BB): JJ+, AQo+, AJs
-var BLIND_DEF_3BET = ["AA","KK","QQ","JJ","AKs","AQs","AJs","AKo","AQo"];
-// SB blind-defense CALL range vs a steal (chart p.262, corrected cell-by-cell incl KQo):
-var SB_DEFENSE_CALL = ["TT","99","88","77","ATs","KQs","KJs","KTs","QJs","QTs","JTs","KQo","KJo","QJo","AJo","ATo","KTo"];
-// BB blind-defense CALL range vs a steal (chart p.263 — much wider):
-var BB_DEFENSE_CALL = ["TT","99","88","77","66","55","44","33","22",
-  "ATs","A9s","A8s","A7s","A6s","A5s","KJs","KTs","K9s","QJs","QTs","Q9s","JTs","J9s","T9s","98s","97s","87s","86s","76s","65s",
-  "ATo","A9o","A8o","A7o","KJo","KTo","K9o","QJo","QTo","Q9o","JTo","J9o","T9o"];
-
-// Determine whether Hero (in SB or BB) faced a steal: a first-in raise from CO/BTN/SB.
-// Returns {isSteal, raiserPos} or null if Hero isn't a defending blind facing a single raise.
-function pfStealContext(h){
-  if(!(h.inSB||h.inBB)) return null;
-  if(!h.facedRaise) return null;
-  var pfActs = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
-  // find the FIRST raise in the hand and confirm nothing but folds preceded it (first-in)
-  var firstRaiseIdx=-1;
-  for(var i=0;i<pfActs.length;i++){ if(pfActs[i].action&&pfActs[i].action.indexOf('raises')===0){ firstRaiseIdx=i; break; } }
-  if(firstRaiseIdx<0) return null;
-  for(var j=0;j<firstRaiseIdx;j++){ if(pfActs[j].action&&pfActs[j].action.indexOf('calls')===0) return {isSteal:false, raiserPos:null}; }
-  // count total raises before Hero acted — if more than one, it's a 3bet+ spot, not a simple steal
-  var raisesBeforeHero=0, heroActed=false;
-  for(var k=0;k<pfActs.length;k++){
-    if(pfActs[k].player==='Hero'){ heroActed=true; break; }
-    if(pfActs[k].action&&pfActs[k].action.indexOf('raises')===0) raisesBeforeHero++;
-  }
-  if(raisesBeforeHero!==1) return {isSteal:false, raiserPos:null};
-  var raiser = pfActs[firstRaiseIdx].player;
-  var raiserPos = (h.seatPositions||{})[raiser] || null;
-  var isSteal = raiserPos && STEAL_POSITIONS[raiserPos] ? true : false;
-  return {isSteal:isSteal, raiserPos:raiserPos};
-}
-
-// Table-driven verdict for a blind defending vs a steal. Enumerates ALL THREE actions
-// (fold / call / 3-bet) every time — generated from the range tables, never hand-written.
-function pfBlindDefenseVerdict(h, ctx){
-  var hand = h.handNotation;
-  var callRange = h.inSB ? SB_DEFENSE_CALL : BB_DEFENSE_CALL;
-  var is3bet = BLIND_DEF_3BET.indexOf(hand)>=0;
-  var isCall = callRange.indexOf(hand)>=0;
-  var correct = is3bet ? '3-bet' : (isCall ? 'call' : 'fold');
-  var posLabel = h.inSB ? 'SB' : 'BB';
-  var rangeBlurb = h.inSB
-    ? 'Call: 77+/ATs/KQs-KJs-KTs/QJs-QTs/JTs/KQo-KJo-QJo/AJo-ATo-KTo. 3-bet: JJ+/AQo+/AJs. Else fold.'
-    : 'Call: 22+/A5s+/K9s+/Q9s+/J9s+/T9s/97s+/86s+/76s/65s + broadway offsuits. 3-bet: JJ+/AQo+/AJs. Else fold.';
-  return {correct:correct, is3bet:is3bet, isCall:isCall, posLabel:posLabel, rangeBlurb:rangeBlurb};
-}
-
-const HARDIN_RANGES = {
-  'UTG': {
-    must: ["66", "77", "88", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "QQ", "TT"],
-    optional: ["55", "87s", "98s", "KTs", "QJs", "QTs", "T9s"],
-    all: ["55", "66", "77", "87s", "88", "98s", "99", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QJs", "QQ", "QTs", "T9s", "TT"],
-  },
-  'MP': {
-    must: ["55", "66", "77", "88", "99", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QJs", "QQ", "QTs", "T9s", "TT"],
-    optional: ["44", "76s", "87s", "97s", "98s", "A4s", "A5s", "J9s", "T8s"],
-    all: ["44", "55", "66", "76s", "77", "87s", "88", "97s", "98s", "99", "A4s", "A5s", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "KJs", "KK", "KQo", "KQs", "KTs", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
-  },
-  'CO': {
-    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
-    optional: ["65s", "75s", "JTo", "K8s", "QTo"],
-    all: ["22", "33", "44", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTo", "JTs", "K8s", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9s", "TT"],
-  },
-  'BTN': {
-    must: ["22", "33", "44", "54s", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J8s", "J9s", "JJ", "JTo", "JTs", "K7s", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q8s", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9o", "T9s", "TT"],
-    optional: ["43s", "64s", "87o", "J7s", "J9o", "K5s", "K6s", "K7o", "K8o", "Q6s", "Q7s", "Q9o", "T7s", "T8o"],
-    all: ["22", "33", "43s", "44", "54s", "55", "64s", "65s", "66", "75s", "76s", "77", "86s", "87o", "87s", "88", "97s", "98o", "98s", "99", "A2o", "A2s", "A3o", "A3s", "A4o", "A4s", "A5o", "A5s", "A6o", "A6s", "A7o", "A7s", "A8o", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J7s", "J8s", "J9o", "J9s", "JJ", "JTo", "JTs", "K5s", "K6s", "K7o", "K7s", "K8o", "K8s", "K9o", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "Q6s", "Q7s", "Q8s", "Q9o", "Q9s", "QJo", "QJs", "QQ", "QTo", "QTs", "T7s", "T8o", "T8s", "T9o", "T9s", "TT"],
-  },
-  'SB': {
-    must: ["22", "33", "44", "55", "66", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTs", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTs", "T8s", "T9s", "TT"],
-    optional: ["65s", "75s", "JTo", "K8s", "QTo"],
-    all: ["22", "33", "44", "55", "65s", "66", "75s", "76s", "77", "86s", "87s", "88", "97s", "98s", "99", "A2s", "A3s", "A4s", "A5s", "A6s", "A7s", "A8s", "A9o", "A9s", "AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "ATo", "ATs", "J9s", "JJ", "JTo", "JTs", "K8s", "K9s", "KJo", "KJs", "KK", "KQo", "KQs", "KTo", "KTs", "QJo", "QJs", "QQ", "QTo", "QTs", "T8s", "T9s", "TT"],
-  },
-};
-
-function getHardinVerdict(notation, position, pfAction) {
-  const posRange = HARDIN_RANGES[position];
-  if (!posRange) return {verdict:'no-data', note:'Position not tracked.'};
-  const inMust = posRange.must.includes(notation);
-  const inOptional = posRange.optional.includes(notation);
-  const inAll = posRange.all.includes(notation);
-
-  if (pfAction === 'RAISE') {
-    if (inAll) return {verdict:'correct', note:`${notation} is a raise from ${position} per Hardin.`};
-    return {verdict:'too-loose', note:`${notation} is outside Hardin's opening range from ${position}.`};
-  }
-  if (pfAction === 'FOLD') {
-    if (inMust) return {verdict:'should-raise', note:`${notation} is a must-raise from ${position}. Folding gives up steal equity and value.`};
-    if (inOptional) return {verdict:'fold-ok-optional', note:`${notation} is optional from ${position}. Folding is acceptable but raising is also correct.`};
-    return {verdict:'correct-fold', note:`${notation} is outside Hardin's range from ${position}. Fold is correct.`};
-  }
-  if (pfAction === 'CALL') {
-    if (inMust || inOptional) return {verdict:'should-raise-not-call', note:`${notation} from ${position} should be raised, not called. Calling gives up fold equity and initiative.`};
-    return {verdict:'ok', note:`Calling with ${notation} from ${position}.`};
-  }
-  return {verdict:'ok', note:''};
-}
-
-function renderStartingHands() {
-  const tf = getEl('starting-filter');
-  const sort = getEl('starting-sort');
-  const catFilter = getEl('starting-cat');
-  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all', 'starting-date');
-
-  // Group by hand notation
-  const groups = {};
-  hands.forEach(h=>{
-    if (!h.handNotation) return;
-    if (!groups[h.handNotation]) groups[h.handNotation]={
-      notation:h.handNotation, cat:h.handCat, quality:h.tagQuality,
-      hands:[], netBB:0, mistakes:0, correct:0
-    };
-    groups[h.handNotation].hands.push(h);
-    groups[h.handNotation].netBB += h.netBB;
-    if (h.tagIssues.length) groups[h.handNotation].mistakes++;
-    else groups[h.handNotation].correct++;
-  });
-
-  let rows = Object.values(groups);
-  if (catFilter!=='all') rows = rows.filter(r=>r.cat===catFilter);
-
-  // Sort
-  if (sort==='hands') rows.sort((a,b)=>b.hands.length-a.hands.length);
-  else if (sort==='bb100') rows.sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length));
-  else if (sort==='worst') rows.sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length));
-  else if (sort==='netloss') rows.sort((a,b)=>a.netBB-b.netBB);
-
-  // Summary stats
-  const totalPlayed = Object.values(groups).reduce((s,g)=>s+g.hands.filter(h=>h.vpip).length,0);
-  const bestHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length))[0];
-  const worstHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length))[0];
-  document.getElementById('starting-summary').innerHTML = `
-    <div class="stat"><p class="stat-label">Hand types seen</p><p class="stat-value blue">${rows.length}</p></div>
-    <div class="stat"><p class="stat-label">Hands played</p><p class="stat-value amber">${totalPlayed}</p></div>
-    <div class="stat"><p class="stat-label">Best hand (3+ dealt)</p><p class="stat-value green" style="font-size:15px">${bestHand?bestHand.notation:'—'}</p></div>
-    <div class="stat"><p class="stat-label">Worst hand (3+ dealt)</p><p class="stat-value red" style="font-size:15px">${worstHand?worstHand.notation:'—'}</p></div>
-  `;
-
-  const el = document.getElementById('starting-list');
-  if (!rows.length) {
-    el.innerHTML='<div class="empty"><div class="empty-icon">🃏</div><p>No hand data yet — upload sessions first</p></div>';
-    return;
-  }
-
-  el.innerHTML = rows.map(g=>{
-    const n = g.hands.length;
-    const bb100 = n ? g.netBB/n*100 : 0;
-    const bbCol = g.netBB>=0?'var(--green)':g.netBB<-5?'var(--red)':'var(--amber)';
-    const b100Col = bb100>=0?'var(--green)':bb100<-50?'var(--red)':'var(--amber)';
-    const qualBadge = g.quality==='A-Range'?'ok':g.quality==='B-Range'?'warn':'err';
-    const hardinRule = HARDIN_ACTION[g.notation];
-    const sampleWarn = n < 5 ? '<span class="badge warn" style="font-size:10px">small sample</span>' : '';
-
-    // Check if any hands had position/action deviation
-    const deviations = g.hands.filter(hh=>{
-      if (!hh.vpip && !hh.pfr) return false;
-      const v = getHardinVerdict(g.notation, hh.position, hh.pfAction);
-      return ['should-raise','should-raise-not-call','too-loose'].includes(v.verdict);
-    });
-
-    return `<div class="hand-card" onclick="showStartingDetail('${g.notation}')">
-      <div class="hand-card-top">
-        <div>
-          <span style="font-size:19px;font-weight:800;color:var(--text)">${g.notation}</span>
-          <span style="font-size:11px;color:var(--muted);margin-left:8px">${g.cat}</span>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:17px;font-weight:700;color:${bbCol}">${g.netBB>=0?'+':''}${g.netBB.toFixed(1)} BB</div>
-          <div style="font-size:11px;color:${b100Col};font-weight:600">${bb100>=0?'+':''}${bb100.toFixed(0)}/100</div>
-        </div>
-      </div>
-      <div class="hand-card-mid">
-        <span class="badge ${qualBadge}">${g.quality}</span>
-        <span class="badge muted">${n} dealt</span>
-        ${deviations.length?`<span class="badge err">${deviations.length} deviation${deviations.length>1?'s':''}</span>`:''}
-        ${sampleWarn}
-      </div>
-      <div class="hand-card-bot">
-        <span class="hand-meta">${hardinRule?'Hardin: '+hardinRule.rfi:'Outside primary ranges'}</span>
-        <span class="hand-meta">${g.mistakes} mistake${g.mistakes!==1?'s':''}</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function showStartingDetail(notation) {
-  const tf = document.getElementById('starting-filter').value;
-  const hands = filterByTime(allHands, tf).filter(h=>h.handNotation===notation);
-  if (!hands.length) return;
-  const netBB = hands.reduce((s,h)=>s+h.netBB,0);
-  const n = hands.length;
-  const bb100 = netBB/n*100;
-  const rule = HARDIN_ACTION[notation];
-  const bbCol = netBB>=0?'var(--green)':'var(--red)';
-
-  // Per-position breakdown
-  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
-  const posBreakdown = positions.map(p=>{
-    const ph = hands.filter(h=>h.position===p);
-    if (!ph.length) return null;
-    const pNet = ph.reduce((s,h)=>s+h.netBB,0);
-    return {p, count:ph.length, net:pNet, bb100:pNet/ph.length*100};
-  }).filter(Boolean);
-
-  // Deviations
-  const deviations = hands.map(hh=>{
-    const v = getHardinVerdict(notation, hh.position, hh.pfAction);
-    return {...hh, verdict:v};
-  }).filter(hh=>['should-raise','should-raise-not-call','too-loose'].includes(hh.verdict.verdict));
-
-  document.getElementById('modal-title').textContent = `${notation} analysis`;
-  let body = `
-    <div class="stat-grid" style="margin-bottom:14px">
-      <div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">${n}</p></div>
-      <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:${bbCol}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
-      <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:${bbCol}">${bb100>=0?'+':''}${bb100.toFixed(0)}</p></div>
-      <div class="stat"><p class="stat-label">Mistakes</p><p class="stat-value ${hands.filter(h=>h.tagIssues.length).length?'red':''}">${hands.filter(h=>h.tagIssues.length).length}</p></div>
-    </div>`;
-
-  if (rule) {
-    body += `<div style="background:var(--bg3);border-radius:10px;padding:12px 14px;margin-bottom:14px">
-      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px">Hardin framework</p>
-      <p style="font-size:13px;color:var(--green2);margin:0 0 4px;font-weight:600">Raise from: ${rule.rfi}</p>
-      <p style="font-size:13px;color:var(--text3);margin:0;line-height:1.6">${rule.note}</p>
-    </div>`;
-  } else {
-    body += `<div style="background:#3d1e1e;border-radius:10px;padding:12px 14px;margin-bottom:14px">
-      <p style="font-size:13px;color:var(--red);margin:0;font-weight:600">Outside Hardin primary ranges</p>
-      <p style="font-size:12px;color:var(--text3);margin:4px 0 0">Playing this hand is likely a VPIP leak unless from BB defense.</p>
-    </div>`;
-  }
-
-  if (posBreakdown.length) {
-    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>`;
-    body += posBreakdown.map(p=>{
-      const col = p.net>=0?'var(--green)':'var(--red)';
-      return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
-        <div style="display:flex;gap:8px;align-items:center">
-          <span class="badge info">${p.p}</span>
-          <span style="font-size:12px;color:var(--muted)">${p.count} hand${p.count>1?'s':''}</span>
-        </div>
-        <div style="text-align:right">
-          <span style="font-size:13px;font-weight:700;color:${col}">${p.net>=0?'+':''}${p.net.toFixed(1)} BB</span>
-          <span style="font-size:11px;color:var(--muted);margin-left:6px">${p.bb100>=0?'+':''}${p.bb100.toFixed(0)}/100</span>
-        </div>
-      </div>`;
-    }).join('');
-    body += '<div style="margin-bottom:14px"></div>';
-  }
-
-  if (deviations.length) {
-    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">Hardin deviations</p>`;
-    body += deviations.map(hh=>`
-      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-          <div><span class="badge info">${hh.position}</span> <span class="badge warn" style="margin-left:4px">${hh.pfAction}</span></div>
-          <span style="font-size:13px;font-weight:700;color:${hh.netBB>=0?'var(--green)':'var(--red)'}">${hh.netBB>=0?'+':''}${hh.netBB.toFixed(1)} BB</span>
-        </div>
-        <p style="font-size:12px;color:var(--red);margin:0;font-weight:600">${hh.verdict.verdict.replace(/-/g,' ').toUpperCase()}</p>
-        <p style="font-size:12px;color:var(--text3);margin:3px 0 0">${hh.verdict.note}</p>
-      </div>`).join('');
-  }
-
-  if (n < 5) {
-    body += `<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-top:10px">
-      <p style="font-size:12px;color:var(--amber);margin:0">⚠ Small sample (${n} hands) — results are not statistically significant yet.</p>
-    </div>`;
-  }
-
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal').style.display = 'flex';
-}
-
-// ─── ANALYSIS ─────────────────────────────────────────────────
-
-function pfFlagMeaning(){ return {VPIP_TRASH:'Played a hand outside your opening range',LIMP:'Open-limped instead of raising or folding',LIMP_OOP:'Limped out of position',CALL_3BET:'Flat-called a 3-bet (should 4-bet or fold)',CALL_4BET:'Called a 4-bet too light',FOLD_STRONG_LP:'Folded a strong hand in late position'}; }
-function postfFlagMeaning(){ return {MISSED_CBET:'Checked when a c-bet was the right play',CALL_WEAK:'Called postflop with a weak hand (should fold)'}; }
-function buildFlagCardHtml(flagMap, title, counts, bbMap, source){
-  source = source || 'analysis';
-  var keys=[]; for(var k in flagMap){ if(counts[k]) keys.push(k); }
-  keys.sort(function(a,b){ return counts[b]-counts[a]; });
-  if(!keys.length) return '<div class="card"><div class="card-title">'+title+'</div><p style="font-size:12px;color:var(--muted);margin:0">No flags in this filter — clean.</p></div>';
-  var rows=''; var total=0; var totbb=0;
-  for(var i=0;i<keys.length;i++){
-    var key=keys[i]; var c=counts[key]; var bb=bbMap[key]||0; total+=c; totbb+=bb;
-    var bbcol=bb>=0?'var(--green)':'var(--red)';
-    var sign=bb>=0?'+':'';
-    rows+='<div onclick="showViolationHands(\''+key+'\',\''+source+'\')" style="padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer">'
-      +'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">'
-      +'<span style="font-size:12px;font-weight:700;color:var(--text)">'+key.split('_').join(' ')+'</span>'
-      +'<span style="font-size:12px;font-weight:700;white-space:nowrap"><span style="color:var(--amber)">'+c+'x</span> <span style="color:'+bbcol+'">'+sign+bb.toFixed(0)+' BB</span> <span style="color:var(--muted)">\u203a</span></span>'
-      +'</div>'
-      +'<p style="margin:3px 0 0;font-size:11px;color:var(--text3);line-height:1.5">'+flagMap[key]+'</p>'
-      +'</div>';
-  }
-  var tsign=totbb>=0?'+':'';
-  return '<div class="card"><div class="card-title">'+title+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+total+' flags · '+tsign+totbb.toFixed(0)+' BB</span></div>'+rows+'</div>';
-}
 function renderAnalysis() {
   const tf = getEl('analysis-filter');
   const hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date');
@@ -2566,18 +2556,6 @@ function posHandRow(h) {
     +'</div></div>';
 }
 
-function wireRevBtns() {
-  document.querySelectorAll('.rev-btn').forEach(function(b){
-    b.addEventListener('click',function(e){e.stopPropagation();showHandDetail(b.dataset.id);});
-  });
-}
-
-function showModal(title, body) {
-  document.getElementById('modal-title').textContent = title;
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal').style.display = 'flex';
-}
-
 function showPositionHands(pos) {
   var tf=getEl('pos-filter');var st=getEl('pos-stakes');
   var hands=filterHands(allHands,tf,st,'all','pos-date').filter(function(h){return h.position===pos;});
@@ -2621,6 +2599,247 @@ function showPositionIssueHands(pos, issue) {
     +'</div>'+hands.map(posHandRow).join(''));
   wireRevBtns();
 }
+
+function showViolationHands(issue, source) {
+  source = source || 'analysis';
+  var fm = source==='dash' ? ['dash-filter','dash-stakes','dash-date'] : ['analysis-filter','analysis-stakes','analysis-date'];
+  var tf = getEl(fm[0]);
+  var hands = filterHands(allHands, tf, getEl(fm[1]), 'all', fm[2])
+    .filter(function(h){ return h.tagIssues.indexOf(issue) !== -1; });
+  if (!hands.length) { showToast('No hands'); return; }
+  window._modalReturn = {kind:'violation', issue:issue, source:source};
+  var ex = ISSUE_EXPLAIN[issue] || {};
+  var net = hands.reduce(function(s,h){return s+h.netBB;},0);
+  var bbCol = net>=0?'var(--green)':'var(--red)';
+  var winners = hands.filter(function(h){return h.netBB>0;});
+  var losers = hands.filter(function(h){return h.netBB<0;});
+  var wonBB = winners.reduce(function(s,h){return s+h.netBB;},0);
+  var lostBB = losers.reduce(function(s,h){return s+h.netBB;},0);
+
+  hands.sort(function(a,b){return a.netBB-b.netBB;});
+
+  var netNote = net>=0
+    ? 'Net positive this sample — variance bailed you out. The flag still stands: by Hardin TAG rules these are -EV long-term.'
+    : 'Net negative — these cost you money this sample.';
+
+  var body = '<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
+    + '<p style="font-size:13px;color:var(--text);font-weight:700;margin:0 0 4px">' + (ex.better? '\u2192 '+ex.better : '') + '</p>'
+    + '<p style="font-size:12px;color:var(--text3);margin:0;line-height:1.6">' + (ex.explain||'') + '</p>'
+    + '</div>'
+    + '<div style="display:flex;gap:8px;margin-bottom:10px">'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Net</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:' + bbCol + '">' + (net>=0?'+':'') + net.toFixed(1) + '</p></div>'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Won (' + winners.length + ')</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--green)">+' + wonBB.toFixed(1) + '</p></div>'
+    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
+    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Lost (' + losers.length + ')</p>'
+    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--red)">' + lostBB.toFixed(1) + '</p></div>'
+    + '</div>'
+    + '<p style="font-size:11px;color:var(--text3);margin:0 0 12px;line-height:1.5;font-style:italic">' + netNote + '</p>';
+
+  for (var i=0;i<hands.length;i++){
+    var h = hands[i];
+    var c = h.netBB>=0?'var(--green)':'var(--red)';
+    body += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">'
+      + '<div style="display:flex;gap:6px;align-items:center">'
+      + '<span style="font-size:14px;font-weight:700;color:var(--text)">' + formatCards(h.holeCards) + '</span>'
+      + '<span class="badge info">' + h.position + '</span>'
+      + '<span style="font-size:11px;color:var(--muted)">' + h.date.slice(5) + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;align-items:center">'
+      + '<span style="font-size:13px;font-weight:700;color:' + c + '">' + (h.netBB>=0?'+':'') + h.netBB.toFixed(1) + ' BB</span>'
+      + '<button onclick="showHandDetail(\'' + h.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  document.getElementById('modal-title').textContent = (ex.label||issue) + ' — ' + hands.length + ' hands';
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+
+// ====================================================================
+// RENDER: GRID & STARTING-HAND CHARTS
+// ====================================================================
+function renderStartingHands() {
+  const tf = getEl('starting-filter');
+  const sort = getEl('starting-sort');
+  const catFilter = getEl('starting-cat');
+  const hands = filterHands(allHands, tf, getEl('starting-stakes'), 'all', 'starting-date');
+
+  // Group by hand notation
+  const groups = {};
+  hands.forEach(h=>{
+    if (!h.handNotation) return;
+    if (!groups[h.handNotation]) groups[h.handNotation]={
+      notation:h.handNotation, cat:h.handCat, quality:h.tagQuality,
+      hands:[], netBB:0, mistakes:0, correct:0
+    };
+    groups[h.handNotation].hands.push(h);
+    groups[h.handNotation].netBB += h.netBB;
+    if (h.tagIssues.length) groups[h.handNotation].mistakes++;
+    else groups[h.handNotation].correct++;
+  });
+
+  let rows = Object.values(groups);
+  if (catFilter!=='all') rows = rows.filter(r=>r.cat===catFilter);
+
+  // Sort
+  if (sort==='hands') rows.sort((a,b)=>b.hands.length-a.hands.length);
+  else if (sort==='bb100') rows.sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length));
+  else if (sort==='worst') rows.sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length));
+  else if (sort==='netloss') rows.sort((a,b)=>a.netBB-b.netBB);
+
+  // Summary stats
+  const totalPlayed = Object.values(groups).reduce((s,g)=>s+g.hands.filter(h=>h.vpip).length,0);
+  const bestHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(b.netBB/b.hands.length)-(a.netBB/a.hands.length))[0];
+  const worstHand = rows.filter(r=>r.hands.length>=3).sort((a,b)=>(a.netBB/a.hands.length)-(b.netBB/b.hands.length))[0];
+  document.getElementById('starting-summary').innerHTML = `
+    <div class="stat"><p class="stat-label">Hand types seen</p><p class="stat-value blue">${rows.length}</p></div>
+    <div class="stat"><p class="stat-label">Hands played</p><p class="stat-value amber">${totalPlayed}</p></div>
+    <div class="stat"><p class="stat-label">Best hand (3+ dealt)</p><p class="stat-value green" style="font-size:15px">${bestHand?bestHand.notation:'—'}</p></div>
+    <div class="stat"><p class="stat-label">Worst hand (3+ dealt)</p><p class="stat-value red" style="font-size:15px">${worstHand?worstHand.notation:'—'}</p></div>
+  `;
+
+  const el = document.getElementById('starting-list');
+  if (!rows.length) {
+    el.innerHTML='<div class="empty"><div class="empty-icon">🃏</div><p>No hand data yet — upload sessions first</p></div>';
+    return;
+  }
+
+  el.innerHTML = rows.map(g=>{
+    const n = g.hands.length;
+    const bb100 = n ? g.netBB/n*100 : 0;
+    const bbCol = g.netBB>=0?'var(--green)':g.netBB<-5?'var(--red)':'var(--amber)';
+    const b100Col = bb100>=0?'var(--green)':bb100<-50?'var(--red)':'var(--amber)';
+    const qualBadge = g.quality==='A-Range'?'ok':g.quality==='B-Range'?'warn':'err';
+    const hardinRule = HARDIN_ACTION[g.notation];
+    const sampleWarn = n < 5 ? '<span class="badge warn" style="font-size:10px">small sample</span>' : '';
+
+    // Check if any hands had position/action deviation
+    const deviations = g.hands.filter(hh=>{
+      if (!hh.vpip && !hh.pfr) return false;
+      const v = getHardinVerdict(g.notation, hh.position, hh.pfAction);
+      return ['should-raise','should-raise-not-call','too-loose'].includes(v.verdict);
+    });
+
+    return `<div class="hand-card" onclick="showStartingDetail('${g.notation}')">
+      <div class="hand-card-top">
+        <div>
+          <span style="font-size:19px;font-weight:800;color:var(--text)">${g.notation}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:8px">${g.cat}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:17px;font-weight:700;color:${bbCol}">${g.netBB>=0?'+':''}${g.netBB.toFixed(1)} BB</div>
+          <div style="font-size:11px;color:${b100Col};font-weight:600">${bb100>=0?'+':''}${bb100.toFixed(0)}/100</div>
+        </div>
+      </div>
+      <div class="hand-card-mid">
+        <span class="badge ${qualBadge}">${g.quality}</span>
+        <span class="badge muted">${n} dealt</span>
+        ${deviations.length?`<span class="badge err">${deviations.length} deviation${deviations.length>1?'s':''}</span>`:''}
+        ${sampleWarn}
+      </div>
+      <div class="hand-card-bot">
+        <span class="hand-meta">${hardinRule?'Hardin: '+hardinRule.rfi:'Outside primary ranges'}</span>
+        <span class="hand-meta">${g.mistakes} mistake${g.mistakes!==1?'s':''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showStartingDetail(notation) {
+  const tf = document.getElementById('starting-filter').value;
+  const hands = filterByTime(allHands, tf).filter(h=>h.handNotation===notation);
+  if (!hands.length) return;
+  const netBB = hands.reduce((s,h)=>s+h.netBB,0);
+  const n = hands.length;
+  const bb100 = netBB/n*100;
+  const rule = HARDIN_ACTION[notation];
+  const bbCol = netBB>=0?'var(--green)':'var(--red)';
+
+  // Per-position breakdown
+  const positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  const posBreakdown = positions.map(p=>{
+    const ph = hands.filter(h=>h.position===p);
+    if (!ph.length) return null;
+    const pNet = ph.reduce((s,h)=>s+h.netBB,0);
+    return {p, count:ph.length, net:pNet, bb100:pNet/ph.length*100};
+  }).filter(Boolean);
+
+  // Deviations
+  const deviations = hands.map(hh=>{
+    const v = getHardinVerdict(notation, hh.position, hh.pfAction);
+    return {...hh, verdict:v};
+  }).filter(hh=>['should-raise','should-raise-not-call','too-loose'].includes(hh.verdict.verdict));
+
+  document.getElementById('modal-title').textContent = `${notation} analysis`;
+  let body = `
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat"><p class="stat-label">Dealt</p><p class="stat-value blue">${n}</p></div>
+      <div class="stat"><p class="stat-label">Net BB</p><p class="stat-value" style="color:${bbCol}">${netBB>=0?'+':''}${netBB.toFixed(1)}</p></div>
+      <div class="stat"><p class="stat-label">BB/100</p><p class="stat-value" style="color:${bbCol}">${bb100>=0?'+':''}${bb100.toFixed(0)}</p></div>
+      <div class="stat"><p class="stat-label">Mistakes</p><p class="stat-value ${hands.filter(h=>h.tagIssues.length).length?'red':''}">${hands.filter(h=>h.tagIssues.length).length}</p></div>
+    </div>`;
+
+  if (rule) {
+    body += `<div style="background:var(--bg3);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px">Hardin framework</p>
+      <p style="font-size:13px;color:var(--green2);margin:0 0 4px;font-weight:600">Raise from: ${rule.rfi}</p>
+      <p style="font-size:13px;color:var(--text3);margin:0;line-height:1.6">${rule.note}</p>
+    </div>`;
+  } else {
+    body += `<div style="background:#3d1e1e;border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:13px;color:var(--red);margin:0;font-weight:600">Outside Hardin primary ranges</p>
+      <p style="font-size:12px;color:var(--text3);margin:4px 0 0">Playing this hand is likely a VPIP leak unless from BB defense.</p>
+    </div>`;
+  }
+
+  if (posBreakdown.length) {
+    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">By position</p>`;
+    body += posBreakdown.map(p=>{
+      const col = p.net>=0?'var(--green)':'var(--red)';
+      return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="badge info">${p.p}</span>
+          <span style="font-size:12px;color:var(--muted)">${p.count} hand${p.count>1?'s':''}</span>
+        </div>
+        <div style="text-align:right">
+          <span style="font-size:13px;font-weight:700;color:${col}">${p.net>=0?'+':''}${p.net.toFixed(1)} BB</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:6px">${p.bb100>=0?'+':''}${p.bb100.toFixed(0)}/100</span>
+        </div>
+      </div>`;
+    }).join('');
+    body += '<div style="margin-bottom:14px"></div>';
+  }
+
+  if (deviations.length) {
+    body += `<p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:0 0 8px">Hardin deviations</p>`;
+    body += deviations.map(hh=>`
+      <div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <div><span class="badge info">${hh.position}</span> <span class="badge warn" style="margin-left:4px">${hh.pfAction}</span></div>
+          <span style="font-size:13px;font-weight:700;color:${hh.netBB>=0?'var(--green)':'var(--red)'}">${hh.netBB>=0?'+':''}${hh.netBB.toFixed(1)} BB</span>
+        </div>
+        <p style="font-size:12px;color:var(--red);margin:0;font-weight:600">${hh.verdict.verdict.replace(/-/g,' ').toUpperCase()}</p>
+        <p style="font-size:12px;color:var(--text3);margin:3px 0 0">${hh.verdict.note}</p>
+      </div>`).join('');
+  }
+
+  if (n < 5) {
+    body += `<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-top:10px">
+      <p style="font-size:12px;color:var(--amber);margin:0">⚠ Small sample (${n} hands) — results are not statistically significant yet.</p>
+    </div>`;
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal').style.display = 'flex';
+}
+
+// ─── ANALYSIS ─────────────────────────────────────────────────
 
 function renderGrid() {
   const tf = getEl('grid-filter');
@@ -2712,66 +2931,6 @@ function renderGrid() {
   el.innerHTML = '<div style="display:flex;flex-direction:column;gap:1px">' + rows + '</div>';
 }
 
-function showViolationHands(issue, source) {
-  source = source || 'analysis';
-  var fm = source==='dash' ? ['dash-filter','dash-stakes','dash-date'] : ['analysis-filter','analysis-stakes','analysis-date'];
-  var tf = getEl(fm[0]);
-  var hands = filterHands(allHands, tf, getEl(fm[1]), 'all', fm[2])
-    .filter(function(h){ return h.tagIssues.indexOf(issue) !== -1; });
-  if (!hands.length) { showToast('No hands'); return; }
-  window._modalReturn = {kind:'violation', issue:issue, source:source};
-  var ex = ISSUE_EXPLAIN[issue] || {};
-  var net = hands.reduce(function(s,h){return s+h.netBB;},0);
-  var bbCol = net>=0?'var(--green)':'var(--red)';
-  var winners = hands.filter(function(h){return h.netBB>0;});
-  var losers = hands.filter(function(h){return h.netBB<0;});
-  var wonBB = winners.reduce(function(s,h){return s+h.netBB;},0);
-  var lostBB = losers.reduce(function(s,h){return s+h.netBB;},0);
-
-  hands.sort(function(a,b){return a.netBB-b.netBB;});
-
-  var netNote = net>=0
-    ? 'Net positive this sample — variance bailed you out. The flag still stands: by Hardin TAG rules these are -EV long-term.'
-    : 'Net negative — these cost you money this sample.';
-
-  var body = '<div style="background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:12px">'
-    + '<p style="font-size:13px;color:var(--text);font-weight:700;margin:0 0 4px">' + (ex.better? '\u2192 '+ex.better : '') + '</p>'
-    + '<p style="font-size:12px;color:var(--text3);margin:0;line-height:1.6">' + (ex.explain||'') + '</p>'
-    + '</div>'
-    + '<div style="display:flex;gap:8px;margin-bottom:10px">'
-    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
-    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Net</p>'
-    + '<p style="font-size:15px;font-weight:700;margin:0;color:' + bbCol + '">' + (net>=0?'+':'') + net.toFixed(1) + '</p></div>'
-    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
-    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Won (' + winners.length + ')</p>'
-    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--green)">+' + wonBB.toFixed(1) + '</p></div>'
-    + '<div style="flex:1;background:var(--bg3);border-radius:8px;padding:8px 10px;text-align:center">'
-    + '<p style="font-size:10px;color:var(--muted);margin:0 0 2px;text-transform:uppercase">Lost (' + losers.length + ')</p>'
-    + '<p style="font-size:15px;font-weight:700;margin:0;color:var(--red)">' + lostBB.toFixed(1) + '</p></div>'
-    + '</div>'
-    + '<p style="font-size:11px;color:var(--text3);margin:0 0 12px;line-height:1.5;font-style:italic">' + netNote + '</p>';
-
-  for (var i=0;i<hands.length;i++){
-    var h = hands[i];
-    var c = h.netBB>=0?'var(--green)':'var(--red)';
-    body += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">'
-      + '<div style="display:flex;gap:6px;align-items:center">'
-      + '<span style="font-size:14px;font-weight:700;color:var(--text)">' + formatCards(h.holeCards) + '</span>'
-      + '<span class="badge info">' + h.position + '</span>'
-      + '<span style="font-size:11px;color:var(--muted)">' + h.date.slice(5) + '</span>'
-      + '</div>'
-      + '<div style="display:flex;gap:8px;align-items:center">'
-      + '<span style="font-size:13px;font-weight:700;color:' + c + '">' + (h.netBB>=0?'+':'') + h.netBB.toFixed(1) + ' BB</span>'
-      + '<button onclick="showHandDetail(\'' + h.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
-      + '</div>'
-      + '</div>';
-  }
-
-  document.getElementById('modal-title').textContent = (ex.label||issue) + ' — ' + hands.length + ' hands';
-  document.getElementById('modal-body').innerHTML = body;
-  document.getElementById('modal').style.display = 'flex';
-}
-
 function showGridDetail(notation) {
   var tf = getEl('grid-filter');
   var skEl = getEl('grid-stakes');
@@ -2853,34 +3012,18 @@ function showGridDetail(notation) {
 
 
 // ─── DRAG DROP ────────────────────────────────────────────────
+
+// ====================================================================
+// BOOT & VERSION
+// ====================================================================
+let currentPage = 1;
 const dz = document.getElementById('drop-zone');
 dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
 dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files)});
 
 // ─── TOAST ────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// ─── INIT ─────────────────────────────────────────────────────
-async function init() {
-  showToast('Loading data from GitHub...');
-  allHands = await loadFromGitHub();
-  // Patch legacy DB: fix streetReached for hands where Hero folded preflop
-  allHands = allHands.map(h => {
-    if (h.pfAction === 'FOLD' && h.streetReached !== 'Preflop') {
-      return Object.assign({}, h, {streetReached: 'Preflop', sawFlop: 0});
-    }
-    return h;
-  });
-  renderDashboard();
-  renderStoredSessions();
-  setTimeout(()=>renderAnalysis(), 200);
-}
-const APP_VERSION = '2.52';
+const APP_VERSION = '2.53';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
@@ -2903,6 +3046,8 @@ vEl.textContent='v'+APP_VERSION;
 vEl.style.cssText='position:fixed;top:calc(env(safe-area-inset-top,0px) + 4px);right:6px;font-size:10px;color:#6db87a;background:rgba(0,0,0,0.4);padding:2px 6px;border-radius:6px;z-index:9999;pointer-events:none';
 document.body.appendChild(vEl);
 init();
+
+
 
 </script>
 </body>
