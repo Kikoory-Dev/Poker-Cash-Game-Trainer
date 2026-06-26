@@ -231,53 +231,10 @@ function parseHands(text, filename) {
         }
       }
     }
-    const issues = [];
-    // VPIP_TRASH: played a hand not in any Hardin range for this position
-    const posRangeCheck = HARDIN_RANGES[h.position];
-    if (h.vpip && posRangeCheck && !posRangeCheck.all.includes(h.handNotation)) issues.push('VPIP_TRASH');
-    // SB/BB facing a raise: steal-aware blind-defense check (Hardin ch.22 + ch.18).
-    // Hardin (p.205) gives NO SB cold-calling range for non-steal opens — SB is
-    // 3-bet-or-fold there. The narrow blind-defense CALL range (TT-77/broadways)
-    // applies ONLY vs a steal (first-in CO/BTN/SB open).
-    if (h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr) {
-      var sbCtx = pfStealContext(h);
-      if (sbCtx && sbCtx.isSteal) {
-        var sbV = pfBlindDefenseVerdict(h, sbCtx);
-        h.blindDef = {pos:'SB', isSteal:true, raiserPos:sbCtx.raiserPos, correct:sbV.correct, called:true};
-        if (sbV.correct !== 'call') issues.push('LIMP_OOP'); // called a steal with a fold/3-bet hand
-      } else {
-        // Non-steal open (UTG/MP/etc.) OR multiway/non-first-in: SB has no flat range → 3-bet-or-fold.
-        h.blindDef = {pos:'SB', isSteal:false, raiserPos:sbCtx?sbCtx.raiserPos:null, correct:'fold', called:true};
-        issues.push('LIMP_OOP');
-      }
-    }
-    // LIMP: limped from non-blind position with a raiseable hand
-    if (h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise) {
-      const limpRange = HARDIN_RANGES[h.position];
-      if (limpRange && limpRange.all.includes(h.handNotation)) issues.push('LIMP');
-    }
-    // CALL_WEAK: cold-called a raise with a hand outside Hardin's range (not already flagged as VPIP_TRASH)
-    if (h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise && !issues.includes('VPIP_TRASH')) {
-      const callRange = HARDIN_RANGES[h.position];
-      if (!callRange || !callRange.all.includes(h.handNotation)) issues.push('CALL_WEAK');
-    }
-    if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
-    // CALL_4BET: Hero 3-bet, faced a 4-bet, called with hand outside continue range
-    if (h.pfr && h.facedRaise && h.pfAction==='CALL') {
-      // Check if there were 2 raises before Hero's call (Hero raised, villain re-raised = 4-bet)
-      const preFlopRaises = (h.streetActions?.preflop?.actions||[]).filter(a=>a.action&&a.action.startsWith('raises'));
-      const heroRaiseIdx = preFlopRaises.findIndex(a=>a.player==='Hero');
-      const villainRaisedAfterHero = heroRaiseIdx>=0 && preFlopRaises.slice(heroRaiseIdx+1).some(a=>a.player!=='Hero');
-      if (villainRaisedAfterHero) {
-        const continueRange = CONTINUE_VS_4BET[h.position] || [];
-        if (!continueRange.includes(h.handNotation)) issues.push('CALL_4BET');
-      }
-    }
-    // FOLD_STRONG_LP: folded a must-raise hand in a true RFI spot (no prior raise)
-    // If someone already raised, folding is often correct — different range applies
-    const foldPosRange = HARDIN_RANGES[h.position];
-    if (h.pfAction==='FOLD' && !h.facedRaise && foldPosRange && foldPosRange.must.includes(h.handNotation)) issues.push('FOLD_STRONG_LP');
-    h.tagIssues = issues;
+    // Tagging is now driven by the CHECK_REGISTRY (see 02b-check-registry.js).
+    // To add/modify a check, edit the registry — the tagger picks it up here,
+    // and all render surfaces read labels/meanings from the same registry.
+    h.tagIssues = runChecks(h);
     h.tagCompliant = issues.length===0 ? 1 : 0;
     const reviews = [];
     if (h.netBB < -10) reviews.push('BIG_LOSS');
