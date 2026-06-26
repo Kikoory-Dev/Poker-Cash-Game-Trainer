@@ -184,6 +184,7 @@ async function handleFiles(files) {
     allHands = [...allHands, ...newHands];
     added += newHands.length;
   }
+  bumpDataVersion();
   status.innerHTML = `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ Added ${added} new hands · Saving to GitHub...</p>`;
   const saved = await saveToGitHub(allHands);
   status.innerHTML = saved
@@ -247,6 +248,7 @@ function renderStoredSessions() {
 async function clearAllData() {
   if (!confirm('Delete ALL stored hands? This cannot be undone.')) return;
   allHands = [];
+  bumpDataVersion();
   await saveToGitHub([]);
   renderStoredSessions();
   renderDashboard();
