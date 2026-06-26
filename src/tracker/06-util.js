@@ -60,17 +60,57 @@ function filterByTime(hands, tf, dateInputId) {
   return hands;
 }
 
-function filterHands(hands, tf, stakes, gameType, dateInputId) {
+// ─── DERIVED INDEX & MEMOIZED FILTERING ───────────────────────
+// As the dataset grows, re-scanning allHands on every render gets costly.
+// We memoize filterHands by its argument signature, keyed to a dataset
+// version that MUST be bumped whenever allHands changes (load, upload).
+// We also precompute a derived index (buckets + rollups) once per version.
+var _dataVersion = 0;
+var _filterCache = {};
+var _derivedIndex = null;
+
+// Call this whenever allHands is mutated/replaced — invalidates all caches.
+function bumpDataVersion(){ _dataVersion++; _filterCache = {}; _derivedIndex = null; }
+
+// Built once per dataVersion; cheap rollups the UI reads directly.
+function getDerivedIndex(){
+  if (_derivedIndex && _derivedIndex._v === _dataVersion) return _derivedIndex;
+  var idx = { _v:_dataVersion, total:allHands.length, byStake:{}, byFormat:{}, byPosition:{}, netBB:0, flags:0 };
+  for (var i=0;i<allHands.length;i++){
+    var h = allHands[i];
+    idx.netBB += h.netBB || 0;
+    idx.flags += (h.tagIssues?h.tagIssues.length:0);
+    (idx.byStake[h.stakes] = idx.byStake[h.stakes] || []).push(h);
+    (idx.byFormat[h.gameType] = idx.byFormat[h.gameType] || []).push(h);
+    (idx.byPosition[h.position] = idx.byPosition[h.position] || []).push(h);
+  }
+  _derivedIndex = idx;
+  return idx;
+}
+
+function _rawFilterHands(hands, tf, stakes, gameType, dateInputId) {
   let h = filterByTime(hands, tf, dateInputId);
   if (stakes && stakes.indexOf('|') >= 0) {
-    // Combined format|stake value e.g. "Rush&Cash|NL10" — takes precedence, ignore gameType
     var parts = stakes.split('|');
-    h = h.filter(function(x){ return x.gameType===parts[0] && x.stakes===parts[1]; });
-    return h;
+    return h.filter(function(x){ return x.gameType===parts[0] && x.stakes===parts[1]; });
   }
   if (stakes && stakes!=='all') h = h.filter(function(x){ return x.stakes===stakes; });
   if (gameType && gameType!=='all') h = h.filter(function(x){ return x.gameType===gameType; });
   return h;
+}
+
+function filterHands(hands, tf, stakes, gameType, dateInputId) {
+  // Only memoize the common case: filtering the full allHands set. Calls with a
+  // different `hands` array (rare) bypass the cache to stay correct.
+  if (hands !== allHands) return _rawFilterHands(hands, tf, stakes, gameType, dateInputId);
+  // Date-range filter reads live DOM inputs, so its result can change without a
+  // dataVersion bump — never cache it.
+  if (tf === 'date') return _rawFilterHands(hands, tf, stakes, gameType, dateInputId);
+  var key = _dataVersion + '|' + tf + '|' + stakes + '|' + gameType + '|' + (dateInputId||'');
+  if (_filterCache[key]) return _filterCache[key];
+  var res = _rawFilterHands(hands, tf, stakes, gameType, dateInputId);
+  _filterCache[key] = res;
+  return res;
 }
 
 function getEl(id) { const e=document.getElementById(id); return e?e.value:'all'; }
@@ -93,6 +133,7 @@ async function init() {
     }
     return h;
   });
+  bumpDataVersion();
   renderDashboard();
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
