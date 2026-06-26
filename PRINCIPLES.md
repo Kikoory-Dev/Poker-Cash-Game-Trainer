@@ -242,3 +242,20 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     villain re-raise after Hero's open, Hero did not 4-bet. Faced-a-4-bet = Hero
     4-bet then faced a further raise (or 2+ villain raises after the open). A latent
     bug had CALL_3BET defined but never produced; the registry fixed it.
+
+43. **Derived-index + memoized filtering** (`06-util.js`). `filterHands` on the full
+    `allHands` set is memoized by argument signature, keyed to `_dataVersion`.
+    ANY mutation of `allHands` MUST call `bumpDataVersion()` (load, upload, clear) or
+    stale results will be served. The `date` time-filter is never cached (reads live
+    DOM). `getDerivedIndex()` precomputes buckets/rollups once per version. Measured
+    ~116x speedup on repeated filters at 50k hands.
+
+44. **Split/dimension engine** (`06b-split-engine.js`). Group results by any
+    DIMENSION (stake/format/position/hour/weekday) and compute any METRIC; both are
+    registries — add an axis or stat with one entry. The Positions tab is the
+    Splits tab; position keeps its richer issue-breakdown view.
+
+45. **Heads-up / short-handed position**: when only 2 players are dealt, the button
+    posts the small blind and is labeled SB (acts first preflop, last postflop) — NOT
+    a separate BTN/SB bucket. Hardin's framework is 6-max; don't create phantom
+    positions for folded-down hands.
