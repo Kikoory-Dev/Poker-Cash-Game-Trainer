@@ -205,3 +205,17 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     ANY range or rule, read it from the book — do not ask the user to supply
     definitions that are in the DB, and do not rely on memory. Rasterize chart
     pages (pdftoppm) and read grids cell-by-cell; prose + practice hands disambiguate.
+
+37. **When the user flags a mistake, propose a guardrail against the whole CLASS
+    of mistake — not just a one-off fix.** Every correction is a signal that some
+    process let an error through; the deliverable is a concrete idea to stop that
+    kind (or similar) of error recurring, not merely patching the instance.
+    Examples of guardrails: encode the rule as an auto-check so it can't be
+    misremembered; transcribe ranges cell-by-cell from the book image rather than
+    from memory/PDF-text; enumerate the full action set for a spot before writing
+    any verdict string; add a regression test that would have caught it.
+
+38. **Enumerate the full action set for a spot before writing any verdict text.**
+    A preflop spot facing a raise has THREE actions: fold / call / 3-bet (raise).
+    Verdict strings must not collapse this to two. (Caught 26 Jun: an SB-vs-steal
+    message said "fold or 3-bet" and dropped calling — misrepresenting the standard.)
