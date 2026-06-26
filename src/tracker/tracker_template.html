@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>Poker Flags & Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+:root{--bg:#1a2218;--bg2:#1f2e1c;--bg3:#162014;--border:#2e3d2b;--border2:#3a5035;--green:#6db87a;--green2:#a8d4b0;--green3:#4a9d5e;--red:#d96060;--amber:#d4a847;--blue:#70b4d4;--muted:#6b7d62;--text:#e8f0e4;--text2:#c8dbc4;--text3:#8fa882;--nav-h:56px;--safe-b:env(safe-area-inset-bottom,0px)}
+html{height:100%;overscroll-behavior:none}body{margin:0;padding:0;min-height:100%;background:var(--bg);font-family:'Inter',-apple-system,sans-serif;color:var(--text);overflow-x:hidden;overscroll-behavior-y:none}
+.app{max-width:600px;margin:0 auto;padding:16px 14px calc(var(--nav-h) + var(--safe-b) + 60px)}
+
+/* HEADER */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.header h1{font-size:20px;font-weight:800;color:var(--green);margin:0}
+.header .subtitle{font-size:11px;color:var(--muted);margin:0}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--bg2);border-top:1px solid var(--border);display:flex;z-index:90}
+.bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:none;border:none;color:var(--muted);cursor:pointer;padding:0;transition:color .15s;min-height:44px}
+.bnav-btn.active{color:var(--green)}
+.bnav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bnav-btn span{font-size:10px;font-weight:600}
+
+/* SECTIONS */
+.section{display:none}.section.active{display:block}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:0 0 10px}
+
+/* STAT GRID */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-grid.three{grid-template-columns:1fr 1fr 1fr}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+.stat-label{font-size:11px;color:var(--muted);font-weight:500;margin:0 0 3px}
+.stat-value{font-size:20px;font-weight:700;color:var(--text);margin:0;line-height:1.2}
+.stat-value.green{color:var(--green)}.stat-value.red{color:var(--red)}.stat-value.amber{color:var(--amber)}.stat-value.blue{color:var(--blue)}
+
+/* FILTER ROW */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filter-row label{font-size:12px;color:var(--muted);font-weight:500}
+select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit;-webkit-appearance:none;min-height:36px}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;line-height:1.4}
+.badge.ok{background:#1a3320;color:var(--green)}
+.badge.warn{background:#3d2e0a;color:var(--amber)}
+.badge.err{background:#3d1e1e;color:var(--red)}
+.badge.info{background:#0e2535;color:var(--blue)}
+.badge.muted{background:var(--bg3);color:var(--muted)}
+
+/* BUTTONS */
+.btn{background:var(--bg2);border:1px solid var(--border2);color:var(--green2);padding:10px 16px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--green3);border-color:var(--green3);color:#fff}
+.btn.danger{background:#3d1e1e;border-color:var(--red);color:var(--red)}
+.btn.small{padding:7px 12px;font-size:12px;min-height:36px}
+.btn.full{width:100%}
+
+/* UPLOAD */
+.upload-area{border:2px dashed var(--border2);border-radius:12px;padding:28px 20px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:14px;min-height:44px}
+.upload-area.drag{border-color:var(--green);background:var(--bg2)}
+.upload-area input{display:none}
+.upload-icon{font-size:36px;margin-bottom:8px}
+.upload-text{font-size:15px;color:var(--text3);margin:0 0 4px;font-weight:500}
+.upload-sub{font-size:12px;color:var(--muted)}
+
+/* POSITION BARS */
+.pos-bar{display:flex;flex-direction:column;gap:8px}
+.pos-row{display:grid;grid-template-columns:36px 1fr 60px;gap:8px;align-items:center}
+.pos-name{color:var(--text3);font-weight:700;font-size:12px}
+.pos-bar-track{background:var(--bg3);border-radius:4px;height:16px;overflow:hidden}
+.pos-bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.pos-bb{text-align:right;font-weight:700;font-size:12px}
+
+/* HAND CARDS (replaces table) */
+.hand-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .15s;-webkit-user-select:none}
+.hand-card:active{border-color:var(--green)}
+.hand-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.hand-cards-display{font-size:17px;font-weight:700;color:var(--text)}
+.hand-net{font-size:17px;font-weight:700}
+.hand-card-mid{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.hand-card-bot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.hand-meta{font-size:11px;color:var(--muted)}
+
+/* PROGRESS */
+.progress-bar{background:var(--border);border-radius:4px;height:6px;overflow:hidden;margin-top:6px}
+.progress-fill{height:100%;background:var(--green);border-radius:4px;transition:width .5s ease}
+
+/* PAGINATION */
+.pagination{display:flex;gap:8px;align-items:center;margin-top:14px;justify-content:center}
+.page-info{font-size:12px;color:var(--muted)}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--green);color:var(--green);padding:10px 18px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast.show{opacity:1}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:150;padding:0}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px 20px 0 0;padding:20px 18px;width:100%;max-width:600px;max-height:88vh;overflow-y:auto;padding-bottom:calc(20px + var(--safe-b))}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.modal h3{margin:0 0 14px;color:var(--green);font-size:17px;font-weight:700}
+.modal-close{float:right;background:var(--bg3);border:none;color:var(--muted);font-size:16px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-4px}
+.issue-list{list-style:none;padding:0;margin:0}
+.issue-list li{padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);line-height:1.65}
+.issue-list li:last-child{border-bottom:none}
+.issue-list li strong{color:var(--amber);display:block;margin-bottom:4px;font-size:14px}
+
+/* STATUS ROW */
+.status-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+
+/* MISTAKE CARD */
+.mistake-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.mistake-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.mistake-title{font-size:15px;font-weight:700;color:var(--text);margin:0 0 3px}
+.mistake-sub{font-size:12px;color:var(--text3);margin:0}
+.mistake-explain{background:var(--bg3);border-radius:8px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:var(--text3);line-height:1.65}
+.mistake-hand-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--bg3)}
+.mistake-hand-row:last-child{border-bottom:none}
+
+/* SESSION ITEM */
+.session-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.session-item:last-child{border-bottom:none}
+.session-name{font-size:13px;color:var(--text2);font-weight:500;word-break:break-all}
+.session-meta{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-icon{font-size:44px;margin-bottom:10px}
+.empty p{font-size:14px;margin:0}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div>
+      <h1>🃏 Poker Tracker</h1>
+      <p class="subtitle">Hardin TAG · NL25 6-max</p>
+    </div>
+    <div id="hand-count-badge" style="text-align:right">
+      <p style="font-size:20px;font-weight:800;color:var(--green);margin:0" id="total-hands-header">—</p>
+      <p style="font-size:10px;color:var(--muted);margin:0">hands</p>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="section active" id="tab-dashboard">
+    <div class="filter-row">
+      <select id="dash-filter" onchange="renderDashboard()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="dash-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()"><input type="date" id="dash-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderDashboard()">
+      <select id="dash-stakes" onchange="renderDashboard()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+      <select id="dash-type" onchange="renderDashboard()">
+        <option value="all">All formats</option>
+        <option value="Regular">Regular</option>
+        <option value="Rush&Cash">Rush &amp; Cash</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="dash-stats"></div>
+    <div class="card">
+      <div class="card-title">Position P&L (BB)</div>
+      <div class="pos-bar" id="dash-positions"></div>
+    </div>
+    <div id="dash-violations"></div>
+    <div class="card">
+      <div class="card-title">Sessions &amp; stakes</div>
+      <div id="dash-sessions"></div>
+      <div id="dash-stakes-breakdown" style="margin-top:10px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Postflop scorecard <span style="font-size:10px;color:var(--muted);font-weight:400">(Hardin criteria)</span></div>
+      <div id="dash-postflop"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">\u26a0\ufe0f Commitment leak \u2014 stacking off behind</div>
+      <div id="dash-commit"></div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="cursor:pointer" onclick="var b=document.getElementById('label-body');b.style.display=(b.style.display==='none'?'block':'none');">GGPoker color labels <span style="font-size:10px;color:var(--muted);font-weight:400">(tap to expand)</span></div>
+      <div id="label-body" style="display:none">
+        <p style="font-size:11px;color:var(--muted);margin:0 0 10px;line-height:1.5">Framework for labelling opponents via GG color tags. <b>Currently using the 4 ACTIVE colors</b>; the rest are reserve for when you scale up. Mnemonic: warm = wary, green = money/go, p-colors = pending/premium. Labels are hypotheses &mdash; keep using Pink until you have a real sample, and re-color when players surprise you.</p>
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:1"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#e05a5a"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Red &mdash; Dangerous reg<span style="font-size:8px;color:var(--green);font-weight:700;margin-left:6px">ACTIVE</span></p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Strong thinking TAG/LAG. Play straight, do not bluff, do not pay off.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:1"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#5fb87a"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Green &mdash; Fish (station)<span style="font-size:8px;color:var(--green);font-weight:700;margin-left:6px">ACTIVE</span></p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Loose-passive. Value bet relentlessly, never bluff. Your bread and butter.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:1"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#8fd9c4"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Mint &mdash; Nit<span style="font-size:8px;color:var(--green);font-weight:700;margin-left:6px">ACTIVE</span></p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Tight-passive, premiums only. Steal relentlessly, fold to aggression.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:1"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#e89bbf"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Pink &mdash; Needs more data<span style="font-size:8px;color:var(--green);font-weight:700;margin-left:6px">ACTIVE</span></p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Insufficient hands. Tentative, re-evaluate as reads build.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.55"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#d96a3d"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Blood orange &mdash; Aggressive maniac</p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Over-bluffs, applies pressure. Call down lighter; danger is aggression not skill.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.55"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#e0954a"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Orange &mdash; Flawed reg</p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Solid-ish, makes mistakes. Caution but beatable.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.55"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#7ec46a"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Light green &mdash; Trickier fish</p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Calls too much but occasionally aggressive. Still profitable, slight caution.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.55"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#e3c84a"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Yellow &mdash; Calling station (extreme)</p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Never folds. Value bet huge, never ever bluff.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.55"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#5a9fd4"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Blue &mdash; Cool reg (unknown)</p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Competent, controlled, not yet proven dangerous. Default reg bucket.</p></div></div><div style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:0.55"><div style="flex:0 0 16px;width:16px;height:16px;border-radius:5px;margin-top:1px;background:#9b6dd4"></div><div style="flex:1;min-width:0"><p style="margin:0;font-size:12px;font-weight:700;color:var(--text)">Purple &mdash; Whale / premium target</p><p style="margin:2px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Huge target. Table-select toward them; sit and stay.</p></div></div>
+        <p style="font-size:10px;color:var(--muted);margin:10px 0 0;line-height:1.5">Core 4 covers ~90% of decisions. Reads accumulate mainly in Regular (in R&C you rarely see the same player twice).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div class="section" id="tab-upload">
+    <div class="card">
+      <div class="card-title">Upload GGPoker hand history</div>
+      <div class="upload-area" id="drop-zone" onclick="document.getElementById('file-input').click()">
+        <input type="file" id="file-input" accept=".txt" multiple onchange="handleFiles(this.files)"/>
+        <div class="upload-icon">📂</div>
+        <p class="upload-text">Tap to select .txt files</p>
+        <p class="upload-sub">Multiple files supported · GGPoker NLH format</p>
+      </div>
+      <div id="upload-status"></div>
+    </div>
+    <div class="card">
+      <div class="status-row">
+        <div class="card-title" style="margin:0">Stored sessions</div>
+        <button class="btn danger small" onclick="clearAllData()">Clear all</button>
+      </div>
+      <div id="stored-sessions"></div>
+    </div>
+  </div>
+
+  <!-- HAND REVIEW -->
+  <div class="section" id="tab-hands">
+    <div class="filter-row">
+      <select id="hands-filter" onchange="renderHands()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="hands-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()"><input type="date" id="hands-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderHands()">
+      <select id="hands-stakes" onchange="renderHands()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+      <select id="hands-show" onchange="renderHands()">
+        <option value="all">All hands</option>
+        <option value="mistakes">Mistakes only</option>
+        <option value="losses">Biggest losses</option>
+        <option value="played">Played (VPIP)</option>
+      </select>
+      <select id="hands-street" onchange="renderHands()">
+        <option value="all">All streets</option>
+        <option value="preflop">Preflop only</option>
+        <option value="flop">Saw flop</option>
+        <option value="turn">Saw turn</option>
+        <option value="river">Saw river</option>
+        <option value="pf_mistake">Preflop mistakes</option>
+        <option value="postf_mistake">Postflop mistakes</option>
+      </select>
+      <select id="hands-pos" onchange="renderHands()">
+        <option value="all">All positions</option>
+        <option value="BTN">BTN</option>
+        <option value="CO">CO</option>
+        <option value="HJ">HJ</option>
+        <option value="UTG">UTG</option>
+        <option value="SB">SB</option>
+        <option value="BB">BB</option>
+      </select>
+    </div>
+    <div id="hands-list"></div>
+    <div class="pagination" id="hands-pagination"></div>
+  </div>
+
+  <!-- POSITIONS -->
+  <div class="section" id="tab-positions" style="padding-bottom:80px">
+    <div class="filter-row">
+      <select id="pos-filter" onchange="renderPositions()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="pos-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()"><input type="date" id="pos-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderPositions()">
+      <select id="pos-stakes" onchange="renderPositions()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+    </div>
+    <div id="pos-detail-grid"></div>
+  </div>
+
+  <!-- MISTAKES -->
+  <div class="section" id="tab-mistakes">
+    <div class="filter-row">
+      <select id="mistakes-filter" onchange="renderMistakes()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="mistakes-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()"><input type="date" id="mistakes-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderMistakes()">
+      <select id="mistakes-stakes" onchange="renderMistakes()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+      <select id="mistakes-type" onchange="renderMistakes()">
+        <option value="all">All mistakes</option>
+        <option value="preflop">Preflop only</option>
+        <option value="postflop">Postflop only</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="mistakes-summary"></div>
+    <div id="mistakes-list"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" onclick="switchTab('dashboard',this)" id="bnav-dashboard">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    <span>Dashboard</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('upload',this)" id="bnav-upload">
+    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    <span>Upload</span>
+  </button>
+
+  <button class="bnav-btn" onclick="switchTab('positions',this)" id="bnav-positions">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    <span>Positions</span>
+  </button>
+
+  <button class="bnav-btn" onclick="switchTab('analysis',this)" id="bnav-analysis">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>Analysis</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('hands',this)" id="bnav-hands">
+    <svg viewBox="0 0 24 24"><rect x="2" y="3" width="14" height="18" rx="2"/><path d="M16 8h4"/><path d="M16 12h4"/><path d="M16 16h4"/><line x1="6" y1="8" x2="10" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/></svg>
+    <span>Hands</span>
+  </button>
+  <button class="bnav-btn" onclick="switchTab('grid',this)" id="bnav-grid">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="4" height="4" rx="0.5"/><rect x="10" y="3" width="4" height="4" rx="0.5"/><rect x="17" y="3" width="4" height="4" rx="0.5"/><rect x="3" y="10" width="4" height="4" rx="0.5"/><rect x="10" y="10" width="4" height="4" rx="0.5"/><rect x="17" y="10" width="4" height="4" rx="0.5"/><rect x="3" y="17" width="4" height="4" rx="0.5"/><rect x="10" y="17" width="4" height="4" rx="0.5"/><rect x="17" y="17" width="4" height="4" rx="0.5"/></svg>
+    <span>Grid</span>
+  </button>
+</nav>
+
+  <!-- ANALYSIS -->
+  <div class="section" id="tab-analysis" style="padding-bottom:80px">
+    <div class="filter-row">
+      <select id="analysis-filter" onchange="renderAnalysis()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="analysis-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()"><input type="date" id="analysis-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderAnalysis()">
+      <select id="analysis-stakes" onchange="renderAnalysis()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+    </div>
+    <div id="analysis-body"></div>
+  </div>
+
+  <!-- HAND COMBO GRID -->
+  <div class="section" id="tab-grid">
+    <div class="filter-row">
+      <select id="grid-filter" onchange="renderGrid()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="grid-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()"><input type="date" id="grid-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderGrid()">
+      <select id="grid-stakes" onchange="renderGrid()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+      <select id="grid-metric" onchange="renderGrid()">
+        <option value="net">Net $</option>
+        <option value="bb100">BB/100</option>
+        <option value="hands">Hands</option>
+      </select>
+      <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);cursor:pointer;white-space:nowrap">
+        <input type="checkbox" id="grid-exclude-blindfolds" onchange="renderGrid()" style="accent-color:var(--green)">
+        Exclude folded blinds
+      </label>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px">Tap any combo to review · Green = won · Red = lost</div>
+    <div id="grid-container" style="overflow-x:auto;-webkit-overflow-scrolling:touch"></div>
+  </div>
+
+  <!-- STARTING HANDS -->
+  <div class="section" id="tab-starting">
+    <div class="filter-row">
+      <select id="starting-filter" onchange="renderStartingHands()">
+        <option value="all">All time</option>
+        <option value="may">May 2026</option>
+        <option value="june">June 2026</option>
+        <option value="last7">Last 7 days</option>
+        <option value="last30">Last 30 days</option>
+        <option value="last3s">Last 3 sessions</option>
+        <option value="last5s">Last 5 sessions</option>
+        <option value="last10s">Last 10 sessions</option>
+        <option value="date">Date range...</option>
+      </select>
+      <input type="date" id="starting-date-from" title="From" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()"><input type="date" id="starting-date-to" title="To" style="display:none;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px;font-family:inherit" onchange="renderStartingHands()">
+      <select id="starting-stakes" onchange="renderStartingHands()">
+        <option value="all">All games</option>
+        <option value="Rush&Cash|NL10">R&C NL10</option>
+        <option value="Rush&Cash|NL25">R&C NL25</option>
+        <option value="Regular|NL10">Reg NL10</option>
+        <option value="Regular|NL25">Reg NL25</option>
+        <option value="NL10">All NL10</option>
+        <option value="NL25">All NL25</option>
+      </select>
+      <select id="starting-sort" onchange="renderStartingHands()">
+        <option value="hands">Most played</option>
+        <option value="bb100">Best BB/100</option>
+        <option value="worst">Worst BB/100</option>
+        <option value="netloss">Biggest loss</option>
+      </select>
+      <select id="starting-cat" onchange="renderStartingHands()">
+        <option value="all">All categories</option>
+        <option value="Premium Pair">Premium Pairs</option>
+        <option value="Mid Pair">Mid Pairs</option>
+        <option value="Low Pair">Low Pairs</option>
+        <option value="Premium">Premium</option>
+        <option value="Broadway">Broadway</option>
+        <option value="Strong Ace">Strong Ace</option>
+        <option value="Suited Connector">Suited Connectors</option>
+        <option value="Trash">Trash</option>
+      </select>
+    </div>
+    <div class="stat-grid" id="starting-summary"></div>
+    <div id="starting-list"></div>
+  </div>
+</div>
+
+<!-- MODAL (sheet from bottom) -->
+<div class="modal-overlay" id="modal" style="display:none" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script></script>
+</body>
+</html>
