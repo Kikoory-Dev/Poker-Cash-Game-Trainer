@@ -117,5 +117,5 @@ function getHardinVerdict(notation, position, pfAction) {
   return {verdict:'ok', note:''};
 }
 
-function pfFlagMeaning(){ return {VPIP_TRASH:'Played a hand outside your opening range',LIMP:'Open-limped instead of raising or folding',LIMP_OOP:'Limped out of position',CALL_3BET:'Flat-called a 3-bet (should 4-bet or fold)',CALL_4BET:'Called a 4-bet too light',FOLD_STRONG_LP:'Folded a strong hand in late position'}; }
-function postfFlagMeaning(){ return {MISSED_CBET:'Checked when a c-bet was the right play',CALL_WEAK:'Called postflop with a weak hand (should fold)'}; }
+function pfFlagMeaning(){ return flagsByPhase('preflop'); }
+function postfFlagMeaning(){ return flagsByPhase('postflop'); }
