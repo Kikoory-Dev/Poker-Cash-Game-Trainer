@@ -2,7 +2,7 @@
 """Concatenate src_modules/*.js in order, inline into the HTML template, write poker-tracker.html."""
 import re, sys, glob, os
 
-MODULE_ORDER = ['01-config','02-data-ranges','03-parse','04-eval','05-checks','06-util',
+MODULE_ORDER = ['01-config','02-data-ranges','02b-check-registry','03-parse','04-eval','05-checks','06-util',
                 '07-render-core','08-render-hands','09-render-analysis','10-render-grid','11-boot']
 
 def build(modules_dir='src_modules', template='tracker_template.html', out='poker-tracker.html'):
