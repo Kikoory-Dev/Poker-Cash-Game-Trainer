@@ -170,3 +170,38 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     bb/100 is noise, not signal — sample too small to mean anything about true win
     rate), (3) full leak/decision-quality breakdown, (4) a concise summary version
     of that breakdown — not just the detailed one.
+
+## H. STEALING & BLIND DEFENSE (added 26 Jun 2026, verified vs book)
+
+32. **Steal definition (Hardin p.116, p.250 verbatim):** "Raising first into a pot
+    is considered a steal" — and only from a STEAL POSITION = CO, BTN, or SB.
+    A raise is a steal ONLY IF it is first-in (opens an unopened pot) AND from CO/BTN/SB.
+    - UTG / MP opens are NOT steals (not steal positions).
+    - A raise after a limp, or any non-first-in raise, is NOT a steal.
+
+33. **SB action vs a raise is steal-dependent.** The SB calling/3-betting range
+    differs based on whether the raise was a steal:
+    - vs a STEAL (CO/BTN/SB first-in): SB plays the blind-defense range (below).
+    - vs a NON-STEAL open (UTG/MP, or non-first-in): SB is 3-bet-or-fold on a
+      tighter value range; no flat-calling range. Flatting is still a violation,
+      but the *reason* differs from the steal case — do not conflate them.
+
+34. **SB blind-defense vs a steal (chart p.262, read cell-by-cell):**
+    - Value 3-bet: JJ+, AQo+, AJs
+    - Call: TT, 99, 88, 77, ATs, KQs, KJs, KTs, QJs, QTs, JTs, KQo, KJo, QJo, AJo, ATo, KTo
+    - Else: fold (small pairs/suited aces = 3-bet-bluff-or-fold)
+    - 66 specifically: NOT a call (call stops at 77), NOT a 3-bet → fold. (Call only
+      vs a 2bb min-raise per Practice Hand #6.)
+
+35. **BB blind-defense vs a steal (chart p.263) — much wider** (BB closes action,
+    best pot odds):
+    - Value 3-bet: JJ+, AQo+, AJs
+    - Call: 22-TT, ATs-A5s, KJs KTs K9s, QJs QTs Q9s, JTs J9s, T9s, 98s 97s, 87s 86s,
+      76s, 65s; ATo A9o A8o A7o, KJo KTo K9o, QJo QTo Q9o, JTo J9o, T9o
+    - Else: fold
+
+36. **CROSS-CHECK AGAINST HARDIN YOURSELF.** The book PDF is in the repo at
+    reference/Master_Micro_Stakes_Poker_Alton_Hardin.pdf (460pp). Before encoding
+    ANY range or rule, read it from the book — do not ask the user to supply
+    definitions that are in the DB, and do not rely on memory. Rasterize chart
+    pages (pdftoppm) and read grids cell-by-cell; prose + practice hands disambiguate.
