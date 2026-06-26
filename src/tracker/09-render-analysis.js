@@ -319,9 +319,41 @@ function renderAnalysis() {
 function renderPositions() {
   var tf = getEl('pos-filter');
   var hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all', 'pos-date');
-  var positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  var dimKey = getEl('split-dim'); if(dimKey==='all'||!dimKey) dimKey='position';
   var grid = document.getElementById('pos-detail-grid');
   grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
+
+  // Non-position dimensions: generic split-engine view (stake/format/hour/weekday)
+  if (dimKey !== 'position') {
+    var rows = splitBy(hands, dimKey);
+    var dimLabel = splitDimension(dimKey).label;
+    if (!rows.length) { grid.innerHTML='<div class="card"><p style="color:#6b7d62;font-size:13px;margin:0">No hands</p></div>'; return; }
+    var metricsToShow = ['netbb','bb100','vpip','pfr','flagrate'];
+    grid.innerHTML =
+      '<div class="card"><div class="card-title">Split by '+dimLabel+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+rows.length+' groups · '+hands.length+' hands</span></div>'
+      + '<p style="font-size:11px;color:var(--text3);margin:0 0 4px;line-height:1.5">Tap a row to see its hands. Small groups are noisy — read bb/100 with the hand count in mind.</p></div>'
+      + rows.map(function(r){
+          var net=r.metrics.netbb, col=net>=0?'var(--green)':'var(--red)';
+          var statCells = metricsToShow.map(function(mk){
+            var m=splitMetric(mk); var v=r.metrics[mk]; var g=m.good?m.good(v):null;
+            var c = g===null?'var(--text)':(g?'var(--green)':'var(--red)');
+            return '<div class="stat"><p class="stat-label">'+m.label+'</p><p class="stat-value" style="font-size:15px;color:'+c+'">'+m.fmt(v)+'</p></div>';
+          }).join('');
+          return '<div class="card split-row" data-bucket="'+r.bucket+'" data-dim="'+dimKey+'" style="cursor:pointer">'
+            +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+            +'<div class="card-title" style="margin:0">'+r.bucket+'</div>'
+            +'<span style="font-size:13px;color:var(--muted)">'+r.metrics.hands+' hands <span style="font-size:16px">›</span></span></div>'
+            +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'+statCells+'</div>'
+            +'</div>';
+        }).join('');
+    document.querySelectorAll('.split-row').forEach(function(el){
+      el.addEventListener('click',function(){ showSplitHands(el.dataset.dim, el.dataset.bucket); });
+    });
+    return;
+  }
+
+  // Position dimension: keep the existing rich per-position view with issue breakdown + drill-down
+  var positions = ['BTN','CO','HJ','UTG','SB','BB'];
   var ILABELS = {VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',CALL_3BET:'Call 3-bet (out of range)',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
   grid.innerHTML = positions.map(function(pos) {
     var ph = hands.filter(function(h){return h.position===pos;});
@@ -389,6 +421,22 @@ function showPositionHands(pos) {
   var net=hands.reduce(function(s,h){return s+h.netBB;},0);
   var nc=net>=0?'var(--green)':'var(--red)';
   showModal(pos+' — '+hands.length+' hands',
+    '<div style="display:flex;justify-content:space-between;margin-bottom:12px">'
+    +'<span style="font-size:13px;color:var(--muted)">'+hands.length+' hands</span>'
+    +'<span style="font-size:14px;font-weight:700;color:'+nc+'">'+(net>=0?'+':'')+net.toFixed(1)+' BB</span></div>'
+    +hands.map(posHandRow).join(''));
+  wireRevBtns();
+}
+
+// Drill-down for a split-engine group (stake/format/hour/weekday bucket)
+function showSplitHands(dimKey, bucket) {
+  var tf=getEl('pos-filter');var st=getEl('pos-stakes');
+  var dim=splitDimension(dimKey);
+  var hands=filterHands(allHands,tf,st,'all','pos-date').filter(function(h){return dim.of(h)===bucket;});
+  hands.sort(function(a,b){return a.netBB-b.netBB;});
+  var net=hands.reduce(function(s,h){return s+h.netBB;},0);
+  var nc=net>=0?'var(--green)':'var(--red)';
+  showModal(dim.label+': '+bucket+' — '+hands.length+' hands',
     '<div style="display:flex;justify-content:space-between;margin-bottom:12px">'
     +'<span style="font-size:13px;color:var(--muted)">'+hands.length+' hands</span>'
     +'<span style="font-size:14px;font-weight:700;color:'+nc+'">'+(net>=0?'+':'')+net.toFixed(1)+' BB</span></div>'
