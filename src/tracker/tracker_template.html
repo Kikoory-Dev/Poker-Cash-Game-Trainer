@@ -282,9 +282,16 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <div class="pagination" id="hands-pagination"></div>
   </div>
 
-  <!-- POSITIONS -->
+  <!-- SPLITS (generalized from Positions) -->
   <div class="section" id="tab-positions" style="padding-bottom:80px">
     <div class="filter-row">
+      <select id="split-dim" onchange="renderPositions()">
+        <option value="position">By Position</option>
+        <option value="stake">By Stake</option>
+        <option value="format">By Table type</option>
+        <option value="hour">By Hour of day</option>
+        <option value="weekday">By Day of week</option>
+      </select>
       <select id="pos-filter" onchange="renderPositions()">
         <option value="all">All time</option>
         <option value="may">May 2026</option>
@@ -358,7 +365,7 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
 
   <button class="bnav-btn" onclick="switchTab('positions',this)" id="bnav-positions">
     <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-    <span>Positions</span>
+    <span>Splits</span>
   </button>
 
   <button class="bnav-btn" onclick="switchTab('analysis',this)" id="bnav-analysis">
