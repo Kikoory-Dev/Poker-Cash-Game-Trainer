@@ -282,9 +282,16 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
     <div class="pagination" id="hands-pagination"></div>
   </div>
 
-  <!-- POSITIONS -->
+  <!-- SPLITS (generalized from Positions) -->
   <div class="section" id="tab-positions" style="padding-bottom:80px">
     <div class="filter-row">
+      <select id="split-dim" onchange="renderPositions()">
+        <option value="position">By Position</option>
+        <option value="stake">By Stake</option>
+        <option value="format">By Table type</option>
+        <option value="hour">By Hour of day</option>
+        <option value="weekday">By Day of week</option>
+      </select>
       <select id="pos-filter" onchange="renderPositions()">
         <option value="all">All time</option>
         <option value="may">May 2026</option>
@@ -358,7 +365,7 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
 
   <button class="bnav-btn" onclick="switchTab('positions',this)" id="bnav-positions">
     <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-    <span>Positions</span>
+    <span>Splits</span>
   </button>
 
   <button class="bnav-btn" onclick="switchTab('analysis',this)" id="bnav-analysis">
@@ -1500,6 +1507,70 @@ async function init() {
 }
 
 // ====================================================================
+// SPLIT / DIMENSION ENGINE
+// ====================================================================
+// Group any set of hands by any DIMENSION and compute any METRICS per group.
+// Both dimensions and metrics are small registries (same pattern as the check
+// registry) so adding a new split axis or stat is a one-entry change.
+//
+// DIMENSION: {key, label, of(h) -> bucket-string-or-null, order? (sort fn)}
+// METRIC   : {key, label, compute(handsInGroup) -> number, fmt(n) -> string, good? (n)->bool|null}
+
+var SPLIT_DIMENSIONS = [
+  { key:'stake',    label:'Stake',      of:function(h){ return h.stakes || '?'; },
+    order:function(a,b){ var n=function(s){return parseInt((s||'').replace(/\D/g,''))||0;}; return n(a)-n(b); } },
+  { key:'format',   label:'Table type', of:function(h){ return h.gameType || '?'; } },
+  { key:'position', label:'Position',   of:function(h){ return h.position || '?'; },
+    order:function(a,b){ var o={BTN:0,CO:1,HJ:2,UTG:3,SB:4,BB:5}; return (o[a]==null?9:o[a])-(o[b]==null?9:o[b]); } },
+  { key:'hour',     label:'Hour of day', of:function(h){ return h.time ? h.time.slice(0,2)+':00' : '?'; },
+    order:function(a,b){ return a.localeCompare(b); } },
+  { key:'weekday',  label:'Day of week', of:function(h){
+      if(!h.date) return '?';
+      var p=h.date.split('/'); var d=new Date(Date.UTC(+p[0], +p[1]-1, +p[2]));
+      return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getUTCDay()];
+    },
+    order:function(a,b){ var o=['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; return o.indexOf(a)-o.indexOf(b); } }
+];
+
+var SPLIT_METRICS = [
+  { key:'hands',  label:'Hands', compute:function(hs){ return hs.length; },
+    fmt:function(n){ return String(n); }, good:function(){ return null; } },
+  { key:'netbb',  label:'Net BB', compute:function(hs){ return hs.reduce(function(s,h){return s+h.netBB;},0); },
+    fmt:function(n){ return (n>=0?'+':'')+n.toFixed(1); }, good:function(n){ return n>=0; } },
+  { key:'bb100',  label:'bb/100', compute:function(hs){ return hs.length? hs.reduce(function(s,h){return s+h.netBB;},0)/hs.length*100 : 0; },
+    fmt:function(n){ return (n>=0?'+':'')+n.toFixed(1); }, good:function(n){ return n>=0; } },
+  { key:'vpip',   label:'VPIP %', compute:function(hs){ return hs.length? hs.filter(function(h){return h.vpip;}).length/hs.length*100 : 0; },
+    fmt:function(n){ return n.toFixed(1)+'%'; }, good:function(){ return null; } },
+  { key:'pfr',    label:'PFR %', compute:function(hs){ return hs.length? hs.filter(function(h){return h.pfr;}).length/hs.length*100 : 0; },
+    fmt:function(n){ return n.toFixed(1)+'%'; }, good:function(){ return null; } },
+  { key:'flagrate', label:'Flags/100', compute:function(hs){ var f=hs.reduce(function(s,h){return s+(h.tagIssues?h.tagIssues.length:0);},0); return hs.length? f/hs.length*100 : 0; },
+    fmt:function(n){ return n.toFixed(1); }, good:function(n){ return n<=10; } }
+];
+
+function splitDimension(key){ for(var i=0;i<SPLIT_DIMENSIONS.length;i++){ if(SPLIT_DIMENSIONS[i].key===key) return SPLIT_DIMENSIONS[i]; } return SPLIT_DIMENSIONS[0]; }
+function splitMetric(key){ for(var i=0;i<SPLIT_METRICS.length;i++){ if(SPLIT_METRICS[i].key===key) return SPLIT_METRICS[i]; } return SPLIT_METRICS[1]; }
+
+// Core: group hands by dimension, compute every metric per group.
+// Returns [{bucket, hands, metrics:{key:value}}], sorted by the dimension's order (or by netbb desc).
+function splitBy(hands, dimKey){
+  var dim = splitDimension(dimKey);
+  var groups = {};
+  for(var i=0;i<hands.length;i++){
+    var b = dim.of(hands[i]); if(b==null) continue;
+    (groups[b] = groups[b] || []).push(hands[i]);
+  }
+  var rows = Object.keys(groups).map(function(b){
+    var hs = groups[b];
+    var m = {};
+    for(var j=0;j<SPLIT_METRICS.length;j++){ m[SPLIT_METRICS[j].key] = SPLIT_METRICS[j].compute(hs); }
+    return { bucket:b, hands:hs, metrics:m };
+  });
+  if(dim.order) rows.sort(function(a,b){ return dim.order(a.bucket,b.bucket); });
+  else rows.sort(function(a,b){ return b.metrics.netbb - a.metrics.netbb; });
+  return rows;
+}
+
+// ====================================================================
 // RENDER: DASHBOARD & SESSIONS
 // ====================================================================
 function switchTab(tab, btn) {
@@ -2493,9 +2564,41 @@ function renderAnalysis() {
 function renderPositions() {
   var tf = getEl('pos-filter');
   var hands = filterHands(allHands, tf, getEl('pos-stakes'), 'all', 'pos-date');
-  var positions = ['BTN','CO','HJ','UTG','SB','BB'];
+  var dimKey = getEl('split-dim'); if(dimKey==='all'||!dimKey) dimKey='position';
   var grid = document.getElementById('pos-detail-grid');
   grid.style.display='flex';grid.style.flexDirection='column';grid.style.gap='12px';
+
+  // Non-position dimensions: generic split-engine view (stake/format/hour/weekday)
+  if (dimKey !== 'position') {
+    var rows = splitBy(hands, dimKey);
+    var dimLabel = splitDimension(dimKey).label;
+    if (!rows.length) { grid.innerHTML='<div class="card"><p style="color:#6b7d62;font-size:13px;margin:0">No hands</p></div>'; return; }
+    var metricsToShow = ['netbb','bb100','vpip','pfr','flagrate'];
+    grid.innerHTML =
+      '<div class="card"><div class="card-title">Split by '+dimLabel+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+rows.length+' groups · '+hands.length+' hands</span></div>'
+      + '<p style="font-size:11px;color:var(--text3);margin:0 0 4px;line-height:1.5">Tap a row to see its hands. Small groups are noisy — read bb/100 with the hand count in mind.</p></div>'
+      + rows.map(function(r){
+          var net=r.metrics.netbb, col=net>=0?'var(--green)':'var(--red)';
+          var statCells = metricsToShow.map(function(mk){
+            var m=splitMetric(mk); var v=r.metrics[mk]; var g=m.good?m.good(v):null;
+            var c = g===null?'var(--text)':(g?'var(--green)':'var(--red)');
+            return '<div class="stat"><p class="stat-label">'+m.label+'</p><p class="stat-value" style="font-size:15px;color:'+c+'">'+m.fmt(v)+'</p></div>';
+          }).join('');
+          return '<div class="card split-row" data-bucket="'+r.bucket+'" data-dim="'+dimKey+'" style="cursor:pointer">'
+            +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'
+            +'<div class="card-title" style="margin:0">'+r.bucket+'</div>'
+            +'<span style="font-size:13px;color:var(--muted)">'+r.metrics.hands+' hands <span style="font-size:16px">›</span></span></div>'
+            +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">'+statCells+'</div>'
+            +'</div>';
+        }).join('');
+    document.querySelectorAll('.split-row').forEach(function(el){
+      el.addEventListener('click',function(){ showSplitHands(el.dataset.dim, el.dataset.bucket); });
+    });
+    return;
+  }
+
+  // Position dimension: keep the existing rich per-position view with issue breakdown + drill-down
+  var positions = ['BTN','CO','HJ','UTG','SB','BB'];
   var ILABELS = {VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',CALL_3BET:'Call 3-bet (out of range)',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
   grid.innerHTML = positions.map(function(pos) {
     var ph = hands.filter(function(h){return h.position===pos;});
@@ -2563,6 +2666,22 @@ function showPositionHands(pos) {
   var net=hands.reduce(function(s,h){return s+h.netBB;},0);
   var nc=net>=0?'var(--green)':'var(--red)';
   showModal(pos+' — '+hands.length+' hands',
+    '<div style="display:flex;justify-content:space-between;margin-bottom:12px">'
+    +'<span style="font-size:13px;color:var(--muted)">'+hands.length+' hands</span>'
+    +'<span style="font-size:14px;font-weight:700;color:'+nc+'">'+(net>=0?'+':'')+net.toFixed(1)+' BB</span></div>'
+    +hands.map(posHandRow).join(''));
+  wireRevBtns();
+}
+
+// Drill-down for a split-engine group (stake/format/hour/weekday bucket)
+function showSplitHands(dimKey, bucket) {
+  var tf=getEl('pos-filter');var st=getEl('pos-stakes');
+  var dim=splitDimension(dimKey);
+  var hands=filterHands(allHands,tf,st,'all','pos-date').filter(function(h){return dim.of(h)===bucket;});
+  hands.sort(function(a,b){return a.netBB-b.netBB;});
+  var net=hands.reduce(function(s,h){return s+h.netBB;},0);
+  var nc=net>=0?'var(--green)':'var(--red)';
+  showModal(dim.label+': '+bucket+' — '+hands.length+' hands',
     '<div style="display:flex;justify-content:space-between;margin-bottom:12px">'
     +'<span style="font-size:13px;color:var(--muted)">'+hands.length+' hands</span>'
     +'<span style="font-size:14px;font-weight:700;color:'+nc+'">'+(net>=0?'+':'')+net.toFixed(1)+' BB</span></div>'
@@ -3023,7 +3142,7 @@ dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files)});
 
 // ─── TOAST ────────────────────────────────────────────────────
-const APP_VERSION = '2.53';
+const APP_VERSION = '2.54';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
