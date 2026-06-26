@@ -1311,9 +1311,9 @@ function renderDashboard() {
   const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   document.getElementById('dash-violations').innerHTML = sorted.length
     ? sorted.map(([k,v])=>`
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #2e3d2b">
+      <div onclick="showViolationHands('${k}','dash')" style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #2e3d2b;cursor:pointer">
         <span style="font-size:13px;color:#a8d4b0">${ISSUE_EXPLAIN[k]?.label||k}</span>
-        <span class="badge err">${v}x</span>
+        <span style="display:flex;align-items:center;gap:8px"><span class="badge err">${v}x</span><span style="color:var(--muted);font-size:16px">›</span></span>
       </div>`).join('')
     : '<p style="color:#6b7d62;font-size:13px;margin:8px 0">No violations found</p>';
   // Sessions
@@ -1924,10 +1924,17 @@ function showHandDetail(id) {
   var backBar = '';
   if (window._modalReturn) {
     var mr = window._modalReturn;
-    var lblMap = {strong:'Strong value', medium:'Medium', draw:'Draws', weak:'Weak'};
-    var fLbl = mr.filter==='wrong'?' mistakes':(mr.filter==='ok'?' correct plays':'');
-    backBar = '<div onclick="showTierHands(\''+mr.tier+'\',\''+(mr.filter||'all')+'\')" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;margin-bottom:12px;color:var(--text2);font-size:12px;font-weight:600">'
-      + '<span style="font-size:15px">\u2190</span> Back to '+(lblMap[mr.tier]||mr.tier)+fLbl+'</div>';
+    if (mr.kind === 'violation') {
+      var vex = ISSUE_EXPLAIN[mr.issue] || {};
+      var vlabel = vex.label || mr.issue;
+      backBar = '<div onclick="showViolationHands(\''+mr.issue+'\',\''+(mr.source||'analysis')+'\')" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;margin-bottom:12px;color:var(--text2);font-size:12px;font-weight:600">'
+        + '<span style="font-size:15px">\u2190</span> Back to '+vlabel+'</div>';
+    } else {
+      var lblMap = {strong:'Strong value', medium:'Medium', draw:'Draws', weak:'Weak'};
+      var fLbl = mr.filter==='wrong'?' mistakes':(mr.filter==='ok'?' correct plays':'');
+      backBar = '<div onclick="showTierHands(\''+mr.tier+'\',\''+(mr.filter||'all')+'\')" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:7px 12px;margin-bottom:12px;color:var(--text2);font-size:12px;font-weight:600">'
+        + '<span style="font-size:15px">\u2190</span> Back to '+(lblMap[mr.tier]||mr.tier)+fLbl+'</div>';
+    }
   }
   document.getElementById('modal-body').innerHTML = backBar + body;
   document.getElementById('modal').style.display = 'flex';
@@ -2397,28 +2404,39 @@ function renderAnalysis() {
   </div>
 
   <div class="card">
-    <div class="card-title">TAG violations summary</div>
-    ${Object.entries(issueCounts).sort((a,b)=>b[1]-a[1]).map(([issue,count])=>{
-      const ex=ISSUE_EXPLAIN[issue];
-      const aff=hands.filter(h=>h.tagIssues.includes(issue));
-      const affNet=aff.reduce((s,h)=>s+h.netBB,0);
-      const affNetCol = affNet>=0 ? 'var(--green)' : 'var(--red)';
-      return `<div onclick="showViolationHands('${issue}')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div>
-            <p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p>
-            <p style="font-size:11px;color:var(--muted);margin:1px 0 0">${ex?.type||''}</p>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px">
-          <div style="text-align:right">
-            <span class="badge err">${count}x</span>
-            <p style="font-size:11px;color:${affNetCol};margin:2px 0 0">${affNet>=0?'+':''}${affNet.toFixed(1)} BB</p>
-          </div>
-          <span style="color:var(--muted);font-size:18px">›</span>
-        </div>
-      </div>`;
-    }).join('')}
+    <div class="card-title">Preflop mistakes</div>
+    ${(function(){
+      var pre = Object.entries(issueCounts).filter(function(e){ return (ISSUE_EXPLAIN[e[0]]||{}).type==='preflop'; }).sort((a,b)=>b[1]-a[1]);
+      if(!pre.length) return '<p style="color:var(--muted);font-size:13px;margin:8px 0">No preflop mistakes</p>';
+      return pre.map(([issue,count])=>{
+        const ex=ISSUE_EXPLAIN[issue];
+        const aff=hands.filter(h=>h.tagIssues.includes(issue));
+        const affNet=aff.reduce((s,h)=>s+h.netBB,0);
+        const affNetCol = affNet>=0 ? 'var(--green)' : 'var(--red)';
+        return `<div onclick="showViolationHands('${issue}','analysis')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+          <div><p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p><p style="font-size:11px;color:var(--muted);margin:1px 0 0">preflop</p></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="text-align:right"><span class="badge err">${count}x</span><p style="font-size:11px;color:${affNetCol};margin:2px 0 0">${affNet>=0?'+':''}${affNet.toFixed(1)} BB</p></div><span style="color:var(--muted);font-size:18px">›</span></div>
+        </div>`;
+      }).join('');
+    })()}
+  </div>
+
+  <div class="card">
+    <div class="card-title">Postflop mistakes</div>
+    ${(function(){
+      var post = Object.entries(issueCounts).filter(function(e){ return (ISSUE_EXPLAIN[e[0]]||{}).type==='postflop'; }).sort((a,b)=>b[1]-a[1]);
+      if(!post.length) return '<p style="color:var(--muted);font-size:13px;margin:8px 0">No postflop mistakes</p>';
+      return post.map(([issue,count])=>{
+        const ex=ISSUE_EXPLAIN[issue];
+        const aff=hands.filter(h=>h.tagIssues.includes(issue));
+        const affNet=aff.reduce((s,h)=>s+h.netBB,0);
+        const affNetCol = affNet>=0 ? 'var(--green)' : 'var(--red)';
+        return `<div onclick="showViolationHands('${issue}','analysis')" style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer">
+          <div><p style="font-size:13px;color:var(--text2);margin:0;font-weight:500">${ex?.label||issue}</p><p style="font-size:11px;color:var(--muted);margin:1px 0 0">postflop</p></div>
+          <div style="display:flex;align-items:center;gap:10px"><div style="text-align:right"><span class="badge err">${count}x</span><p style="font-size:11px;color:${affNetCol};margin:2px 0 0">${affNet>=0?'+':''}${affNet.toFixed(1)} BB</p></div><span style="color:var(--muted);font-size:18px">›</span></div>
+        </div>`;
+      }).join('');
+    })()}
   </div>`;
 }
 // ─── HAND COMBO GRID ─────────────────────────────────────────
@@ -2635,11 +2653,18 @@ function renderGrid() {
   el.innerHTML = '<div style="display:flex;flex-direction:column;gap:1px">' + rows + '</div>';
 }
 
-function showViolationHands(issue) {
-  var tf = getEl('analysis-filter');
-  var hands = filterHands(allHands, tf, getEl('analysis-stakes'), 'all', 'analysis-date')
+function showViolationHands(issue, source) {
+  source = source || 'analysis';
+  var filterMap = {
+    analysis: ['analysis-filter','analysis-stakes','analysis-date'],
+    dash:     ['dash-filter','dash-stakes','dash-date']
+  };
+  var fm = filterMap[source] || filterMap.analysis;
+  var tf = getEl(fm[0]);
+  var hands = filterHands(allHands, tf, getEl(fm[1]), 'all', fm[2])
     .filter(function(h){ return h.tagIssues.indexOf(issue) !== -1; });
   if (!hands.length) { showToast('No hands'); return; }
+  window._modalReturn = {kind:'violation', issue:issue, source:source};
   var ex = ISSUE_EXPLAIN[issue] || {};
   var net = hands.reduce(function(s,h){return s+h.netBB;},0);
   var bbCol = net>=0?'var(--green)':'var(--red)';
@@ -2682,7 +2707,7 @@ function showViolationHands(issue) {
       + '</div>'
       + '<div style="display:flex;gap:8px;align-items:center">'
       + '<span style="font-size:13px;font-weight:700;color:' + c + '">' + (h.netBB>=0?'+':'') + h.netBB.toFixed(1) + ' BB</span>'
-      + '<button onclick="closeModal();showHandDetail(\'' + h.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
+      + '<button onclick="showHandDetail(\'' + h.id + '\')" style="font-size:11px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:3px 8px;border-radius:6px;cursor:pointer">Review</button>'
       + '</div>'
       + '</div>';
   }
@@ -2800,7 +2825,7 @@ async function init() {
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
 }
-const APP_VERSION = '2.48';
+const APP_VERSION = '2.49';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
