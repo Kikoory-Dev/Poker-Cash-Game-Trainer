@@ -889,7 +889,7 @@ function getPosition(heroSeat, btnSeat, seatList) {
     5:{0:'BTN',1:'SB',2:'BB',3:'UTG',4:'HJ'},
     4:{0:'BTN',1:'SB',2:'BB',3:'UTG'},
     3:{0:'BTN',1:'SB',2:'BB'},
-    2:{0:'BTN/SB',1:'BB'}
+    2:{0:'SB',1:'BB'}
   };
   return (maps[n]||{})[steps] || `P${steps}`;
 }
@@ -1468,17 +1468,57 @@ function filterByTime(hands, tf, dateInputId) {
   return hands;
 }
 
-function filterHands(hands, tf, stakes, gameType, dateInputId) {
+// ─── DERIVED INDEX & MEMOIZED FILTERING ───────────────────────
+// As the dataset grows, re-scanning allHands on every render gets costly.
+// We memoize filterHands by its argument signature, keyed to a dataset
+// version that MUST be bumped whenever allHands changes (load, upload).
+// We also precompute a derived index (buckets + rollups) once per version.
+var _dataVersion = 0;
+var _filterCache = {};
+var _derivedIndex = null;
+
+// Call this whenever allHands is mutated/replaced — invalidates all caches.
+function bumpDataVersion(){ _dataVersion++; _filterCache = {}; _derivedIndex = null; }
+
+// Built once per dataVersion; cheap rollups the UI reads directly.
+function getDerivedIndex(){
+  if (_derivedIndex && _derivedIndex._v === _dataVersion) return _derivedIndex;
+  var idx = { _v:_dataVersion, total:allHands.length, byStake:{}, byFormat:{}, byPosition:{}, netBB:0, flags:0 };
+  for (var i=0;i<allHands.length;i++){
+    var h = allHands[i];
+    idx.netBB += h.netBB || 0;
+    idx.flags += (h.tagIssues?h.tagIssues.length:0);
+    (idx.byStake[h.stakes] = idx.byStake[h.stakes] || []).push(h);
+    (idx.byFormat[h.gameType] = idx.byFormat[h.gameType] || []).push(h);
+    (idx.byPosition[h.position] = idx.byPosition[h.position] || []).push(h);
+  }
+  _derivedIndex = idx;
+  return idx;
+}
+
+function _rawFilterHands(hands, tf, stakes, gameType, dateInputId) {
   let h = filterByTime(hands, tf, dateInputId);
   if (stakes && stakes.indexOf('|') >= 0) {
-    // Combined format|stake value e.g. "Rush&Cash|NL10" — takes precedence, ignore gameType
     var parts = stakes.split('|');
-    h = h.filter(function(x){ return x.gameType===parts[0] && x.stakes===parts[1]; });
-    return h;
+    return h.filter(function(x){ return x.gameType===parts[0] && x.stakes===parts[1]; });
   }
   if (stakes && stakes!=='all') h = h.filter(function(x){ return x.stakes===stakes; });
   if (gameType && gameType!=='all') h = h.filter(function(x){ return x.gameType===gameType; });
   return h;
+}
+
+function filterHands(hands, tf, stakes, gameType, dateInputId) {
+  // Only memoize the common case: filtering the full allHands set. Calls with a
+  // different `hands` array (rare) bypass the cache to stay correct.
+  if (hands !== allHands) return _rawFilterHands(hands, tf, stakes, gameType, dateInputId);
+  // Date-range filter reads live DOM inputs, so its result can change without a
+  // dataVersion bump — never cache it.
+  if (tf === 'date') return _rawFilterHands(hands, tf, stakes, gameType, dateInputId);
+  var key = _dataVersion + '|' + tf + '|' + stakes + '|' + gameType + '|' + (dateInputId||'');
+  if (_filterCache[key]) return _filterCache[key];
+  var res = _rawFilterHands(hands, tf, stakes, gameType, dateInputId);
+  _filterCache[key] = res;
+  return res;
 }
 
 function getEl(id) { const e=document.getElementById(id); return e?e.value:'all'; }
@@ -1501,6 +1541,7 @@ async function init() {
     }
     return h;
   });
+  bumpDataVersion();
   renderDashboard();
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
@@ -1756,6 +1797,7 @@ async function handleFiles(files) {
     allHands = [...allHands, ...newHands];
     added += newHands.length;
   }
+  bumpDataVersion();
   status.innerHTML = `<p style="color:#6db87a;font-size:13px;margin:8px 0">✓ Added ${added} new hands · Saving to GitHub...</p>`;
   const saved = await saveToGitHub(allHands);
   status.innerHTML = saved
@@ -1819,6 +1861,7 @@ function renderStoredSessions() {
 async function clearAllData() {
   if (!confirm('Delete ALL stored hands? This cannot be undone.')) return;
   allHands = [];
+  bumpDataVersion();
   await saveToGitHub([]);
   renderStoredSessions();
   renderDashboard();
@@ -3142,7 +3185,7 @@ dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files)});
 
 // ─── TOAST ────────────────────────────────────────────────────
-const APP_VERSION = '2.54';
+const APP_VERSION = '2.55';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
