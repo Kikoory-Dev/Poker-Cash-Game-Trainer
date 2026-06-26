@@ -1817,16 +1817,30 @@ function showHandDetail(id) {
   });
   body += `</div>`;
 
-  // Villain showdown cards
+  // Showdown — full matchup: Hero's hand & made hand vs villain's, plus result
   if (h.villainShown && h.villainShown.length) {
-    body += `<div class="card" style="margin-bottom:12px"><div class="card-title">Showdown</div>`;
-    h.villainShown.forEach(v => {
-      const label = v.pos ? `Villain (${v.pos})` : 'Villain';
-      body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0">
-        <span style="font-size:13px;color:var(--text3);font-weight:600">${label}</span>
-        <span style="font-size:16px;font-weight:700">${formatCards(v.cards)}</span>
+    var fullBoard = (h.boardFlop||'') + (h.boardTurn?' '+h.boardTurn:'') + (h.boardRiver?' '+h.boardRiver:'');
+    var heroMade = (h.holeCards && fullBoard) ? pfMadeHand(h.holeCards, fullBoard) : null;
+    var heroWon = h.netBB > 0;
+    body += `<div class="card" style="margin-bottom:12px"><div class="card-title">Showdown${fullBoard?' \u00b7 '+formatCards(fullBoard):''}</div>`;
+    // Hero row
+    body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
+      <div style="min-width:0"><span style="font-size:13px;color:var(--green);font-weight:700">Hero (${h.position})</span>${heroMade?'<p style="margin:2px 0 0;font-size:11px;color:var(--text3)">'+heroMade[0]+'</p>':''}</div>
+      <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:700">${formatCards(h.holeCards)}</span>${heroWon?'<span class="badge" style="background:var(--green);color:#0a0a0a;font-size:9px;font-weight:800;padding:2px 5px;border-radius:3px">WON</span>':''}</div>
+    </div>`;
+    // Villain rows
+    h.villainShown.forEach(function(v){
+      var vLabel = v.pos ? 'Villain ('+v.pos+')' : 'Villain';
+      var vMade = (v.cards && fullBoard) ? pfMadeHand(v.cards, fullBoard) : null;
+      var vWon = !heroWon;
+      body += `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="min-width:0"><span style="font-size:13px;color:var(--text3);font-weight:700">${vLabel}</span>${vMade?'<p style="margin:2px 0 0;font-size:11px;color:var(--text3)">'+vMade[0]+'</p>':''}</div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:16px;font-weight:700">${formatCards(v.cards)}</span>${vWon?'<span class="badge" style="background:var(--green);color:#0a0a0a;font-size:9px;font-weight:800;padding:2px 5px;border-radius:3px">WON</span>':''}</div>
       </div>`;
     });
+    // Result line
+    var resultCol = heroWon ? 'var(--green)' : 'var(--red)';
+    body += `<div style="padding:8px 0 2px;text-align:right"><span style="font-size:13px;font-weight:800;color:${resultCol}">${heroWon?'Hero wins':'Hero loses'} \u00b7 ${h.netBB>=0?'+':''}${h.netBB.toFixed(1)} BB</span></div>`;
     body += `</div>`;
   }
 
