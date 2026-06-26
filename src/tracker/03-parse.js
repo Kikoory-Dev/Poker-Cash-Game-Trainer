@@ -235,14 +235,14 @@ function parseHands(text, filename) {
     // To add/modify a check, edit the registry — the tagger picks it up here,
     // and all render surfaces read labels/meanings from the same registry.
     h.tagIssues = runChecks(h);
-    h.tagCompliant = issues.length===0 ? 1 : 0;
+    h.tagCompliant = h.tagIssues.length===0 ? 1 : 0;
     const reviews = [];
     if (h.netBB < -10) reviews.push('BIG_LOSS');
     if (h.sawFlop && ['Turn','River'].includes(h.streetReached)) reviews.push('POSTFLOP');
     if (h.showdown) reviews.push('SHOWDOWN');
     h.reviewFlags = reviews;
-    h.isPreflop = issues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i));
-    h.isPostflop = issues.some(i=>['MISSED_CBET'].includes(i)) || h.reviewFlags.includes('POSTFLOP');
+    h.isPreflop = h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i));
+    h.isPostflop = h.tagIssues.some(i=>['MISSED_CBET','CALL_WEAK'].includes(i)) || h.reviewFlags.includes('POSTFLOP');
     hands.push(h);
   }
   return hands;
