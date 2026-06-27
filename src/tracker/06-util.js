@@ -133,8 +133,24 @@ async function init() {
     }
     return h;
   });
+  // Re-tag every hand with the CURRENT check registry. tagIssues is derived data,
+  // not ground truth — recomputing on load means any check-logic improvement
+  // (steal fix, 3bet/4bet split, future checks) applies retroactively to ALL
+  // historic hands, and stale stored tags can never mislead the analysis.
+  retagAll(allHands);
   bumpDataVersion();
   renderDashboard();
   renderStoredSessions();
   setTimeout(()=>renderAnalysis(), 200);
+}
+
+// Recompute tagIssues + derived flags for every hand using the live registry.
+function retagAll(hands){
+  for (var i=0;i<hands.length;i++){
+    var h = hands[i];
+    h.tagIssues = runChecks(h);
+    h.tagCompliant = h.tagIssues.length===0 ? 1 : 0;
+    h.isPreflop = h.tagIssues.some(function(x){ return ['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP','CALL_3BET','CALL_4BET','LIMP'].indexOf(x)>=0; });
+    h.isPostflop = h.tagIssues.some(function(x){ return ['MISSED_CBET','CALL_WEAK'].indexOf(x)>=0; }) || (h.reviewFlags||[]).indexOf('POSTFLOP')>=0;
+  }
 }
