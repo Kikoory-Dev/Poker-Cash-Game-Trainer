@@ -270,11 +270,19 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
        ground truth; explain any gap (time-bank credits, Fish Buffet rakeback,
        add-chips rebuys). Note that PokerCraft "Winloss" is PRE-rake and will read
        higher than the wallet/parsed net — the difference is the rake paid.
-    b. **Headline numbers** — hands played, P&L in USD, and bb/100 rate. For tiny
-       samples, say bb/100 is noise, not signal.
-    c. **Leaks & patterns** — biggest leaks by BB lost, any pattern visible even in
-       small samples (state clearly it's an indication, not statistically
-       significant), plus general preflop AND postflop mistakes spotted.
+    b. **Headline numbers** — hands played, P&L in USD, and bb/100 rate. The
+       small-sample caveat applies ONLY to the net $ result (one big pot swings it)
+       and to rare high-variance spots (stack-offs, river bluffs) — NOT to preflop
+       decisions. ~1000 hands = hundreds of repetitions of every preflop spot, which
+       is plenty to identify and act on preflop leaks immediately. Do not dismiss a
+       full multi-hour session as "small sample"; every session accumulates.
+    c. **Most-frequent mistakes, ranked (ALWAYS, unprompted)** — list the top
+       preflop mistakes by count AND the top postflop mistakes by count for THIS
+       session, each ranked with the flag count (e.g. "CALL_3BET ×4, LIMP_OOP ×7").
+       Then: biggest single leaks by BB lost, and any pattern across the flags
+       (e.g. "leaks cluster on calling decisions") even in one session — stated as
+       an indication to act on, not a statistical verdict. Preflop and postflop are
+       reported as two separate ranked lists.
 
 47. **Over-limp & over-call are distinct from open-limp/cold-call** (Hardin Ch.20/21):
     - OPEN-LIMP (LIMP): first voluntary entrant limps — a leak with raiseable hands.
