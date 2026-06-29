@@ -259,3 +259,30 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     posts the small blind and is labeled SB (acts first preflop, last postflop) — NOT
     a separate BTN/SB bucket. Hardin's framework is 6-max; don't create phantom
     positions for folded-down hands.
+
+## J. SESSION REPORTING PROTOCOL (added 29 Jun 2026, standing request)
+
+46. **After EVERY session the user shares, always deliver this report, unprompted:**
+    a. **Reconciliation** — check the numbers add up: parsed hand count vs PokerCraft
+       "Download N Game Histories" and the session list; per-table parsed net vs
+       wallet buy-in/cashout/add-chips deltas to the cent. Flag anything missing
+       (scrolled-off tables, un-uploaded files, dupes already in DB). Wallet is
+       ground truth; explain any gap (time-bank credits, Fish Buffet rakeback,
+       add-chips rebuys). Note that PokerCraft "Winloss" is PRE-rake and will read
+       higher than the wallet/parsed net — the difference is the rake paid.
+    b. **Headline numbers** — hands played, P&L in USD, and bb/100 rate. For tiny
+       samples, say bb/100 is noise, not signal.
+    c. **Leaks & patterns** — biggest leaks by BB lost, any pattern visible even in
+       small samples (state clearly it's an indication, not statistically
+       significant), plus general preflop AND postflop mistakes spotted.
+
+47. **Over-limp & over-call are distinct from open-limp/cold-call** (Hardin Ch.20/21):
+    - OPEN-LIMP (LIMP): first voluntary entrant limps — a leak with raiseable hands.
+    - OVER-LIMP (OVERLIMP): limp behind limpers. LEGIT (61.62bb/100) with the
+      implied-odds range (A9s-A2s, 22-77, suited connectors/gappers); a leak only
+      OUTSIDE that range. Don't over-limp with an aggressive iso-raiser left to act.
+    - OVER-CALL (OVERCALL): cold-call a raise behind another caller. Three options:
+      fold / over-call (implied-odds hands) / value-squeeze (premiums). Leak =
+      flatting marginal hands or flatting premiums that should squeeze.
+    - These checks must not double-fire with LIMP/CALL_WEAK; the more specific
+      over-limp/over-call check takes precedence.
