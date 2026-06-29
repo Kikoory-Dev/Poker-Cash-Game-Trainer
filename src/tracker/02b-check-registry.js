@@ -47,10 +47,18 @@ var CHECK_REGISTRY = [
   },
   {
     key:'LIMP', phase:'preflop', kind:'hard',
-    label:'Entered the pot by calling, not raising',
-    meaning:'Open-limped instead of raising or folding',
+    label:'Open-limped instead of raising',
+    meaning:'Open-limped (first in) instead of raising or folding',
     detect:function(h){
       if (!(h.pfAction==='CALL' && !h.inBB && !h.inSB && !h.facedRaise)) return false;
+      // True OPEN-limp = first voluntary entrant, no caller before Hero.
+      // If a limper is already in, it's an OVER-limp (handled by OVERLIMP), not this.
+      var acts = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var hi=-1; for(var i=0;i<acts.length;i++){ if(acts[i].player==='Hero'){hi=i;break;} }
+      if(hi>=0){
+        var before=acts.slice(0,hi);
+        if(before.some(function(a){return a.action&&a.action.indexOf('calls')===0;})) return false; // over-limp, not open-limp
+      }
       var r = HARDIN_RANGES[h.position];
       return !!(r && r.all.indexOf(h.handNotation)!==-1);
     }
@@ -61,6 +69,15 @@ var CHECK_REGISTRY = [
     meaning:'Cold-called a raise with a hand outside the range',
     detect:function(h, fired){
       if (!(h.pfAction==='CALL' && !h.pfr && !h.inBB && h.facedRaise && !fired.has('VPIP_TRASH'))) return false;
+      // If there's a caller in front of Hero, this is an OVER-call — let OVERCALL handle it.
+      var acts = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var hi=-1; for(var i=0;i<acts.length;i++){ if(acts[i].player==='Hero'){hi=i;break;} }
+      if(hi>=0){
+        var before=acts.slice(0,hi);
+        var lastRaiseIdx=-1;
+        for(var j=0;j<before.length;j++){ if(before[j].action&&before[j].action.indexOf('raises')===0) lastRaiseIdx=j; }
+        if(lastRaiseIdx>=0 && before.slice(lastRaiseIdx+1).some(function(a){return a.action&&a.action.indexOf('calls')===0;})) return false;
+      }
       var r = HARDIN_RANGES[h.position];
       return !r || r.all.indexOf(h.handNotation)===-1;
     }
@@ -116,6 +133,46 @@ var CHECK_REGISTRY = [
     detect:function(h){
       var r = HARDIN_RANGES[h.position];
       return !!(h.pfAction==='FOLD' && !h.facedRaise && r && r.must.indexOf(h.handNotation)!==-1);
+    }
+  },
+  {
+    key:'OVERLIMP', phase:'preflop', kind:'hard',
+    label:'Over-limped a hand outside the implied-odds range',
+    meaning:'Limped behind limpers with a hand that does not play well multiway',
+    detect:function(h){
+      // Hero called with NO raise yet but >=1 limper already in (over-limp), in a non-blind seat.
+      if (h.pfAction!=='CALL' || h.facedRaise || h.inBB || h.inSB) return false;
+      var acts = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var hi=-1; for(var i=0;i<acts.length;i++){ if(acts[i].player==='Hero'){hi=i;break;} }
+      if(hi<0) return false;
+      var before=acts.slice(0,hi);
+      var limpersBefore = before.filter(function(a){return a.action&&a.action.indexOf('calls')===0;}).length;
+      var raisesBefore = before.filter(function(a){return a.action&&a.action.indexOf('raises')===0;}).length;
+      if (raisesBefore>0 || limpersBefore<1) return false; // not an over-limp
+      // Leak only if the hand is outside the implied-odds over-limp range.
+      return OVERLIMP_OVERCALL_RANGE.indexOf(h.handNotation)===-1;
+    }
+  },
+  {
+    key:'OVERCALL', phase:'preflop', kind:'hard',
+    label:'Over-called a raise out of range',
+    meaning:'Cold-called a raise behind another caller with a hand that should fold or squeeze',
+    detect:function(h){
+      // Hero called a raise with at least one caller already in front (over-call spot).
+      if (h.pfAction!=='CALL' || !h.facedRaise || h.pfr) return false;
+      var acts = (h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var hi=-1; for(var i=0;i<acts.length;i++){ if(acts[i].player==='Hero'){hi=i;break;} }
+      if(hi<0) return false;
+      var before=acts.slice(0,hi);
+      var lastRaiseIdx=-1;
+      for(var j=0;j<before.length;j++){ if(before[j].action&&before[j].action.indexOf('raises')===0) lastRaiseIdx=j; }
+      if(lastRaiseIdx<0) return false;
+      var callersAfterRaise = before.slice(lastRaiseIdx+1).filter(function(a){return a.action&&a.action.indexOf('calls')===0;}).length;
+      if(callersAfterRaise<1) return false; // no caller in front → it's a normal cold-call, handled elsewhere
+      // Legit if it's a good multiway implied-odds over-call; leak if outside that range
+      // (premiums should value-squeeze, not flat — also a leak when flatted).
+      if (OVERLIMP_OVERCALL_RANGE.indexOf(h.handNotation)!==-1) return false; // in-range over-call = fine
+      return true;
     }
   }
 ];
