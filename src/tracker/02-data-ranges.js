@@ -50,6 +50,22 @@ const ISSUE_EXPLAIN = {
     explain:'Folding a designated opening hand throws away three sources of value: the steal when everyone folds, your positional advantage postflop, and value against wider calling ranges. Always open these.',
     rangeNote:'Check your position chart — must-raise hands are the green core, never folded.'
   },
+  OVERLIMP: {
+    label:'Over-limped a hand outside the implied-odds range',
+    type:'preflop',
+    better:'Either iso-raise (with a strong hand and fold equity) or fold. Over-limp only with implied-odds hands that play well multiway.',
+    principle:'Hardin Ch.20: over-limping is legitimate and profitable (61.62 bb/100) but ONLY with the right hands — suited aces A9s-A2s, pairs 22-77, suited connectors/gappers (K9s, Q9s, J9s+, T8s+, 97s+, 86s+, 76s, 65s, 54s).',
+    explain:'You limped behind one or more limpers with a hand outside the implied-odds over-limp range. These hands do not flop well enough multiway to justify it, and you have no fold equity since you are not raising. Over-limp only with hands that make disguised strong holdings (sets, flushes, straights). Outside that range: iso-raise the strong ones, fold the rest. Also avoid over-limping when an aggressive iso-raiser is left to act.',
+    rangeNote:'Over-limp range: A9s-A2s, 22-77, K9s/Q9s/J9s/JTs/T8s/T9s/97s/98s/86s/87s/76s/65s/54s. Else iso-raise or fold.'
+  },
+  OVERCALL: {
+    label:'Over-called a raise out of range',
+    type:'preflop',
+    better:'Fold, or value-squeeze (3-bet) your premiums. Over-call only with multiway implied-odds hands.',
+    principle:'Hardin Ch.21: facing an open + a caller you have three options — fold, over-call, or value-squeeze. Over-call only good multiway implied-odds hands; squeeze your value hands rather than flatting them.',
+    explain:'You cold-called a raise behind another caller with a hand outside the over-call range. Calling bloats a multiway pot with a hand that does not play well multiway; if your hand was strong you missed value by flatting instead of squeezing. The caller in front signals a weak capped range you could 3-bet to isolate. Fold the marginal hands, value-squeeze the premiums.',
+    rangeNote:'Over-call range: same implied-odds hands as over-limping. Premiums (QQ+/AK/AJs+/AQo+) value-squeeze. Marginal/dominated hands fold.'
+  },
   CALL_4BET: {
     label:'Called a 4-bet out of range',
     type:'preflop',
@@ -116,6 +132,16 @@ var SB_DEFENSE_CALL = ["TT","99","88","77","ATs","KQs","KJs","KTs","QJs","QTs","
 var BB_DEFENSE_CALL = ["TT","99","88","77","66","55","44","33","22",
   "ATs","A9s","A8s","A7s","A6s","A5s","KJs","KTs","K9s","QJs","QTs","Q9s","JTs","J9s","T9s","98s","97s","87s","86s","76s","65s",
   "ATo","A9o","A8o","A7o","KJo","KTo","K9o","QJo","QTo","Q9o","JTo","J9o","T9o"];
+
+// Hardin Ch.20/21 over-limp & over-call implied-odds range (hands that play well multiway):
+// suited aces A9s-A2s, pairs 22-77, suited connectors/gappers. Calling OUTSIDE this
+// range (and outside premiums, which should squeeze) when there are callers in front
+// is the leak. In-range over-limps/over-calls are legitimate (Hardin: 61.62bb/100 on over-limps).
+var OVERLIMP_OVERCALL_RANGE = ["A9s","A8s","A7s","A6s","A5s","A4s","A3s","A2s",
+  "22","33","44","55","66","77",
+  "K9s","Q9s","J9s","JTs","T8s","T9s","97s","98s","86s","87s","76s","65s","54s"];
+// Premium hands that should value-squeeze (3-bet) rather than over-call when there's a raise+caller:
+var SQUEEZE_VALUE_RANGE = ["AA","KK","QQ","JJ","TT","AKs","AQs","AJs","AKo","AQo"];
 
 // Determine whether Hero (in SB or BB) faced a steal: a first-in raise from CO/BTN/SB.
 // Returns {isSteal, raiserPos} or null if Hero isn't a defending blind facing a single raise.
