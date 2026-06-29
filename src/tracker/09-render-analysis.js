@@ -354,7 +354,7 @@ function renderPositions() {
 
   // Position dimension: keep the existing rich per-position view with issue breakdown + drill-down
   var positions = ['BTN','CO','HJ','UTG','SB','BB'];
-  var ILABELS = {VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',CALL_3BET:'Call 3-bet (out of range)',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong'};
+  var ILABELS = {VPIP_TRASH:'VPIP Trash',LIMP_OOP:'Limp OOP',LIMP:'Limp',CALL_WEAK:'Weak Call',CALL_4BET:'Call 4-bet',CALL_3BET:'Call 3-bet (out of range)',MISSED_CBET:'Missed C-bet',FOLD_STRONG_LP:'Fold Strong',OVERLIMP:'Over-limp',OVERCALL:'Over-call'};
   grid.innerHTML = positions.map(function(pos) {
     var ph = hands.filter(function(h){return h.position===pos;});
     if (!ph.length) return '<div class="card"><div class="card-title">'+pos+'</div><p style="color:#6b7d62;font-size:13px;margin:0">No hands</p></div>';
