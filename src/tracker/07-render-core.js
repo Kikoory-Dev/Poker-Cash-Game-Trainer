@@ -200,16 +200,20 @@ function buildSessions(handsArr) {
   handsArr.forEach(h => {
     if (!h.filename||!h.date||!h.time) return;
     const ts = new Date((h.date+' '+h.time).split('/').join('-')).getTime();
-    if (!fileSpans[h.filename]) fileSpans[h.filename]=[ts,ts];
+    if (!fileSpans[h.filename]) fileSpans[h.filename]=[ts,ts,h.date];
     else { fileSpans[h.filename][0]=Math.min(fileSpans[h.filename][0],ts); fileSpans[h.filename][1]=Math.max(fileSpans[h.filename][1],ts); }
   });
   const sorted = Object.entries(fileSpans).sort((a,b)=>a[1][0]-b[1][0]);
   const merged = [];
-  for (const [fn,[s,e]] of sorted) {
-    if (merged.length && s <= merged[merged.length-1].end + 300000) {
-      merged[merged.length-1].end = Math.max(merged[merged.length-1].end, e);
-      merged[merged.length-1].files.push(fn);
-    } else { merged.push({start:s,end:e,files:[fn]}); }
+  // A "session" = same calendar day, unless there's a >90-minute gap with no play
+  // (a genuine separate sitting). Short table-break gaps within a day do NOT split it.
+  const GAP = 90*60000;
+  for (const [fn,[s,e,date]] of sorted) {
+    const prev = merged.length ? merged[merged.length-1] : null;
+    if (prev && date===prev.date && s <= prev.end + GAP) {
+      prev.end = Math.max(prev.end, e);
+      prev.files.push(fn);
+    } else { merged.push({start:s,end:e,files:[fn],date:date}); }
   }
   return merged.map(sess => {
     const fset = new Set(sess.files);
