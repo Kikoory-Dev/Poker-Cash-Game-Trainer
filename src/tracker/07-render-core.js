@@ -176,11 +176,14 @@ async function handleFiles(files) {
   status.innerHTML = '<p style="color:#d4a847;font-size:13px;margin:8px 0">⏳ Parsing files...</p>';
   let added = 0;
   const existingIds = new Set(allHands.map(h=>h.id));
+  // The UPLOAD is the session boundary: every file uploaded together is one session,
+  // regardless of time gaps between hands. Stamp this batch with one sessionId.
+  const sessionId = 'S' + Date.now();
   for (const file of files) {
     const text = await file.text();
     const parsed = parseHands(text, file.name);
     const newHands = parsed.filter(h=>!existingIds.has(h.id));
-    newHands.forEach(h=>existingIds.add(h.id));
+    newHands.forEach(h=>{ h.sessionId = sessionId; existingIds.add(h.id); });
     allHands = [...allHands, ...newHands];
     added += newHands.length;
   }
@@ -196,35 +199,50 @@ async function handleFiles(files) {
 }
 
 function buildSessions(handsArr) {
-  const fileSpans = {};
-  handsArr.forEach(h => {
-    if (!h.filename||!h.date||!h.time) return;
-    const ts = new Date((h.date+' '+h.time).split('/').join('-')).getTime();
-    if (!fileSpans[h.filename]) fileSpans[h.filename]=[ts,ts,h.date];
-    else { fileSpans[h.filename][0]=Math.min(fileSpans[h.filename][0],ts); fileSpans[h.filename][1]=Math.max(fileSpans[h.filename][1],ts); }
+  // A session = one upload batch (hands sharing a sessionId). The upload is the
+  // authoritative boundary — you decide when a session ends by uploading.
+  // Historic hands (pre-sessionId) fall back to gap-based grouping as an estimate.
+  const sessions = [];
+
+  // 1) New uploads: one session per sessionId.
+  const byId = {};
+  handsArr.forEach(h=>{ if(h.sessionId) (byId[h.sessionId]=byId[h.sessionId]||[]).push(h); });
+  Object.keys(byId).forEach(id=>{
+    const sh = byId[id];
+    const times = sh.filter(h=>h.date&&h.time).map(h=>new Date((h.date+' '+h.time).split('/').join('-')).getTime());
+    if(!times.length) return;
+    sessions.push(_sessionStats(sh, Math.min.apply(null,times), Math.max.apply(null,times)));
   });
-  const sorted = Object.entries(fileSpans).sort((a,b)=>a[1][0]-b[1][0]);
-  const merged = [];
-  // A "session" = same calendar day, unless there's a >90-minute gap with no play
-  // (a genuine separate sitting). Short table-break gaps within a day do NOT split it.
-  const GAP = 90*60000;
-  for (const [fn,[s,e,date]] of sorted) {
-    const prev = merged.length ? merged[merged.length-1] : null;
-    if (prev && date===prev.date && s <= prev.end + GAP) {
-      prev.end = Math.max(prev.end, e);
-      prev.files.push(fn);
-    } else { merged.push({start:s,end:e,files:[fn],date:date}); }
+
+  // 2) Legacy hands (no sessionId): gap-based grouping, 60-min gap = new sitting.
+  const legacy = handsArr.filter(h=>!h.sessionId && h.filename && h.date && h.time)
+    .map(h=>({h, ts:new Date((h.date+' '+h.time).split('/').join('-')).getTime()}))
+    .sort((a,b)=>a.ts-b.ts);
+  const GAP = 60*60000;
+  let cur=null;
+  legacy.forEach(({h,ts})=>{
+    if(!cur || ts-cur.end>GAP){ cur={start:ts,end:ts,hands:[h]}; }
+    else { cur.end=ts; cur.hands.push(h); return; }
+    sessions.push(cur);
+  });
+  // finalize legacy clusters into stat objects
+  for(let i=0;i<sessions.length;i++){
+    const s=sessions[i];
+    if(s && s.hands && !('netBB' in s)) sessions[i]=_sessionStats(s.hands, s.start, s.end);
   }
-  return merged.map(sess => {
-    const fset = new Set(sess.files);
-    const sh = handsArr.filter(h=>fset.has(h.filename));
-    const netBB = sh.reduce((s,h)=>s+h.netBB,0);
-    const netUSD = sh.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
-    const durMin = (sess.end-sess.start)/60000;
-    const d = new Date(sess.start);
-    const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
-    return {date, durMin, hands:sh.length, netBB, netUSD, files:sess.files.length, start:sess.start, fileList:sess.files};
-  });
+
+  sessions.sort((a,b)=>a.start-b.start);
+  return sessions;
+}
+
+function _sessionStats(sh, start, end){
+  const netBB = sh.reduce((s,h)=>s+h.netBB,0);
+  const netUSD = sh.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
+  const durMin = (end-start)/60000;
+  const d = new Date(start);
+  const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
+  const files = Array.from(new Set(sh.map(h=>h.filename)));
+  return {date, durMin, hands:sh.length, netBB, netUSD, files:files.length, start, end, fileList:files};
 }
 
 function renderStoredSessions() {
