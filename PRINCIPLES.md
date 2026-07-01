@@ -294,3 +294,12 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
       flatting marginal hands or flatting premiums that should squeeze.
     - These checks must not double-fire with LIMP/CALL_WEAK; the more specific
       over-limp/over-call check takes precedence.
+
+48. **A SESSION = ONE UPLOAD BATCH, not a time window.** The user uploads when they
+    decide a session ended; that upload IS the session boundary. Every file uploaded
+    together is stamped with one sessionId and counts as a single session regardless
+    of gaps between hands (bathroom/activity breaks do NOT split it). Two separate
+    uploads on the same day = two sessions. Never infer session boundaries from
+    timestamps for new data. Historic hands (pre-sessionId, before 29 Jun 2026) use a
+    60-min-gap fallback as an estimate only. "Last N sessions" filters operate on
+    these upload-defined sessions.
