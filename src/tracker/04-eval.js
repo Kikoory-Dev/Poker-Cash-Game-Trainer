@@ -103,8 +103,8 @@ function pfHeroStreets(h){var sa=h.streetActions||{};var out={};var sts=['flop',
 
 function heroIsAllIn(h){
   var sa=h.streetActions||{};
-  var sb = h.stakes==='NL25' ? 0.10 : 0.05;
-  var bb = h.stakes==='NL25' ? 0.25 : 0.10;
+  var sb = sbForStake(h.stakes);
+  var bb = bbForStake(h.stakes);
   var total = 0;
   var pos = (h.seatPositions||{})['Hero'];
   if(pos==='SB') total=sb; else if(pos==='BB') total=bb;
