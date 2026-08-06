@@ -153,8 +153,8 @@ function showHandDetail(id) {
   // Add blind posts not covered by raises
   Object.keys(h.seatPositions||{}).forEach(function(pl){
     if(!playerTotals[pl]){
-      var _sb = h.stakes==='NL25' ? 0.10 : 0.05;
-      var _bb = h.stakes==='NL25' ? 0.25 : 0.10;
+      var _sb = sbForStake(h.stakes);
+      var _bb = bbForStake(h.stakes);
       if(h.seatPositions[pl]==='SB') playerTotals[pl]=_sb;
       if(h.seatPositions[pl]==='BB') playerTotals[pl]=_bb;
     }
