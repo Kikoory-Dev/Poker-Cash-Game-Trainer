@@ -70,3 +70,12 @@ async function saveToGitHub(hands) {
 }
 
 // ─── PARSER ───────────────────────────────────────────────────
+
+// Derive big-blind / small-blind (in $) from a stake label like 'NL5','NL10','NL25'.
+// NL<n> means the big blind is n cents. Single source of truth so new stakes
+// (NL5, NL50, ...) work everywhere without hardcoding NL10/NL25 pairs.
+function bbForStake(stakes){
+  var n = parseInt((stakes||'').replace(/\D/g,''),10);
+  return (isFinite(n) && n>0) ? n/100 : 0.25;
+}
+function sbForStake(stakes){ return bbForStake(stakes)/2; }
