@@ -30,8 +30,7 @@ function renderDashboard() {
   const playedHands = hands.filter(h=>h.vpip).length;
   const winRate = playedHands ? Math.round(wonHands/playedHands*100) : 0;
   // Net USD and duration
-  const stakesBBval = {'NL25':0.25,'NL10':0.10};
-  const netUSDval = hands.reduce((s,h)=>s+(h.netBB*(stakesBBval[h.stakes]||0.25)),0);
+    const netUSDval = hands.reduce((s,h)=>s+(h.netBB*bbForStake(h.stakes)),0);
   // Duration using filtered hands for current view
   const filtSessions = buildSessions(hands);
   let durHours = filtSessions.reduce((s,x)=>s+x.durMin/60, 0);
@@ -77,12 +76,19 @@ function renderDashboard() {
   const sessions = buildSessions(allHands);
   const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
   function bb100of(arr){ return arr.length? arr.reduce(function(s,x){return s+x.netBB;},0)/arr.length*100 : 0; }
-  var stakeRows = [
-    {label:'R&C NL10', hs:hands.filter(function(x){return x.gameType==='Rush&Cash'&&x.stakes==='NL10';})},
-    {label:'R&C NL25', hs:hands.filter(function(x){return x.gameType==='Rush&Cash'&&x.stakes==='NL25';})},
-    {label:'Reg NL10', hs:hands.filter(function(x){return x.gameType==='Regular'&&x.stakes==='NL10';})},
-    {label:'Reg NL25', hs:hands.filter(function(x){return x.gameType==='Regular'&&x.stakes==='NL25';})}
-  ];
+  // Build format×stake rows dynamically from the stakes actually present, so any
+  // stake (NL5, NL50, ...) shows up automatically instead of only NL10/NL25.
+  var _formats = ['Rush&Cash','Regular'];
+  var _fmtLabel = {'Rush&Cash':'R&C','Regular':'Reg'};
+  var _stakesPresent = [];
+  hands.forEach(function(x){ if(x.stakes && _stakesPresent.indexOf(x.stakes)<0) _stakesPresent.push(x.stakes); });
+  _stakesPresent.sort(function(a,b){ return bbForStake(a)-bbForStake(b); });
+  var stakeRows = [];
+  _formats.forEach(function(fmt){
+    _stakesPresent.forEach(function(st){
+      stakeRows.push({label:_fmtLabel[fmt]+' '+st, hs:hands.filter(function(x){return x.gameType===fmt&&x.stakes===st;})});
+    });
+  });
   const sbd=document.getElementById('dash-stakes-breakdown');
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:var(--text3);margin:0 0 10px">${sessions.length} session${sessions.length!==1?'s':''} · ${hands.length} hands shown · ${allHands.length} total in DB</p>`
@@ -237,7 +243,7 @@ function buildSessions(handsArr) {
 
 function _sessionStats(sh, start, end){
   const netBB = sh.reduce((s,h)=>s+h.netBB,0);
-  const netUSD = sh.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
+  const netUSD = sh.reduce((s,h)=>s+h.netBB*bbForStake(h.stakes),0);
   const durMin = (end-start)/60000;
   const d = new Date(start);
   const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
