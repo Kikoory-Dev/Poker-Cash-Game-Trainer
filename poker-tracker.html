@@ -581,6 +581,15 @@ async function saveToGitHub(hands) {
 
 // ─── PARSER ───────────────────────────────────────────────────
 
+// Derive big-blind / small-blind (in $) from a stake label like 'NL5','NL10','NL25'.
+// NL<n> means the big blind is n cents. Single source of truth so new stakes
+// (NL5, NL50, ...) work everywhere without hardcoding NL10/NL25 pairs.
+function bbForStake(stakes){
+  var n = parseInt((stakes||'').replace(/\D/g,''),10);
+  return (isFinite(n) && n>0) ? n/100 : 0.25;
+}
+function sbForStake(stakes){ return bbForStake(stakes)/2; }
+
 // ====================================================================
 // STATIC POKER REFERENCE DATA (ranges, grids, explanations)
 // ====================================================================
@@ -1068,9 +1077,14 @@ function streetContrib(raw) {
 function parseHands(text, filename) {
   const rawHands = text.split(/\n\n(?=Poker Hand #)/);
   const hands = [];
-  const isMini = filename.includes('0.05') || filename.includes('RushAndCash') && !filename.includes('0.1 - 0.25');
-  const fileBB = (filename.includes('0.05 - 0.1') || filename.includes('0.05-0.1')) ? 0.10 : 0.25;
-  const fileStakes = fileBB===0.10 ? 'NL10' : 'NL25';
+  // Parse the actual blind level from the filename: "... - <SB> - <BB> - 6max.txt".
+  // Previously only NL10/NL25 were recognized and anything else defaulted to NL25 —
+  // which mislabeled NL5 (0.02/0.05) as NL25 and made every bb/100 wrong by 5x.
+  var blindMatch = filename.match(/-\s*([0-9.]+)\s*-\s*([0-9.]+)\s*-\s*6max/);
+  var fileSB = blindMatch ? parseFloat(blindMatch[1]) : 0.10;
+  var fileBB = blindMatch ? parseFloat(blindMatch[2]) : 0.25;
+  // Derive the stake label from the big blind in cents (NL = 100 * BB).
+  var fileStakes = 'NL' + Math.round(fileBB*100);
   const fileGameType = filename.includes('Rush') ? 'Rush&Cash' : 'Regular';
 
   for (const raw of rawHands) {
@@ -1314,8 +1328,8 @@ function pfHeroStreets(h){var sa=h.streetActions||{};var out={};var sts=['flop',
 
 function heroIsAllIn(h){
   var sa=h.streetActions||{};
-  var sb = h.stakes==='NL25' ? 0.10 : 0.05;
-  var bb = h.stakes==='NL25' ? 0.25 : 0.10;
+  var sb = sbForStake(h.stakes);
+  var bb = bbForStake(h.stakes);
   var total = 0;
   var pos = (h.seatPositions||{})['Hero'];
   if(pos==='SB') total=sb; else if(pos==='BB') total=bb;
@@ -1742,8 +1756,7 @@ function renderDashboard() {
   const playedHands = hands.filter(h=>h.vpip).length;
   const winRate = playedHands ? Math.round(wonHands/playedHands*100) : 0;
   // Net USD and duration
-  const stakesBBval = {'NL25':0.25,'NL10':0.10};
-  const netUSDval = hands.reduce((s,h)=>s+(h.netBB*(stakesBBval[h.stakes]||0.25)),0);
+    const netUSDval = hands.reduce((s,h)=>s+(h.netBB*bbForStake(h.stakes)),0);
   // Duration using filtered hands for current view
   const filtSessions = buildSessions(hands);
   let durHours = filtSessions.reduce((s,x)=>s+x.durMin/60, 0);
@@ -1789,12 +1802,19 @@ function renderDashboard() {
   const sessions = buildSessions(allHands);
   const hdr=document.getElementById('total-hands-header');if(hdr)hdr.textContent=hands.length;
   function bb100of(arr){ return arr.length? arr.reduce(function(s,x){return s+x.netBB;},0)/arr.length*100 : 0; }
-  var stakeRows = [
-    {label:'R&C NL10', hs:hands.filter(function(x){return x.gameType==='Rush&Cash'&&x.stakes==='NL10';})},
-    {label:'R&C NL25', hs:hands.filter(function(x){return x.gameType==='Rush&Cash'&&x.stakes==='NL25';})},
-    {label:'Reg NL10', hs:hands.filter(function(x){return x.gameType==='Regular'&&x.stakes==='NL10';})},
-    {label:'Reg NL25', hs:hands.filter(function(x){return x.gameType==='Regular'&&x.stakes==='NL25';})}
-  ];
+  // Build format×stake rows dynamically from the stakes actually present, so any
+  // stake (NL5, NL50, ...) shows up automatically instead of only NL10/NL25.
+  var _formats = ['Rush&Cash','Regular'];
+  var _fmtLabel = {'Rush&Cash':'R&C','Regular':'Reg'};
+  var _stakesPresent = [];
+  hands.forEach(function(x){ if(x.stakes && _stakesPresent.indexOf(x.stakes)<0) _stakesPresent.push(x.stakes); });
+  _stakesPresent.sort(function(a,b){ return bbForStake(a)-bbForStake(b); });
+  var stakeRows = [];
+  _formats.forEach(function(fmt){
+    _stakesPresent.forEach(function(st){
+      stakeRows.push({label:_fmtLabel[fmt]+' '+st, hs:hands.filter(function(x){return x.gameType===fmt&&x.stakes===st;})});
+    });
+  });
   const sbd=document.getElementById('dash-stakes-breakdown');
   document.getElementById('dash-sessions').innerHTML = sessions.length
     ? `<p style="font-size:13px;color:var(--text3);margin:0 0 10px">${sessions.length} session${sessions.length!==1?'s':''} · ${hands.length} hands shown · ${allHands.length} total in DB</p>`
@@ -1949,7 +1969,7 @@ function buildSessions(handsArr) {
 
 function _sessionStats(sh, start, end){
   const netBB = sh.reduce((s,h)=>s+h.netBB,0);
-  const netUSD = sh.reduce((s,h)=>s+h.netBB*(h.stakes==='NL10'?0.10:0.25),0);
+  const netUSD = sh.reduce((s,h)=>s+h.netBB*bbForStake(h.stakes),0);
   const durMin = (end-start)/60000;
   const d = new Date(start);
   const date = d.getFullYear()+'/'+(d.getMonth()+1+'').padStart(2,'0')+'/'+(''+d.getDate()).padStart(2,'0');
@@ -2167,8 +2187,8 @@ function showHandDetail(id) {
   // Add blind posts not covered by raises
   Object.keys(h.seatPositions||{}).forEach(function(pl){
     if(!playerTotals[pl]){
-      var _sb = h.stakes==='NL25' ? 0.10 : 0.05;
-      var _bb = h.stakes==='NL25' ? 0.25 : 0.10;
+      var _sb = sbForStake(h.stakes);
+      var _bb = bbForStake(h.stakes);
       if(h.seatPositions[pl]==='SB') playerTotals[pl]=_sb;
       if(h.seatPositions[pl]==='BB') playerTotals[pl]=_bb;
     }
@@ -3306,7 +3326,7 @@ dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files)});
 
 // ─── TOAST ────────────────────────────────────────────────────
-const APP_VERSION = '2.60';
+const APP_VERSION = '2.61';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
