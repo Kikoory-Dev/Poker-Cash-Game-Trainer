@@ -8,7 +8,7 @@ dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
 dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');handleFiles(e.dataTransfer.files)});
 
 // ─── TOAST ────────────────────────────────────────────────────
-const APP_VERSION = '2.60';
+const APP_VERSION = '2.61';
 console.log('Poker Tracker v' + APP_VERSION);
 // Auto-update: check server version, hard-reload once if newer
 (function(){
