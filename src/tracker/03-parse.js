@@ -109,9 +109,14 @@ function streetContrib(raw) {
 function parseHands(text, filename) {
   const rawHands = text.split(/\n\n(?=Poker Hand #)/);
   const hands = [];
-  const isMini = filename.includes('0.05') || filename.includes('RushAndCash') && !filename.includes('0.1 - 0.25');
-  const fileBB = (filename.includes('0.05 - 0.1') || filename.includes('0.05-0.1')) ? 0.10 : 0.25;
-  const fileStakes = fileBB===0.10 ? 'NL10' : 'NL25';
+  // Parse the actual blind level from the filename: "... - <SB> - <BB> - 6max.txt".
+  // Previously only NL10/NL25 were recognized and anything else defaulted to NL25 —
+  // which mislabeled NL5 (0.02/0.05) as NL25 and made every bb/100 wrong by 5x.
+  var blindMatch = filename.match(/-\s*([0-9.]+)\s*-\s*([0-9.]+)\s*-\s*6max/);
+  var fileSB = blindMatch ? parseFloat(blindMatch[1]) : 0.10;
+  var fileBB = blindMatch ? parseFloat(blindMatch[2]) : 0.25;
+  // Derive the stake label from the big blind in cents (NL = 100 * BB).
+  var fileStakes = 'NL' + Math.round(fileBB*100);
   const fileGameType = filename.includes('Rush') ? 'Rush&Cash' : 'Regular';
 
   for (const raw of rawHands) {
