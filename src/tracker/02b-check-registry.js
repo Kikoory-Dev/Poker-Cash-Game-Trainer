@@ -85,8 +85,27 @@ var CHECK_REGISTRY = [
   {
     key:'MISSED_CBET', phase:'postflop', kind:'soft',
     label:'Checked flop as aggressor (gave up)',
-    meaning:'Checked when a c-bet was the right play',
-    detect:function(h){ return !!(h.cbetOpp && !h.cbetMade); }
+    meaning:'Gave up a c-bet spot that had equity or board range-advantage',
+    detect:function(h){
+      if (!(h.cbetOpp && !h.cbetMade)) return false;
+      // Refinement: don't flag CORRECT give-ups (air on a caller-favoring board).
+      // Still flag when Hero had equity, OR the board favors a range c-bet (A/K-high, not monotone).
+      var RANK={T:10,J:11,Q:12,K:13,A:14}; for(var i=2;i<=9;i++) RANK[String(i)]=i;
+      function cards(s){ return (s||'').trim().split(/\s+/).filter(Boolean).map(function(c){return {r:RANK[c[0]], s:c.slice(1)};}); }
+      var flop=cards(h.boardFlop), hole=cards(h.holeCards);
+      if (flop.length<3 || hole.length<2) return true; // can't assess -> keep conservative (flag)
+      var bR=flop.map(function(c){return c.r;}), bS=flop.map(function(c){return c.s;});
+      var madePair = (hole[0].r===hole[1].r) || hole.some(function(c){return bR.indexOf(c.r)>=0;});
+      var fd = (hole[0].s===hole[1].s) && bS.filter(function(s){return s===hole[0].s;}).length>=2;
+      var ranks=[]; hole.concat(flop).forEach(function(c){ if(ranks.indexOf(c.r)<0) ranks.push(c.r); });
+      if (ranks.indexOf(14)>=0) ranks.push(1);
+      var oesd=false; for(var lo=1;lo<=11;lo++){ var n=0; for(var k=lo;k<lo+4;k++){ if(ranks.indexOf(k)>=0) n++; } if(n>=4){oesd=true;break;} }
+      var hasEquity = madePair || fd || oesd;
+      var top=Math.max.apply(null,bR);
+      var monotone = bS[0]===bS[1] && bS[1]===bS[2];
+      var rangeCbetBoard = top>=13 && !monotone; // A/K-high, not monotone = PFR range advantage
+      return hasEquity || rangeCbetBoard;
+    }
   },
   {
     key:'CALL_3BET', phase:'preflop', kind:'hard',
