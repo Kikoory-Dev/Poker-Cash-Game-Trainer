@@ -303,3 +303,12 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     timestamps for new data. Historic hands (pre-sessionId, before 29 Jun 2026) use a
     60-min-gap fallback as an estimate only. "Last N sessions" filters operate on
     these upload-defined sessions.
+
+49. **LEAD WITH A SHORT SUMMARY, THEN THE REST — always.** Every substantive answer
+    opens with a tight, high-signal summary before any detail or breakdown. For a session
+    report the summary carries at minimum: hands, net $ (true / wallet-reconciled), bb/100,
+    and running DB total. This reorders Rule 46 — the concise summary comes FIRST, not last.
+
+
+50. **BE SHORT. Default to the fewest words that answer.** Lead with the answer, cut
+    preamble, caveats, and restatement. Expand only when asked.
