@@ -389,7 +389,21 @@ function parseHands(text, filename) {
     if (h.vpip && h.tagQuality==='Outside') issues.push('VPIP_TRASH');
     if (h.pfAction==='CALL' && !h.inBB && ['SB','UTG'].includes(h.position)) issues.push('LIMP_OOP');
     if (h.pfAction==='CALL' && !h.pfr && ['Trash','Weak Ace','Suited Trash'].includes(h.handCat) && !h.inBB) issues.push('CALL_WEAK');
-    if (h.cbetOpp && !h.cbetMade) issues.push('MISSED_CBET');
+    if (h.cbetOpp && !h.cbetMade) {
+      const _RK={T:10,J:11,Q:12,K:13,A:14}; for(let _i=2;_i<=9;_i++)_RK[''+_i]=_i;
+      const _cd=s=>(s||'').trim().split(/\s+/).filter(Boolean).map(c=>({r:_RK[c[0]],s:c.slice(1)}));
+      const _f=_cd(h.boardFlop), _ho=_cd(h.holeCards); let _fire=true;
+      if(_f.length>=3&&_ho.length>=2){
+        const _bR=_f.map(c=>c.r),_bS=_f.map(c=>c.s);
+        const _pair=(_ho[0].r===_ho[1].r)||_ho.some(c=>_bR.includes(c.r));
+        const _fd=(_ho[0].s===_ho[1].s)&&_bS.filter(s=>s===_ho[0].s).length>=2;
+        let _rk=[]; _ho.concat(_f).forEach(c=>{if(!_rk.includes(c.r))_rk.push(c.r);}); if(_rk.includes(14))_rk.push(1);
+        let _oesd=false; for(let _lo=1;_lo<=11;_lo++){let _n=0;for(let _k=_lo;_k<_lo+4;_k++)if(_rk.includes(_k))_n++;if(_n>=4){_oesd=true;break;}}
+        const _top=Math.max(..._bR), _mono=_bS[0]===_bS[1]&&_bS[1]===_bS[2];
+        _fire=(_pair||_fd||_oesd)||(_top>=13&&!_mono);
+      }
+      if(_fire) issues.push('MISSED_CBET');
+    }
     if (h.pfAction==='FOLD' && h.tagQuality==='A-Range' && ['BTN','CO','HJ'].includes(h.position)) issues.push('FOLD_STRONG_LP');
     h.tagIssues = issues;
     h.tagCompliant = issues.length===0 ? 1 : 0;
