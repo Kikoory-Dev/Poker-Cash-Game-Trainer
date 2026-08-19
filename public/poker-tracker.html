@@ -1796,7 +1796,8 @@ function renderDashboard() {
   const dashIssueCounts={}; const dashIssueBB={};
   hands.forEach(h=>h.tagIssues.forEach(i=>{dashIssueCounts[i]=(dashIssueCounts[i]||0)+1; dashIssueBB[i]=(dashIssueBB[i]||0)+h.netBB;}));
   document.getElementById('dash-violations').innerHTML =
-    buildFlagCardHtml(pfFlagMeaning(),'Preflop violations',dashIssueCounts,dashIssueBB,'dash')
+    reconStripHtml(hands)
+    + buildFlagCardHtml(pfFlagMeaning(),'Preflop violations',dashIssueCounts,dashIssueBB,'dash')
     + buildFlagCardHtml(postfFlagMeaning(),'Postflop mistakes',dashIssueCounts,dashIssueBB,'dash');
   // Sessions
   const sessions = buildSessions(allHands);
@@ -2010,6 +2011,22 @@ async function clearAllData() {
 }
 
 // ─── HANDS TABLE ──────────────────────────────────────────────
+function reconStripHtml(hands){
+  var flagged=hands.filter(function(h){return h.tagIssues && h.tagIssues.length>0;});
+  var fNet=flagged.reduce(function(s,h){return s+h.netBB;},0);
+  var net=hands.reduce(function(s,h){return s+h.netBB;},0);
+  var clean=net-fNet;
+  function col(v){return v>=0?'var(--green)':'var(--red)';}
+  function sg(v){return (v>=0?'+':'')+v.toFixed(0);}
+  return '<div class="card" style="margin-bottom:10px">'
+    +'<div style="font-size:12px;font-weight:700;color:var(--text);line-height:1.7">'
+    +'Flagged '+flagged.length+' <span style="color:'+col(fNet)+'">'+sg(fNet)+' BB</span>'
+    +' &nbsp;+&nbsp; Clean '+(hands.length-flagged.length)+' <span style="color:'+col(clean)+'">'+sg(clean)+' BB</span>'
+    +' &nbsp;=&nbsp; Net <span style="color:'+col(net)+'">'+sg(net)+' BB</span></div>'
+    +'<p style="margin:4px 0 0;font-size:11px;color:var(--text3);line-height:1.5">Category totals below are whole-hand results and can overlap (a hand may carry several flags), so they will not sum to Net.</p>'
+    +'</div>';
+}
+
 function buildFlagCardHtml(flagMap, title, counts, bbMap, source){
   source = source || 'analysis';
   var keys=[]; for(var k in flagMap){ if(counts[k]) keys.push(k); }
@@ -2029,7 +2046,7 @@ function buildFlagCardHtml(flagMap, title, counts, bbMap, source){
       +'</div>';
   }
   var tsign=totbb>=0?'+':'';
-  return '<div class="card"><div class="card-title">'+title+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+total+' flags · '+tsign+totbb.toFixed(0)+' BB</span></div>'+rows+'</div>';
+  return '<div class="card"><div class="card-title">'+title+' <span style="font-size:10px;color:var(--muted);font-weight:400">'+total+' flags</span></div>'+rows+'</div>';
 }
 
 // ====================================================================
@@ -2666,6 +2683,7 @@ function renderAnalysis() {
     </div>
   </div>
 
+  ${reconStripHtml(hands)}
   ${preflopCard}
   ${postflopCard}
 
