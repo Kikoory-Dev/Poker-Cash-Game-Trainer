@@ -521,42 +521,21 @@ let allHands = [];
 let filteredHandsCache = [];
 
 // ─── GITHUB STORAGE ───────────────────────────────────────────
+// NOTE (2026-09-07): this used to authenticate every read with GITHUB_TOKEN via the
+// GitHub Data API (refs -> commit -> tree -> blob). That token is dead (confirmed
+// 401 "Bad credentials"), which silently broke every load -- the dashboard was
+// showing stale/incomplete data with no visible error. Since this repo is public,
+// reads don't need a token at all: raw.githubusercontent.com serves the file
+// directly, unauthenticated, no rate-limit risk. Cache-busted with a timestamp so a
+// freshly-pushed tracker-data.json shows up within the CDN's ~minutes-long TTL
+// instead of being stuck on an old cached copy. GITHUB_TOKEN / saveToGitHub (the
+// write path) are unrelated to this fix and untouched -- new sessions are added via
+// direct git commits, not through this page's save button.
 async function loadFromGitHub() {
   try {
-    // Step 1: get the latest tree SHA (not CDN-cached, always fresh)
-    const refR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/refs/heads/main`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const refData = await refR.json();
-    const commitSha = refData.object.sha;
-
-    // Step 2: get blob SHA for our file from the commit tree
-    const commitR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/commits/${commitSha}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const commitData = await commitR.json();
-    const treeSha = commitData.tree.sha;
-
-    // Step 3: fetch blob directly — bypasses CDN entirely
-    const treeR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/trees/${treeSha}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const treeData = await treeR.json();
-    const blob = treeData.tree.find(f => f.path === GITHUB_FILE);
-    if (!blob) return [];
-
-    // Step 4: fetch the actual blob content
-    const blobR = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/git/blobs/${blob.sha}`, {
-      headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-    });
-    const blobData = await blobR.json();
-    // Large files use truncated=true — use raw URL with blob SHA as cache key
-    if (blobData.truncated || !blobData.content) {
-      const rawR = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?blob=${blob.sha}`);
-      const content = await rawR.json();
-      return Array.isArray(content) ? content : [];
-    }
-    const content = JSON.parse(atob(blobData.content.replace(/\n/g, '')));
+    const r = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/${GITHUB_FILE}?t=${Date.now()}`);
+    if (!r.ok) return [];
+    const content = await r.json();
     return Array.isArray(content) ? content : [];
   } catch(e) { console.error('Load error:', e); return []; }
 }
