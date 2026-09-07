@@ -318,3 +318,8 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
     they lost. Reinforcing good decisions builds skill; flagging only errors doesn't.
     Structure: (1) KPIs — hands, net $ (true/wallet-reconciled), bb/100, DB total;
     (2) leaks/mistakes ranked; (3) correct plays, results-independent.
+
+52. **Every hand analysis is SELF-CONTAINED: full context + bet sizes.** The user does not
+    recall specifics. State positions, effective stacks, the full board runout, and the
+    street-by-street action INCLUDING bet/raise sizes. Sizing is material (protection vs thin
+    value vs pot geometry vs commitment) — name and interpret the sizes, never just the actions.
