@@ -312,3 +312,9 @@ Regular NL10 (only losing split). Move up only with bankroll (20+ buy-ins) AND p
 
 50. **BE SHORT. Default to the fewest words that answer.** Lead with the answer, cut
     preamble, caveats, and restatement. Expand only when asked.
+
+51. **EVERY SESSION REPORT: KPIs + leaks + CORRECT PLAYS (regardless of outcome).**
+    Alongside the ranked leaks, explicitly call out the hands played correctly even when
+    they lost. Reinforcing good decisions builds skill; flagging only errors doesn't.
+    Structure: (1) KPIs — hands, net $ (true/wallet-reconciled), bb/100, DB total;
+    (2) leaks/mistakes ranked; (3) correct plays, results-independent.
