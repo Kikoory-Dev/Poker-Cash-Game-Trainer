@@ -156,6 +156,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -236,6 +239,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -296,6 +302,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -324,6 +333,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -389,6 +401,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -417,6 +432,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -455,6 +473,9 @@ select{background:var(--bg2);border:1px solid var(--border2);color:var(--text);p
         <option value="all">All time</option>
         <option value="may">May 2026</option>
         <option value="june">June 2026</option>
+        <option value="july">July 2026</option>
+        <option value="august">August 2026</option>
+        <option value="september">September 2026</option>
         <option value="last7">Last 7 days</option>
         <option value="last30">Last 30 days</option>
         <option value="last3s">Last 3 sessions</option>
@@ -1563,6 +1584,9 @@ function filterByTime(hands, tf, dateInputId) {
   if (tf==='all') return hands;
   if (tf==='may') return hands.filter(function(h){return h.date.startsWith('2026/05');});
   if (tf==='june') return hands.filter(function(h){return h.date.startsWith('2026/06');});
+  if (tf==='july') return hands.filter(function(h){return h.date.startsWith('2026/07');});
+  if (tf==='august') return hands.filter(function(h){return h.date.startsWith('2026/08');});
+  if (tf==='september') return hands.filter(function(h){return h.date.startsWith('2026/09');});
   if (tf==='last7') {
     var d=new Date(); d.setDate(d.getDate()-7);
     return hands.filter(function(h){return new Date(h.date.split('/').join('-'))>=d;});
