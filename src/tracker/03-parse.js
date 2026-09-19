@@ -240,11 +240,22 @@ function parseHands(text, filename) {
     // To add/modify a check, edit the registry — the tagger picks it up here,
     // and all render surfaces read labels/meanings from the same registry.
     h.tagIssues = runChecks(h);
+    // Flat-calling a 3-bet is read-dependent — surface as a FLAT_3BET review half-flag, not a hard violation.
+    const _c3i = h.tagIssues.indexOf('CALL_3BET');
+    if (_c3i>=0) h.tagIssues.splice(_c3i,1);
     h.tagCompliant = h.tagIssues.length===0 ? 1 : 0;
     const reviews = [];
     if (h.netBB < -10) reviews.push('BIG_LOSS');
     if (h.sawFlop && ['Turn','River'].includes(h.streetReached)) reviews.push('POSTFLOP');
     if (h.showdown) reviews.push('SHOWDOWN');
+    if (_c3i>=0) reviews.push('FLAT_3BET');
+    // Blind / non-opener cold-calling a 3-bet (read-dependent 3-bet defense) = FLAT_3BET review.
+    if (h.pfAction==='CALL' && !h.pfr && h.facedRaise) {
+      const _pa=(h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      let _hi=-1; for(let _i=0;_i<_pa.length;_i++){ if(_pa[_i].player==='Hero'){_hi=_i;break;} }
+      const _rb=_hi>=0?_pa.slice(0,_hi).filter(a=>a.action&&a.action.indexOf('raises')===0).length:0;
+      if (_rb>=2 && reviews.indexOf('FLAT_3BET')<0) reviews.push('FLAT_3BET');
+    }
     h.reviewFlags = reviews;
     h.isPreflop = h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i));
     h.isPostflop = h.tagIssues.some(i=>['MISSED_CBET','CALL_WEAK'].includes(i)) || h.reviewFlags.includes('POSTFLOP');

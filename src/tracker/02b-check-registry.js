@@ -35,6 +35,15 @@ var CHECK_REGISTRY = [
     meaning:'SB called a raise that should be 3-bet or folded',
     detect:function(h){
       if (!(h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr)) return false;
+      // Guard: a caller already in front = OVER-CALL (handled by OVERCALL with the multiway
+      // set-mine range), not SB steal-defense. And 2+ raises in front = a 3-bet pot
+      // (read-dependent 3-bet defense, surfaced as a FLAT_3BET review) — don't hard-flag either.
+      var _pa=(h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var _hi=-1; for(var _i=0;_i<_pa.length;_i++){ if(_pa[_i].player==='Hero'){_hi=_i;break;} }
+      var _bfr=_hi>=0?_pa.slice(0,_hi):[];
+      var _callersFront=_bfr.filter(function(a){return a.action&&a.action.indexOf('calls')===0;}).length;
+      var _raisesFront=_bfr.filter(function(a){return a.action&&a.action.indexOf('raises')===0;}).length;
+      if (_callersFront>=1 || _raisesFront>=2) return false;
       var ctx = pfStealContext(h);
       if (ctx && ctx.isSteal) {
         var v = pfBlindDefenseVerdict(h, ctx);
@@ -140,10 +149,16 @@ var CHECK_REGISTRY = [
       var raises = acts.filter(function(a){return a.action&&a.action.indexOf('raises')===0;});
       var hi = -1; for (var i=0;i<raises.length;i++){ if(raises[i].player==='Hero'){hi=i;break;} }
       if (hi<0) return false;
+      // Hero's first raise must be the OPEN: no villain raise before it. Otherwise Hero entered via a
+      // 3-bet/4-bet and a later call is a 5-bet call (e.g. KK), not "called a 3-bet".
+      var villainRaisesBefore = raises.slice(0,hi).filter(function(a){return a.player!=='Hero';}).length;
+      if (villainRaisesBefore>0) return false;
       var villainRaisesAfter = raises.slice(hi+1).filter(function(a){return a.player!=='Hero';}).length;
       var heroRaisedAgain = raises.slice(hi+1).some(function(a){return a.player==='Hero';});
       // Faced a 3-bet = exactly one villain raise after Hero's open, and Hero did NOT 4-bet.
       if (!(villainRaisesAfter===1 && !heroRaisedAgain)) return false;
+      // Premiums getting it in are never a violation.
+      if (['AA','KK','QQ','AKs','AKo'].indexOf(h.handNotation)>=0) return false;
       var cont = CONTINUE_VS_4BET[h.position] || []; // proxy continue range (3-bet defense is read-dependent)
       return cont.indexOf(h.handNotation)===-1;
     }

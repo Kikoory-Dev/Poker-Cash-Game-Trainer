@@ -119,7 +119,7 @@ var PF_GAMEPLAN_GRID={
   }
 };
 
-const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"]};
+const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"], "BB": ["AA", "KK", "QQ", "JJ", "TT", "AKs", "AKo", "AQs", "AJs"]};
 
 // ─── STEALING & BLIND DEFENSE (Hardin ch.22, pp.249-264; charts read cell-by-cell) ───
 // Steal = first-in (open) raise from a STEAL POSITION (CO, BTN, SB) only.
