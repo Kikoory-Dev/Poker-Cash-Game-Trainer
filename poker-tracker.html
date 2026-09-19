@@ -711,7 +711,7 @@ var PF_GAMEPLAN_GRID={
   }
 };
 
-const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"]};
+const CONTINUE_VS_4BET = {"UTG": ["AA", "AKs", "KK", "QQ"], "HJ": ["AA", "AKs", "KK", "QQ"], "CO": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "BTN": ["AA", "AKs", "AQs", "JJ", "KK", "QQ"], "SB": ["AA", "AJo", "AJs", "AKo", "AKs", "AQo", "AQs", "JJ", "KK", "QQ", "TT"], "BB": ["AA", "KK", "QQ", "JJ", "TT", "AKs", "AKo", "AQs", "AJs"]};
 
 // ─── STEALING & BLIND DEFENSE (Hardin ch.22, pp.249-264; charts read cell-by-cell) ───
 // Steal = first-in (open) raise from a STEAL POSITION (CO, BTN, SB) only.
@@ -840,6 +840,12 @@ var CHECK_REGISTRY = [
     meaning:'SB called a raise that should be 3-bet or folded',
     detect:function(h){
       if (!(h.pfAction==='CALL' && h.position==='SB' && h.facedRaise && !h.pfr)) return false;
+      var _pa=(h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      var _hi=-1; for(var _i=0;_i<_pa.length;_i++){ if(_pa[_i].player==='Hero'){_hi=_i;break;} }
+      var _bfr=_hi>=0?_pa.slice(0,_hi):[];
+      var _callersFront=_bfr.filter(function(a){return a.action&&a.action.indexOf('calls')===0;}).length;
+      var _raisesFront=_bfr.filter(function(a){return a.action&&a.action.indexOf('raises')===0;}).length;
+      if (_callersFront>=1 || _raisesFront>=2) return false;
       var ctx = pfStealContext(h);
       if (ctx && ctx.isSteal) {
         var v = pfBlindDefenseVerdict(h, ctx);
@@ -926,11 +932,13 @@ var CHECK_REGISTRY = [
       var raises = acts.filter(function(a){return a.action&&a.action.indexOf('raises')===0;});
       var hi = -1; for (var i=0;i<raises.length;i++){ if(raises[i].player==='Hero'){hi=i;break;} }
       if (hi<0) return false;
+      var villainRaisesBefore = raises.slice(0,hi).filter(function(a){return a.player!=='Hero';}).length;
+      if (villainRaisesBefore>0) return false;
       var villainRaisesAfter = raises.slice(hi+1).filter(function(a){return a.player!=='Hero';}).length;
       var heroRaisedAgain = raises.slice(hi+1).some(function(a){return a.player==='Hero';});
-      // Faced a 3-bet = exactly one villain raise after Hero's open, and Hero did NOT 4-bet.
       if (!(villainRaisesAfter===1 && !heroRaisedAgain)) return false;
-      var cont = CONTINUE_VS_4BET[h.position] || []; // proxy continue range (3-bet defense is read-dependent)
+      if (['AA','KK','QQ','AKs','AKo'].indexOf(h.handNotation)>=0) return false;
+      var cont = CONTINUE_VS_4BET[h.position] || [];
       return cont.indexOf(h.handNotation)===-1;
     }
   },
@@ -1267,11 +1275,20 @@ function parseHands(text, filename) {
     // To add/modify a check, edit the registry — the tagger picks it up here,
     // and all render surfaces read labels/meanings from the same registry.
     h.tagIssues = runChecks(h);
+    const _c3i = h.tagIssues.indexOf('CALL_3BET');
+    if (_c3i>=0) h.tagIssues.splice(_c3i,1);
     h.tagCompliant = h.tagIssues.length===0 ? 1 : 0;
     const reviews = [];
     if (h.netBB < -10) reviews.push('BIG_LOSS');
     if (h.sawFlop && ['Turn','River'].includes(h.streetReached)) reviews.push('POSTFLOP');
     if (h.showdown) reviews.push('SHOWDOWN');
+    if (_c3i>=0) reviews.push('FLAT_3BET');
+    if (h.pfAction==='CALL' && !h.pfr && h.facedRaise) {
+      const _pa=(h.streetActions&&h.streetActions.preflop&&h.streetActions.preflop.actions)||[];
+      let _hi=-1; for(let _i=0;_i<_pa.length;_i++){ if(_pa[_i].player==='Hero'){_hi=_i;break;} }
+      const _rb=_hi>=0?_pa.slice(0,_hi).filter(a=>a.action&&a.action.indexOf('raises')===0).length:0;
+      if (_rb>=2 && reviews.indexOf('FLAT_3BET')<0) reviews.push('FLAT_3BET');
+    }
     h.reviewFlags = reviews;
     h.isPreflop = h.tagIssues.some(i=>['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP'].includes(i));
     h.isPostflop = h.tagIssues.some(i=>['MISSED_CBET','CALL_WEAK'].includes(i)) || h.reviewFlags.includes('POSTFLOP');
@@ -1716,6 +1733,8 @@ function retagAll(hands){
   for (var i=0;i<hands.length;i++){
     var h = hands[i];
     h.tagIssues = runChecks(h);
+    var _c3j = h.tagIssues.indexOf('CALL_3BET');
+    if (_c3j>=0) { h.tagIssues.splice(_c3j,1); h.reviewFlags=(h.reviewFlags||[]); if(h.reviewFlags.indexOf('FLAT_3BET')<0) h.reviewFlags.push('FLAT_3BET'); }
     h.tagCompliant = h.tagIssues.length===0 ? 1 : 0;
     h.isPreflop = h.tagIssues.some(function(x){ return ['VPIP_TRASH','LIMP_OOP','CALL_WEAK','FOLD_STRONG_LP','CALL_3BET','CALL_4BET','LIMP'].indexOf(x)>=0; });
     h.isPostflop = h.tagIssues.some(function(x){ return ['MISSED_CBET','CALL_WEAK'].indexOf(x)>=0; }) || (h.reviewFlags||[]).indexOf('POSTFLOP')>=0;
